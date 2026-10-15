@@ -4,3 +4,7 @@
 .env
 .env.*
 !.env.example
+
+# build/cache artifacts
+__pycache__/
+*.pyc

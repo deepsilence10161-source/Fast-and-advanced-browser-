@@ -1,0 +1,5 @@
+#!/bin/bash
+# Usage: gitx <git args...>  — GitHub auth सहित, output redacted
+set -o pipefail
+git -c credential.helper= -c credential.helper=/home/user/.secrets/git-cred.sh -c credential.useHttpPath=false "$@" 2>&1 \
+ | /home/user/tools/secret-guard/redact.py

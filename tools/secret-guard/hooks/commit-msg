@@ -1,0 +1,4 @@
+#!/bin/bash
+TF=/home/user/.secrets/gh_token
+if grep -qE 'github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{30,}' "$1" || { [ -r "$TF" ] && grep -qF -f "$TF" "$1"; }; then
+  echo "COMMIT रोका गया: commit message में token जैसा text है।" >&2; exit 1; fi

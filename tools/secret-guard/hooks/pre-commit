@@ -1,0 +1,6 @@
+#!/bin/bash
+/home/user/tools/secret-guard/scan.sh staged "$(git rev-parse --show-toplevel)" >&2; rc=$?
+[ $rc = 0 ] && exit 0
+[ $rc = 1 ] && echo "COMMIT रोका गया: staged बदलावों में secret/token मिला। उसे हटाएँ।" >&2
+[ $rc = 2 ] && echo "COMMIT रोका गया: secret स्कैनर नहीं चल पाया (सुरक्षा हेतु fail-closed)।" >&2
+exit 1
