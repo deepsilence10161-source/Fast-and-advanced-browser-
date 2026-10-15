@@ -119,11 +119,12 @@ class Device:
     # ---------- capture ----------
     def capture(self, key, note=""):
         time.sleep(1.0)
-        self.handle_anr()
+        xml = self.dump()
+        if self.handle_anr(xml):  # only re-dump when an ANR dialog was actually dismissed
+            xml = self.dump()
         png = os.path.join(self.out, f"{key}.png")
         with open(png, "wb") as f:
             f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
-        xml = self.dump()
         open(os.path.join(self.out, f"{key}.xml"), "w").write(xml)
         ns = self.nodes(xml)
         visible = [n for n in ns if n["w"] > 0 and n["h"] > 0 and (n["text"] or n["desc"] or n["id"])]
