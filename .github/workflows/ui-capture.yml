@@ -5,8 +5,14 @@ on:
       chromium_position:
         description: "Chromium main-branch position (nearest snapshot >= this). Default = M155 branch point"
         default: "1697595"
+      targets:
+        description: 'JSON list: chrome_ref, chromium_arm64, chromium_desktop_x64, chromium_source_x64, chromium_source_arm64'
+        default: '["chrome_ref","chromium_arm64","chromium_desktop_x64"]'
+      source_tag:
+        description: "chromium_source_* के लिए: इस परियोजना के source build का Chromium tag"
+        default: "155.0.8059.80"
 permissions:
-  contents: read
+  contents: write   # chromium_source_*: APK draft build-state release में है (drafts केवल write-access को दिखते हैं)। कुछ upload नहीं होता।
 jobs:
   capture:
     runs-on: ubuntu-latest
@@ -14,18 +20,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [chrome_ref, chromium_arm64, chromium_desktop_x64]
+        target: ${{ fromJSON(inputs.targets || '["chrome_ref","chromium_arm64","chromium_desktop_x64"]') }}
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
       - name: Fetch official Chromium snapshot (MD5 + CRC32C verified)
-        if: matrix.target != 'chrome_ref'
+        if: matrix.target == 'chromium_arm64' || matrix.target == 'chromium_desktop_x64'
         run: |
           pip install -q crc32c
           PREFIX=$([ "${{ matrix.target }}" = chromium_arm64 ] && echo Android_Arm64 || echo AndroidDesktop_x64)
           python3 scripts/fetch_snapshot.py --prefix $PREFIX --near "${{ inputs.chromium_position || '1697595' }}" --out dl > /dev/null
           rm -f dl/*.zip; python3 -c "import json;d=json.load(open('dl/provenance.json'));print(json.dumps({k:d[k] for k in ('prefix','snapshot_revision','REVISIONS','zip_sha256','zip_crc32c_verified')},indent=1))"
           mkdir -p out/${{ matrix.target }} && cp dl/provenance.json out/${{ matrix.target }}/provenance.json
+      - name: Fetch this project's source-built APK (state release) + BUILD_INFO
+        if: startsWith(matrix.target, 'chromium_source_')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          CPU=${{ matrix.target }}; CPU=${CPU#chromium_source_}; TAG="${{ inputs.source_tag || '155.0.8059.80' }}"
+          ST=crstate-$TAG-$CPU-a1; mkdir -p dl out/${{ matrix.target }}
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p "ChromePublic-$TAG-$CPU.apk" -O dl/ChromePublic.apk
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/${{ matrix.target }}/BUILD_INFO.txt
+          sha256sum dl/ChromePublic.apk; grep -A1 -- '--- sha256' out/${{ matrix.target }}/BUILD_INFO.txt
+          test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/${{ matrix.target }}/BUILD_INFO.txt | tail -1)"
       - name: Harness deps
         run: pip install -q websocket-client
       - name: Enable KVM
