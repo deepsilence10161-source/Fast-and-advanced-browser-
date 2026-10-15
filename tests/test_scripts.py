@@ -56,3 +56,51 @@ class TestCompareLoader(unittest.TestCase):
             json.dump({"key": "02_ntp", "nodes": [], "png": "02_ntp.png"}, open(os.path.join(d, "02_ntp.json"), "w"))
             meta, screens = cu.load(d)
             self.assertEqual(list(screens), ["02_ntp"])
+
+
+class TestStagedBuildResume(unittest.TestCase):
+    """chromium_stage.sh की resume-विधि: ninja को बीच में रोकें, PAX tar से pack/restore करें,
+    बचा काम (ninja -n) बराबर रहे; seconds-only/नई mtime (negative control) पर watchdog पकड़े।"""
+    def setUp(self):
+        import shutil
+        self.ninja = shutil.which("ninja")
+        if not self.ninja:
+            self.skipTest("ninja नहीं मिला (pip install ninja)")
+    def _sh(self, cmd, cwd):
+        import subprocess
+        return subprocess.run(["bash", "-c", cmd], cwd=cwd, capture_output=True, text=True)
+    def _remaining(self, src):
+        import re
+        r = self._sh("ninja -C out/X -n all", src).stdout
+        m = re.findall(r"^\[(\d+)/(\d+)\]", r, re.M)
+        return int(m[-1][1]) if m else 0
+    def test_pax_restore_keeps_progress_and_watchdog_catches_bad_restore(self):
+        import time
+        d = tempfile.mkdtemp(); a = os.path.join(d, "a", "src"); os.makedirs(os.path.join(a, "out", "X"))
+        lines = ["rule cp", "  command = sleep 0.15 && cp $in $out"]
+        for i in range(30):
+            open(os.path.join(a, f"in{i}.txt"), "w").write(str(i))
+            lines.append(f"build o{i}: cp ../../in{i}.txt")
+        lines.append("build all: phony " + " ".join(f"o{i}" for i in range(30)))
+        open(os.path.join(a, "out", "X", "build.ninja"), "w").write("\n".join(lines) + "\n")
+        self._sh("timeout -s INT 1.2 ninja -C out/X -j2 all", a)
+        before = self._remaining(a)
+        self.assertTrue(0 < before < 30, before)
+        self._sh("tar --format=posix --exclude=./src/out -C a -cf s.tar ./src && tar --format=posix -C a/src -cf o.tar out/X", d)
+        time.sleep(1.1)
+        b = os.path.join(d, "b"); os.makedirs(b)
+        self._sh("tar -xf s.tar -C b && tar -xf o.tar -C b/src", d)
+        self.assertEqual(self._remaining(os.path.join(b, "src")), before)       # कोई rebuild नहीं
+        c = os.path.join(d, "c"); os.makedirs(c)
+        self._sh("tar --format=gnu -C a -cf - ./src | tar -x -C c && touch c/src/in*.txt", d)
+        bad = self._remaining(os.path.join(c, "src"))
+        self.assertEqual(bad, 30)
+        self.assertGreater(bad, before + before // 50 + 0)                       # watchdog शर्त का आधार
+
+    def test_stage_script_syntax_and_args(self):
+        p = os.path.join(os.path.dirname(__file__), "..", "scripts", "ci", "chromium_stage.sh")
+        r = self._sh(f"bash -n {p}", ".")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        s = open(p).read()
+        for must in ['use_siso = false', 'use_remoteexec = false', 'is_debug = false', '--format=posix', 'WATCHDOG']:
+            self.assertIn(must, s)

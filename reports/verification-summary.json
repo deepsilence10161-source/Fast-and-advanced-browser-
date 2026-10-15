@@ -256,6 +256,30 @@
    "layer": "all",
    "status": "NOT RUN / BLOCKED",
    "detail": "Chrome baseline must pass first; only synthetic C1/C2 prototype exists"
+  },
+  {
+   "id": "staged-build-resume-unit",
+   "layer": "L1",
+   "platform": "desktop + github ubuntu",
+   "status": "PASS (desktop/browser component)",
+   "detail": "PAX restore keeps ninja progress 16->16; negative control 30/30 rebuild",
+   "evidence": "tests/test_scripts.py::TestStagedBuildResume"
+  },
+  {
+   "id": "source-build-restore-check",
+   "layer": "L2",
+   "platform": "github ubuntu-24.04 standard runner",
+   "status": "PASS (static/signature/format only)",
+   "detail": "tag 155.0.8059.80 commit 43a195105613ac83c21d3f14de279f4a045c7da0; src 13.4 GB; restore 514 s; gn 63340 targets; chrome_public_apk x64 57552 ninja edges",
+   "evidence": "run 38751068356"
+  },
+  {
+   "id": "source-build-chrome_public_apk",
+   "layer": "L2",
+   "platform": "github ubuntu-24.04 standard runner (staged)",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "IN PROGRESS: x64 run 38745313869, arm64 run 38750988168",
+   "evidence": "pending"
   }
  ],
  "performance_emulator_only": {

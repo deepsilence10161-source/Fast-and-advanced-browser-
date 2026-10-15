@@ -35,7 +35,26 @@
 | GitHub standard runner (public repo) | 4 CPU, 16 GB RAM, **14 GB SSD (गारंटी)**, public repo में मुफ़्त | [P] | `https://docs.github.com/en/actions/reference/runners/github-hosted-runners` |
 | वास्तविक runner पर मापा गया | 4 CPU, 15 GiB RAM, `/` पर 86 GB खाली, `/dev/kvm` मौजूद | [M] run 38691453072 |
 | Agent sandbox | 2 CPU, ~1.9 GiB RAM, 25 GB disk, KVM नहीं | [M] |
-| **निष्कर्ष** | पूरा source build standard runner पर **BLOCKED** है: guaranteed disk (14 GB) 100 GB से बहुत कम है, और 4 cores पर पूरा build 6 घंटे की job सीमा में पूरा होना अपेक्षित नहीं [I]। larger runner/cloud VM सशुल्क है और उपयोगकर्ता की लागत-स्वीकृति के बिना शुरू नहीं किया जाएगा। | [P]+[I] |
+| ~~पुराना निष्कर्ष (सत्र 1)~~ | ~~standard runner पर BLOCKED~~ — यह [I] अनुमान था; सत्र 2 के शोध और माप से **गलत सिद्ध** (नीचे §3b) | सुधार |
+
+## 3b. सुधार (सत्र 2, 15-10-2026): मुफ़्त standard runners पर staged source build
+
+| तथ्य | मान | वर्ग | स्रोत |
+|---|---|---|---|
+| GitHub-hosted job की अधिकतम अवधि | 6 घंटे प्रति job; workflow run 35 दिन तक | [P] | https://docs.github.com/en/actions/reference/limits |
+| Public repo में standard runners | "free and unlimited"; Linux 4 CPU / 16 GB | [P] | https://docs.github.com/en/actions/reference/runners/github-hosted-runners |
+| यही समस्या दूसरे projects ने कैसे हल की | build को chained ~5–6 घंटे के stages में बाँटना; हर stage के बाद अधूरी build-state सहेजकर अगला stage वहीं से आगे। ungoogled-chromium-windows (8-stage chain), Project Mu (4-core पर 12–20 घंटे, 8 stages), Android ARMv7 Chromium fork (bounded slices) | [P: उनके public repos] | https://github.com/monkeylab/ungoogled-chromium-windows · https://github.com/krishivvyas/project-mu · https://github.com/zftsh2035-boop/Chrome-extensions |
+| Chromium का build tool | Siso default है, पर `use_siso = false` से ninja चलता है (`build/toolchain/siso.gni` @155.0.8059.80) | [P] | https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/build/toolchain/siso.gni |
+| Runner पर disk, cleanup के बाद | `/` पर 111 GB खाली (cleanup से पहले 86 GB) — official 100 GB न्यूनतम से ऊपर | [M] | run 38751068356 |
+| Source (tag 155.0.8059.80, बिना history, android deps) | commit `43a195105613ac83c21d3f14de279f4a045c7da0` (Chromium Dash से मेल); zstd-3 pack ≈ 13.4 GB (8 भाग) | [M] | run 38745313869, state release |
+| `chrome_public_apk` (x64, release, non-component, symbol_level 0) | gn: 63,340 targets; ninja: **57,552 edges** | [M] | run 38751068356 |
+| Restore (src 13.4 GB download + extract) | 514 s; restore के बाद gn + `ninja -n` सफल | [M] | run 38751068356 |
+| Resume की शुद्धता | PAX tar nanosecond mtime रखता है → restore के बाद बचा काम उतना ही; seconds-only/नई mtime पर पूरा rebuild (watchdog इसी को पकड़ता है) | [M] | `tests/test_scripts.py::TestStagedBuildResume` |
+| कुल build समय | **अभी अज्ञात [?]**: stage 0 की compile दर से पता चलेगा | [?] | runs 38745313869 (x64), 38750988168 (arm64) |
+
+**नया निष्कर्ष:** पूरा source build मुफ़्त standard runners पर **संभव** है (कई घंटे, कई stages)। Paid runner की आवश्यकता नहीं। Pipeline: `.github/workflows/chromium-source-build.yml` → `chromium-stage.yml` → `scripts/ci/chromium_stage.sh`। Build-state इसी repo के draft release `crstate-<tag>-<cpu>-a1` में रहती है। APK सत्यापित होने के बाद उसे हटाया जा सकता है।
+
+**Stable की स्थिति (15-10-2026, Chrome Releases blog feed):** 14-10-2026 को Chrome 156 (156.0.8078.39) Android पर "small percentage of users" के लिए early-stable रूप में जारी हुआ। अधिकांश उपयोगकर्ता अभी 155.0.8059.79/.80 पर हैं। इसलिए build लक्ष्य 155.0.8059.80 ही रखा गया। 156 पूरी तरह rollout होने पर tag बदलना है। स्रोत: https://chromereleases.googleblog.com/feeds/posts/default/-/Chrome%20for%20Android
 
 ## 4. Android परीक्षण क्षमता (E2E)
 
