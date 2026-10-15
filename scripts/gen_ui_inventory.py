@@ -33,7 +33,9 @@ def main():
     screens = {}
     for j in sorted(glob.glob(os.path.join(a.ref, "*.json"))):
         if os.path.basename(j) in ("meta.json", "provenance.json"): continue
-        s = json.load(open(j)); screens[s["key"]] = s
+        s = json.load(open(j))
+        if "key" not in s or "nodes" not in s: continue
+        screens[s["key"]] = s
     pkg = meta["package"]
     L = ["# Chrome Android UI inventory", "",
          "## 1. Reference की पहचान (ईमानदार स्थिति)", "",
@@ -63,6 +65,8 @@ def main():
         st = ("आंशिक रूप से देखा (Chrome %s, emulator)" % meta.get("versionName")) if got else "**NOT OBSERVED**"
         L.append(f"| {area} | {', '.join(got) or '—'} | {st} |")
     L += ["", "**Stable 155 के लिए हर पंक्ति: NOT OBSERVED।** Animation, latency, transition और TalkBack का अवलोकन अभी दर्ज नहीं हुआ है; journey में इन्हें मापने के steps जोड़ने बाकी हैं।"]
+    L += ["", "## 5. Chromium 155 artifact से अंतर", "",
+          "Chromium 155.0.8059.0 snapshot के वही screens इसी run में capture हुए हैं। Screen-दर-screen अंतर (missing/extra resource-ids, text, a11y labels, pixel MAD, side-by-side PNG) `reports/ui-compare/<target>/COMPARISON.md` में हैं। मुख्य देखे गए अंतर: 155 में नीचे का toolbar (`bottom_bar_*`, Home / Ask Gemini / New tab / Tabs / Menu), NTP पर `composeplate_button` \"AI Mode\" chip, omnibox में security status icon का न होना (page info केवल menu → Site controls से), और FRE का अलग क्रम। 133 में ये controls ऊपर toolbar में हैं और `location_bar_status_icon` मौजूद है। ये Stable 155 में भी ऐसे ही हैं या नहीं (field trials), यह Stable 155 reference के बिना **अज्ञात** है।"]
     open(a.out, "w").write("\n".join(L) + "\n")
     print(f"wrote {a.out}: {len(screens)} screens")
 

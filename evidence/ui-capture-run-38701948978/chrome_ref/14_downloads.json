@@ -1,0 +1,291 @@
+{
+ "key": "14_downloads",
+ "note": "menu \u2192 Downloads",
+ "foreground": "com.android.chrome",
+ "node_count": 29,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/download_toolbar",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    275
+   ],
+   "w": 1080,
+   "h": 147
+  },
+  {
+   "text": "Downloads",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    159,
+    334,
+    244
+   ],
+   "w": 292,
+   "h": 85
+  },
+  {
+   "text": "",
+   "desc": "Settings",
+   "id": "com.android.chrome:id/settings_menu_id",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    815,
+    138,
+    942,
+    264
+   ],
+   "w": 127,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Close",
+   "id": "com.android.chrome:id/close_menu_id",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    942,
+    138,
+    1069,
+    264
+   ],
+   "w": 127,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/download_home_recycler_view",
+   "cls": "android.widget.GridView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    275,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2062
+  },
+  {
+   "text": "Using 0.00 KB of 7.73 GB",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    275,
+    1080,
+    366
+   ],
+   "w": 1080,
+   "h": 91
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/content_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    366,
+    1080,
+    408
+   ],
+   "w": 1080,
+   "h": 42
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/empty_state_container",
+   "cls": "android.widget.ScrollView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    92,
+    938,
+    987,
+    1673
+   ],
+   "w": 895,
+   "h": 735
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/empty_state_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    369,
+    938,
+    710,
+    1279
+   ],
+   "w": 341,
+   "h": 341
+  },
+  {
+   "text": "You\u2019ll find your downloads here",
+   "desc": "",
+   "id": "com.android.chrome:id/empty_state_text_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    200,
+    1279,
+    878,
+    1396
+   ],
+   "w": 678,
+   "h": 117
+  },
+  {
+   "text": "You can save images and files to view offline or share in other apps",
+   "desc": "",
+   "id": "com.android.chrome:id/empty_state_text_description",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    92,
+    1396,
+    987,
+    1526
+   ],
+   "w": 895,
+   "h": 130
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/statusBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    128
+   ],
+   "w": 1080,
+   "h": 128
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/navigationBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2337,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 63
+  }
+ ],
+ "png": "14_downloads.png",
+ "png_bytes": 70796,
+ "time_utc": "2026-10-15T07:59:50Z"
+}

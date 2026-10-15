@@ -1,0 +1,291 @@
+{
+ "key": "06_page_info",
+ "note": "page info / connection security sheet",
+ "foreground": "org.chromium.chrome",
+ "node_count": 26,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    699
+   ],
+   "w": 1080,
+   "h": 571
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_url_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    254
+   ],
+   "w": 1080,
+   "h": 126
+  },
+  {
+   "text": "example.com",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_truncated_url",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    382,
+    134,
+    698,
+    247
+   ],
+   "w": 316,
+   "h": 113
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    657
+   ],
+   "w": 1080,
+   "h": 403
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    657
+   ],
+   "w": 1080,
+   "h": 403
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_row_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    657
+   ],
+   "w": 1080,
+   "h": 403
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_connection_security",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    527
+   ],
+   "w": 1080,
+   "h": 273
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/security_description_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    527
+   ],
+   "w": 1080,
+   "h": 273
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/identity_status_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    286,
+    126,
+    349
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Connection is not secure",
+   "desc": "",
+   "id": "org.chromium.chrome:id/security_description_summary",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    189,
+    286,
+    649,
+    335
+   ],
+   "w": 460,
+   "h": 49
+  },
+  {
+   "text": "You should not enter any sensitive information on this site (for example, passwords or credit cards), because it could be stolen by attackers. Learn more",
+   "desc": "",
+   "id": "org.chromium.chrome:id/security_description_details",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    189,
+    335,
+    1038,
+    495
+   ],
+   "w": 849,
+   "h": 160
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_cookies_row",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    530,
+    1080,
+    657
+   ],
+   "w": 1080,
+   "h": 127
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_row_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    562,
+    126,
+    625
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Cookies and site data",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_row_title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    189,
+    569,
+    591,
+    618
+   ],
+   "w": 402,
+   "h": 49
+  }
+ ],
+ "png": "06_page_info.png",
+ "png_bytes": 137898,
+ "time_utc": "2026-10-15T07:41:18Z"
+}

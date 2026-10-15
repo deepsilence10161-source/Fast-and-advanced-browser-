@@ -1,0 +1,33 @@
+{
+  "source": "gs://chromium-browser-snapshots/Android_Arm64/1697603/chrome-android.zip",
+  "download_url": "https://storage.googleapis.com/chromium-browser-snapshots/Android_Arm64/1697603/chrome-android.zip",
+  "prefix": "Android_Arm64",
+  "snapshot_revision": 1697603,
+  "REVISIONS": {
+    "chromium_revision": "1697603",
+    "got_angle_revision": "8194b221b0147b167c559fdec6a37ac70586d0e2",
+    "got_dawn_revision": "7fe336654eb579575caf4a35075b8512bc47de8d",
+    "got_revision": "e526fbe096a1e225c77556182d627f97f9499a00",
+    "got_revision_cp": "refs/heads/main@{#1697603}",
+    "got_swiftshader_revision": "5b0479bd2d15058aaa9eb490e364f920ff824a8c",
+    "got_v8_revision": "17abeb50acb4563e253edebd0db09062d39c8c91",
+    "got_v8_revision_cp": "refs/heads/15.5.35@{#1}",
+    "got_webrtc_revision": "8d208e76fb1ad2b92d557f752e9d1d7d49059efa",
+    "got_webrtc_revision_cp": "refs/heads/main@{#48593}",
+    "v8_revision": "1",
+    "v8_revision_git": "17abeb50acb4563e253edebd0db09062d39c8c91"
+  },
+  "zip_size": 429430811,
+  "zip_md5_b64_verified": "Q8sMpz4qL7O9EbeQ2wSQ+Q==",
+  "zip_crc32c_verified": true,
+  "zip_sha256": "ae9219bc48dd0c1229b12261d533cdf065f707b6c8c71c3460e1e1b212501c15",
+  "gcs_generation": "1789428835550365",
+  "gcs_time_created": "2026-09-14T23:33:55.642Z",
+  "apks": {
+    "chrome-android/apks/ChromePublic.apk": "7f5793c0a152b583afbba6ff73ca0927e58cf9d66b19d11a321efaf78071d501",
+    "chrome-android/apks/ContentShell.apk": "c3a6183a7deadf79d21ecde6360c2ae30e4e33402e301c1ec2dfc4dc598ba020",
+    "chrome-android/apks/SystemWebView.apk": "862d865a9ea901a2fa4dccadda9ebd30d10b399ffbdf7c3e670630fce769976d"
+  },
+  "fetched_at_utc": "2026-10-15T08:13:45+00:00",
+  "note": "Chromium development snapshot. NOT Google Chrome Stable."
+}

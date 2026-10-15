@@ -1,0 +1,991 @@
+{
+ "key": "02_ntp",
+ "note": "new tab page / start surface",
+ "foreground": "com.android.chrome",
+ "node_count": 83,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/coordinator",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/compositor_view_holder",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/feed_stream_recycler_view",
+   "cls": "androidx.recyclerview.widget.RecyclerView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": true,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/search_provider_logo",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    307,
+    1038,
+    433
+   ],
+   "w": 996,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/search_box",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    496,
+    1038,
+    664
+   ],
+   "w": 996,
+   "h": 168
+  },
+  {
+   "text": "Search or type URL",
+   "desc": "",
+   "id": "com.android.chrome:id/search_box_text",
+   "cls": "android.widget.EditText",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    105,
+    496,
+    722,
+    664
+   ],
+   "w": 617,
+   "h": 168
+  },
+  {
+   "text": "",
+   "desc": "Start voice search",
+   "id": "com.android.chrome:id/voice_search_button",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    754,
+    517,
+    880,
+    643
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Search with your camera using Google Lens",
+   "id": "com.android.chrome:id/lens_camera_button",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    880,
+    517,
+    1006,
+    643
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/mv_tiles_layout",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    772,
+    1038,
+    986
+   ],
+   "w": 996,
+   "h": 214
+  },
+  {
+   "text": "",
+   "desc": "Facebook: m.facebook.com",
+   "id": "",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    74,
+    772,
+    284,
+    986
+   ],
+   "w": 210,
+   "h": 214
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon_background",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    116,
+    790,
+    242,
+    916
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    145,
+    819,
+    213,
+    887
+   ],
+   "w": 68,
+   "h": 68
+  },
+  {
+   "text": "Facebook",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    85,
+    937,
+    273,
+    986
+   ],
+   "w": 188,
+   "h": 49
+  },
+  {
+   "text": "",
+   "desc": "YouTube: m.youtube.com",
+   "id": "",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    288,
+    772,
+    498,
+    986
+   ],
+   "w": 210,
+   "h": 214
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon_background",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    330,
+    790,
+    456,
+    916
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    361,
+    822,
+    424,
+    885
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "YouTube",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    299,
+    937,
+    487,
+    986
+   ],
+   "w": 188,
+   "h": 49
+  },
+  {
+   "text": "",
+   "desc": "Amazon.com: www.amazon.com",
+   "id": "",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    502,
+    772,
+    712,
+    986
+   ],
+   "w": 210,
+   "h": 214
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon_background",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    544,
+    790,
+    670,
+    916
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    575,
+    822,
+    638,
+    885
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Amazon.com",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    513,
+    937,
+    701,
+    986
+   ],
+   "w": 188,
+   "h": 49
+  },
+  {
+   "text": "",
+   "desc": "Wikipedia: en.m.wikipedia.org",
+   "id": "",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    716,
+    772,
+    926,
+    986
+   ],
+   "w": 210,
+   "h": 214
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon_background",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    758,
+    790,
+    884,
+    916
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    789,
+    822,
+    852,
+    885
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Wikipedia",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    727,
+    937,
+    915,
+    986
+   ],
+   "w": 188,
+   "h": 49
+  },
+  {
+   "text": "",
+   "desc": "ESPN.com: www.espn.com",
+   "id": "",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    930,
+    772,
+    1038,
+    986
+   ],
+   "w": 108,
+   "h": 214
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon_background",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    972,
+    790,
+    1038,
+    916
+   ],
+   "w": 66,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    1003,
+    822,
+    1038,
+    885
+   ],
+   "w": 35,
+   "h": 63
+  },
+  {
+   "text": "ESPN.com",
+   "desc": "",
+   "id": "com.android.chrome:id/tile_view_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    941,
+    937,
+    1038,
+    986
+   ],
+   "w": 97,
+   "h": 49
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/main_content",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    1107,
+    1038,
+    1233
+   ],
+   "w": 996,
+   "h": 126
+  },
+  {
+   "text": "Discover",
+   "desc": "",
+   "id": "com.android.chrome:id/header_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    106,
+    1142,
+    258,
+    1198
+   ],
+   "w": 152,
+   "h": 56
+  },
+  {
+   "text": "",
+   "desc": "Options for Discover",
+   "id": "com.android.chrome:id/header_menu",
+   "cls": "android.widget.ImageButton",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    912,
+    1107,
+    1038,
+    1233
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Newsweek, 1d",
+   "id": "",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    1507,
+    320,
+    1623
+   ],
+   "w": 278,
+   "h": 116
+  },
+  {
+   "text": "",
+   "desc": "Share Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+   "id": "",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    806,
+    1518,
+    922,
+    1613
+   ],
+   "w": 116,
+   "h": 95
+  },
+  {
+   "text": "",
+   "desc": "Card Menu Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+   "id": "",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    922,
+    1518,
+    1038,
+    1613
+   ],
+   "w": 116,
+   "h": 95
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/control_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    278
+   ],
+   "w": 1080,
+   "h": 150
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/toolbar_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    278
+   ],
+   "w": 1080,
+   "h": 150
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/toolbar",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    275
+   ],
+   "w": 1080,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "Open the home page",
+   "id": "com.android.chrome:id/home_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    126,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/toolbar_buttons",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    691,
+    128,
+    1080,
+    275
+   ],
+   "w": 389,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/optional_toolbar_button_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    691,
+    128,
+    828,
+    275
+   ],
+   "w": 137,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "Signed out. Opens options to sign in.",
+   "id": "com.android.chrome:id/optional_toolbar_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    691,
+    128,
+    828,
+    275
+   ],
+   "w": 137,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "See 1 tab",
+   "id": "com.android.chrome:id/tab_switcher_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    828,
+    128,
+    954,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/menu_button_wrapper",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    954,
+    128,
+    1080,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "Customize and control Google Chrome",
+   "id": "com.android.chrome:id/menu_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    954,
+    128,
+    1080,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/toolbar_progress_bar_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    273,
+    1080,
+    278
+   ],
+   "w": 1080,
+   "h": 5
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/statusBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    128
+   ],
+   "w": 1080,
+   "h": 128
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/navigationBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2337,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 63
+  }
+ ],
+ "png": "02_ntp.png",
+ "png_bytes": 562897,
+ "time_utc": "2026-10-15T07:57:12Z"
+}

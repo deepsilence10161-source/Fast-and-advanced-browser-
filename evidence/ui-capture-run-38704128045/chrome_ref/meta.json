@@ -1,0 +1,202 @@
+{
+  "label": "chrome_ref",
+  "package": "com.android.chrome",
+  "versionName": "133.0.6943.137",
+  "versionCode": "694313738",
+  "primaryCpuAbi": "x86_64",
+  "android_release": "16",
+  "sdk": "36",
+  "model": "sdk_gphone64_x86_64",
+  "abilist": "x86_64,arm64-v8a",
+  "native_bridge": "libndk_translation.so",
+  "locale": "",
+  "wm_size": "Physical size: 1080x2400",
+  "wm_density": "Physical density: 420",
+  "font_scale": "1.0",
+  "navigation_mode": "2",
+  "webview": "Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)",
+  "first_run_steps": 2,
+  "reached_browser_ui": true,
+  "pss_kb_after_example": 129910,
+  "landscape_png_size": [
+    2400,
+    1080
+  ],
+  "landscape_rotated": true,
+  "start_activity": "com.android.chrome/com.google.android.apps.chrome.IntentDispatcher",
+  "timings": {
+    "cold_ms": [
+      1299,
+      1126,
+      1332,
+      1206,
+      1227,
+      1188,
+      1328,
+      1307,
+      1345,
+      1205
+    ],
+    "warm_ms": [
+      1206,
+      816,
+      724,
+      715,
+      775,
+      795,
+      879,
+      764,
+      783,
+      716
+    ],
+    "activity": "com.android.chrome/com.google.android.apps.chrome.IntentDispatcher",
+    "cold_ms_median": 1263.0,
+    "cold_ms_p95": 1345,
+    "warm_ms_median": 779.0,
+    "warm_ms_p95": 1206
+  },
+  "steps": [
+    {
+      "key": "01_first_run",
+      "note": "first launch after pm clear",
+      "foreground": "com.android.chrome",
+      "node_count": 23,
+      "png_bytes": 146861
+    },
+    {
+      "key": "01_first_run_1",
+      "note": "before tapping 'Use without an account'",
+      "foreground": "com.android.chrome",
+      "node_count": 23,
+      "png_bytes": 149643
+    },
+    {
+      "key": "01_first_run_2",
+      "note": "before tapping 'Got it'",
+      "foreground": "com.android.chrome",
+      "node_count": 22,
+      "png_bytes": 212800
+    },
+    {
+      "key": "02_ntp",
+      "note": "new tab page / start surface",
+      "foreground": "com.android.chrome",
+      "node_count": 82,
+      "png_bytes": 645081
+    },
+    {
+      "key": "03_omnibox_focused",
+      "note": "omnibox focused, keyboard expected",
+      "foreground": "com.android.chrome",
+      "node_count": 106,
+      "png_bytes": 166133
+    },
+    {
+      "key": "04_omnibox_suggestions",
+      "note": "typed 'example.com'",
+      "foreground": "com.android.chrome",
+      "node_count": 98,
+      "png_bytes": 146490
+    },
+    {
+      "key": "05_page_loaded",
+      "note": "https://example.com loaded",
+      "foreground": "com.android.chrome",
+      "node_count": 39,
+      "png_bytes": 291912
+    },
+    {
+      "key": "06_page_info",
+      "note": "page info / connection security sheet",
+      "foreground": "com.android.chrome",
+      "node_count": 24,
+      "png_bytes": 286254
+    },
+    {
+      "key": "07_app_menu",
+      "note": "overflow/app menu on a web page",
+      "foreground": "com.android.chrome",
+      "node_count": 60,
+      "png_bytes": 280634
+    },
+    {
+      "key": "08_second_tab_ntp",
+      "note": "second tab opened from menu",
+      "foreground": "com.android.chrome",
+      "node_count": 82,
+      "png_bytes": 645003
+    },
+    {
+      "key": "09_tab_switcher",
+      "note": "tab switcher grid, 2 tabs",
+      "foreground": "com.android.chrome",
+      "node_count": 48,
+      "png_bytes": 263004
+    },
+    {
+      "key": "11_settings",
+      "note": "menu \u2192 Settings",
+      "foreground": "com.android.chrome",
+      "node_count": 60,
+      "png_bytes": 148732
+    },
+    {
+      "key": "11b_settings_scrolled",
+      "note": "settings scrolled",
+      "foreground": "com.android.chrome",
+      "node_count": 62,
+      "png_bytes": 106130
+    },
+    {
+      "key": "12_history",
+      "note": "menu \u2192 History",
+      "foreground": "com.android.chrome",
+      "node_count": 33,
+      "png_bytes": 83162
+    },
+    {
+      "key": "13_bookmarks",
+      "note": "menu \u2192 Bookmarks",
+      "foreground": "com.android.chrome",
+      "node_count": 51,
+      "png_bytes": 99006
+    },
+    {
+      "key": "14_downloads",
+      "note": "menu \u2192 Downloads",
+      "foreground": "com.android.chrome",
+      "node_count": 29,
+      "png_bytes": 70714
+    },
+    {
+      "key": "15_dark_page",
+      "note": "system dark theme, example.org",
+      "foreground": "com.android.chrome",
+      "node_count": 12,
+      "png_bytes": 166776
+    },
+    {
+      "key": "16_landscape",
+      "note": "landscape orientation",
+      "foreground": "com.android.chrome",
+      "node_count": 39,
+      "png_bytes": 170543
+    },
+    {
+      "key": "10_incognito_ntp",
+      "note": "incognito new tab page",
+      "foreground": "com.android.chrome",
+      "node_count": 41,
+      "png_bytes": 20247
+    },
+    {
+      "key": "10b_tab_switcher_incognito",
+      "note": "tab switcher incognito pane",
+      "foreground": "com.android.chrome",
+      "node_count": 43,
+      "png_bytes": 20247
+    }
+  ],
+  "anr_dialogs": 0,
+  "crash_buffer_lines": 1
+}

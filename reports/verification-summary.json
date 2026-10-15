@@ -1,0 +1,320 @@
+{
+ "generated": "2026-10-15",
+ "timezone": "Asia/Calcutta",
+ "repo": "deepsilence10161-source/Fast-and-advanced-browser-",
+ "status_vocabulary": [
+  "PASS (actual Android device)",
+  "PASS (Android emulator)",
+  "PASS (desktop/browser component)",
+  "PASS (static/signature/format only)",
+  "NOT RUN / BLOCKED",
+  "FAIL"
+ ],
+ "artifact": {
+  "description": "Official Chromium public snapshot ChromePublic.apk, unmodified; NOT Google Chrome Stable; NOT a project source build",
+  "package": "org.chromium.chrome",
+  "versionName": "155.0.8059.0",
+  "variants": [
+   {
+    "prefix": "Android_Arm64",
+    "snapshot": 1697603,
+    "versionCode": 805900004,
+    "abi": "arm64-v8a",
+    "bytes": 381736687,
+    "sha256": "7f5793c0a152b583afbba6ff73ca0927e58cf9d66b19d11a321efaf78071d501"
+   },
+   {
+    "prefix": "AndroidDesktop_x64",
+    "snapshot": 1697602,
+    "versionCode": 805900079,
+    "abi": "x86_64",
+    "bytes": 414179322,
+    "sha256": "a2e1ed8f06201687dbd85e3750780bf17c4bacc067b29ecf4c0f895ee1b93191"
+   }
+  ],
+  "source_zip": {
+   "name": "source-3524e07.zip",
+   "sha256": "dc22789b25ea69afd7b59757b9d9fa1c2c783111c2a750f1767970622da5e50e"
+  },
+  "download": "GitHub Actions run 38700392608 artifact 'release-artifacts' (90-day retention)"
+ },
+ "target_reference": {
+  "chrome_stable": "155.0.8059.80",
+  "commit": "43a195105613ac83c21d3f14de279f4a045c7da0",
+  "branch_position": 1697595,
+  "available_reference": "com.android.chrome 133.0.6943.137 on API 36 emulator image (proxy only)"
+ },
+ "results": [
+  {
+   "id": "unit-python",
+   "layer": "L1",
+   "platform": "desktop",
+   "status": "PASS (desktop/browser component)",
+   "detail": "10/10",
+   "evidence": "unit-tests.yml runs 38699618638+"
+  },
+  {
+   "id": "unit-node-chatstore",
+   "layer": "L1",
+   "platform": "desktop",
+   "status": "PASS (desktop/browser component)",
+   "detail": "6/6",
+   "evidence": "unit-tests.yml runs 38699618638+"
+  },
+  {
+   "id": "build-preflight-refusal",
+   "layer": "L1",
+   "platform": "github ubuntu-latest",
+   "status": "PASS (static/signature/format only)",
+   "detail": "exit 3 (disk < 100 GB) as expected",
+   "evidence": "run 38698511862+"
+  },
+  {
+   "id": "chat-fixture-desktop",
+   "layer": "L2",
+   "platform": "desktop HeadlessChrome 155 Linux",
+   "status": "PASS (desktop/browser component)",
+   "detail": "3 x 10/10; viewport 500x764",
+   "evidence": "evidence/chat-desktop-run-38699618638/",
+   "runs": [
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+     "viewport": [
+      500,
+      764
+     ]
+    },
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+     "viewport": [
+      500,
+      764
+     ]
+    },
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+     "viewport": [
+      500,
+      764
+     ]
+    }
+   ]
+  },
+  {
+   "id": "chat-fixture-android-chrome133",
+   "layer": "L3",
+   "platform": "Android 16 emulator x86_64",
+   "status": "PASS (Android emulator)",
+   "detail": "10/10 in runs 38701948978 and 38704128045",
+   "runs": [
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
+     "viewport": [
+      412,
+      786
+     ]
+    },
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
+     "viewport": [
+      412,
+      786
+     ]
+    }
+   ]
+  },
+  {
+   "id": "chat-fixture-android-chromium155-x64",
+   "layer": "L3",
+   "platform": "Android 16 emulator x86_64",
+   "status": "PASS (Android emulator)",
+   "detail": "10/10 in runs 38701948978 and 38704128045",
+   "runs": [
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+     "viewport": [
+      411,
+      725
+     ]
+    },
+    {
+     "passed": 10,
+     "total": 10,
+     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+     "viewport": [
+      411,
+      725
+     ]
+    }
+   ]
+  },
+  {
+   "id": "chat-fixture-android-chromium155-arm64",
+   "layer": "L3",
+   "platform": "Android 16 emulator, arm64 via libndk_translation",
+   "status": "FAIL",
+   "detail": "environment: renderer SIGSEGV in libndk_translation.so ('Aw, Snap!') run 38704128045; ANR run 38701948978; wrong devtools socket run 38699920976",
+   "evidence": "evidence/ui-capture-run-38704128045/chromium_arm64_renderer_SIGSEGV/"
+  },
+  {
+   "id": "ui-journey-chrome_ref",
+   "layer": "L3",
+   "platform": "Android 16 emulator",
+   "status": "PASS (Android emulator)",
+   "detail": "20/21 screens (15b dark menu missed); reference capture only",
+   "evidence": "evidence/ui-capture-run-38701948978/chrome_ref/"
+  },
+  {
+   "id": "ui-journey-chromium-x64",
+   "layer": "L3",
+   "platform": "Android 16 emulator",
+   "status": "PASS (Android emulator)",
+   "detail": "21/21 screens; install/launch/FRE/page/menu/tabs/settings/history/bookmarks/downloads/dark/landscape/incognito",
+   "evidence": "evidence/ui-capture-run-38701948978/chromium_desktop_x64/"
+  },
+  {
+   "id": "ui-journey-chromium-arm64",
+   "layer": "L3",
+   "platform": "Android 16 emulator, arm64 translation",
+   "status": "PASS (Android emulator)",
+   "detail": "21/21 in runs 38699920976 and 38704128045; FAIL (ANR) in 2 of 6 runs",
+   "evidence": "evidence/ui-capture-run-38699920976/chromium_arm64/"
+  },
+  {
+   "id": "ui-parity-vs-chrome133-proxy",
+   "layer": "L3",
+   "platform": "Android 16 emulator",
+   "status": "FAIL",
+   "detail": "20/20 shared screens mismatch (ids/text/a11y/pixels)",
+   "evidence": "reports/ui-compare/"
+  },
+  {
+   "id": "ui-parity-vs-chrome-stable-155",
+   "layer": "L3/L6",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "no Stable 155 reference; needs user phone screenshots"
+  },
+  {
+   "id": "feature-parity-vs-stable",
+   "layer": "L3/L6",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "50 features traced to source (50/50 paths exist at stable commit); behaviour vs Stable not tested",
+   "evidence": "native-app/FEATURE_PARITY.md, reports/feature-parity.json"
+  },
+  {
+   "id": "apk-integrity",
+   "layer": "L4",
+   "status": "PASS (static/signature/format only)",
+   "detail": "GCS MD5+CRC32C, SHA-256 (7/7 re-verified after download), apksigner v2, aapt2 badging, zipalign -P 16",
+   "evidence": "evidence/release-run-38700392608/"
+  },
+  {
+   "id": "secret-scan",
+   "layer": "L5",
+   "status": "PASS (static/signature/format only)",
+   "detail": "gitleaks full history every push; source zip scanned in release",
+   "evidence": "secret-scan.yml"
+  },
+  {
+   "id": "physical-arm64-device",
+   "layer": "L6",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "needs user's phone"
+  },
+  {
+   "id": "full-source-build",
+   "layer": "build",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "official minimum 100 GB disk / 8 GB RAM; free runner insufficient"
+  },
+  {
+   "id": "google-signin-sync",
+   "layer": "L7",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "Chromium forks restricted (API keys/OAuth); website login needs user-witnessed test"
+  },
+  {
+   "id": "arena-long-chat-e2e",
+   "layer": "L7",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "user-witnessed own-account session required; protocol in TESTING.md section 6"
+  },
+  {
+   "id": "beyond-chrome-capabilities",
+   "layer": "all",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "Chrome baseline must pass first; only synthetic C1/C2 prototype exists"
+  }
+ ],
+ "performance_emulator_only": {
+  "note": "am start -W TotalTime ms, 10 cold + 10 warm; large run-to-run variance; not representative, not for browser comparison",
+  "runs": {
+   "38701948978/chrome_ref": {
+    "cold_ms_median": 824.0,
+    "cold_ms_p95": 957,
+    "warm_ms_median": 511.5,
+    "warm_ms_p95": 699,
+    "pss_kb": 132082,
+    "anr_dialogs": 0,
+    "version": "133.0.6943.137"
+   },
+   "38701948978/chromium_desktop_x64": {
+    "cold_ms_median": 721.5,
+    "cold_ms_p95": 819,
+    "warm_ms_median": 626.5,
+    "warm_ms_p95": 693,
+    "pss_kb": 156473,
+    "anr_dialogs": 0,
+    "version": "155.0.8059.0"
+   },
+   "38699920976/chromium_arm64": {
+    "cold_ms_median": 1531.5,
+    "cold_ms_p95": 1685,
+    "warm_ms_median": 1001.0,
+    "warm_ms_p95": 5523,
+    "pss_kb": 499439,
+    "anr_dialogs": 0,
+    "version": "155.0.8059.0"
+   },
+   "38704128045/chrome_ref": {
+    "cold_ms_median": 1263.0,
+    "cold_ms_p95": 1345,
+    "warm_ms_median": 779.0,
+    "warm_ms_p95": 1206,
+    "pss_kb": 129910,
+    "anr_dialogs": 0,
+    "version": "133.0.6943.137"
+   },
+   "38704128045/chromium_desktop_x64": {
+    "cold_ms_median": 1181.5,
+    "cold_ms_p95": 1299,
+    "warm_ms_median": 1136.5,
+    "warm_ms_p95": 1666,
+    "pss_kb": 156099,
+    "anr_dialogs": 0,
+    "version": "155.0.8059.0"
+   },
+   "38704128045/chromium_arm64_renderer_SIGSEGV": {
+    "cold_ms_median": 1404.5,
+    "cold_ms_p95": 1510,
+    "warm_ms_median": 943.0,
+    "warm_ms_p95": 4909,
+    "pss_kb": 508221,
+    "anr_dialogs": 0,
+    "version": "155.0.8059.0"
+   }
+  }
+ }
+}

@@ -1,0 +1,671 @@
+{
+ "key": "09_tab_switcher",
+ "note": "tab switcher grid, 2 tabs",
+ "foreground": "com.android.chrome",
+ "node_count": 48,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/coordinator",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/compositor_view_holder",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": true,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tab_switcher_view_holder",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/hub_toolbar",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    422
+   ],
+   "w": 1080,
+   "h": 294
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/toolbar_action_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    275
+   ],
+   "w": 1080,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "New tab",
+   "id": "com.android.chrome:id/toolbar_action_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    189,
+    275
+   ],
+   "w": 189,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/pane_switcher",
+   "cls": "android.widget.HorizontalScrollView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    413,
+    128,
+    667,
+    275
+   ],
+   "w": 254,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "2 standard tabs",
+   "id": "",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": true,
+   "checked": false,
+   "bounds": [
+    413,
+    128,
+    540,
+    275
+   ],
+   "w": 127,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "Tab groups",
+   "id": "",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    540,
+    128,
+    667,
+    275
+   ],
+   "w": 127,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/menu_button_container",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    954,
+    128,
+    1080,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/menu_button_wrapper",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    954,
+    128,
+    1080,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "Manage open tabs",
+   "id": "com.android.chrome:id/menu_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    954,
+    128,
+    1080,
+    275
+   ],
+   "w": 126,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/search_box",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    296,
+    1038,
+    401
+   ],
+   "w": 996,
+   "h": 105
+  },
+  {
+   "text": "Search your tabs",
+   "desc": "",
+   "id": "com.android.chrome:id/search_box_text",
+   "cls": "android.widget.EditText",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    296,
+    996,
+    401
+   ],
+   "w": 912,
+   "h": 105
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/hub_pane_host",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    422,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1915
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/pane_frame",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    422,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1915
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tab_list_recycler_view",
+   "cls": "android.widget.GridView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    422,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1915
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/content_view",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    21,
+    422,
+    540,
+    1116
+   ],
+   "w": 519,
+   "h": 694
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/card_view",
+   "cls": "android.widget.RelativeLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    443,
+    519,
+    1095
+   ],
+   "w": 477,
+   "h": 652
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tab_favicon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    443,
+    142,
+    548
+   ],
+   "w": 100,
+   "h": 105
+  },
+  {
+   "text": "Example Domain",
+   "desc": "Example Domain, tab",
+   "id": "com.android.chrome:id/tab_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    142,
+    443,
+    403,
+    548
+   ],
+   "w": 261,
+   "h": 105
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tab_thumbnail",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    53,
+    548,
+    508,
+    1084
+   ],
+   "w": 455,
+   "h": 536
+  },
+  {
+   "text": "",
+   "desc": "Close Example Domain tab",
+   "id": "com.android.chrome:id/action_button",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    403,
+    433,
+    529,
+    559
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/content_view",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    540,
+    422,
+    1059,
+    1116
+   ],
+   "w": 519,
+   "h": 694
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/card_view",
+   "cls": "android.widget.RelativeLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    561,
+    443,
+    1038,
+    1095
+   ],
+   "w": 477,
+   "h": 652
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tab_favicon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    561,
+    443,
+    661,
+    548
+   ],
+   "w": 100,
+   "h": 105
+  },
+  {
+   "text": "New tab",
+   "desc": "New tab, tab",
+   "id": "com.android.chrome:id/tab_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    661,
+    443,
+    922,
+    548
+   ],
+   "w": 261,
+   "h": 105
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/tab_thumbnail",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    572,
+    548,
+    1027,
+    1084
+   ],
+   "w": 455,
+   "h": 536
+  },
+  {
+   "text": "",
+   "desc": "Close New tab tab",
+   "id": "com.android.chrome:id/action_button",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    922,
+    433,
+    1048,
+    559
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/toolbar_progress_bar_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    273,
+    1080,
+    278
+   ],
+   "w": 1080,
+   "h": 5
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/statusBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    128
+   ],
+   "w": 1080,
+   "h": 128
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/navigationBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2337,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 63
+  }
+ ],
+ "png": "09_tab_switcher.png",
+ "png_bytes": 263564,
+ "time_utc": "2026-10-15T07:58:28Z"
+}

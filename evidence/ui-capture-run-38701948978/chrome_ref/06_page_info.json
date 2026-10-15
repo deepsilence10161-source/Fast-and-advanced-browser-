@@ -1,0 +1,251 @@
+{
+ "key": "06_page_info",
+ "note": "page info / connection security sheet",
+ "foreground": "com.android.chrome",
+ "node_count": 24,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    553
+   ],
+   "w": 1080,
+   "h": 425
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_url_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    254
+   ],
+   "w": 1080,
+   "h": 126
+  },
+  {
+   "text": "example.com",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_truncated_url",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    381,
+    132,
+    698,
+    249
+   ],
+   "w": 317,
+   "h": 117
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    511
+   ],
+   "w": 1080,
+   "h": 257
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    511
+   ],
+   "w": 1080,
+   "h": 257
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_row_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    511
+   ],
+   "w": 1080,
+   "h": 257
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_connection_row",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    254,
+    1080,
+    381
+   ],
+   "w": 1080,
+   "h": 127
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_row_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    286,
+    126,
+    349
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Connection is secure",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_row_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    189,
+    291,
+    596,
+    344
+   ],
+   "w": 407,
+   "h": 53
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_cookies_row",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    384,
+    1080,
+    511
+   ],
+   "w": 1080,
+   "h": 127
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_row_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    416,
+    126,
+    479
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Cookies and site data",
+   "desc": "",
+   "id": "com.android.chrome:id/page_info_row_title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    189,
+    421,
+    603,
+    474
+   ],
+   "w": 414,
+   "h": 53
+  }
+ ],
+ "png": "06_page_info.png",
+ "png_bytes": 285955,
+ "time_utc": "2026-10-15T07:57:52Z"
+}

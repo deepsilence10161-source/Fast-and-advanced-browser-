@@ -1,0 +1,400 @@
+10-15 08:21:57.352   620  1680 I ActivityTaskManager: START u0 {act=android.intent.action.VIEW dat=about: flg=0x14002000 xflg=0x4 cmp=org.chromium.chrome/.browser.ChromeTabbedActivity (has extras)} with LAUNCH_SINGLE_INSTANCE_PER_TASK from uid 10216 (sr=196845248) (BAL_ALLOW_VISIBLE_WINDOW) result code=2
+10-15 08:21:57.363  1016  1088 D WindowManagerShell: onActivityRestartAttempt: topActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.ChromeTabbedActivity}, wasVisible=false
+10-15 08:21:57.368  1016  1150 D VRI[chrome]: visibilityChanged oldVisibility=false newVisibility=true
+10-15 08:21:57.484  8722  8722 D WindowLayoutComponentImpl: Register WindowLayoutInfoListener on Context=org.chromium.chrome.browser.ChromeTabbedActivity@e9144a1, of which baseContext=oe3@75259be, of which baseContext=android.app.ContextImpl@c5c4a1f
+10-15 08:21:57.520  8722  8722 I cr_ChromeActivity: onNewIntentWithNative: exiting picture in picture if needed
+10-15 08:21:57.541  1016  1088 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@391144d windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@9834b02, appThread = android.app.IApplicationThread$Stub$Proxy@34dbc13, debugName = overlayBackTransition }}
+10-15 08:21:57.541  1016  1088 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@1190e50, appThread = android.app.IApplicationThread$Stub$Proxy@be7a849, debugName = LauncherToDream }}
+10-15 08:21:57.541  1016  1088 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@85f154e, appThread = android.app.IApplicationThread$Stub$Proxy@14e066f, debugName = QuickstepLaunchHome }}
+10-15 08:21:57.545   620  1673 D BiometricService/PreAuthInfo: Package: org.chromium.chrome Sensor ID: 0 Modality: 2 User id: 0 Status: 7
+10-15 08:21:57.546   620  2200 I ActivityManager: Start proc 9264:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23/u0ai34 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:23}
+10-15 08:21:57.556   620   671 V WindowManager: Sent Transition (#69) createdAt=10-15 08:21:57.307 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=42 effectiveUid=10216 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.VIEW dat=about: flg=0x10800000 cmp=org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher } baseActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} topActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} origActivity=ComponentInfo{org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher} realActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} numActivities=1 lastActiveTime=430901 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{209d038 Task{1c147f9 #42 type=standard I=org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{eeee811 com.google.android.apps.chrome.IntentDispatcher} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=true lastNonFullscreenBounds=Rect(276, 692 - 804, 1772) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 69 }
+10-15 08:21:57.565   620   671 V WindowManager:         {WCT{RemoteToken{160aa53 Task{8ab6bde #32 type=standard A=10216:org.chromium.chrome}}} m=TO_FRONT f=MOVE_TO_TOP leash=Surface(name=Task=32)/@0x42d29b7 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1},
+10-15 08:21:57.628  9264  9264 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23 isIsolatedProcess=true splits=<none>
+10-15 08:21:57.680   620   683 I ActivityManager: Start proc 9275:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24/u0ai35 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:24}
+10-15 08:21:57.793  9275  9275 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24 isIsolatedProcess=true splits=<none>
+10-15 08:21:57.866  8722  8722 I cr_ChromeActivity: onResumeWithNative: exiting picture in picture if needed
+10-15 08:21:57.889  8722  8722 E chromium.chrome: No package ID ff found for resource ID 0xffffffff.
+10-15 08:21:58.205   620   671 W system_server: Failed to determine oat file name for dex location /data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk: Dalvik cache directory does not exist
+10-15 08:21:58.230   620   671 I ActivityTaskManager: Displayed org.chromium.chrome/.browser.ChromeTabbedActivity for user 0: +888ms
+10-15 08:21:58.256  9264  9264 W ChildProcessMai: type=1400 audit(0.0:382): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:21:58.265  9264  9274 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:21:58.265  9264  9274 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:21:58.265  9264  9274 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:21:58.265  9264  9274 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:21:58.265  9264  9274 F DEBUG   : Revision: '0'
+10-15 08:21:58.265  9264  9274 F DEBUG   : ABI: 'x86_64'
+10-15 08:21:58.265  9264  9274 F DEBUG   : Timestamp: 2026-10-15 08:21:57.778247027+0000
+10-15 08:21:58.265  9264  9274 F DEBUG   : Process uptime: 2s
+10-15 08:21:58.265  9264  9274 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23
+10-15 08:21:58.265  9264  9274 F DEBUG   : pid: 9264, tid: 9274, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23 <<<
+10-15 08:21:58.265  9264  9274 F DEBUG   : uid: 90034
+10-15 08:21:58.265  9264  9274 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:21:58.265  9264  9274 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:21:58.265  9264  9274 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:21:58.265  9264  9274 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 00000000e4602b01  r15 0000000000002430
+10-15 08:21:58.265  9264  9274 F DEBUG   :     rdi 0000000000002430  rsi 000000000000243a
+10-15 08:21:58.265  9264  9274 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:21:58.265  9264  9274 F DEBUG   : 6 total frames
+10-15 08:21:58.265  9264  9274 F DEBUG   : backtrace:
+10-15 08:21:58.265  9264  9274 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:21:58.265  9264  9274 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.265  9264  9274 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.265  9264  9274 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.265  9264  9274 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.265  9264  9274 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:21:58.503   620  2200 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23 (pid 9264) has died: prcl TRNB
+10-15 08:21:58.506   620  2200 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:23 in 1000ms for connection
+10-15 08:21:58.535  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1293 onStartInput(EditorInfo{EditorInfo{packageName=org.chromium.chrome, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=12000000, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-15 08:21:58.539   620  1110 W PackageConfigPersister: App-specific configuration not found for packageName: org.chromium.chrome and userId: 0
+10-15 08:21:58.820  9275  9286 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:21:58.820  9275  9286 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:21:58.821  9275  9286 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:21:58.821  9275  9286 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:21:58.821  9275  9286 F DEBUG   : Revision: '0'
+10-15 08:21:58.821  9275  9286 F DEBUG   : ABI: 'x86_64'
+10-15 08:21:58.821  9275  9286 F DEBUG   : Timestamp: 2026-10-15 08:21:57.862041706+0000
+10-15 08:21:58.821  9275  9286 F DEBUG   : Process uptime: 1s
+10-15 08:21:58.821  9275  9286 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24
+10-15 08:21:58.821  9275  9286 F DEBUG   : pid: 9275, tid: 9286, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24 <<<
+10-15 08:21:58.821  9275  9286 F DEBUG   : uid: 90035
+10-15 08:21:58.816  9275  9275 W ChildProcessMai: type=1400 audit(0.0:384): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:21:58.821  9275  9286 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:21:58.821  9275  9286 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:21:58.821  9275  9286 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:21:58.821  9275  9286 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 00000000b80c5f01  r15 000000000000243b
+10-15 08:21:58.821  9275  9286 F DEBUG   :     rdi 000000000000243b  rsi 0000000000002446
+10-15 08:21:58.821  9275  9286 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:21:58.821  9275  9286 F DEBUG   : 6 total frames
+10-15 08:21:58.821  9275  9286 F DEBUG   : backtrace:
+10-15 08:21:58.821  9275  9286 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:21:58.821  9275  9286 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.821  9275  9286 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.821  9275  9286 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.821  9275  9286 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:21:58.821  9275  9286 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:21:58.816  9275  9275 W ChildProcessMai: type=1400 audit(0.0:385): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:21:58.843   620  2200 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24 (pid 9275) has died: fg +1 BTOP
+10-15 08:21:58.844   620  2200 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:24 in 1000ms for connection
+10-15 08:21:58.931  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1293 onStartInput(EditorInfo{EditorInfo{packageName=org.chromium.chrome, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-15 08:21:58.932   620  2200 W PackageConfigPersister: App-specific configuration not found for packageName: org.chromium.chrome and userId: 0
+10-15 08:21:59.771   620  2200 I ActivityTaskManager: START u0 {act=android.intent.action.VIEW dat=http://127.0.0.1:8000/... flg=0x10000000 xflg=0x4 pkg=org.chromium.chrome cmp=org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-15 08:21:59.772  1016  1088 V WindowManagerShell: Transition requested (#70): android.os.BinderProxy@908f75b TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=43 effectiveUid=10216 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.VIEW dat=http://127.0.0.1:8000/... flg=0x10800000 pkg=org.chromium.chrome cmp=org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher } baseActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} topActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} origActivity=ComponentInfo{org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher} realActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} numActivities=1 lastActiveTime=433360 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@f913bf8} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{aec48d1 com.google.android.apps.chrome.IntentDispatcher} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=true lastNonFullscreenBounds=Rect(276, 692 - 804, 1772) capturedLink=http://127.0.0.1:8000/fixture.html?n=300 capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 70 }
+10-15 08:21:59.888   620  1110 I ActivityTaskManager: START u0 {act=android.intent.action.VIEW dat=http://127.0.0.1:8000/... flg=0x14002000 xflg=0x4 pkg=org.chromium.chrome cmp=org.chromium.chrome/.browser.ChromeTabbedActivity (has extras)} with LAUNCH_SINGLE_INSTANCE_PER_TASK from uid 10216 (sr=129725531) (BAL_ALLOW_VISIBLE_WINDOW) result code=2
+10-15 08:21:59.894  1016  1088 D WindowManagerShell: onActivityRestartAttempt: topActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.ChromeTabbedActivity}, wasVisible=true
+10-15 08:21:59.918  8722  8722 I cr_ChromeActivity: onNewIntentWithNative: exiting picture in picture if needed
+10-15 08:21:59.931   620  2200 D BiometricService/PreAuthInfo: Package: org.chromium.chrome Sensor ID: 0 Modality: 2 User id: 0 Status: 7
+10-15 08:21:59.964  8722  8722 D WindowLayoutComponentImpl: Register WindowLayoutInfoListener on Context=org.chromium.chrome.browser.ChromeTabbedActivity@e9144a1, of which baseContext=oe3@75259be, of which baseContext=android.app.ContextImpl@c5c4a1f
+10-15 08:22:00.030   620   683 I ActivityManager: Start proc 9296:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25/u0ai36 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:25}
+10-15 08:22:00.116  9296  9296 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25 isIsolatedProcess=true splits=<none>
+10-15 08:22:00.185   620   671 V WindowManager: Sent Transition (#70) createdAt=10-15 08:21:59.767 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=43 effectiveUid=10216 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.VIEW dat=http://127.0.0.1:8000/... flg=0x10800000 pkg=org.chromium.chrome cmp=org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher } baseActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} topActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} origActivity=ComponentInfo{org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher} realActivity=ComponentInfo{org.chromium.chrome/org.chromium.chrome.browser.document.ChromeLauncherActivity} numActivities=1 lastActiveTime=433360 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{123c3b Task{1a674f8 #43 type=standard I=org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{6bfcf58 com.google.android.apps.chrome.IntentDispatcher} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=true isActivityStackTransparent=true lastNonFullscreenBounds=Rect(276, 692 - 804, 1772) capturedLink=http://127.0.0.1:8000/fixture.html?n=300 capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 0 - 1080, 2400) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 70 }
+10-15 08:22:00.190   620   671 V WindowManager:         {WCT{RemoteToken{160aa53 Task{8ab6bde #32 type=standard A=10216:org.chromium.chrome}}} m=CHANGE f=MOVE_TO_TOP leash=Surface(name=Task=32)/@0x42d29b7 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) epz=Point(1080, 2400) d=0 taskParent=-1}
+10-15 08:22:00.194  1016  1088 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@391144d windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@9834b02, appThread = android.app.IApplicationThread$Stub$Proxy@34dbc13, debugName = overlayBackTransition }}
+10-15 08:22:00.194  1016  1088 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@1190e50, appThread = android.app.IApplicationThread$Stub$Proxy@be7a849, debugName = LauncherToDream }}
+10-15 08:22:00.195  1016  1088 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@85f154e, appThread = android.app.IApplicationThread$Stub$Proxy@14e066f, debugName = QuickstepLaunchHome }}
+10-15 08:22:00.411   620   771 I ImeTracker: org.chromium.chrome:c232f082: onRequestHide at ORIGIN_SERVER reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR fromUser false
+10-15 08:22:00.412  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1293 onStartInput(EditorInfo{EditorInfo{packageName=org.chromium.chrome, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=12000000, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-15 08:22:00.414   620  1110 W PackageConfigPersister: App-specific configuration not found for packageName: org.chromium.chrome and userId: 0
+10-15 08:22:00.416  8722  8722 E chromium.chrome: No package ID ff found for resource ID 0xffffffff.
+10-15 08:22:00.483  8722  8722 I cr_ChromeActivity: onResumeWithNative: exiting picture in picture if needed
+10-15 08:22:00.515  8722  8722 I ImeTracker: org.chromium.chrome:c232f082: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-15 08:22:00.678  9296  9307 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:00.678  9296  9307 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:00.678  9296  9307 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:00.678  9296  9307 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:00.678  9296  9307 F DEBUG   : Revision: '0'
+10-15 08:22:00.678  9296  9307 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:00.678  9296  9307 F DEBUG   : Timestamp: 2026-10-15 08:22:00.152477202+0000
+10-15 08:22:00.678  9296  9307 F DEBUG   : Process uptime: 1s
+10-15 08:22:00.678  9296  9307 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25
+10-15 08:22:00.678  9296  9307 F DEBUG   : pid: 9296, tid: 9307, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25 <<<
+10-15 08:22:00.678  9296  9307 F DEBUG   : uid: 90036
+10-15 08:22:00.678  9296  9307 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:00.678  9296  9307 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:00.678  9296  9307 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:22:00.678  9296  9307 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 00000000734f3401  r15 0000000000002450
+10-15 08:22:00.678  9296  9307 F DEBUG   :     rdi 0000000000002450  rsi 000000000000245b
+10-15 08:22:00.678  9296  9307 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:22:00.678  9296  9307 F DEBUG   : 6 total frames
+10-15 08:22:00.678  9296  9307 F DEBUG   : backtrace:
+10-15 08:22:00.678  9296  9307 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:00.678  9296  9307 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:00.678  9296  9307 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:00.678  9296  9307 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:00.678  9296  9307 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:00.678  9296  9307 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:00.676  9296  9296 W ChildProcessMai: type=1400 audit(0.0:388): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:00.676  9296  9296 W ChildProcessMai: type=1400 audit(0.0:389): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:00.700   620  1673 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25 (pid 9296) has died: fg +1 BTOP
+10-15 08:22:00.700   620  1673 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:25 in 1000ms for connection
+10-15 08:22:00.811  1501  1501 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1293 onStartInput(EditorInfo{EditorInfo{packageName=org.chromium.chrome, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+10-15 08:22:00.812   620  2200 W PackageConfigPersister: App-specific configuration not found for packageName: org.chromium.chrome and userId: 0
+10-15 08:22:03.749  8722  8722 E chromium.chrome: No package ID ff found for resource ID 0xffffffff.
+10-15 08:22:03.921  9310  9310 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-15 08:22:03.924  9310  9310 I AndroidRuntime: Using default boot image
+10-15 08:22:03.924  9310  9310 I AndroidRuntime: Leaving lock profiling enabled
+10-15 08:22:03.984  9310  9310 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-15 08:22:04.011  9310  9310 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-15 08:22:04.684  6908  6922 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:04.680  6908  6908 W binder:6908_1: type=1400 audit(0.0:390): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:untrusted_app:s0:c159,c256,c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0 app=com.google.android.apps.photos
+10-15 08:22:05.049  9310  9310 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@184f8; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(1080, 128 - 1080, 128); boundsInWindow: Rect(1080, 128 - 1080, 128); packageName: org.chromium.chrome; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: org.chromium.chrome:id/toolbar_buttons; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+10-15 08:22:05.049  9310  9310 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@e38d; boundsInParent: Rect(0, 0 - 1080, 5); boundsInScreen: Rect(0, 276 - 1080, 281); boundsInWindow: Rect(0, 276 - 1080, 281); packageName: org.chromium.chrome; className: android.widget.ImageView; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: org.chromium.chrome:id/progress_bar_animating_view; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+10-15 08:22:05.052  9310  9310 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@1d78e; boundsInParent: Rect(0, 0 - 1080, 0); boundsInScreen: Rect(0, 2243 - 1080, 2243); boundsInWindow: Rect(0, 2243 - 1080, 2243); packageName: org.chromium.chrome; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: org.chromium.chrome:id/bottom_container; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+10-15 08:22:05.052  9310  9310 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@1fd18; boundsInParent: Rect(0, 0 - 1080, 0); boundsInScreen: Rect(0, 2400 - 1080, 2400); boundsInWindow: Rect(0, 2400 - 1080, 2400); packageName: org.chromium.chrome; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: org.chromium.chrome:id/navigation_popup_anchor_stub; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+10-15 08:22:05.052  9310  9310 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@1f957; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(0, 2400 - 0, 2400); boundsInWindow: Rect(0, 2400 - 0, 2400); packageName: org.chromium.chrome; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: org.chromium.chrome:id/menu_anchor_stub; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+10-15 08:22:05.057  9310  9310 D AndroidRuntime: Shutting down VM
+10-15 08:22:06.234  8722  8722 E chromium.chrome: No package ID ff found for resource ID 0xffffffff.
+10-15 08:22:06.255  8722  8722 E chromium.chrome: No package ID ff found for resource ID 0xffffffff.
+10-15 08:22:30.285  8722  8742 W chromium: [WARNING:net/cert/ev_root_ca_metadata.cc:115] Not implemented
+10-15 08:22:30.394  8722  8742 W chromium: [WARNING:net/cert/ev_root_ca_metadata.cc:115] Not implemented
+10-15 08:22:30.810   451   451 D Zygote  : mbuffer starts with 16, nice name is org.chromium.chrome_zygote, mEnd = 436, mNext = 217, mLinesLeft = 6, mFd = 6
+10-15 08:22:30.840  9344  9344 I m.chrome_zygote: Using CollectorTypeCMC GC.
+10-15 08:22:30.872  9344  9344 W m.chrome_zygote: type=1400 audit(0.0:391): avc:  denied  { getattr } for  path="/system/bin/app_process64" dev="dm-5" ino=237 scontext=u:r:app_zygote:s0:c512,c768 tcontext=u:object_r:zygote_exec:s0 tclass=file permissive=0 app=org.chromium.chrome
+10-15 08:22:30.920  9344  9344 I AppZygoteInit: Beginning application preload for org.chromium.chrome
+10-15 08:22:30.922  9344  9344 D nativeloader: Configuring clns-9 for other apk /data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk. target_sdk_version=37, uses_libraries=, library_path=/data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/lib/arm64:/data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+10-15 08:22:30.983  9344  9344 D nativeloader: Load /data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk!/lib/arm64-v8a/libchromium_android_linker.so using class loader ns clns-9 (caller=/data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk): ok
+10-15 08:22:30.996  9344  9344 I cr_LibraryLoader: Loading chrome from within /data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk
+10-15 08:22:30.996  9344  9344 I cr_Linker: loadLibraryImplLocked: chrome, relroMode=1
+10-15 08:22:31.059  9344  9344 D nativeloader: Load /data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk!/lib/arm64-v8a/libchrome.so using class loader ns clns-9 (caller=/data/app/~~CdmdUevO6bWRlyhsB4QHjA==/org.chromium.chrome-M2fRzFsBGG7YQmQPexxVIw==/base.apk): ok
+10-15 08:22:31.086   620   683 I ActivityManager: Start proc 9355:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26/u0ai0 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:26}
+10-15 08:22:31.099  9355  9355 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 isIsolatedProcess=true splits=<none>
+10-15 08:22:31.285  9355  9366 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:31.280  9355  9355 W ChildProcessMai: type=1400 audit(0.0:394): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:31.285  9355  9366 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:31.285  9355  9366 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:31.285  9355  9366 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:31.285  9355  9366 F DEBUG   : Revision: '0'
+10-15 08:22:31.285  9355  9366 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:31.285  9355  9366 F DEBUG   : Timestamp: 2026-10-15 08:22:31.115886566+0000
+10-15 08:22:31.285  9355  9366 F DEBUG   : Process uptime: 1s
+10-15 08:22:31.285  9355  9366 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26
+10-15 08:22:31.285  9355  9366 F DEBUG   : pid: 9355, tid: 9366, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 <<<
+10-15 08:22:31.285  9355  9366 F DEBUG   : uid: 90000
+10-15 08:22:31.285  9355  9366 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:31.285  9355  9366 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:31.285  9355  9366 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76abfeb0  r11 0000000000000246
+10-15 08:22:31.285  9355  9366 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 00000000c2d68201  r15 000000000000248b
+10-15 08:22:31.285  9355  9366 F DEBUG   :     rdi 000000000000248b  rsi 0000000000002496
+10-15 08:22:31.285  9355  9366 F DEBUG   :     rbp 000073dc76abff50  rsp 000073dc76abfea8  rip 000073df622eb808
+10-15 08:22:31.285  9355  9366 F DEBUG   : 6 total frames
+10-15 08:22:31.285  9355  9366 F DEBUG   : backtrace:
+10-15 08:22:31.285  9355  9366 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:31.285  9355  9366 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.285  9355  9366 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.285  9355  9366 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.285  9355  9366 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.285  9355  9366 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:31.280  9355  9355 W ChildProcessMai: type=1400 audit(0.0:395): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:31.306   620  1673 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 (pid 9355) has died: vis BTOP
+10-15 08:22:31.306   620  1673 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:26 in 1000ms for connection
+10-15 08:22:31.359   620  1673 I ActivityManager: Start proc 9367:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27/u0ai1 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:27}
+10-15 08:22:31.369  9367  9367 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 isIsolatedProcess=true splits=<none>
+10-15 08:22:31.542  9367  9377 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:31.543  9367  9377 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:31.543  9367  9377 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:31.543  9367  9377 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:31.543  9367  9377 F DEBUG   : Revision: '0'
+10-15 08:22:31.543  9367  9377 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:31.543  9367  9377 F DEBUG   : Timestamp: 2026-10-15 08:22:31.385201182+0000
+10-15 08:22:31.543  9367  9377 F DEBUG   : Process uptime: 1s
+10-15 08:22:31.543  9367  9377 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27
+10-15 08:22:31.543  9367  9377 F DEBUG   : pid: 9367, tid: 9377, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 <<<
+10-15 08:22:31.543  9367  9377 F DEBUG   : uid: 90001
+10-15 08:22:31.543  9367  9377 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:31.543  9367  9377 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:31.543  9367  9377 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:22:31.543  9367  9377 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 000000000ff7a301  r15 0000000000002497
+10-15 08:22:31.543  9367  9377 F DEBUG   :     rdi 0000000000002497  rsi 00000000000024a1
+10-15 08:22:31.543  9367  9377 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:22:31.543  9367  9377 F DEBUG   : 6 total frames
+10-15 08:22:31.543  9367  9377 F DEBUG   : backtrace:
+10-15 08:22:31.543  9367  9377 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:31.543  9367  9377 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.543  9367  9377 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.543  9367  9377 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.543  9367  9377 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.543  9367  9377 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:31.540  9367  9367 W ChildProcessMai: type=1400 audit(0.0:398): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:31.559   620  2200 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 (pid 9367) has died: vis BTOP
+10-15 08:22:31.559   620  2200 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:27 in 1000ms for connection
+10-15 08:22:31.600   620  1673 I ActivityManager: Start proc 9378:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28/u0ai2 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:28}
+10-15 08:22:31.609  9378  9378 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 isIsolatedProcess=true splits=<none>
+10-15 08:22:31.780  9378  9389 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:31.780  9378  9389 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:31.780  9378  9389 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:31.780  9378  9389 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:31.780  9378  9389 F DEBUG   : Revision: '0'
+10-15 08:22:31.780  9378  9389 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:31.780  9378  9389 F DEBUG   : Timestamp: 2026-10-15 08:22:31.622823782+0000
+10-15 08:22:31.780  9378  9389 F DEBUG   : Process uptime: 1s
+10-15 08:22:31.780  9378  9389 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28
+10-15 08:22:31.780  9378  9389 F DEBUG   : pid: 9378, tid: 9389, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 <<<
+10-15 08:22:31.780  9378  9389 F DEBUG   : uid: 90002
+10-15 08:22:31.780  9378  9389 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:31.780  9378  9389 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:31.780  9378  9389 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:22:31.780  9378  9389 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 0000000044d89901  r15 00000000000024a2
+10-15 08:22:31.780  9378  9389 F DEBUG   :     rdi 00000000000024a2  rsi 00000000000024ad
+10-15 08:22:31.780  9378  9389 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:22:31.780  9378  9389 F DEBUG   : 6 total frames
+10-15 08:22:31.780  9378  9389 F DEBUG   : backtrace:
+10-15 08:22:31.780  9378  9389 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:31.780  9378  9389 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.780  9378  9389 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.780  9378  9389 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.780  9378  9389 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:31.780  9378  9389 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:31.794   620  1673 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 (pid 9378) has died: vis BTOP
+10-15 08:22:31.794   620  1673 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:28 in 1000ms for connection
+10-15 08:22:31.988  8722  8742 W chromium: [WARNING:net/cert/ev_root_ca_metadata.cc:115] Not implemented
+10-15 08:22:32.985   620  2200 I ActivityManager: Start proc 9390:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29/u0ai3 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:29}
+10-15 08:22:32.997  9390  9390 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 isIsolatedProcess=true splits=<none>
+10-15 08:22:33.180  9390  9390 W ChildProcessMai: type=1400 audit(0.0:406): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:33.186  9390  9401 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:33.186  9390  9401 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:33.186  9390  9401 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:33.186  9390  9401 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:33.186  9390  9401 F DEBUG   : Revision: '0'
+10-15 08:22:33.186  9390  9401 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:33.186  9390  9401 F DEBUG   : Timestamp: 2026-10-15 08:22:33.012130348+0000
+10-15 08:22:33.186  9390  9401 F DEBUG   : Process uptime: 1s
+10-15 08:22:33.186  9390  9401 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29
+10-15 08:22:33.186  9390  9401 F DEBUG   : pid: 9390, tid: 9401, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 <<<
+10-15 08:22:33.186  9390  9401 F DEBUG   : uid: 90003
+10-15 08:22:33.186  9390  9401 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:33.186  9390  9401 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:33.186  9390  9401 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76abfeb0  r11 0000000000000246
+10-15 08:22:33.186  9390  9401 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 000000004dab6d01  r15 00000000000024ae
+10-15 08:22:33.186  9390  9401 F DEBUG   :     rdi 00000000000024ae  rsi 00000000000024b9
+10-15 08:22:33.186  9390  9401 F DEBUG   :     rbp 000073dc76abff50  rsp 000073dc76abfea8  rip 000073df622eb808
+10-15 08:22:33.186  9390  9401 F DEBUG   : 6 total frames
+10-15 08:22:33.186  9390  9401 F DEBUG   : backtrace:
+10-15 08:22:33.186  9390  9401 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:33.186  9390  9401 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:33.186  9390  9401 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:33.186  9390  9401 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:33.186  9390  9401 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:33.186  9390  9401 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:33.180  9390  9390 W ChildProcessMai: type=1400 audit(0.0:407): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:33.202   620  2200 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 (pid 9390) has died: vis BTOP
+10-15 08:22:33.202   620  2200 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:29 in 1000ms for connection
+10-15 08:22:34.750   620   683 I ActivityManager: Start proc 9402:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30/u0ai4 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:30}
+10-15 08:22:34.765  9402  9402 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 isIsolatedProcess=true splits=<none>
+10-15 08:22:34.966  9402  9414 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:34.967  9402  9414 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:34.967  9402  9414 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:34.967  9402  9414 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:34.967  9402  9414 F DEBUG   : Revision: '0'
+10-15 08:22:34.967  9402  9414 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:34.967  9402  9414 F DEBUG   : Timestamp: 2026-10-15 08:22:34.781107686+0000
+10-15 08:22:34.967  9402  9414 F DEBUG   : Process uptime: 1s
+10-15 08:22:34.967  9402  9414 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30
+10-15 08:22:34.967  9402  9414 F DEBUG   : pid: 9402, tid: 9414, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 <<<
+10-15 08:22:34.967  9402  9414 F DEBUG   : uid: 90004
+10-15 08:22:34.967  9402  9414 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:34.967  9402  9414 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:34.967  9402  9414 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76abfeb0  r11 0000000000000246
+10-15 08:22:34.967  9402  9414 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 000000004c745e01  r15 00000000000024ba
+10-15 08:22:34.967  9402  9414 F DEBUG   :     rdi 00000000000024ba  rsi 00000000000024c6
+10-15 08:22:34.967  9402  9414 F DEBUG   :     rbp 000073dc76abff50  rsp 000073dc76abfea8  rip 000073df622eb808
+10-15 08:22:34.967  9402  9414 F DEBUG   : 6 total frames
+10-15 08:22:34.967  9402  9414 F DEBUG   : backtrace:
+10-15 08:22:34.967  9402  9414 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:34.967  9402  9414 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:34.967  9402  9414 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:34.967  9402  9414 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:34.967  9402  9414 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:34.967  9402  9414 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:34.964  9402  9402 W ChildProcessMai: type=1400 audit(0.0:410): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:34.964  9402  9402 W ChildProcessMai: type=1400 audit(0.0:411): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:34.984   620  1673 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 (pid 9402) has died: vis BTOP
+10-15 08:22:34.984   620  1673 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:30 in 1000ms for connection
+10-15 08:22:35.181   620  1118 I ActivityManager: Start proc 9415:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31/u0ai5 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:31}
+10-15 08:22:35.192  9415  9415 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 isIsolatedProcess=true splits=<none>
+10-15 08:22:35.347  9415  9426 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:35.347  9415  9426 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:35.347  9415  9426 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:35.347  9415  9426 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:35.347  9415  9426 F DEBUG   : Revision: '0'
+10-15 08:22:35.347  9415  9426 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:35.347  9415  9426 F DEBUG   : Timestamp: 2026-10-15 08:22:35.206094749+0000
+10-15 08:22:35.347  9415  9426 F DEBUG   : Process uptime: 1s
+10-15 08:22:35.347  9415  9426 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31
+10-15 08:22:35.347  9415  9426 F DEBUG   : pid: 9415, tid: 9426, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 <<<
+10-15 08:22:35.347  9415  9426 F DEBUG   : uid: 90005
+10-15 08:22:35.347  9415  9426 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:35.347  9415  9426 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:35.347  9415  9426 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76abfeb0  r11 0000000000000246
+10-15 08:22:35.347  9415  9426 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 0000000055106001  r15 00000000000024c7
+10-15 08:22:35.347  9415  9426 F DEBUG   :     rdi 00000000000024c7  rsi 00000000000024d2
+10-15 08:22:35.347  9415  9426 F DEBUG   :     rbp 000073dc76abff50  rsp 000073dc76abfea8  rip 000073df622eb808
+10-15 08:22:35.347  9415  9426 F DEBUG   : 6 total frames
+10-15 08:22:35.347  9415  9426 F DEBUG   : backtrace:
+10-15 08:22:35.347  9415  9426 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:35.347  9415  9426 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.347  9415  9426 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.347  9415  9426 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.347  9415  9426 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.347  9415  9426 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:35.362   620  1118 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 (pid 9415) has died: vis BTOP
+10-15 08:22:35.362   620  1118 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:31 in 1000ms for connection
+10-15 08:22:35.551   620  1118 I ActivityManager: Start proc 9427:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32/u0ai6 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:32}
+10-15 08:22:35.564  9427  9427 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 isIsolatedProcess=true splits=<none>
+10-15 08:22:35.725  9427  9438 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:35.725  9427  9438 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:35.725  9427  9438 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:35.725  9427  9438 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:35.725  9427  9438 F DEBUG   : Revision: '0'
+10-15 08:22:35.725  9427  9438 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:35.725  9427  9438 F DEBUG   : Timestamp: 2026-10-15 08:22:35.579543921+0000
+10-15 08:22:35.725  9427  9438 F DEBUG   : Process uptime: 1s
+10-15 08:22:35.725  9427  9438 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32
+10-15 08:22:35.725  9427  9438 F DEBUG   : pid: 9427, tid: 9438, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 <<<
+10-15 08:22:35.725  9427  9438 F DEBUG   : uid: 90006
+10-15 08:22:35.725  9427  9438 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:35.725  9427  9438 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:35.725  9427  9438 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:22:35.725  9427  9438 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 0000000071dfe701  r15 00000000000024d3
+10-15 08:22:35.725  9427  9438 F DEBUG   :     rdi 00000000000024d3  rsi 00000000000024de
+10-15 08:22:35.725  9427  9438 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:22:35.725  9427  9438 F DEBUG   : 6 total frames
+10-15 08:22:35.725  9427  9438 F DEBUG   : backtrace:
+10-15 08:22:35.725  9427  9438 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:35.725  9427  9438 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.725  9427  9438 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.725  9427  9438 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.725  9427  9438 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:35.725  9427  9438 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:35.741   620  1118 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 (pid 9427) has died: vis BTOP
+10-15 08:22:35.741   620  1118 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:32 in 1000ms for connection
+10-15 08:22:35.933   620  1673 I ActivityManager: Start proc 9439:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33/u0ai7 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:33}
+10-15 08:22:35.943  9439  9439 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 isIsolatedProcess=true splits=<none>
+10-15 08:22:36.114  9439  9449 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:36.114  9439  9449 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:22:36.114  9439  9449 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:22:36.114  9439  9449 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:22:36.114  9439  9449 F DEBUG   : Revision: '0'
+10-15 08:22:36.114  9439  9449 F DEBUG   : ABI: 'x86_64'
+10-15 08:22:36.114  9439  9449 F DEBUG   : Timestamp: 2026-10-15 08:22:35.957743443+0000
+10-15 08:22:36.114  9439  9449 F DEBUG   : Process uptime: 1s
+10-15 08:22:36.114  9439  9449 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33
+10-15 08:22:36.114  9439  9449 F DEBUG   : pid: 9439, tid: 9449, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 <<<
+10-15 08:22:36.114  9439  9449 F DEBUG   : uid: 90007
+10-15 08:22:36.114  9439  9449 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:22:36.114  9439  9449 F DEBUG   :     rax 0000000000000000  rbx 000073df8b969000  rcx 000073df622eb808  rdx 000000000000000b
+10-15 08:22:36.114  9439  9449 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000073dc76cbfeb0  r11 0000000000000246
+10-15 08:22:36.114  9439  9449 F DEBUG   :     r12 000073df8bd6e0d8  r13 000000000073dcc4  r14 0000000009575c01  r15 00000000000024df
+10-15 08:22:36.114  9439  9449 F DEBUG   :     rdi 00000000000024df  rsi 00000000000024e9
+10-15 08:22:36.114  9439  9449 F DEBUG   :     rbp 000073dc76cbff50  rsp 000073dc76cbfea8  rip 000073df622eb808
+10-15 08:22:36.114  9439  9449 F DEBUG   : 6 total frames
+10-15 08:22:36.114  9439  9449 F DEBUG   : backtrace:
+10-15 08:22:36.114  9439  9449 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:22:36.114  9439  9449 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:36.114  9439  9449 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:36.114  9439  9449 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:36.114  9439  9449 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:22:36.114  9439  9449 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:22:36.112  9439  9439 W ChildProcessMai: type=1400 audit(0.0:422): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:36.112  9439  9439 W ChildProcessMai: type=1400 audit(0.0:423): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:22:36.128   620  1673 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 (pid 9439) has died: vis BTOP
+10-15 08:22:36.128   620  1673 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:33 in 1000ms for connection

@@ -1,0 +1,191 @@
+{
+ "key": "01_stuck",
+ "note": "browser UI not reached in 90s",
+ "foreground": "org.chromium.chrome",
+ "node_count": 12,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1017,
+    1010,
+    1447
+   ],
+   "w": 940,
+   "h": 430
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/parentPanel",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1017,
+    1010,
+    1447
+   ],
+   "w": 940,
+   "h": 430
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/topPanel",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1017,
+    1010,
+    1135
+   ],
+   "w": 940,
+   "h": 118
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/title_template",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1017,
+    1010,
+    1135
+   ],
+   "w": 940,
+   "h": 118
+  },
+  {
+   "text": "Chromium isn't responding",
+   "desc": "",
+   "id": "android:id/alertTitle",
+   "cls": "android.widget.TextView",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    133,
+    1064,
+    947,
+    1135
+   ],
+   "w": 814,
+   "h": 71
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/customPanel",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1135,
+    1010,
+    1447
+   ],
+   "w": 940,
+   "h": 312
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/custom",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "android",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1135,
+    1010,
+    1447
+   ],
+   "w": 940,
+   "h": 312
+  },
+  {
+   "text": "Close app",
+   "desc": "",
+   "id": "android:id/aerr_close",
+   "cls": "android.widget.Button",
+   "pkg": "android",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1174,
+    1010,
+    1300
+   ],
+   "w": 940,
+   "h": 126
+  },
+  {
+   "text": "Wait",
+   "desc": "",
+   "id": "android:id/aerr_wait",
+   "cls": "android.widget.Button",
+   "pkg": "android",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1300,
+    1010,
+    1426
+   ],
+   "w": 940,
+   "h": 126
+  }
+ ],
+ "png": "01_stuck.png",
+ "png_bytes": 104186,
+ "time_utc": "2026-10-15T07:59:16Z"
+}

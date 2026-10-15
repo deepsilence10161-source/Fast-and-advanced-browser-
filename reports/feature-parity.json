@@ -1,0 +1,1471 @@
+{
+ "stable": "155.0.8059.80",
+ "commit": "43a195105613ac83c21d3f14de279f4a045c7da0",
+ "features": [
+  {
+   "id": "F01",
+   "area": "Launch",
+   "feature": "First-run experience (terms, sign-in choice, notifications prompt)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/firstrun": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "01_first_run"
+   ],
+   "external_dependency": "Google account/Play Services for sign-in",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "01_first_run"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "01_first_run": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "01_first_run"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "01_first_run": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F02",
+   "area": "Launch",
+   "feature": "Default-browser prompt / role",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/firstrun": true,
+    "chrome/browser/ui/android/default_browser_promo": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Android RoleManager",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F03",
+   "area": "NTP",
+   "feature": "New tab page: logo, search box, shortcuts (Most visited)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/ntp": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/suggestions": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "02_ntp"
+   ],
+   "external_dependency": "Google search/doodle services",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "02_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "02_ntp": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "02_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "02_ntp": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F04",
+   "area": "NTP",
+   "feature": "Discover/feed",
+   "source_paths_verified": {
+    "chrome/browser/feed": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "02_ntp"
+   ],
+   "external_dependency": "Google Discover backend (private)",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "02_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "02_ntp": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "02_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "02_ntp": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F05",
+   "area": "Omnibox",
+   "feature": "Omnibox focus, keyboard, URL/search input",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/omnibox": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "03_omnibox_focused"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "03_omnibox_focused"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "03_omnibox_focused": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "03_omnibox_focused"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "03_omnibox_focused": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F06",
+   "area": "Omnibox",
+   "feature": "Autocomplete suggestions (history, search suggest)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/omnibox": true,
+    "components/omnibox": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "04_omnibox_suggestions"
+   ],
+   "external_dependency": "Google Suggest API",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "04_omnibox_suggestions"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "04_omnibox_suggestions": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "04_omnibox_suggestions"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "04_omnibox_suggestions": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F07",
+   "area": "Omnibox",
+   "feature": "Voice search",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/omnibox": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google app / speech service",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F08",
+   "area": "Omnibox",
+   "feature": "Lens / camera search",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/lens": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google Lens app (private)",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F09",
+   "area": "Navigation",
+   "feature": "Load page, back/forward/reload/stop",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/tab": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/toolbar": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "05_page_loaded"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "05_page_loaded"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "05_page_loaded": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "05_page_loaded"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "05_page_loaded": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F10",
+   "area": "Security",
+   "feature": "Page info / connection security / site permissions sheet",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/page_info": true,
+    "components/page_info": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "06_page_info"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "06_page_info"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "06_page_info": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "06_page_info"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "06_page_info": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F11",
+   "area": "Menu",
+   "feature": "App (overflow) menu",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/toolbar": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/ui": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "07_app_menu"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "07_app_menu"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "07_app_menu": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "07_app_menu"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "07_app_menu": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F12",
+   "area": "Tabs",
+   "feature": "Multiple tabs, new tab",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/tabmodel": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/tab": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "08_second_tab_ntp"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "08_second_tab_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "08_second_tab_ntp": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "08_second_tab_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "08_second_tab_ntp": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F13",
+   "area": "Tabs",
+   "feature": "Tab switcher (grid), close/restore, groups",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/hub": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/tasks": true,
+    "chrome/browser/tab_ui": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "09_tab_switcher"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "09_tab_switcher"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "09_tab_switcher": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "09_tab_switcher"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "09_tab_switcher": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F14",
+   "area": "Incognito",
+   "feature": "Incognito tabs and NTP",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/incognito": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "10_incognito_ntp",
+    "10b_tab_switcher_incognito"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "10_incognito_ntp",
+      "10b_tab_switcher_incognito"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "10_incognito_ntp": "mismatch",
+      "10b_tab_switcher_incognito": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "10_incognito_ntp",
+      "10b_tab_switcher_incognito"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "10_incognito_ntp": "mismatch",
+      "10b_tab_switcher_incognito": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F15",
+   "area": "Settings",
+   "feature": "Settings hierarchy",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/settings": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "11_settings",
+    "11b_settings_scrolled"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "11_settings",
+      "11b_settings_scrolled"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "11_settings": "mismatch",
+      "11b_settings_scrolled": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "11_settings",
+      "11b_settings_scrolled"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "11_settings": "mismatch",
+      "11b_settings_scrolled": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F16",
+   "area": "History",
+   "feature": "History",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/history": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "12_history"
+   ],
+   "external_dependency": "Sync for cross-device history",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "12_history"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "12_history": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "12_history"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "12_history": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F17",
+   "area": "Bookmarks",
+   "feature": "Bookmarks",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/bookmarks": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "13_bookmarks"
+   ],
+   "external_dependency": "Sync for cross-device",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "13_bookmarks"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "13_bookmarks": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "13_bookmarks"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "13_bookmarks": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F18",
+   "area": "Downloads",
+   "feature": "Downloads manager",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/download": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "14_downloads"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "14_downloads"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "14_downloads": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "14_downloads"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "14_downloads": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F19",
+   "area": "Theme",
+   "feature": "Dark theme (system)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/appearance": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "15_dark_page",
+    "15b_dark_menu"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "15_dark_page"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "15_dark_page": "mismatch",
+      "15b_dark_menu": "not-tested"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "15_dark_page"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "15_dark_page": "mismatch",
+      "15b_dark_menu": "not-tested"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F20",
+   "area": "Layout",
+   "feature": "Landscape orientation",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/toolbar": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "16_landscape"
+   ],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "16_landscape"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "16_landscape": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "16_landscape"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "16_landscape": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F21",
+   "area": "Passwords",
+   "feature": "Password manager / autofill",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/password_manager": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/autofill": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google Password Manager backend / Play Services",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F22",
+   "area": "Sync",
+   "feature": "Sign-in and Chrome Sync",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/signin": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/sync": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Chrome Sync API — restricted for Chromium derivatives",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F23",
+   "area": "Translate",
+   "feature": "Page translation",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/translate": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google Translate service",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F24",
+   "area": "Share",
+   "feature": "Share, QR code, send to devices",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/share": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/sharing": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Sync for send-to-device",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F25",
+   "area": "Find",
+   "feature": "Find in page",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F26",
+   "area": "Reading",
+   "feature": "Reader mode / simplified view",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/dom_distiller": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F27",
+   "area": "Desktop",
+   "feature": "Request desktop site",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/desktop_site": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F28",
+   "area": "Safety",
+   "feature": "Safe Browsing",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/safe_browsing": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Safe Browsing API key",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F29",
+   "area": "Safety",
+   "feature": "Safety check",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/safety_check": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Password leak check backend",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F30",
+   "area": "Privacy",
+   "feature": "Delete browsing data / quick delete",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/browsing_data": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/quick_delete": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F31",
+   "area": "Permissions",
+   "feature": "Site permissions (camera, mic, location, notifications)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/permissions": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/site_settings": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Android runtime permissions",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F32",
+   "area": "Notifications",
+   "feature": "Web push notifications",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/notifications": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/push_messaging": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Firebase Cloud Messaging (GCM sender) — requires Google keys",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F33",
+   "area": "PWA",
+   "feature": "Install app / add to home screen (WebAPK)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/webapps": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "WebAPK minting server (private)",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F34",
+   "area": "Custom Tabs",
+   "feature": "Custom Tabs provider",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/customtabs": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/browserservices": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F35",
+   "area": "Media",
+   "feature": "Media playback, fullscreen, picture-in-picture",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/media": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/fullscreen": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F36",
+   "area": "Print",
+   "feature": "Print",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/printing": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Android print framework",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F37",
+   "area": "PDF",
+   "feature": "PDF viewing",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/pdf": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F38",
+   "area": "Contextual",
+   "feature": "Touch to search / contextual search",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/contextualsearch": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google backend",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F39",
+   "area": "Context menu",
+   "feature": "Long-press context menu (links/images)",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/contextmenu": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F40",
+   "area": "Offline",
+   "feature": "Offline pages / read later",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/offlinepages": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/read_later": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F41",
+   "area": "Accessibility",
+   "feature": "Accessibility settings, text scaling, TalkBack labels",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/accessibility": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F42",
+   "area": "Multi-window",
+   "feature": "Multi-window / multi-instance",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/multiwindow": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F43",
+   "area": "Widgets",
+   "feature": "Search / quick action / bookmarks widgets",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/searchwidget": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/quickactionsearchwidget": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/bookmarkswidget": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F44",
+   "area": "AI",
+   "feature": "AI Mode chip, Ask Gemini toolbar button, context picker",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/chrome_item_picker": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/omnibox": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [
+    "02_ntp"
+   ],
+   "external_dependency": "Google AI/Gemini backend (private)",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [
+      "02_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "02_ntp": "mismatch"
+     }
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [
+      "02_ntp"
+     ],
+     "artifact_did_not_reach": [],
+     "statuses": {
+      "02_ntp": "mismatch"
+     }
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "mismatch-or-verified (see evidence)"
+  },
+  {
+   "id": "F45",
+   "area": "Enterprise",
+   "feature": "Enterprise policy",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/policy": true,
+    "chrome/android/java/src/org/chromium/chrome/browser/enterprise": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F46",
+   "area": "Supervised",
+   "feature": "Family Link / supervised users",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/supervised_user": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google Family Link (private)",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F47",
+   "area": "Updates",
+   "feature": "In-app update / Omaha",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/omaha": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google Play (Chrome) — project needs own update channel",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F48",
+   "area": "Gestures",
+   "feature": "Gesture navigation / back handling",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/gesturenav": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F49",
+   "area": "Payments",
+   "feature": "Web Payments",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/payments": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "Google Pay (private) for some flows",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  },
+  {
+   "id": "F50",
+   "area": "DevTools",
+   "feature": "Remote debugging",
+   "source_paths_verified": {
+    "chrome/android/java/src/org/chromium/chrome/browser/devtools": true
+   },
+   "all_sources_exist": true,
+   "ui_capture_screens": [],
+   "external_dependency": "—",
+   "evidence": {
+    "chromium_arm64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    },
+    "chromium_desktop_x64": {
+     "screens_compared": [],
+     "artifact_did_not_reach": [],
+     "statuses": {}
+    }
+   },
+   "status_vs_chrome_stable": "not-tested",
+   "status_vs_emulator_reference": "not-tested"
+  }
+ ]
+}

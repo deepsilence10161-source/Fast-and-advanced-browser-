@@ -1,0 +1,1031 @@
+{
+ "key": "07_app_menu",
+ "note": "overflow/app menu on a web page",
+ "foreground": "org.chromium.chrome",
+ "node_count": 59,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/app_menu_content_container",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    384,
+    1048,
+    2206
+   ],
+   "w": 704,
+   "h": 1822
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/app_menu_list",
+   "cls": "android.widget.ListView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    384,
+    1048,
+    2180
+   ],
+   "w": 704,
+   "h": 1796
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/button_wrapper_one",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    365,
+    405,
+    497,
+    531
+   ],
+   "w": 132,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Back",
+   "id": "org.chromium.chrome:id/button_one",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": false,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    368,
+    405,
+    494,
+    531
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/button_wrapper_two",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    497,
+    405,
+    629,
+    531
+   ],
+   "w": 132,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Forward",
+   "id": "org.chromium.chrome:id/button_two",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": false,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    500,
+    405,
+    626,
+    531
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/button_wrapper_three",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    629,
+    405,
+    761,
+    531
+   ],
+   "w": 132,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Bookmark",
+   "id": "org.chromium.chrome:id/button_three",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    632,
+    405,
+    758,
+    531
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/button_wrapper_four",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    761,
+    405,
+    894,
+    531
+   ],
+   "w": 133,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Download",
+   "id": "org.chromium.chrome:id/button_four",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    764,
+    405,
+    890,
+    531
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/button_wrapper_five",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    894,
+    405,
+    1027,
+    531
+   ],
+   "w": 133,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Refresh",
+   "id": "org.chromium.chrome:id/button_five",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    897,
+    405,
+    1023,
+    531
+   ],
+   "w": 126,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    552,
+    1048,
+    678
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    583,
+    449,
+    646
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "New tab",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    552,
+    1006,
+    678
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_incognito_tab_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    678,
+    1048,
+    804
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "New Incognito tab",
+   "desc": "",
+   "id": "org.chromium.chrome:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    678,
+    1006,
+    804
+   ],
+   "w": 620,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/add_to_group_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    804,
+    1048,
+    930
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    835,
+    449,
+    898
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Add tab to new group",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    804,
+    1006,
+    930
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/divider_line_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": false,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    930,
+    1048,
+    959
+   ],
+   "w": 704,
+   "h": 29
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/open_history_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    959,
+    1048,
+    1085
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    990,
+    449,
+    1053
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "History",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    959,
+    1006,
+    1085
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/quick_delete_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1085,
+    1048,
+    1211
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1116,
+    449,
+    1179
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Delete browsing data",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1085,
+    1006,
+    1211
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/info_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1211,
+    1048,
+    1337
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1242,
+    449,
+    1305
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Site controls",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1211,
+    1006,
+    1337
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/page_info_divider_line_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": false,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1337,
+    1048,
+    1366
+   ],
+   "w": 704,
+   "h": 29
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/downloads_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1366,
+    1048,
+    1492
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1397,
+    449,
+    1460
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Downloads",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1366,
+    1006,
+    1492
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/all_bookmarks_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1492,
+    1048,
+    1618
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1523,
+    449,
+    1586
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Bookmarks",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1492,
+    1006,
+    1618
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/recent_tabs_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1618,
+    1048,
+    1744
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1649,
+    449,
+    1712
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Recent tabs",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1618,
+    1006,
+    1744
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/divider_line_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": false,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1744,
+    1048,
+    1773
+   ],
+   "w": 704,
+   "h": 29
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/share_menu_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1773,
+    1048,
+    1899
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1804,
+    449,
+    1867
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Share\u2026",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1773,
+    1006,
+    1899
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/divider_line_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": false,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1899,
+    1048,
+    1928
+   ],
+   "w": 704,
+   "h": 29
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/preferences_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    1928,
+    1048,
+    2054
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    1959,
+    449,
+    2022
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Settings",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1928,
+    1006,
+    2054
+   ],
+   "w": 557,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/help_id",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    344,
+    2054,
+    1048,
+    2180
+   ],
+   "w": 704,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    386,
+    2085,
+    449,
+    2148
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "Help & feedback",
+   "desc": "",
+   "id": "org.chromium.chrome:id/menu_item_text",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    2054,
+    1006,
+    2180
+   ],
+   "w": 557,
+   "h": 126
+  }
+ ],
+ "png": "07_app_menu.png",
+ "png_bytes": 177329,
+ "time_utc": "2026-10-15T07:41:31Z"
+}

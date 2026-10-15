@@ -1,0 +1,46 @@
+[07:56:30] meta: {'label': 'chrome_ref', 'package': 'com.android.chrome', 'versionName': '133.0.6943.137', 'versionCode': '694313738', 'primaryCpuAbi': 'x86_64', 'android_release': '16', 'sdk': '36', 'model': 'sdk_gphone64_x86_64', 'abilist': 'x86_64,arm64-v8a', 'native_bridge': 'libndk_translation.so', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': '1.0', 'navigation_mode': '2', 'webview': 'Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)'}
+[07:56:43] captured 01_first_run (11 labelled nodes, fg=com.android.chrome)
+[07:56:49] captured 01_first_run_1 (11 labelled nodes, fg=com.android.chrome)
+[07:57:00] captured 01_first_run_2 (16 labelled nodes, fg=com.android.chrome)
+[07:57:05] browser UI ready: True
+[07:57:12] captured 02_ntp (49 labelled nodes, fg=com.android.chrome)
+[07:57:17] tap OK  /:id/(search_box_text|url_bar)$/ -> com.android.chrome:id/search_box_text
+[07:57:22] captured 03_omnibox_focused (59 labelled nodes, fg=com.android.chrome)
+[07:57:30] captured 04_omnibox_suggestions (54 labelled nodes, fg=com.android.chrome)
+[07:57:45] captured 05_page_loaded (30 labelled nodes, fg=com.android.chrome)
+[07:57:49] tap OK  /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/ -> com.android.chrome:id/location_bar_status
+[07:57:52] captured 06_page_info (12 labelled nodes, fg=com.android.chrome)
+[07:58:00] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[07:58:03] captured 07_app_menu (52 labelled nodes, fg=com.android.chrome)
+[07:58:11] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[07:58:15] tap OK  /^New tab$/ -> com.android.chrome:id/menu_item_text
+[07:58:18] captured 08_second_tab_ntp (49 labelled nodes, fg=com.android.chrome)
+[07:58:22] tap OK  /tab_switcher_button/ -> com.android.chrome:id/tab_switcher_button
+[07:58:28] captured 09_tab_switcher (33 labelled nodes, fg=com.android.chrome)
+[07:58:35] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[07:58:41] tap OK  /^Settings$/ -> com.android.chrome:id/menu_item_text
+[07:58:47] captured 11_settings (31 labelled nodes, fg=com.android.chrome)
+[07:58:52] captured 11b_settings_scrolled (27 labelled nodes, fg=com.android.chrome)
+[07:59:00] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[07:59:06] tap OK  /^History$/ -> com.android.chrome:id/menu_item_text
+[07:59:11] captured 12_history (17 labelled nodes, fg=com.android.chrome)
+[07:59:20] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[07:59:26] tap OK  /^Bookmarks$/ -> com.android.chrome:id/menu_item_text
+[07:59:31] captured 13_bookmarks (33 labelled nodes, fg=com.android.chrome)
+[07:59:39] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[07:59:45] tap OK  /^Downloads$/ -> com.android.chrome:id/menu_item_text
+[07:59:50] captured 14_downloads (14 labelled nodes, fg=com.android.chrome)
+[08:00:07] captured 15_dark_page (8 labelled nodes, fg=com.android.chrome)
+[08:00:17] tap MISS /menu_button/
+[08:00:27] captured 16_landscape (27 labelled nodes, fg=com.android.chrome)
+[08:00:27] landscape screenshot 2400x1080 rotated=True
+[08:00:35] tap OK  /menu_button/ -> com.android.chrome:id/menu_button
+[08:00:39] tap OK  /^New Incognito tab$/ -> com.android.chrome:id/title
+[08:00:42] captured 10_incognito_ntp (35 labelled nodes, fg=com.android.chrome)
+[08:00:46] tap OK  /tab_switcher_button/ -> com.android.chrome:id/tab_switcher_button
+[08:00:51] captured 10b_tab_switcher_incognito (28 labelled nodes, fg=com.android.chrome)
+[08:01:50] timings: {'cold_ms': [887, 733, 806, 819, 815, 829, 905, 909, 957, 752], 'warm_ms': [699, 366, 446, 533, 478, 490, 598, 446, 607, 592], 'activity': 'com.android.chrome/com.google.android.apps.chrome.IntentDispatcher', 'cold_ms_median': 824.0, 'cold_ms_p95': 957, 'warm_ms_median': 511.5, 'warm_ms_p95': 699}
+[08:01:50] done
+ui_capture exit=0
+devtools sockets: chrome_devtools_remote stetho_com.google.android.apps.messaging_devtools_remote webview_devtools_remote_5067 ; using: chrome_devtools_remote
+chat_fixture exit=0

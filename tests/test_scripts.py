@@ -46,3 +46,13 @@ class TestCompare(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class TestCompareLoader(unittest.TestCase):
+    def test_load_skips_non_screen_json(self):
+        # regression: chat_fixture.json (no "key") crashed compare_ui.load with KeyError
+        with tempfile.TemporaryDirectory() as d:
+            json.dump({"package": "p"}, open(os.path.join(d, "meta.json"), "w"))
+            json.dump({"platform": "x", "results": None}, open(os.path.join(d, "chat_fixture.json"), "w"))
+            json.dump({"key": "02_ntp", "nodes": [], "png": "02_ntp.png"}, open(os.path.join(d, "02_ntp.json"), "w"))
+            meta, screens = cu.load(d)
+            self.assertEqual(list(screens), ["02_ntp"])

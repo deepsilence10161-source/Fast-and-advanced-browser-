@@ -1,0 +1,731 @@
+{
+ "key": "11_settings",
+ "note": "menu \u2192 Settings",
+ "foreground": "org.chromium.chrome",
+ "node_count": 61,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/action_bar_root",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/edge_to_edge_base_layout",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/settings_activity",
+   "cls": "android.widget.ScrollView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/sheet_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/app_bar_layout",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    444
+   ],
+   "w": 1080,
+   "h": 316
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/action_bar",
+   "cls": "android.view.ViewGroup",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    275
+   ],
+   "w": 1080,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "Navigate up",
+   "id": "",
+   "cls": "android.widget.ImageButton",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    147,
+    275
+   ],
+   "w": 147,
+   "h": 147
+  },
+  {
+   "text": "Settings",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    157,
+    162,
+    369,
+    240
+   ],
+   "w": 212,
+   "h": 78
+  },
+  {
+   "text": "",
+   "desc": "Help & feedback",
+   "id": "org.chromium.chrome:id/menu_id_targeted_help",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    953,
+    138,
+    1080,
+    264
+   ],
+   "w": 127,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/search_box",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    286,
+    1038,
+    412
+   ],
+   "w": 996,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "Search settings",
+   "id": "org.chromium.chrome:id/search_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    317,
+    168,
+    380
+   ],
+   "w": 105,
+   "h": 63
+  },
+  {
+   "text": "Search settings",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    189,
+    286,
+    1038,
+    412
+   ],
+   "w": 849,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/settings_content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    444,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1893
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/preferences_header",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    444,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1893
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/list_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    444,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1893
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/recycler_view",
+   "cls": "androidx.recyclerview.widget.RecyclerView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": true,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    444,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 1893
+  },
+  {
+   "text": "You and Google",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    444,
+    1038,
+    536
+   ],
+   "w": 996,
+   "h": 92
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/account_management_account_row",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    581,
+    1038,
+    821
+   ],
+   "w": 996,
+   "h": 240
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    648,
+    189,
+    753
+   ],
+   "w": 105,
+   "h": 105
+  },
+  {
+   "text": "Sign in",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    231,
+    623,
+    356,
+    680
+   ],
+   "w": 125,
+   "h": 57
+  },
+  {
+   "text": "Get your bookmarks, passwords and more on all your devices",
+   "desc": "",
+   "id": "android:id/summary",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    231,
+    680,
+    996,
+    774
+   ],
+   "w": 765,
+   "h": 94
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/account_management_google_services_row",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    827,
+    1038,
+    974
+   ],
+   "w": 996,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    848,
+    189,
+    953
+   ],
+   "w": 105,
+   "h": 105
+  },
+  {
+   "text": "Google services",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    231,
+    869,
+    529,
+    926
+   ],
+   "w": 298,
+   "h": 57
+  },
+  {
+   "text": "Basics",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    997,
+    1038,
+    1090
+   ],
+   "w": 996,
+   "h": 93
+  },
+  {
+   "text": "Search engine",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1177,
+    996,
+    1234
+   ],
+   "w": 912,
+   "h": 57
+  },
+  {
+   "text": "Google",
+   "desc": "",
+   "id": "android:id/summary",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1234,
+    996,
+    1285
+   ],
+   "w": 912,
+   "h": 51
+  },
+  {
+   "text": "Address bar",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1365,
+    310,
+    1422
+   ],
+   "w": 226,
+   "h": 57
+  },
+  {
+   "text": "Top",
+   "desc": "",
+   "id": "android:id/summary",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1422,
+    147,
+    1473
+   ],
+   "w": 63,
+   "h": 51
+  },
+  {
+   "text": "Privacy and security",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1553,
+    457,
+    1610
+   ],
+   "w": 373,
+   "h": 57
+  },
+  {
+   "text": "Safety check",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1700,
+    324,
+    1757
+   ],
+   "w": 240,
+   "h": 57
+  },
+  {
+   "text": "Default browser",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1847,
+    381,
+    1904
+   ],
+   "w": 297,
+   "h": 57
+  },
+  {
+   "text": "Autofill and passwords",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    1994,
+    511,
+    2051
+   ],
+   "w": 427,
+   "h": 57
+  },
+  {
+   "text": "Advanced",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    2116,
+    1038,
+    2209
+   ],
+   "w": 996,
+   "h": 93
+  },
+  {
+   "text": "Tabs and tab groups",
+   "desc": "",
+   "id": "android:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    84,
+    2296,
+    468,
+    2337
+   ],
+   "w": 384,
+   "h": 41
+  }
+ ],
+ "png": "11_settings.png",
+ "png_bytes": 143147,
+ "time_utc": "2026-10-15T07:42:28Z"
+}

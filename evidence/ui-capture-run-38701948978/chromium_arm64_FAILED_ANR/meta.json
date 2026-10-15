@@ -1,0 +1,107 @@
+{
+  "label": "chromium_arm64",
+  "package": "org.chromium.chrome",
+  "versionName": "155.0.8059.0",
+  "versionCode": "805900004",
+  "primaryCpuAbi": "arm64-v8a",
+  "android_release": "16",
+  "sdk": "36",
+  "model": "sdk_gphone64_x86_64",
+  "abilist": "x86_64,arm64-v8a",
+  "native_bridge": "libndk_translation.so",
+  "locale": "",
+  "wm_size": "Physical size: 1080x2400",
+  "wm_density": "Physical density: 420",
+  "font_scale": "1.0",
+  "navigation_mode": "2",
+  "webview": "Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)",
+  "first_run_steps": 0,
+  "reached_browser_ui": false,
+  "pss_kb_after_example": 403753,
+  "findings": [
+    "page-info entry point (location_bar_status_icon) absent from a11y tree on page"
+  ],
+  "landscape_png_size": [
+    2400,
+    1080
+  ],
+  "landscape_rotated": true,
+  "start_activity": "org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher",
+  "timings": {
+    "cold_ms": [
+      1155,
+      1060,
+      1085,
+      1066,
+      1041,
+      1034,
+      1147,
+      1053,
+      1026,
+      1101
+    ],
+    "warm_ms": [
+      1792,
+      777,
+      794,
+      810,
+      641,
+      762,
+      757,
+      646,
+      777,
+      759
+    ],
+    "activity": "org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher",
+    "cold_ms_median": 1063.0,
+    "cold_ms_p95": 1155,
+    "warm_ms_median": 769.5,
+    "warm_ms_p95": 1792
+  },
+  "steps": [
+    {
+      "key": "01_first_run",
+      "note": "first launch after pm clear",
+      "foreground": "org.chromium.chrome",
+      "node_count": 19,
+      "png_bytes": 36908
+    },
+    {
+      "key": "01_stuck",
+      "note": "browser UI not reached in 90s",
+      "foreground": "org.chromium.chrome",
+      "node_count": 12,
+      "png_bytes": 104186
+    },
+    {
+      "key": "02_ntp",
+      "note": "new tab page / start surface",
+      "foreground": "org.chromium.chrome",
+      "node_count": 12,
+      "png_bytes": 104186
+    },
+    {
+      "key": "05_page_loaded",
+      "note": "https://example.com loaded",
+      "foreground": "org.chromium.chrome",
+      "node_count": 12,
+      "png_bytes": 103929
+    },
+    {
+      "key": "15_dark_page",
+      "note": "system dark theme, example.org",
+      "foreground": "org.chromium.chrome",
+      "node_count": 12,
+      "png_bytes": 101230
+    },
+    {
+      "key": "16_landscape",
+      "note": "landscape orientation",
+      "foreground": "org.chromium.chrome",
+      "node_count": 12,
+      "png_bytes": 107378
+    }
+  ],
+  "anr_dialogs": 37,
+  "crash_buffer_lines": 48
+}

@@ -1,0 +1,331 @@
+{
+ "key": "01_first_run_1",
+ "note": "before tapping 'Stay signed out'",
+ "foreground": "org.chromium.chrome",
+ "node_count": 25,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/action_bar_root",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/edge_to_edge_base_layout",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fre_pager",
+   "cls": "androidx.viewpager.widget.ViewPager",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fullscreen_signin",
+   "cls": "android.widget.RelativeLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/centered_content_container",
+   "cls": "android.view.ViewGroup",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fre_scroll_view",
+   "cls": "android.widget.ScrollView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    645,
+    1080,
+    1630
+   ],
+   "w": 1080,
+   "h": 985
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fre_content_container",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    645,
+    1080,
+    1630
+   ],
+   "w": 1080,
+   "h": 985
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fre_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    395,
+    645,
+    684,
+    934
+   ],
+   "w": 289,
+   "h": 289
+  },
+  {
+   "text": "Make Chrome your own",
+   "desc": "",
+   "id": "org.chromium.chrome:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    1029,
+    1080,
+    1107
+   ],
+   "w": 1080,
+   "h": 78
+  },
+  {
+   "text": "Sign in to get your bookmarks, passwords, and more on all your devices",
+   "desc": "",
+   "id": "org.chromium.chrome:id/subtitle",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    1107,
+    1080,
+    1231
+   ],
+   "w": 1080,
+   "h": 124
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fre_bottom_group",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    1357,
+    1080,
+    1630
+   ],
+   "w": 1080,
+   "h": 273
+  },
+  {
+   "text": "Add account to device",
+   "desc": "",
+   "id": "org.chromium.chrome:id/signin_fre_continue_button",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    1378,
+    1017,
+    1504
+   ],
+   "w": 954,
+   "h": 126
+  },
+  {
+   "text": "Stay signed out",
+   "desc": "",
+   "id": "org.chromium.chrome:id/signin_fre_dismiss_button",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    1504,
+    1017,
+    1630
+   ],
+   "w": 954,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/fre_footer_viewgroup",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    1630,
+    1080,
+    1779
+   ],
+   "w": 1080,
+   "h": 149
+  },
+  {
+   "text": "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage",
+   "desc": "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage usage and crash data settings",
+   "id": "org.chromium.chrome:id/signin_fre_footer",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    1672,
+    1017,
+    1758
+   ],
+   "w": 954,
+   "h": 86
+  }
+ ],
+ "png": "01_first_run_1.png",
+ "png_bytes": 107380,
+ "time_utc": "2026-10-15T07:57:23Z"
+}

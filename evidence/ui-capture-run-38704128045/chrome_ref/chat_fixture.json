@@ -1,0 +1,109 @@
+{
+ "platform": "android-emulator:chrome_ref",
+ "page_url": "http://127.0.0.1:8000/fixture.html?n=300",
+ "results": {
+  "passed": 10,
+  "failed": 0,
+  "total": 10,
+  "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
+  "viewport": [
+   412,
+   786
+  ],
+  "dpr": 2.625,
+  "n": 300,
+  "results": [
+   {
+    "name": "T1 long history renders all messages",
+    "ok": true,
+    "detail": {
+     "n": 300,
+     "nodes": 300,
+     "firstRenderMs": 58,
+     "scrollHeight": 43809
+    }
+   },
+   {
+    "name": "T2 4 updates at 1 s, appended in place, stays at bottom",
+    "ok": true,
+    "detail": {
+     "text": "Streaming part1 part2 part3",
+     "gapBottom": -0.4296875
+    }
+   },
+   {
+    "name": "T3 draft, focus and selection preserved",
+    "ok": true,
+    "detail": {
+     "active": "composer",
+     "value": "draft: my unsent question",
+     "sel": [
+      7,
+      9
+     ]
+    }
+   },
+   {
+    "name": "T4 reading position stable (|drift| <= 1 px) while content above grows and below appends",
+    "ok": true,
+    "detail": {
+     "drift": -0.13,
+     "scrollTopBefore": 22137.904296875,
+     "scrollTopAfter": 22272.380859375
+    }
+   },
+   {
+    "name": "T5 duplicate events ignored",
+    "ok": true,
+    "detail": {
+     "size": 306,
+     "duplicates": 4
+    }
+   },
+   {
+    "name": "T6 gap detected, resync from cursor, no duplicate, correct order",
+    "ok": true,
+    "detail": {
+     "resyncs": [
+      310
+     ],
+     "order": [
+      "g1",
+      "g2"
+     ]
+    }
+   },
+   {
+    "name": "T7 background queue then single catch-up",
+    "ok": true,
+    "detail": {
+     "hiddenNodes": 0,
+     "rendersDuringCatchup": 1
+    }
+   },
+   {
+    "name": "T8 reconnect resume: all missed delivered exactly once",
+    "ok": true,
+    "detail": {
+     "delivered": 4
+    }
+   },
+   {
+    "name": "T9 no page reload",
+    "ok": true,
+    "detail": {
+     "loads": "1",
+     "navType": "navigate"
+    }
+   },
+   {
+    "name": "T10 content-visibility:auto on every message node",
+    "ok": true,
+    "detail": {
+     "nodes": 315,
+     "supported": true
+    }
+   }
+  ]
+ }
+}

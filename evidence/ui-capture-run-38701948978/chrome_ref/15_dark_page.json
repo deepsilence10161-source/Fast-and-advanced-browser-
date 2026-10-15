@@ -1,0 +1,171 @@
+{
+ "key": "15_dark_page",
+ "note": "system dark theme, example.org",
+ "foreground": "com.android.chrome",
+ "node_count": 12,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    28,
+    606,
+    1052,
+    1858
+   ],
+   "w": 1024,
+   "h": 1252
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/modal_dialog_view",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    28,
+    606,
+    1024,
+    1858
+   ],
+   "w": 996,
+   "h": 1252
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/custom_view_not_in_scrollable",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    28,
+    606,
+    1024,
+    1648
+   ],
+   "w": 996,
+   "h": 1042
+  },
+  {
+   "text": "Chrome notifications make things easier",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1355,
+    982,
+    1513
+   ],
+   "w": 912,
+   "h": 158
+  },
+  {
+   "text": "You\u2019ll be able to easily manage media controls, Incognito sessions, downloads and more",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    70,
+    1545,
+    982,
+    1648
+   ],
+   "w": 912,
+   "h": 103
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/button_bar",
+   "cls": "android.view.ViewGroup",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    28,
+    1648,
+    1024,
+    1858
+   ],
+   "w": 996,
+   "h": 210
+  },
+  {
+   "text": "No thanks",
+   "desc": "",
+   "id": "com.android.chrome:id/negative_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    449,
+    1690,
+    680,
+    1816
+   ],
+   "w": 231,
+   "h": 126
+  },
+  {
+   "text": "Continue",
+   "desc": "",
+   "id": "com.android.chrome:id/positive_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    701,
+    1690,
+    982,
+    1816
+   ],
+   "w": 281,
+   "h": 126
+  }
+ ],
+ "png": "15_dark_page.png",
+ "png_bytes": 166382,
+ "time_utc": "2026-10-15T08:00:07Z"
+}

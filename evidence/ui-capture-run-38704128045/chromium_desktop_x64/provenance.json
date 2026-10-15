@@ -1,0 +1,34 @@
+{
+  "source": "gs://chromium-browser-snapshots/AndroidDesktop_x64/1697602/chrome-android-desktop.zip",
+  "download_url": "https://storage.googleapis.com/chromium-browser-snapshots/AndroidDesktop_x64/1697602/chrome-android-desktop.zip",
+  "prefix": "AndroidDesktop_x64",
+  "snapshot_revision": 1697602,
+  "REVISIONS": {
+    "chromium_revision": "1697602",
+    "got_angle_revision": "8194b221b0147b167c559fdec6a37ac70586d0e2",
+    "got_dawn_revision": "7fe336654eb579575caf4a35075b8512bc47de8d",
+    "got_revision": "750c6256d154fa184a6068e2a66c49dde34988bc",
+    "got_revision_cp": "refs/heads/main@{#1697602}",
+    "got_swiftshader_revision": "5b0479bd2d15058aaa9eb490e364f920ff824a8c",
+    "got_v8_revision": "17abeb50acb4563e253edebd0db09062d39c8c91",
+    "got_v8_revision_cp": "refs/heads/15.5.35@{#1}",
+    "got_webrtc_revision": "8d208e76fb1ad2b92d557f752e9d1d7d49059efa",
+    "got_webrtc_revision_cp": "refs/heads/main@{#48593}",
+    "v8_revision": "1",
+    "v8_revision_git": "17abeb50acb4563e253edebd0db09062d39c8c91"
+  },
+  "zip_size": 491921340,
+  "zip_md5_b64_verified": "qMvZeFiww7r/kKX0aVPVuw==",
+  "zip_crc32c_verified": true,
+  "zip_sha256": "d375f666ec3a8d59c60e17842da2ebfc30b54fd4d7b4f9379252dd9bc47d21cc",
+  "gcs_generation": "1789428430458808",
+  "gcs_time_created": "2026-09-14T23:27:10.550Z",
+  "apks": {
+    "chrome-android-desktop/apks/ChromePublic.apk": "a2e1ed8f06201687dbd85e3750780bf17c4bacc067b29ecf4c0f895ee1b93191",
+    "chrome-android-desktop/apks/ContentShell.apk": "78f1ac0c5ed81b7aca65dcea65dd5b51bab8f0dbfa2f93586ddca8628848fadf",
+    "chrome-android-desktop/apks/SystemWebView.apk": "a93eace17a241366bf9d726bcbdb9fb24e594bbcc145d34d9b490c2c57b7c01d",
+    "chrome-android-desktop/apks/SystemWebViewShell.apk": "ebba54dbfc641ca3c4716e0146550d9fba3e8552caca9b4d80223d61ea07afea"
+  },
+  "fetched_at_utc": "2026-10-15T08:13:51+00:00",
+  "note": "Chromium development snapshot. NOT Google Chrome Stable."
+}

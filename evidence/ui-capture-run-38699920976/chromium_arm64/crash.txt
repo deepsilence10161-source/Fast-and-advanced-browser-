@@ -1,0 +1,1565 @@
+--------- beginning of crash
+10-15 07:39:44.332  4286  4297 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:39:44.332  4286  4297 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:39:44.332  4286  4297 F DEBUG   : Revision: '0'
+10-15 07:39:44.332  4286  4297 F DEBUG   : ABI: 'x86_64'
+10-15 07:39:44.332  4286  4297 F DEBUG   : Timestamp: 2026-10-15 07:39:43.019149797+0000
+10-15 07:39:44.332  4286  4297 F DEBUG   : Process uptime: 2s
+10-15 07:39:44.332  4286  4297 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-15 07:39:44.332  4286  4297 F DEBUG   : pid: 4286, tid: 4297, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 <<<
+10-15 07:39:44.332  4286  4297 F DEBUG   : uid: 90000
+10-15 07:39:44.332  4286  4297 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:39:44.332  4286  4297 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:39:44.332  4286  4297 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:39:44.332  4286  4297 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000092bec401  r15 00000000000010be
+10-15 07:39:44.332  4286  4297 F DEBUG   :     rdi 00000000000010be  rsi 00000000000010c9
+10-15 07:39:44.332  4286  4297 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:39:44.332  4286  4297 F DEBUG   : 6 total frames
+10-15 07:39:44.333  4286  4297 F DEBUG   : backtrace:
+10-15 07:39:44.333  4286  4297 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:39:44.333  4286  4297 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:44.333  4286  4297 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:44.333  4286  4297 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:44.333  4286  4297 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:44.333  4286  4297 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:39:48.800  4414  4432 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:39:48.800  4414  4432 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:39:48.800  4414  4432 F DEBUG   : Revision: '0'
+10-15 07:39:48.800  4414  4432 F DEBUG   : ABI: 'x86_64'
+10-15 07:39:48.800  4414  4432 F DEBUG   : Timestamp: 2026-10-15 07:39:47.884689479+0000
+10-15 07:39:48.800  4414  4432 F DEBUG   : Process uptime: 1s
+10-15 07:39:48.800  4414  4432 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1
+10-15 07:39:48.800  4414  4432 F DEBUG   : pid: 4414, tid: 4432, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 <<<
+10-15 07:39:48.800  4414  4432 F DEBUG   : uid: 90001
+10-15 07:39:48.800  4414  4432 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:39:48.800  4414  4432 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:39:48.800  4414  4432 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:39:48.800  4414  4432 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000032038901  r15 000000000000113e
+10-15 07:39:48.800  4414  4432 F DEBUG   :     rdi 000000000000113e  rsi 0000000000001150
+10-15 07:39:48.800  4414  4432 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:39:48.800  4414  4432 F DEBUG   : 6 total frames
+10-15 07:39:48.800  4414  4432 F DEBUG   : backtrace:
+10-15 07:39:48.800  4414  4432 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:39:48.800  4414  4432 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:48.800  4414  4432 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:48.800  4414  4432 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:48.800  4414  4432 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:48.800  4414  4432 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:39:50.708  4470  4484 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:39:50.708  4470  4484 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:39:50.708  4470  4484 F DEBUG   : Revision: '0'
+10-15 07:39:50.708  4470  4484 F DEBUG   : ABI: 'x86_64'
+10-15 07:39:50.708  4470  4484 F DEBUG   : Timestamp: 2026-10-15 07:39:48.823268200+0000
+10-15 07:39:50.708  4470  4484 F DEBUG   : Process uptime: 2s
+10-15 07:39:50.708  4470  4484 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2
+10-15 07:39:50.708  4470  4484 F DEBUG   : pid: 4470, tid: 4484, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2 <<<
+10-15 07:39:50.708  4470  4484 F DEBUG   : uid: 90002
+10-15 07:39:50.708  4470  4484 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:39:50.708  4470  4484 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:39:50.708  4470  4484 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:39:50.708  4470  4484 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000009302bf01  r15 0000000000001176
+10-15 07:39:50.708  4470  4484 F DEBUG   :     rdi 0000000000001176  rsi 0000000000001184
+10-15 07:39:50.708  4470  4484 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:39:50.708  4470  4484 F DEBUG   : 6 total frames
+10-15 07:39:50.708  4470  4484 F DEBUG   : backtrace:
+10-15 07:39:50.708  4470  4484 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:39:50.708  4470  4484 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:50.708  4470  4484 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:50.708  4470  4484 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:50.708  4470  4484 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:39:50.708  4470  4484 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:26.099  5180  5215 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:26.099  5180  5215 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:26.099  5180  5215 F DEBUG   : Revision: '0'
+10-15 07:40:26.099  5180  5215 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:26.099  5180  5215 F DEBUG   : Timestamp: 2026-10-15 07:40:24.419474917+0000
+10-15 07:40:26.099  5180  5215 F DEBUG   : Process uptime: 2s
+10-15 07:40:26.099  5180  5215 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3
+10-15 07:40:26.099  5180  5215 F DEBUG   : pid: 5180, tid: 5215, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3 <<<
+10-15 07:40:26.099  5180  5215 F DEBUG   : uid: 90000
+10-15 07:40:26.099  5180  5215 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:26.099  5180  5215 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:26.099  5180  5215 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:40:26.099  5180  5215 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000096310701  r15 000000000000143c
+10-15 07:40:26.099  5180  5215 F DEBUG   :     rdi 000000000000143c  rsi 000000000000145f
+10-15 07:40:26.099  5180  5215 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:40:26.099  5180  5215 F DEBUG   : 6 total frames
+10-15 07:40:26.099  5180  5215 F DEBUG   : backtrace:
+10-15 07:40:26.099  5180  5215 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:26.099  5180  5215 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:26.099  5180  5215 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:26.099  5180  5215 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:26.099  5180  5215 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:26.099  5180  5215 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:34.246  5370  5382 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:34.246  5370  5382 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:34.246  5370  5382 F DEBUG   : Revision: '0'
+10-15 07:40:34.246  5370  5382 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:34.246  5370  5382 F DEBUG   : Timestamp: 2026-10-15 07:40:33.688129142+0000
+10-15 07:40:34.246  5370  5382 F DEBUG   : Process uptime: 1s
+10-15 07:40:34.246  5370  5382 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4
+10-15 07:40:34.246  5370  5382 F DEBUG   : pid: 5370, tid: 5382, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4 <<<
+10-15 07:40:34.246  5370  5382 F DEBUG   : uid: 90000
+10-15 07:40:34.246  5370  5382 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:34.246  5370  5382 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:34.246  5370  5382 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:40:34.246  5370  5382 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000062304901  r15 00000000000014fa
+10-15 07:40:34.246  5370  5382 F DEBUG   :     rdi 00000000000014fa  rsi 0000000000001506
+10-15 07:40:34.247  5370  5382 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:40:34.247  5370  5382 F DEBUG   : 6 total frames
+10-15 07:40:34.247  5370  5382 F DEBUG   : backtrace:
+10-15 07:40:34.247  5370  5382 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:34.247  5370  5382 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:34.247  5370  5382 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:34.247  5370  5382 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:34.247  5370  5382 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:34.247  5370  5382 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:35.075  5392  5403 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:35.075  5392  5403 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:35.075  5392  5403 F DEBUG   : Revision: '0'
+10-15 07:40:35.075  5392  5403 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:35.075  5392  5403 F DEBUG   : Timestamp: 2026-10-15 07:40:34.688737269+0000
+10-15 07:40:35.075  5392  5403 F DEBUG   : Process uptime: 1s
+10-15 07:40:35.075  5392  5403 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:5
+10-15 07:40:35.075  5392  5403 F DEBUG   : pid: 5392, tid: 5403, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:5 <<<
+10-15 07:40:35.075  5392  5403 F DEBUG   : uid: 90001
+10-15 07:40:35.075  5392  5403 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:35.075  5392  5403 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:35.075  5392  5403 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:40:35.075  5392  5403 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000046df9101  r15 0000000000001510
+10-15 07:40:35.075  5392  5403 F DEBUG   :     rdi 0000000000001510  rsi 000000000000151b
+10-15 07:40:35.075  5392  5403 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:40:35.075  5392  5403 F DEBUG   : 6 total frames
+10-15 07:40:35.075  5392  5403 F DEBUG   : backtrace:
+10-15 07:40:35.075  5392  5403 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:35.075  5392  5403 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:35.075  5392  5403 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:35.075  5392  5403 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:35.075  5392  5403 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:35.075  5392  5403 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:39.210  5466  5477 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:39.210  5466  5477 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:39.210  5466  5477 F DEBUG   : Revision: '0'
+10-15 07:40:39.210  5466  5477 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:39.210  5466  5477 F DEBUG   : Timestamp: 2026-10-15 07:40:38.214620609+0000
+10-15 07:40:39.210  5466  5477 F DEBUG   : Process uptime: 1s
+10-15 07:40:39.210  5466  5477 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:6
+10-15 07:40:39.210  5466  5477 F DEBUG   : pid: 5466, tid: 5477, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:6 <<<
+10-15 07:40:39.210  5466  5477 F DEBUG   : uid: 90002
+10-15 07:40:39.211  5466  5477 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:39.211  5466  5477 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:39.211  5466  5477 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:40:39.211  5466  5477 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000001821df01  r15 000000000000155a
+10-15 07:40:39.211  5466  5477 F DEBUG   :     rdi 000000000000155a  rsi 0000000000001565
+10-15 07:40:39.211  5466  5477 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:40:39.211  5466  5477 F DEBUG   : 6 total frames
+10-15 07:40:39.211  5466  5477 F DEBUG   : backtrace:
+10-15 07:40:39.211  5466  5477 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:39.211  5466  5477 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:39.211  5466  5477 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:39.211  5466  5477 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:39.211  5466  5477 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:39.211  5466  5477 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:40.022  5483  5494 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:40.022  5483  5494 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:40.022  5483  5494 F DEBUG   : Revision: '0'
+10-15 07:40:40.022  5483  5494 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:40.022  5483  5494 F DEBUG   : Timestamp: 2026-10-15 07:40:39.666806022+0000
+10-15 07:40:40.022  5483  5494 F DEBUG   : Process uptime: 1s
+10-15 07:40:40.022  5483  5494 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:7
+10-15 07:40:40.022  5483  5494 F DEBUG   : pid: 5483, tid: 5494, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:7 <<<
+10-15 07:40:40.022  5483  5494 F DEBUG   : uid: 90003
+10-15 07:40:40.022  5483  5494 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:40.022  5483  5494 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:40.022  5483  5494 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:40:40.022  5483  5494 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000035622101  r15 000000000000156b
+10-15 07:40:40.022  5483  5494 F DEBUG   :     rdi 000000000000156b  rsi 0000000000001576
+10-15 07:40:40.022  5483  5494 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:40:40.022  5483  5494 F DEBUG   : 6 total frames
+10-15 07:40:40.022  5483  5494 F DEBUG   : backtrace:
+10-15 07:40:40.022  5483  5494 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:40.022  5483  5494 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:40.022  5483  5494 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:40.022  5483  5494 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:40.022  5483  5494 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:40.022  5483  5494 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:43.634  5495  5505 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:43.634  5495  5505 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:43.634  5495  5505 F DEBUG   : Revision: '0'
+10-15 07:40:43.634  5495  5505 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:43.634  5495  5505 F DEBUG   : Timestamp: 2026-10-15 07:40:43.475928664+0000
+10-15 07:40:43.634  5495  5505 F DEBUG   : Process uptime: 1s
+10-15 07:40:43.635  5495  5505 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:8
+10-15 07:40:43.635  5495  5505 F DEBUG   : pid: 5495, tid: 5505, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:8 <<<
+10-15 07:40:43.635  5495  5505 F DEBUG   : uid: 90004
+10-15 07:40:43.635  5495  5505 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:43.635  5495  5505 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:43.635  5495  5505 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:40:43.635  5495  5505 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000c96bb901  r15 0000000000001577
+10-15 07:40:43.635  5495  5505 F DEBUG   :     rdi 0000000000001577  rsi 0000000000001581
+10-15 07:40:43.635  5495  5505 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:40:43.635  5495  5505 F DEBUG   : 6 total frames
+10-15 07:40:43.635  5495  5505 F DEBUG   : backtrace:
+10-15 07:40:43.635  5495  5505 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:43.635  5495  5505 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:43.635  5495  5505 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:43.635  5495  5505 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:43.635  5495  5505 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:43.635  5495  5505 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:44.872  5508  5519 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:44.872  5508  5519 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:44.872  5508  5519 F DEBUG   : Revision: '0'
+10-15 07:40:44.872  5508  5519 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:44.872  5508  5519 F DEBUG   : Timestamp: 2026-10-15 07:40:44.717665466+0000
+10-15 07:40:44.872  5508  5519 F DEBUG   : Process uptime: 1s
+10-15 07:40:44.872  5508  5519 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:9
+10-15 07:40:44.872  5508  5519 F DEBUG   : pid: 5508, tid: 5519, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:9 <<<
+10-15 07:40:44.872  5508  5519 F DEBUG   : uid: 90005
+10-15 07:40:44.872  5508  5519 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:44.872  5508  5519 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:44.872  5508  5519 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:40:44.872  5508  5519 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000002bf0be01  r15 0000000000001584
+10-15 07:40:44.872  5508  5519 F DEBUG   :     rdi 0000000000001584  rsi 000000000000158f
+10-15 07:40:44.872  5508  5519 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:40:44.872  5508  5519 F DEBUG   : 6 total frames
+10-15 07:40:44.872  5508  5519 F DEBUG   : backtrace:
+10-15 07:40:44.872  5508  5519 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:44.872  5508  5519 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:44.872  5508  5519 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:44.872  5508  5519 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:44.872  5508  5519 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:44.872  5508  5519 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:40:55.490  5683  5694 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:40:55.490  5683  5694 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:40:55.490  5683  5694 F DEBUG   : Revision: '0'
+10-15 07:40:55.490  5683  5694 F DEBUG   : ABI: 'x86_64'
+10-15 07:40:55.490  5683  5694 F DEBUG   : Timestamp: 2026-10-15 07:40:55.271440209+0000
+10-15 07:40:55.490  5683  5694 F DEBUG   : Process uptime: 1s
+10-15 07:40:55.490  5683  5694 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:10
+10-15 07:40:55.490  5683  5694 F DEBUG   : pid: 5683, tid: 5694, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:10 <<<
+10-15 07:40:55.490  5683  5694 F DEBUG   : uid: 90000
+10-15 07:40:55.491  5683  5694 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:40:55.491  5683  5694 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:40:55.491  5683  5694 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:40:55.491  5683  5694 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000005e025c01  r15 0000000000001633
+10-15 07:40:55.491  5683  5694 F DEBUG   :     rdi 0000000000001633  rsi 000000000000163e
+10-15 07:40:55.491  5683  5694 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:40:55.491  5683  5694 F DEBUG   : 6 total frames
+10-15 07:40:55.491  5683  5694 F DEBUG   : backtrace:
+10-15 07:40:55.491  5683  5694 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:40:55.491  5683  5694 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:55.491  5683  5694 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:55.491  5683  5694 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:55.491  5683  5694 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:40:55.491  5683  5694 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:07.359  5796  5821 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:07.359  5796  5821 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:07.359  5796  5821 F DEBUG   : Revision: '0'
+10-15 07:41:07.359  5796  5821 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:07.359  5796  5821 F DEBUG   : Timestamp: 2026-10-15 07:41:07.017983198+0000
+10-15 07:41:07.359  5796  5821 F DEBUG   : Process uptime: 1s
+10-15 07:41:07.359  5796  5821 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:11
+10-15 07:41:07.359  5796  5821 F DEBUG   : pid: 5796, tid: 5821, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:11 <<<
+10-15 07:41:07.359  5796  5821 F DEBUG   : uid: 90000
+10-15 07:41:07.359  5796  5821 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:07.359  5796  5821 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:07.359  5796  5821 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:41:07.359  5796  5821 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000fccc4d01  r15 00000000000016a4
+10-15 07:41:07.359  5796  5821 F DEBUG   :     rdi 00000000000016a4  rsi 00000000000016bd
+10-15 07:41:07.359  5796  5821 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:41:07.359  5796  5821 F DEBUG   : 6 total frames
+10-15 07:41:07.359  5796  5821 F DEBUG   : backtrace:
+10-15 07:41:07.359  5796  5821 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:07.359  5796  5821 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:07.359  5796  5821 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:07.359  5796  5821 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:07.359  5796  5821 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:07.359  5796  5821 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:08.285  5857  5870 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:08.285  5857  5870 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:08.285  5857  5870 F DEBUG   : Revision: '0'
+10-15 07:41:08.285  5857  5870 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:08.285  5857  5870 F DEBUG   : Timestamp: 2026-10-15 07:41:07.917421547+0000
+10-15 07:41:08.285  5857  5870 F DEBUG   : Process uptime: 1s
+10-15 07:41:08.285  5857  5870 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:12
+10-15 07:41:08.285  5857  5870 F DEBUG   : pid: 5857, tid: 5870, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:12 <<<
+10-15 07:41:08.285  5857  5870 F DEBUG   : uid: 90001
+10-15 07:41:08.285  5857  5870 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:08.285  5857  5870 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:08.285  5857  5870 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:41:08.285  5857  5870 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000f2886401  r15 00000000000016e1
+10-15 07:41:08.285  5857  5870 F DEBUG   :     rdi 00000000000016e1  rsi 00000000000016ee
+10-15 07:41:08.285  5857  5870 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:41:08.285  5857  5870 F DEBUG   : 6 total frames
+10-15 07:41:08.285  5857  5870 F DEBUG   : backtrace:
+10-15 07:41:08.285  5857  5870 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:08.285  5857  5870 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:08.285  5857  5870 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:08.285  5857  5870 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:08.285  5857  5870 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:08.285  5857  5870 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:21.632  6181  6192 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:21.632  6181  6192 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:21.632  6181  6192 F DEBUG   : Revision: '0'
+10-15 07:41:21.632  6181  6192 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:21.632  6181  6192 F DEBUG   : Timestamp: 2026-10-15 07:41:21.465192436+0000
+10-15 07:41:21.632  6181  6192 F DEBUG   : Process uptime: 1s
+10-15 07:41:21.632  6181  6192 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:13
+10-15 07:41:21.632  6181  6192 F DEBUG   : pid: 6181, tid: 6192, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:13 <<<
+10-15 07:41:21.632  6181  6192 F DEBUG   : uid: 90000
+10-15 07:41:21.632  6181  6192 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:21.632  6181  6192 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:21.632  6181  6192 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c4bfeb0  r11 0000000000000246
+10-15 07:41:21.632  6181  6192 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000048774101  r15 0000000000001825
+10-15 07:41:21.632  6181  6192 F DEBUG   :     rdi 0000000000001825  rsi 0000000000001830
+10-15 07:41:21.632  6181  6192 F DEBUG   :     rbp 000070ce3c4bff50  rsp 000070ce3c4bfea8  rip 000070d143f2b808
+10-15 07:41:21.632  6181  6192 F DEBUG   : 6 total frames
+10-15 07:41:21.632  6181  6192 F DEBUG   : backtrace:
+10-15 07:41:21.632  6181  6192 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:21.632  6181  6192 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:21.632  6181  6192 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:21.632  6181  6192 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:21.632  6181  6192 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:21.632  6181  6192 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:35.453  6330  6341 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:35.453  6330  6341 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:35.453  6330  6341 F DEBUG   : Revision: '0'
+10-15 07:41:35.453  6330  6341 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:35.453  6330  6341 F DEBUG   : Timestamp: 2026-10-15 07:41:35.298086118+0000
+10-15 07:41:35.453  6330  6341 F DEBUG   : Process uptime: 2s
+10-15 07:41:35.453  6330  6341 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:14
+10-15 07:41:35.453  6330  6341 F DEBUG   : pid: 6330, tid: 6341, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:14 <<<
+10-15 07:41:35.453  6330  6341 F DEBUG   : uid: 90000
+10-15 07:41:35.453  6330  6341 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:35.453  6330  6341 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:35.453  6330  6341 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:41:35.453  6330  6341 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000008970a801  r15 00000000000018ba
+10-15 07:41:35.453  6330  6341 F DEBUG   :     rdi 00000000000018ba  rsi 00000000000018c5
+10-15 07:41:35.453  6330  6341 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:41:35.453  6330  6341 F DEBUG   : 6 total frames
+10-15 07:41:35.453  6330  6341 F DEBUG   : backtrace:
+10-15 07:41:35.453  6330  6341 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:35.453  6330  6341 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.453  6330  6341 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.453  6330  6341 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.453  6330  6341 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.453  6330  6341 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:35.692  6342  6354 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:35.692  6342  6354 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:35.692  6342  6354 F DEBUG   : Revision: '0'
+10-15 07:41:35.692  6342  6354 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:35.692  6342  6354 F DEBUG   : Timestamp: 2026-10-15 07:41:35.533473191+0000
+10-15 07:41:35.692  6342  6354 F DEBUG   : Process uptime: 1s
+10-15 07:41:35.692  6342  6354 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:15
+10-15 07:41:35.692  6342  6354 F DEBUG   : pid: 6342, tid: 6354, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:15 <<<
+10-15 07:41:35.692  6342  6354 F DEBUG   : uid: 90001
+10-15 07:41:35.692  6342  6354 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:35.692  6342  6354 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:35.692  6342  6354 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:41:35.692  6342  6354 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000c1c02401  r15 00000000000018c6
+10-15 07:41:35.692  6342  6354 F DEBUG   :     rdi 00000000000018c6  rsi 00000000000018d2
+10-15 07:41:35.692  6342  6354 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:41:35.692  6342  6354 F DEBUG   : 6 total frames
+10-15 07:41:35.692  6342  6354 F DEBUG   : backtrace:
+10-15 07:41:35.692  6342  6354 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:35.692  6342  6354 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.692  6342  6354 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.692  6342  6354 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.692  6342  6354 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:35.692  6342  6354 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:42.768  6419  6430 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:42.768  6419  6430 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:42.768  6419  6430 F DEBUG   : Revision: '0'
+10-15 07:41:42.768  6419  6430 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:42.768  6419  6430 F DEBUG   : Timestamp: 2026-10-15 07:41:42.075531472+0000
+10-15 07:41:42.768  6419  6430 F DEBUG   : Process uptime: 1s
+10-15 07:41:42.768  6419  6430 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:17
+10-15 07:41:42.768  6419  6430 F DEBUG   : pid: 6419, tid: 6430, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:17 <<<
+10-15 07:41:42.768  6419  6430 F DEBUG   : uid: 90001
+10-15 07:41:42.768  6419  6430 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:42.768  6419  6430 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:42.768  6419  6430 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:41:42.768  6419  6430 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000335b6101  r15 0000000000001913
+10-15 07:41:42.768  6419  6430 F DEBUG   :     rdi 0000000000001913  rsi 000000000000191e
+10-15 07:41:42.768  6419  6430 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:41:42.768  6419  6430 F DEBUG   : 6 total frames
+10-15 07:41:42.768  6419  6430 F DEBUG   : backtrace:
+10-15 07:41:42.768  6419  6430 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:42.768  6419  6430 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.768  6419  6430 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.768  6419  6430 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.768  6419  6430 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.768  6419  6430 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:42.892  6402  6415 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:42.892  6402  6415 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:42.892  6402  6415 F DEBUG   : Revision: '0'
+10-15 07:41:42.892  6402  6415 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:42.892  6402  6415 F DEBUG   : Timestamp: 2026-10-15 07:41:41.577888692+0000
+10-15 07:41:42.892  6402  6415 F DEBUG   : Process uptime: 1s
+10-15 07:41:42.892  6402  6415 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:16
+10-15 07:41:42.892  6402  6415 F DEBUG   : pid: 6402, tid: 6415, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:16 <<<
+10-15 07:41:42.892  6402  6415 F DEBUG   : uid: 90000
+10-15 07:41:42.892  6402  6415 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:42.892  6402  6415 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:42.892  6402  6415 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:41:42.892  6402  6415 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000d7ec9101  r15 0000000000001902
+10-15 07:41:42.892  6402  6415 F DEBUG   :     rdi 0000000000001902  rsi 000000000000190f
+10-15 07:41:42.892  6402  6415 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:41:42.892  6402  6415 F DEBUG   : 6 total frames
+10-15 07:41:42.892  6402  6415 F DEBUG   : backtrace:
+10-15 07:41:42.892  6402  6415 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:42.892  6402  6415 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.892  6402  6415 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.892  6402  6415 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.892  6402  6415 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:42.892  6402  6415 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:41:50.249  6510  6521 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:41:50.249  6510  6521 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:41:50.249  6510  6521 F DEBUG   : Revision: '0'
+10-15 07:41:50.249  6510  6521 F DEBUG   : ABI: 'x86_64'
+10-15 07:41:50.249  6510  6521 F DEBUG   : Timestamp: 2026-10-15 07:41:50.097844332+0000
+10-15 07:41:50.249  6510  6521 F DEBUG   : Process uptime: 1s
+10-15 07:41:50.249  6510  6521 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:18
+10-15 07:41:50.249  6510  6521 F DEBUG   : pid: 6510, tid: 6521, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:18 <<<
+10-15 07:41:50.249  6510  6521 F DEBUG   : uid: 90000
+10-15 07:41:50.249  6510  6521 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:41:50.249  6510  6521 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:41:50.249  6510  6521 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:41:50.249  6510  6521 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000811d3901  r15 000000000000196e
+10-15 07:41:50.249  6510  6521 F DEBUG   :     rdi 000000000000196e  rsi 0000000000001979
+10-15 07:41:50.249  6510  6521 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:41:50.250  6510  6521 F DEBUG   : 6 total frames
+10-15 07:41:50.250  6510  6521 F DEBUG   : backtrace:
+10-15 07:41:50.250  6510  6521 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:41:50.250  6510  6521 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:50.250  6510  6521 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:50.250  6510  6521 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:50.250  6510  6521 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:41:50.250  6510  6521 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:03.835  6719  6731 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:03.835  6719  6731 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:03.835  6719  6731 F DEBUG   : Revision: '0'
+10-15 07:42:03.835  6719  6731 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:03.835  6719  6731 F DEBUG   : Timestamp: 2026-10-15 07:42:03.641887679+0000
+10-15 07:42:03.835  6719  6731 F DEBUG   : Process uptime: 1s
+10-15 07:42:03.835  6719  6731 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:19
+10-15 07:42:03.835  6719  6731 F DEBUG   : pid: 6719, tid: 6731, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:19 <<<
+10-15 07:42:03.835  6719  6731 F DEBUG   : uid: 90000
+10-15 07:42:03.835  6719  6731 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:03.835  6719  6731 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:03.835  6719  6731 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:42:03.835  6719  6731 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000a8078601  r15 0000000000001a3f
+10-15 07:42:03.835  6719  6731 F DEBUG   :     rdi 0000000000001a3f  rsi 0000000000001a4b
+10-15 07:42:03.835  6719  6731 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:42:03.835  6719  6731 F DEBUG   : 6 total frames
+10-15 07:42:03.835  6719  6731 F DEBUG   : backtrace:
+10-15 07:42:03.835  6719  6731 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:03.835  6719  6731 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:03.835  6719  6731 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:03.835  6719  6731 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:03.835  6719  6731 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:03.835  6719  6731 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:04.126  6735  6746 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:04.126  6735  6746 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:04.126  6735  6746 F DEBUG   : Revision: '0'
+10-15 07:42:04.126  6735  6746 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:04.126  6735  6746 F DEBUG   : Timestamp: 2026-10-15 07:42:03.918907998+0000
+10-15 07:42:04.126  6735  6746 F DEBUG   : Process uptime: 1s
+10-15 07:42:04.126  6735  6746 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:20
+10-15 07:42:04.126  6735  6746 F DEBUG   : pid: 6735, tid: 6746, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:20 <<<
+10-15 07:42:04.126  6735  6746 F DEBUG   : uid: 90001
+10-15 07:42:04.126  6735  6746 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:04.126  6735  6746 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:04.126  6735  6746 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:42:04.126  6735  6746 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000c2305a01  r15 0000000000001a4f
+10-15 07:42:04.126  6735  6746 F DEBUG   :     rdi 0000000000001a4f  rsi 0000000000001a5a
+10-15 07:42:04.126  6735  6746 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:42:04.126  6735  6746 F DEBUG   : 6 total frames
+10-15 07:42:04.126  6735  6746 F DEBUG   : backtrace:
+10-15 07:42:04.126  6735  6746 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:04.126  6735  6746 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.126  6735  6746 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.126  6735  6746 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.126  6735  6746 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.126  6735  6746 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:04.326  6747  6759 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:04.326  6747  6759 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:04.326  6747  6759 F DEBUG   : Revision: '0'
+10-15 07:42:04.326  6747  6759 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:04.326  6747  6759 F DEBUG   : Timestamp: 2026-10-15 07:42:04.142225102+0000
+10-15 07:42:04.326  6747  6759 F DEBUG   : Process uptime: 1s
+10-15 07:42:04.326  6747  6759 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:21
+10-15 07:42:04.327  6747  6759 F DEBUG   : pid: 6747, tid: 6759, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:21 <<<
+10-15 07:42:04.327  6747  6759 F DEBUG   : uid: 90002
+10-15 07:42:04.327  6747  6759 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:04.327  6747  6759 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:04.327  6747  6759 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:42:04.327  6747  6759 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000005e395101  r15 0000000000001a5b
+10-15 07:42:04.327  6747  6759 F DEBUG   :     rdi 0000000000001a5b  rsi 0000000000001a67
+10-15 07:42:04.327  6747  6759 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:42:04.327  6747  6759 F DEBUG   : 6 total frames
+10-15 07:42:04.327  6747  6759 F DEBUG   : backtrace:
+10-15 07:42:04.327  6747  6759 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:04.327  6747  6759 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.327  6747  6759 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.327  6747  6759 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.327  6747  6759 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:04.327  6747  6759 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:06.202  6760  6771 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:06.202  6760  6771 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:06.202  6760  6771 F DEBUG   : Revision: '0'
+10-15 07:42:06.202  6760  6771 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:06.202  6760  6771 F DEBUG   : Timestamp: 2026-10-15 07:42:05.994455621+0000
+10-15 07:42:06.202  6760  6771 F DEBUG   : Process uptime: 1s
+10-15 07:42:06.202  6760  6771 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:22
+10-15 07:42:06.202  6760  6771 F DEBUG   : pid: 6760, tid: 6771, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:22 <<<
+10-15 07:42:06.202  6760  6771 F DEBUG   : uid: 90003
+10-15 07:42:06.202  6760  6771 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:06.202  6760  6771 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:06.202  6760  6771 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:42:06.202  6760  6771 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000016c82301  r15 0000000000001a68
+10-15 07:42:06.202  6760  6771 F DEBUG   :     rdi 0000000000001a68  rsi 0000000000001a73
+10-15 07:42:06.202  6760  6771 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:42:06.202  6760  6771 F DEBUG   : 6 total frames
+10-15 07:42:06.202  6760  6771 F DEBUG   : backtrace:
+10-15 07:42:06.202  6760  6771 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:06.202  6760  6771 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.202  6760  6771 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.202  6760  6771 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.202  6760  6771 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.202  6760  6771 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:06.320  6772  6784 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:06.320  6772  6784 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:06.320  6772  6784 F DEBUG   : Revision: '0'
+10-15 07:42:06.320  6772  6784 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:06.320  6772  6784 F DEBUG   : Timestamp: 2026-10-15 07:42:06.147542918+0000
+10-15 07:42:06.320  6772  6784 F DEBUG   : Process uptime: 1s
+10-15 07:42:06.320  6772  6784 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23
+10-15 07:42:06.320  6772  6784 F DEBUG   : pid: 6772, tid: 6784, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:23 <<<
+10-15 07:42:06.320  6772  6784 F DEBUG   : uid: 90004
+10-15 07:42:06.320  6772  6784 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:06.321  6772  6784 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:06.321  6772  6784 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:42:06.321  6772  6784 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000ffb43401  r15 0000000000001a74
+10-15 07:42:06.321  6772  6784 F DEBUG   :     rdi 0000000000001a74  rsi 0000000000001a80
+10-15 07:42:06.321  6772  6784 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:42:06.321  6772  6784 F DEBUG   : 6 total frames
+10-15 07:42:06.321  6772  6784 F DEBUG   : backtrace:
+10-15 07:42:06.321  6772  6784 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:06.321  6772  6784 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.321  6772  6784 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.321  6772  6784 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.321  6772  6784 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:06.321  6772  6784 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:26.966  7002  7013 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:26.966  7002  7013 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:26.966  7002  7013 F DEBUG   : Revision: '0'
+10-15 07:42:26.966  7002  7013 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:26.966  7002  7013 F DEBUG   : Timestamp: 2026-10-15 07:42:26.812455899+0000
+10-15 07:42:26.967  7002  7013 F DEBUG   : Process uptime: 1s
+10-15 07:42:26.967  7002  7013 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24
+10-15 07:42:26.967  7002  7013 F DEBUG   : pid: 7002, tid: 7013, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:24 <<<
+10-15 07:42:26.967  7002  7013 F DEBUG   : uid: 90000
+10-15 07:42:26.967  7002  7013 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:26.967  7002  7013 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:26.967  7002  7013 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:26.967  7002  7013 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000008d47c01  r15 0000000000001b5a
+10-15 07:42:26.967  7002  7013 F DEBUG   :     rdi 0000000000001b5a  rsi 0000000000001b65
+10-15 07:42:26.967  7002  7013 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:26.967  7002  7013 F DEBUG   : 6 total frames
+10-15 07:42:26.967  7002  7013 F DEBUG   : backtrace:
+10-15 07:42:26.967  7002  7013 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:26.967  7002  7013 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:26.967  7002  7013 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:26.967  7002  7013 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:26.967  7002  7013 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:26.967  7002  7013 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:27.240  7014  7025 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:27.240  7014  7025 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:27.240  7014  7025 F DEBUG   : Revision: '0'
+10-15 07:42:27.240  7014  7025 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:27.240  7014  7025 F DEBUG   : Timestamp: 2026-10-15 07:42:27.081456545+0000
+10-15 07:42:27.240  7014  7025 F DEBUG   : Process uptime: 1s
+10-15 07:42:27.240  7014  7025 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25
+10-15 07:42:27.240  7014  7025 F DEBUG   : pid: 7014, tid: 7025, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25 <<<
+10-15 07:42:27.240  7014  7025 F DEBUG   : uid: 90001
+10-15 07:42:27.240  7014  7025 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:27.240  7014  7025 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:27.240  7014  7025 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:27.240  7014  7025 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000493a8501  r15 0000000000001b66
+10-15 07:42:27.240  7014  7025 F DEBUG   :     rdi 0000000000001b66  rsi 0000000000001b71
+10-15 07:42:27.240  7014  7025 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:27.240  7014  7025 F DEBUG   : 6 total frames
+10-15 07:42:27.240  7014  7025 F DEBUG   : backtrace:
+10-15 07:42:27.240  7014  7025 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:27.240  7014  7025 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.240  7014  7025 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.240  7014  7025 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.240  7014  7025 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.240  7014  7025 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:27.497  7026  7037 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:27.497  7026  7037 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:27.497  7026  7037 F DEBUG   : Revision: '0'
+10-15 07:42:27.497  7026  7037 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:27.497  7026  7037 F DEBUG   : Timestamp: 2026-10-15 07:42:27.336966455+0000
+10-15 07:42:27.497  7026  7037 F DEBUG   : Process uptime: 1s
+10-15 07:42:27.497  7026  7037 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26
+10-15 07:42:27.497  7026  7037 F DEBUG   : pid: 7026, tid: 7037, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 <<<
+10-15 07:42:27.497  7026  7037 F DEBUG   : uid: 90002
+10-15 07:42:27.497  7026  7037 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:27.497  7026  7037 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:27.497  7026  7037 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:27.497  7026  7037 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000002d3d7601  r15 0000000000001b72
+10-15 07:42:27.497  7026  7037 F DEBUG   :     rdi 0000000000001b72  rsi 0000000000001b7d
+10-15 07:42:27.497  7026  7037 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:27.497  7026  7037 F DEBUG   : 6 total frames
+10-15 07:42:27.497  7026  7037 F DEBUG   : backtrace:
+10-15 07:42:27.497  7026  7037 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:27.497  7026  7037 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.497  7026  7037 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.497  7026  7037 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.497  7026  7037 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:27.497  7026  7037 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:28.322  7039  7051 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:28.322  7039  7051 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:28.322  7039  7051 F DEBUG   : Revision: '0'
+10-15 07:42:28.322  7039  7051 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:28.322  7039  7051 F DEBUG   : Timestamp: 2026-10-15 07:42:28.165591825+0000
+10-15 07:42:28.322  7039  7051 F DEBUG   : Process uptime: 1s
+10-15 07:42:28.322  7039  7051 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27
+10-15 07:42:28.322  7039  7051 F DEBUG   : pid: 7039, tid: 7051, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 <<<
+10-15 07:42:28.322  7039  7051 F DEBUG   : uid: 90003
+10-15 07:42:28.322  7039  7051 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:28.322  7039  7051 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:28.322  7039  7051 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:28.322  7039  7051 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000ca843201  r15 0000000000001b7f
+10-15 07:42:28.323  7039  7051 F DEBUG   :     rdi 0000000000001b7f  rsi 0000000000001b8b
+10-15 07:42:28.323  7039  7051 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:28.323  7039  7051 F DEBUG   : 6 total frames
+10-15 07:42:28.323  7039  7051 F DEBUG   : backtrace:
+10-15 07:42:28.323  7039  7051 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:28.323  7039  7051 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:28.323  7039  7051 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:28.323  7039  7051 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:28.323  7039  7051 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:28.323  7039  7051 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:29.419  7066  7077 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:29.419  7066  7077 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:29.419  7066  7077 F DEBUG   : Revision: '0'
+10-15 07:42:29.419  7066  7077 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:29.419  7066  7077 F DEBUG   : Timestamp: 2026-10-15 07:42:29.251180568+0000
+10-15 07:42:29.420  7066  7077 F DEBUG   : Process uptime: 1s
+10-15 07:42:29.420  7066  7077 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28
+10-15 07:42:29.420  7066  7077 F DEBUG   : pid: 7066, tid: 7077, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 <<<
+10-15 07:42:29.420  7066  7077 F DEBUG   : uid: 90004
+10-15 07:42:29.420  7066  7077 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:29.420  7066  7077 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:29.420  7066  7077 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:29.420  7066  7077 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000007e004601  r15 0000000000001b9a
+10-15 07:42:29.420  7066  7077 F DEBUG   :     rdi 0000000000001b9a  rsi 0000000000001ba5
+10-15 07:42:29.420  7066  7077 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:29.420  7066  7077 F DEBUG   : 6 total frames
+10-15 07:42:29.420  7066  7077 F DEBUG   : backtrace:
+10-15 07:42:29.420  7066  7077 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:29.420  7066  7077 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.420  7066  7077 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.420  7066  7077 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.420  7066  7077 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.420  7066  7077 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:29.702  7078  7089 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:29.702  7078  7089 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:29.702  7078  7089 F DEBUG   : Revision: '0'
+10-15 07:42:29.702  7078  7089 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:29.702  7078  7089 F DEBUG   : Timestamp: 2026-10-15 07:42:29.538144037+0000
+10-15 07:42:29.702  7078  7089 F DEBUG   : Process uptime: 1s
+10-15 07:42:29.702  7078  7089 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29
+10-15 07:42:29.702  7078  7089 F DEBUG   : pid: 7078, tid: 7089, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 <<<
+10-15 07:42:29.702  7078  7089 F DEBUG   : uid: 90005
+10-15 07:42:29.702  7078  7089 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:29.702  7078  7089 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:29.702  7078  7089 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:29.702  7078  7089 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000414ddf01  r15 0000000000001ba6
+10-15 07:42:29.702  7078  7089 F DEBUG   :     rdi 0000000000001ba6  rsi 0000000000001bb1
+10-15 07:42:29.702  7078  7089 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:29.703  7078  7089 F DEBUG   : 6 total frames
+10-15 07:42:29.703  7078  7089 F DEBUG   : backtrace:
+10-15 07:42:29.703  7078  7089 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:29.703  7078  7089 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.703  7078  7089 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.703  7078  7089 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.703  7078  7089 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:29.703  7078  7089 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:31.340  7092  7103 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:31.340  7092  7103 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:31.340  7092  7103 F DEBUG   : Revision: '0'
+10-15 07:42:31.340  7092  7103 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:31.340  7092  7103 F DEBUG   : Timestamp: 2026-10-15 07:42:31.177390476+0000
+10-15 07:42:31.340  7092  7103 F DEBUG   : Process uptime: 1s
+10-15 07:42:31.340  7092  7103 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30
+10-15 07:42:31.340  7092  7103 F DEBUG   : pid: 7092, tid: 7103, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 <<<
+10-15 07:42:31.340  7092  7103 F DEBUG   : uid: 90006
+10-15 07:42:31.340  7092  7103 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:31.340  7092  7103 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:31.340  7092  7103 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:31.340  7092  7103 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000b4f18301  r15 0000000000001bb4
+10-15 07:42:31.340  7092  7103 F DEBUG   :     rdi 0000000000001bb4  rsi 0000000000001bbf
+10-15 07:42:31.340  7092  7103 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:31.340  7092  7103 F DEBUG   : 6 total frames
+10-15 07:42:31.340  7092  7103 F DEBUG   : backtrace:
+10-15 07:42:31.340  7092  7103 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:31.340  7092  7103 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:31.340  7092  7103 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:31.340  7092  7103 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:31.340  7092  7103 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:31.340  7092  7103 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:33.220  7120  7130 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:33.220  7120  7130 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:33.220  7120  7130 F DEBUG   : Revision: '0'
+10-15 07:42:33.220  7120  7130 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:33.220  7120  7130 F DEBUG   : Timestamp: 2026-10-15 07:42:33.065026118+0000
+10-15 07:42:33.220  7120  7130 F DEBUG   : Process uptime: 1s
+10-15 07:42:33.220  7120  7130 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31
+10-15 07:42:33.220  7120  7130 F DEBUG   : pid: 7120, tid: 7130, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 <<<
+10-15 07:42:33.220  7120  7130 F DEBUG   : uid: 90007
+10-15 07:42:33.220  7120  7130 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:33.220  7120  7130 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:33.220  7120  7130 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:33.220  7120  7130 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000205eaa01  r15 0000000000001bd0
+10-15 07:42:33.220  7120  7130 F DEBUG   :     rdi 0000000000001bd0  rsi 0000000000001bda
+10-15 07:42:33.220  7120  7130 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:33.220  7120  7130 F DEBUG   : 6 total frames
+10-15 07:42:33.220  7120  7130 F DEBUG   : backtrace:
+10-15 07:42:33.220  7120  7130 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:33.220  7120  7130 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:33.220  7120  7130 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:33.220  7120  7130 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:33.220  7120  7130 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:33.220  7120  7130 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:35.344  7154  7165 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:35.344  7154  7165 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:35.344  7154  7165 F DEBUG   : Revision: '0'
+10-15 07:42:35.344  7154  7165 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:35.344  7154  7165 F DEBUG   : Timestamp: 2026-10-15 07:42:35.185518166+0000
+10-15 07:42:35.344  7154  7165 F DEBUG   : Process uptime: 1s
+10-15 07:42:35.344  7154  7165 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32
+10-15 07:42:35.344  7154  7165 F DEBUG   : pid: 7154, tid: 7165, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 <<<
+10-15 07:42:35.344  7154  7165 F DEBUG   : uid: 90008
+10-15 07:42:35.344  7154  7165 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:35.344  7154  7165 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:35.344  7154  7165 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:35.344  7154  7165 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000e0284d01  r15 0000000000001bf2
+10-15 07:42:35.344  7154  7165 F DEBUG   :     rdi 0000000000001bf2  rsi 0000000000001bfd
+10-15 07:42:35.344  7154  7165 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:35.344  7154  7165 F DEBUG   : 6 total frames
+10-15 07:42:35.344  7154  7165 F DEBUG   : backtrace:
+10-15 07:42:35.344  7154  7165 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:35.344  7154  7165 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:35.344  7154  7165 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:35.344  7154  7165 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:35.344  7154  7165 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:35.344  7154  7165 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:37.716  7186  7197 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:37.716  7186  7197 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:37.716  7186  7197 F DEBUG   : Revision: '0'
+10-15 07:42:37.716  7186  7197 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:37.716  7186  7197 F DEBUG   : Timestamp: 2026-10-15 07:42:37.553871501+0000
+10-15 07:42:37.716  7186  7197 F DEBUG   : Process uptime: 1s
+10-15 07:42:37.716  7186  7197 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33
+10-15 07:42:37.716  7186  7197 F DEBUG   : pid: 7186, tid: 7197, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 <<<
+10-15 07:42:37.716  7186  7197 F DEBUG   : uid: 90009
+10-15 07:42:37.716  7186  7197 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:37.716  7186  7197 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:37.716  7186  7197 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:37.716  7186  7197 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000e479d401  r15 0000000000001c12
+10-15 07:42:37.716  7186  7197 F DEBUG   :     rdi 0000000000001c12  rsi 0000000000001c1d
+10-15 07:42:37.716  7186  7197 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:37.716  7186  7197 F DEBUG   : 6 total frames
+10-15 07:42:37.716  7186  7197 F DEBUG   : backtrace:
+10-15 07:42:37.716  7186  7197 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:37.716  7186  7197 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:37.716  7186  7197 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:37.716  7186  7197 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:37.716  7186  7197 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:37.716  7186  7197 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:42:40.416  7232  7249 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:42:40.416  7232  7249 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:42:40.416  7232  7249 F DEBUG   : Revision: '0'
+10-15 07:42:40.416  7232  7249 F DEBUG   : ABI: 'x86_64'
+10-15 07:42:40.416  7232  7249 F DEBUG   : Timestamp: 2026-10-15 07:42:40.200967508+0000
+10-15 07:42:40.416  7232  7249 F DEBUG   : Process uptime: 1s
+10-15 07:42:40.416  7232  7249 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34
+10-15 07:42:40.416  7232  7249 F DEBUG   : pid: 7232, tid: 7249, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34 <<<
+10-15 07:42:40.416  7232  7249 F DEBUG   : uid: 90010
+10-15 07:42:40.416  7232  7249 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:42:40.416  7232  7249 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:42:40.416  7232  7249 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:42:40.416  7232  7249 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000a914be01  r15 0000000000001c40
+10-15 07:42:40.416  7232  7249 F DEBUG   :     rdi 0000000000001c40  rsi 0000000000001c51
+10-15 07:42:40.416  7232  7249 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:42:40.416  7232  7249 F DEBUG   : 6 total frames
+10-15 07:42:40.416  7232  7249 F DEBUG   : backtrace:
+10-15 07:42:40.416  7232  7249 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:42:40.416  7232  7249 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:40.416  7232  7249 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:40.416  7232  7249 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:40.416  7232  7249 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:42:40.416  7232  7249 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:43:47.115  7784  7800 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:43:47.115  7784  7800 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:43:47.115  7784  7800 F DEBUG   : Revision: '0'
+10-15 07:43:47.115  7784  7800 F DEBUG   : ABI: 'x86_64'
+10-15 07:43:47.115  7784  7800 F DEBUG   : Timestamp: 2026-10-15 07:43:46.333073381+0000
+10-15 07:43:47.115  7784  7800 F DEBUG   : Process uptime: 2s
+10-15 07:43:47.115  7784  7800 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35
+10-15 07:43:47.115  7784  7800 F DEBUG   : pid: 7784, tid: 7800, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35 <<<
+10-15 07:43:47.115  7784  7800 F DEBUG   : uid: 90000
+10-15 07:43:47.115  7784  7800 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:43:47.115  7784  7800 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:43:47.115  7784  7800 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:43:47.115  7784  7800 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000ab89df01  r15 0000000000001e68
+10-15 07:43:47.115  7784  7800 F DEBUG   :     rdi 0000000000001e68  rsi 0000000000001e78
+10-15 07:43:47.115  7784  7800 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:43:47.115  7784  7800 F DEBUG   : 6 total frames
+10-15 07:43:47.115  7784  7800 F DEBUG   : backtrace:
+10-15 07:43:47.115  7784  7800 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:43:47.115  7784  7800 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.115  7784  7800 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.115  7784  7800 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.115  7784  7800 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.115  7784  7800 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:43:47.178  7785  7811 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:43:47.178  7785  7811 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:43:47.178  7785  7811 F DEBUG   : Revision: '0'
+10-15 07:43:47.178  7785  7811 F DEBUG   : ABI: 'x86_64'
+10-15 07:43:47.178  7785  7811 F DEBUG   : Timestamp: 2026-10-15 07:43:46.402602929+0000
+10-15 07:43:47.178  7785  7811 F DEBUG   : Process uptime: 2s
+10-15 07:43:47.178  7785  7811 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:36
+10-15 07:43:47.178  7785  7811 F DEBUG   : pid: 7785, tid: 7811, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:36 <<<
+10-15 07:43:47.178  7785  7811 F DEBUG   : uid: 90001
+10-15 07:43:47.178  7785  7811 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:43:47.178  7785  7811 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:43:47.178  7785  7811 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:43:47.178  7785  7811 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000004168eb01  r15 0000000000001e69
+10-15 07:43:47.178  7785  7811 F DEBUG   :     rdi 0000000000001e69  rsi 0000000000001e83
+10-15 07:43:47.178  7785  7811 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:43:47.179  7785  7811 F DEBUG   : 6 total frames
+10-15 07:43:47.179  7785  7811 F DEBUG   : backtrace:
+10-15 07:43:47.179  7785  7811 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:43:47.179  7785  7811 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.179  7785  7811 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.179  7785  7811 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.179  7785  7811 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:47.179  7785  7811 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:43:49.204  7824  7835 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:43:49.204  7824  7835 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:43:49.204  7824  7835 F DEBUG   : Revision: '0'
+10-15 07:43:49.204  7824  7835 F DEBUG   : ABI: 'x86_64'
+10-15 07:43:49.204  7824  7835 F DEBUG   : Timestamp: 2026-10-15 07:43:48.596970218+0000
+10-15 07:43:49.204  7824  7835 F DEBUG   : Process uptime: 1s
+10-15 07:43:49.204  7824  7835 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:37
+10-15 07:43:49.204  7824  7835 F DEBUG   : pid: 7824, tid: 7835, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:37 <<<
+10-15 07:43:49.204  7824  7835 F DEBUG   : uid: 90002
+10-15 07:43:49.204  7824  7835 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:43:49.204  7824  7835 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:43:49.204  7824  7835 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:43:49.204  7824  7835 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000bc7f8201  r15 0000000000001e90
+10-15 07:43:49.204  7824  7835 F DEBUG   :     rdi 0000000000001e90  rsi 0000000000001e9b
+10-15 07:43:49.204  7824  7835 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:43:49.204  7824  7835 F DEBUG   : 6 total frames
+10-15 07:43:49.204  7824  7835 F DEBUG   : backtrace:
+10-15 07:43:49.204  7824  7835 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:43:49.204  7824  7835 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:49.204  7824  7835 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:49.204  7824  7835 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:49.204  7824  7835 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:43:49.204  7824  7835 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:44:12.136  8003  8016 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:44:12.136  8003  8016 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:44:12.136  8003  8016 F DEBUG   : Revision: '0'
+10-15 07:44:12.136  8003  8016 F DEBUG   : ABI: 'x86_64'
+10-15 07:44:12.136  8003  8016 F DEBUG   : Timestamp: 2026-10-15 07:44:11.865423779+0000
+10-15 07:44:12.136  8003  8016 F DEBUG   : Process uptime: 1s
+10-15 07:44:12.136  8003  8016 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:39
+10-15 07:44:12.136  8003  8016 F DEBUG   : pid: 8003, tid: 8016, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:39 <<<
+10-15 07:44:12.136  8003  8016 F DEBUG   : uid: 90001
+10-15 07:44:12.137  8003  8016 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:44:12.137  8003  8016 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:44:12.137  8003  8016 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:44:12.137  8003  8016 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000037e9d01  r15 0000000000001f43
+10-15 07:44:12.137  8003  8016 F DEBUG   :     rdi 0000000000001f43  rsi 0000000000001f50
+10-15 07:44:12.137  8003  8016 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:44:12.137  8003  8016 F DEBUG   : 6 total frames
+10-15 07:44:12.137  8003  8016 F DEBUG   : backtrace:
+10-15 07:44:12.137  8003  8016 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:44:12.137  8003  8016 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.137  8003  8016 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.137  8003  8016 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.137  8003  8016 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.137  8003  8016 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:44:12.169  7993  8018 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:44:12.169  7993  8018 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:44:12.169  7993  8018 F DEBUG   : Revision: '0'
+10-15 07:44:12.169  7993  8018 F DEBUG   : ABI: 'x86_64'
+10-15 07:44:12.169  7993  8018 F DEBUG   : Timestamp: 2026-10-15 07:44:11.981959859+0000
+10-15 07:44:12.169  7993  8018 F DEBUG   : Process uptime: 1s
+10-15 07:44:12.169  7993  8018 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:38
+10-15 07:44:12.169  7993  8018 F DEBUG   : pid: 7993, tid: 8018, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:38 <<<
+10-15 07:44:12.169  7993  8018 F DEBUG   : uid: 90000
+10-15 07:44:12.169  7993  8018 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:44:12.169  7993  8018 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:44:12.169  7993  8018 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3c8bfeb0  r11 0000000000000246
+10-15 07:44:12.169  7993  8018 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000076e5d901  r15 0000000000001f39
+10-15 07:44:12.169  7993  8018 F DEBUG   :     rdi 0000000000001f39  rsi 0000000000001f52
+10-15 07:44:12.169  7993  8018 F DEBUG   :     rbp 000070ce3c8bff50  rsp 000070ce3c8bfea8  rip 000070d143f2b808
+10-15 07:44:12.169  7993  8018 F DEBUG   : 6 total frames
+10-15 07:44:12.169  7993  8018 F DEBUG   : backtrace:
+10-15 07:44:12.169  7993  8018 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:44:12.169  7993  8018 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.169  7993  8018 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.169  7993  8018 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.169  7993  8018 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:12.169  7993  8018 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:44:33.971  8193  8204 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:44:33.971  8193  8204 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:44:33.971  8193  8204 F DEBUG   : Revision: '0'
+10-15 07:44:33.971  8193  8204 F DEBUG   : ABI: 'x86_64'
+10-15 07:44:33.971  8193  8204 F DEBUG   : Timestamp: 2026-10-15 07:44:33.806083638+0000
+10-15 07:44:33.971  8193  8204 F DEBUG   : Process uptime: 1s
+10-15 07:44:33.971  8193  8204 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:40
+10-15 07:44:33.971  8193  8204 F DEBUG   : pid: 8193, tid: 8204, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:40 <<<
+10-15 07:44:33.971  8193  8204 F DEBUG   : uid: 90000
+10-15 07:44:33.971  8193  8204 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:44:33.971  8193  8204 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:44:33.971  8193  8204 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:44:33.971  8193  8204 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000815f2f01  r15 0000000000002001
+10-15 07:44:33.971  8193  8204 F DEBUG   :     rdi 0000000000002001  rsi 000000000000200c
+10-15 07:44:33.971  8193  8204 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:44:33.971  8193  8204 F DEBUG   : 6 total frames
+10-15 07:44:33.971  8193  8204 F DEBUG   : backtrace:
+10-15 07:44:33.971  8193  8204 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:44:33.971  8193  8204 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:33.971  8193  8204 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:33.971  8193  8204 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:33.971  8193  8204 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:33.971  8193  8204 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:44:52.203  8354  8365 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:44:52.203  8354  8365 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:44:52.203  8354  8365 F DEBUG   : Revision: '0'
+10-15 07:44:52.203  8354  8365 F DEBUG   : ABI: 'x86_64'
+10-15 07:44:52.203  8354  8365 F DEBUG   : Timestamp: 2026-10-15 07:44:52.049115144+0000
+10-15 07:44:52.203  8354  8365 F DEBUG   : Process uptime: 1s
+10-15 07:44:52.203  8354  8365 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:41
+10-15 07:44:52.203  8354  8365 F DEBUG   : pid: 8354, tid: 8365, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:41 <<<
+10-15 07:44:52.203  8354  8365 F DEBUG   : uid: 90000
+10-15 07:44:52.203  8354  8365 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:44:52.203  8354  8365 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:44:52.203  8354  8365 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:44:52.203  8354  8365 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000bdd3b701  r15 00000000000020a2
+10-15 07:44:52.203  8354  8365 F DEBUG   :     rdi 00000000000020a2  rsi 00000000000020ad
+10-15 07:44:52.203  8354  8365 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:44:52.203  8354  8365 F DEBUG   : 6 total frames
+10-15 07:44:52.203  8354  8365 F DEBUG   : backtrace:
+10-15 07:44:52.203  8354  8365 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:44:52.203  8354  8365 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:52.203  8354  8365 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:52.203  8354  8365 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:52.203  8354  8365 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:44:52.203  8354  8365 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:00.013  8443  8454 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:00.013  8443  8454 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:00.013  8443  8454 F DEBUG   : Revision: '0'
+10-15 07:45:00.013  8443  8454 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:00.013  8443  8454 F DEBUG   : Timestamp: 2026-10-15 07:44:59.776828913+0000
+10-15 07:45:00.013  8443  8454 F DEBUG   : Process uptime: 4s
+10-15 07:45:00.013  8443  8454 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-15 07:45:00.013  8443  8454 F DEBUG   : pid: 8443, tid: 8454, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 <<<
+10-15 07:45:00.013  8443  8454 F DEBUG   : uid: 90000
+10-15 07:45:00.013  8443  8454 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:00.013  8443  8454 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:00.013  8443  8454 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:00.013  8443  8454 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000df779601  r15 00000000000020fb
+10-15 07:45:00.013  8443  8454 F DEBUG   :     rdi 00000000000020fb  rsi 0000000000002106
+10-15 07:45:00.013  8443  8454 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:00.013  8443  8454 F DEBUG   : 6 total frames
+10-15 07:45:00.013  8443  8454 F DEBUG   : backtrace:
+10-15 07:45:00.013  8443  8454 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:00.013  8443  8454 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.013  8443  8454 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.013  8443  8454 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.013  8443  8454 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.013  8443  8454 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:00.624  8509  8520 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:00.624  8509  8520 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:00.624  8509  8520 F DEBUG   : Revision: '0'
+10-15 07:45:00.624  8509  8520 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:00.624  8509  8520 F DEBUG   : Timestamp: 2026-10-15 07:45:00.304460566+0000
+10-15 07:45:00.624  8509  8520 F DEBUG   : Process uptime: 2s
+10-15 07:45:00.624  8509  8520 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1
+10-15 07:45:00.624  8509  8520 F DEBUG   : pid: 8509, tid: 8520, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 <<<
+10-15 07:45:00.624  8509  8520 F DEBUG   : uid: 90001
+10-15 07:45:00.624  8509  8520 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:00.624  8509  8520 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:00.624  8509  8520 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:00.624  8509  8520 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000f37c4101  r15 000000000000213d
+10-15 07:45:00.624  8509  8520 F DEBUG   :     rdi 000000000000213d  rsi 0000000000002148
+10-15 07:45:00.624  8509  8520 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:00.624  8509  8520 F DEBUG   : 6 total frames
+10-15 07:45:00.624  8509  8520 F DEBUG   : backtrace:
+10-15 07:45:00.624  8509  8520 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:00.624  8509  8520 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.624  8509  8520 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.624  8509  8520 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.624  8509  8520 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:00.624  8509  8520 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:02.536  8557  8571 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:02.536  8557  8571 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:02.536  8557  8571 F DEBUG   : Revision: '0'
+10-15 07:45:02.537  8557  8571 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:02.537  8557  8571 F DEBUG   : Timestamp: 2026-10-15 07:45:02.061193207+0000
+10-15 07:45:02.537  8557  8571 F DEBUG   : Process uptime: 1s
+10-15 07:45:02.537  8557  8571 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3
+10-15 07:45:02.537  8557  8571 F DEBUG   : pid: 8557, tid: 8571, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3 <<<
+10-15 07:45:02.537  8557  8571 F DEBUG   : uid: 90003
+10-15 07:45:02.537  8557  8571 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:02.537  8557  8571 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:02.537  8557  8571 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:02.537  8557  8571 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000008ed36401  r15 000000000000216d
+10-15 07:45:02.537  8557  8571 F DEBUG   :     rdi 000000000000216d  rsi 000000000000217b
+10-15 07:45:02.537  8557  8571 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:02.537  8557  8571 F DEBUG   : 6 total frames
+10-15 07:45:02.537  8557  8571 F DEBUG   : backtrace:
+10-15 07:45:02.537  8557  8571 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:02.537  8557  8571 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.537  8557  8571 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.537  8557  8571 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.537  8557  8571 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.537  8557  8571 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:02.594  8537  8548 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:02.594  8537  8548 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:02.594  8537  8548 F DEBUG   : Revision: '0'
+10-15 07:45:02.594  8537  8548 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:02.594  8537  8548 F DEBUG   : Timestamp: 2026-10-15 07:45:01.892448398+0000
+10-15 07:45:02.594  8537  8548 F DEBUG   : Process uptime: 1s
+10-15 07:45:02.594  8537  8548 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2
+10-15 07:45:02.594  8537  8548 F DEBUG   : pid: 8537, tid: 8548, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2 <<<
+10-15 07:45:02.594  8537  8548 F DEBUG   : uid: 90002
+10-15 07:45:02.594  8537  8548 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:02.594  8537  8548 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:02.594  8537  8548 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:02.594  8537  8548 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000f744f701  r15 0000000000002159
+10-15 07:45:02.594  8537  8548 F DEBUG   :     rdi 0000000000002159  rsi 0000000000002164
+10-15 07:45:02.594  8537  8548 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:02.594  8537  8548 F DEBUG   : 6 total frames
+10-15 07:45:02.594  8537  8548 F DEBUG   : backtrace:
+10-15 07:45:02.594  8537  8548 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:02.594  8537  8548 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.594  8537  8548 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.594  8537  8548 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.594  8537  8548 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:02.594  8537  8548 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:03.528  8585  8596 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:03.528  8585  8596 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:03.528  8585  8596 F DEBUG   : Revision: '0'
+10-15 07:45:03.528  8585  8596 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:03.528  8585  8596 F DEBUG   : Timestamp: 2026-10-15 07:45:03.323101434+0000
+10-15 07:45:03.528  8585  8596 F DEBUG   : Process uptime: 2s
+10-15 07:45:03.528  8585  8596 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4
+10-15 07:45:03.528  8585  8596 F DEBUG   : pid: 8585, tid: 8596, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4 <<<
+10-15 07:45:03.528  8585  8596 F DEBUG   : uid: 90004
+10-15 07:45:03.528  8585  8596 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:03.528  8585  8596 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:03.528  8585  8596 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:03.528  8585  8596 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000d6c94701  r15 0000000000002189
+10-15 07:45:03.528  8585  8596 F DEBUG   :     rdi 0000000000002189  rsi 0000000000002194
+10-15 07:45:03.528  8585  8596 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:03.528  8585  8596 F DEBUG   : 6 total frames
+10-15 07:45:03.528  8585  8596 F DEBUG   : backtrace:
+10-15 07:45:03.528  8585  8596 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:03.528  8585  8596 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:03.528  8585  8596 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:03.528  8585  8596 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:03.528  8585  8596 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:03.528  8585  8596 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:40.809  9295  9308 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:40.809  9295  9308 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:40.809  9295  9308 F DEBUG   : Revision: '0'
+10-15 07:45:40.809  9295  9308 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:40.809  9295  9308 F DEBUG   : Timestamp: 2026-10-15 07:45:40.574310776+0000
+10-15 07:45:40.809  9295  9308 F DEBUG   : Process uptime: 5s
+10-15 07:45:40.809  9295  9308 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-15 07:45:40.809  9295  9308 F DEBUG   : pid: 9295, tid: 9308, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 <<<
+10-15 07:45:40.809  9295  9308 F DEBUG   : uid: 90009
+10-15 07:45:40.809  9295  9308 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:40.809  9295  9308 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:40.809  9295  9308 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:40.809  9295  9308 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000bd919101  r15 000000000000244f
+10-15 07:45:40.809  9295  9308 F DEBUG   :     rdi 000000000000244f  rsi 000000000000245c
+10-15 07:45:40.809  9295  9308 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:40.809  9295  9308 F DEBUG   : 6 total frames
+10-15 07:45:40.809  9295  9308 F DEBUG   : backtrace:
+10-15 07:45:40.809  9295  9308 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:40.809  9295  9308 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:40.809  9295  9308 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:40.809  9295  9308 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:40.809  9295  9308 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:40.809  9295  9308 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:41.705  9377  9390 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:41.705  9377  9390 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:41.705  9377  9390 F DEBUG   : Revision: '0'
+10-15 07:45:41.705  9377  9390 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:41.705  9377  9390 F DEBUG   : Timestamp: 2026-10-15 07:45:41.313915790+0000
+10-15 07:45:41.705  9377  9390 F DEBUG   : Process uptime: 2s
+10-15 07:45:41.705  9377  9390 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1
+10-15 07:45:41.705  9377  9390 F DEBUG   : pid: 9377, tid: 9390, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 <<<
+10-15 07:45:41.705  9377  9390 F DEBUG   : uid: 90010
+10-15 07:45:41.705  9377  9390 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:41.705  9377  9390 F DEBUG   :     rax 0000000000000000  rbx 000070d14d63f000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:41.705  9377  9390 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:41.705  9377  9390 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000056930b01  r15 00000000000024a1
+10-15 07:45:41.705  9377  9390 F DEBUG   :     rdi 00000000000024a1  rsi 00000000000024ae
+10-15 07:45:41.705  9377  9390 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:41.705  9377  9390 F DEBUG   : 6 total frames
+10-15 07:45:41.705  9377  9390 F DEBUG   : backtrace:
+10-15 07:45:41.706  9377  9390 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:41.706  9377  9390 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.706  9377  9390 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.706  9377  9390 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.706  9377  9390 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.706  9377  9390 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:41.918  9391  9402 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:41.918  9391  9402 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:41.918  9391  9402 F DEBUG   : Revision: '0'
+10-15 07:45:41.918  9391  9402 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:41.918  9391  9402 F DEBUG   : Timestamp: 2026-10-15 07:45:41.560280316+0000
+10-15 07:45:41.918  9391  9402 F DEBUG   : Process uptime: 1s
+10-15 07:45:41.918  9391  9402 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2
+10-15 07:45:41.918  9391  9402 F DEBUG   : pid: 9391, tid: 9402, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:2 <<<
+10-15 07:45:41.918  9391  9402 F DEBUG   : uid: 90011
+10-15 07:45:41.918  9391  9402 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:41.918  9391  9402 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:41.918  9391  9402 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:41.918  9391  9402 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000006c362301  r15 00000000000024af
+10-15 07:45:41.918  9391  9402 F DEBUG   :     rdi 00000000000024af  rsi 00000000000024ba
+10-15 07:45:41.918  9391  9402 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:41.918  9391  9402 F DEBUG   : 6 total frames
+10-15 07:45:41.918  9391  9402 F DEBUG   : backtrace:
+10-15 07:45:41.918  9391  9402 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:41.918  9391  9402 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.918  9391  9402 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.918  9391  9402 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.918  9391  9402 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:41.918  9391  9402 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:43.927  9411  9423 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:43.927  9411  9423 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:43.927  9411  9423 F DEBUG   : Revision: '0'
+10-15 07:45:43.927  9411  9423 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:43.927  9411  9423 F DEBUG   : Timestamp: 2026-10-15 07:45:43.745123819+0000
+10-15 07:45:43.927  9411  9423 F DEBUG   : Process uptime: 1s
+10-15 07:45:43.927  9411  9423 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3
+10-15 07:45:43.927  9411  9423 F DEBUG   : pid: 9411, tid: 9423, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3 <<<
+10-15 07:45:43.927  9411  9423 F DEBUG   : uid: 90012
+10-15 07:45:43.927  9411  9423 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:43.927  9411  9423 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:43.927  9411  9423 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:43.927  9411  9423 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000001b57b901  r15 00000000000024c3
+10-15 07:45:43.927  9411  9423 F DEBUG   :     rdi 00000000000024c3  rsi 00000000000024cf
+10-15 07:45:43.927  9411  9423 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:43.927  9411  9423 F DEBUG   : 6 total frames
+10-15 07:45:43.927  9411  9423 F DEBUG   : backtrace:
+10-15 07:45:43.927  9411  9423 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:43.927  9411  9423 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:43.927  9411  9423 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:43.927  9411  9423 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:43.927  9411  9423 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:43.927  9411  9423 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:45.717  9430  9440 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:45.717  9430  9440 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:45.717  9430  9440 F DEBUG   : Revision: '0'
+10-15 07:45:45.717  9430  9440 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:45.717  9430  9440 F DEBUG   : Timestamp: 2026-10-15 07:45:44.521150843+0000
+10-15 07:45:45.717  9430  9440 F DEBUG   : Process uptime: 1s
+10-15 07:45:45.717  9430  9440 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4
+10-15 07:45:45.717  9430  9440 F DEBUG   : pid: 9430, tid: 9440, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:4 <<<
+10-15 07:45:45.717  9430  9440 F DEBUG   : uid: 90013
+10-15 07:45:45.717  9430  9440 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:45.717  9430  9440 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:45.717  9430  9440 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:45.717  9430  9440 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000ebd40f01  r15 00000000000024d6
+10-15 07:45:45.717  9430  9440 F DEBUG   :     rdi 00000000000024d6  rsi 00000000000024e0
+10-15 07:45:45.717  9430  9440 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:45.717  9430  9440 F DEBUG   : 6 total frames
+10-15 07:45:45.717  9430  9440 F DEBUG   : backtrace:
+10-15 07:45:45.717  9430  9440 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:45.717  9430  9440 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:45.717  9430  9440 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:45.717  9430  9440 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:45.717  9430  9440 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:45.717  9430  9440 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:47.207  9450  9461 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:47.207  9450  9461 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:47.207  9450  9461 F DEBUG   : Revision: '0'
+10-15 07:45:47.207  9450  9461 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:47.207  9450  9461 F DEBUG   : Timestamp: 2026-10-15 07:45:46.478512060+0000
+10-15 07:45:47.207  9450  9461 F DEBUG   : Process uptime: 1s
+10-15 07:45:47.207  9450  9461 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:5
+10-15 07:45:47.207  9450  9461 F DEBUG   : pid: 9450, tid: 9461, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:5 <<<
+10-15 07:45:47.207  9450  9461 F DEBUG   : uid: 90014
+10-15 07:45:47.207  9450  9461 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:47.207  9450  9461 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:47.207  9450  9461 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:47.207  9450  9461 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000650e3901  r15 00000000000024ea
+10-15 07:45:47.207  9450  9461 F DEBUG   :     rdi 00000000000024ea  rsi 00000000000024f5
+10-15 07:45:47.207  9450  9461 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:47.207  9450  9461 F DEBUG   : 6 total frames
+10-15 07:45:47.207  9450  9461 F DEBUG   : backtrace:
+10-15 07:45:47.207  9450  9461 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:47.207  9450  9461 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:47.207  9450  9461 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:47.207  9450  9461 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:47.207  9450  9461 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:47.207  9450  9461 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:49.497  9474  9485 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:49.497  9474  9485 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:49.497  9474  9485 F DEBUG   : Revision: '0'
+10-15 07:45:49.497  9474  9485 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:49.497  9474  9485 F DEBUG   : Timestamp: 2026-10-15 07:45:49.143665733+0000
+10-15 07:45:49.497  9474  9485 F DEBUG   : Process uptime: 1s
+10-15 07:45:49.497  9474  9485 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:6
+10-15 07:45:49.497  9474  9485 F DEBUG   : pid: 9474, tid: 9485, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:6 <<<
+10-15 07:45:49.497  9474  9485 F DEBUG   : uid: 90015
+10-15 07:45:49.497  9474  9485 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:49.497  9474  9485 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:49.497  9474  9485 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:49.497  9474  9485 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000aa7bc401  r15 0000000000002502
+10-15 07:45:49.497  9474  9485 F DEBUG   :     rdi 0000000000002502  rsi 000000000000250d
+10-15 07:45:49.497  9474  9485 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:49.497  9474  9485 F DEBUG   : 6 total frames
+10-15 07:45:49.497  9474  9485 F DEBUG   : backtrace:
+10-15 07:45:49.497  9474  9485 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:49.497  9474  9485 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:49.497  9474  9485 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:49.497  9474  9485 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:49.497  9474  9485 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:49.497  9474  9485 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:50.537  9486  9498 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:50.537  9486  9498 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:50.537  9486  9498 F DEBUG   : Revision: '0'
+10-15 07:45:50.537  9486  9498 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:50.537  9486  9498 F DEBUG   : Timestamp: 2026-10-15 07:45:49.258818209+0000
+10-15 07:45:50.537  9486  9498 F DEBUG   : Process uptime: 1s
+10-15 07:45:50.537  9486  9498 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:7
+10-15 07:45:50.537  9486  9498 F DEBUG   : pid: 9486, tid: 9498, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:7 <<<
+10-15 07:45:50.537  9486  9498 F DEBUG   : uid: 90016
+10-15 07:45:50.537  9486  9498 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:50.537  9486  9498 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:50.537  9486  9498 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:50.537  9486  9498 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000a7f5a101  r15 000000000000250e
+10-15 07:45:50.537  9486  9498 F DEBUG   :     rdi 000000000000250e  rsi 000000000000251a
+10-15 07:45:50.537  9486  9498 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:50.537  9486  9498 F DEBUG   : 6 total frames
+10-15 07:45:50.537  9486  9498 F DEBUG   : backtrace:
+10-15 07:45:50.537  9486  9498 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:50.537  9486  9498 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:50.537  9486  9498 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:50.537  9486  9498 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:50.537  9486  9498 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:50.537  9486  9498 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:52.099  9512  9522 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:52.099  9512  9522 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:52.099  9512  9522 F DEBUG   : Revision: '0'
+10-15 07:45:52.099  9512  9522 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:52.099  9512  9522 F DEBUG   : Timestamp: 2026-10-15 07:45:51.814956929+0000
+10-15 07:45:52.099  9512  9522 F DEBUG   : Process uptime: 1s
+10-15 07:45:52.099  9512  9522 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:8
+10-15 07:45:52.099  9512  9522 F DEBUG   : pid: 9512, tid: 9522, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:8 <<<
+10-15 07:45:52.099  9512  9522 F DEBUG   : uid: 90017
+10-15 07:45:52.099  9512  9522 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:52.099  9512  9522 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:52.099  9512  9522 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:52.099  9512  9522 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000efdbed01  r15 0000000000002528
+10-15 07:45:52.099  9512  9522 F DEBUG   :     rdi 0000000000002528  rsi 0000000000002532
+10-15 07:45:52.099  9512  9522 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:52.099  9512  9522 F DEBUG   : 6 total frames
+10-15 07:45:52.099  9512  9522 F DEBUG   : backtrace:
+10-15 07:45:52.099  9512  9522 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:52.099  9512  9522 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.099  9512  9522 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.099  9512  9522 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.099  9512  9522 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.099  9512  9522 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:52.757  9523  9534 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:52.757  9523  9534 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:52.757  9523  9534 F DEBUG   : Revision: '0'
+10-15 07:45:52.757  9523  9534 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:52.757  9523  9534 F DEBUG   : Timestamp: 2026-10-15 07:45:52.084554061+0000
+10-15 07:45:52.757  9523  9534 F DEBUG   : Process uptime: 1s
+10-15 07:45:52.757  9523  9534 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:9
+10-15 07:45:52.757  9523  9534 F DEBUG   : pid: 9523, tid: 9534, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:9 <<<
+10-15 07:45:52.757  9523  9534 F DEBUG   : uid: 90018
+10-15 07:45:52.757  9523  9534 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:52.757  9523  9534 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:52.787  9523  9534 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:52.787  9523  9534 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000582be001  r15 0000000000002533
+10-15 07:45:52.787  9523  9534 F DEBUG   :     rdi 0000000000002533  rsi 000000000000253e
+10-15 07:45:52.787  9523  9534 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:52.787  9523  9534 F DEBUG   : 6 total frames
+10-15 07:45:52.787  9523  9534 F DEBUG   : backtrace:
+10-15 07:45:52.787  9523  9534 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:52.787  9523  9534 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.787  9523  9534 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.787  9523  9534 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.787  9523  9534 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:52.787  9523  9534 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:54.831  9542  9554 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:54.831  9542  9554 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:54.831  9542  9554 F DEBUG   : Revision: '0'
+10-15 07:45:54.831  9542  9554 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:54.831  9542  9554 F DEBUG   : Timestamp: 2026-10-15 07:45:54.048121456+0000
+10-15 07:45:54.831  9542  9554 F DEBUG   : Process uptime: 1s
+10-15 07:45:54.831  9542  9554 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:10
+10-15 07:45:54.831  9542  9554 F DEBUG   : pid: 9542, tid: 9554, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:10 <<<
+10-15 07:45:54.831  9542  9554 F DEBUG   : uid: 90019
+10-15 07:45:54.831  9542  9554 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:54.831  9542  9554 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:54.831  9542  9554 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:54.831  9542  9554 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000000e964b01  r15 0000000000002546
+10-15 07:45:54.831  9542  9554 F DEBUG   :     rdi 0000000000002546  rsi 0000000000002552
+10-15 07:45:54.831  9542  9554 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:54.831  9542  9554 F DEBUG   : 6 total frames
+10-15 07:45:54.831  9542  9554 F DEBUG   : backtrace:
+10-15 07:45:54.831  9542  9554 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:54.831  9542  9554 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:54.831  9542  9554 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:54.831  9542  9554 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:54.831  9542  9554 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:54.831  9542  9554 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:55.473  9561  9572 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:55.473  9561  9572 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:55.473  9561  9572 F DEBUG   : Revision: '0'
+10-15 07:45:55.473  9561  9572 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:55.473  9561  9572 F DEBUG   : Timestamp: 2026-10-15 07:45:54.869103186+0000
+10-15 07:45:55.473  9561  9572 F DEBUG   : Process uptime: 1s
+10-15 07:45:55.473  9561  9572 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:11
+10-15 07:45:55.473  9561  9572 F DEBUG   : pid: 9561, tid: 9572, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:11 <<<
+10-15 07:45:55.473  9561  9572 F DEBUG   : uid: 90020
+10-15 07:45:55.473  9561  9572 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:55.473  9561  9572 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:55.473  9561  9572 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:45:55.473  9561  9572 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000c423c701  r15 0000000000002559
+10-15 07:45:55.473  9561  9572 F DEBUG   :     rdi 0000000000002559  rsi 0000000000002564
+10-15 07:45:55.473  9561  9572 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:45:55.473  9561  9572 F DEBUG   : 6 total frames
+10-15 07:45:55.473  9561  9572 F DEBUG   : backtrace:
+10-15 07:45:55.473  9561  9572 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:55.473  9561  9572 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:55.473  9561  9572 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:55.473  9561  9572 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:55.473  9561  9572 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:55.473  9561  9572 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:57.700  9579  9591 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:57.700  9579  9591 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:57.700  9579  9591 F DEBUG   : Revision: '0'
+10-15 07:45:57.700  9579  9591 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:57.700  9579  9591 F DEBUG   : Timestamp: 2026-10-15 07:45:56.744153471+0000
+10-15 07:45:57.700  9579  9591 F DEBUG   : Process uptime: 2s
+10-15 07:45:57.700  9579  9591 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:12
+10-15 07:45:57.700  9579  9591 F DEBUG   : pid: 9579, tid: 9591, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:12 <<<
+10-15 07:45:57.700  9579  9591 F DEBUG   : uid: 90021
+10-15 07:45:57.701  9579  9591 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:57.701  9579  9591 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:57.701  9579  9591 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:57.701  9579  9591 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000023050801  r15 000000000000256b
+10-15 07:45:57.701  9579  9591 F DEBUG   :     rdi 000000000000256b  rsi 0000000000002577
+10-15 07:45:57.701  9579  9591 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:57.701  9579  9591 F DEBUG   : 6 total frames
+10-15 07:45:57.701  9579  9591 F DEBUG   : backtrace:
+10-15 07:45:57.701  9579  9591 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:57.701  9579  9591 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:57.701  9579  9591 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:57.701  9579  9591 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:57.701  9579  9591 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:57.701  9579  9591 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:45:59.334  9598  9610 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:45:59.334  9598  9610 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:45:59.334  9598  9610 F DEBUG   : Revision: '0'
+10-15 07:45:59.334  9598  9610 F DEBUG   : ABI: 'x86_64'
+10-15 07:45:59.334  9598  9610 F DEBUG   : Timestamp: 2026-10-15 07:45:57.659889927+0000
+10-15 07:45:59.334  9598  9610 F DEBUG   : Process uptime: 1s
+10-15 07:45:59.334  9598  9610 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:13
+10-15 07:45:59.334  9598  9610 F DEBUG   : pid: 9598, tid: 9610, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:13 <<<
+10-15 07:45:59.334  9598  9610 F DEBUG   : uid: 90022
+10-15 07:45:59.334  9598  9610 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:45:59.334  9598  9610 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:45:59.334  9598  9610 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:45:59.334  9598  9610 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000af38b101  r15 000000000000257e
+10-15 07:45:59.334  9598  9610 F DEBUG   :     rdi 000000000000257e  rsi 000000000000258a
+10-15 07:45:59.334  9598  9610 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:45:59.334  9598  9610 F DEBUG   : 6 total frames
+10-15 07:45:59.334  9598  9610 F DEBUG   : backtrace:
+10-15 07:45:59.334  9598  9610 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:45:59.334  9598  9610 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:59.334  9598  9610 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:59.334  9598  9610 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:59.334  9598  9610 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:45:59.334  9598  9610 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:00.840  9625  9636 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:00.840  9625  9636 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:00.840  9625  9636 F DEBUG   : Revision: '0'
+10-15 07:46:00.840  9625  9636 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:00.840  9625  9636 F DEBUG   : Timestamp: 2026-10-15 07:46:00.219427869+0000
+10-15 07:46:00.840  9625  9636 F DEBUG   : Process uptime: 1s
+10-15 07:46:00.840  9625  9636 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:14
+10-15 07:46:00.840  9625  9636 F DEBUG   : pid: 9625, tid: 9636, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:14 <<<
+10-15 07:46:00.840  9625  9636 F DEBUG   : uid: 90023
+10-15 07:46:00.841  9625  9636 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:00.841  9625  9636 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:00.841  9625  9636 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:46:00.841  9625  9636 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000002c990801  r15 0000000000002599
+10-15 07:46:00.841  9625  9636 F DEBUG   :     rdi 0000000000002599  rsi 00000000000025a4
+10-15 07:46:00.841  9625  9636 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:46:00.841  9625  9636 F DEBUG   : 6 total frames
+10-15 07:46:00.841  9625  9636 F DEBUG   : backtrace:
+10-15 07:46:00.841  9625  9636 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:00.841  9625  9636 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:00.841  9625  9636 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:00.841  9625  9636 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:00.841  9625  9636 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:00.841  9625  9636 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:02.191  9637  9649 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:02.191  9637  9649 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:02.191  9637  9649 F DEBUG   : Revision: '0'
+10-15 07:46:02.191  9637  9649 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:02.191  9637  9649 F DEBUG   : Timestamp: 2026-10-15 07:46:00.312344171+0000
+10-15 07:46:02.191  9637  9649 F DEBUG   : Process uptime: 2s
+10-15 07:46:02.191  9637  9649 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:15
+10-15 07:46:02.191  9637  9649 F DEBUG   : pid: 9637, tid: 9649, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:15 <<<
+10-15 07:46:02.191  9637  9649 F DEBUG   : uid: 90024
+10-15 07:46:02.191  9637  9649 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:02.192  9637  9649 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:02.192  9637  9649 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:46:02.192  9637  9649 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000ddc19401  r15 00000000000025a5
+10-15 07:46:02.192  9637  9649 F DEBUG   :     rdi 00000000000025a5  rsi 00000000000025b1
+10-15 07:46:02.192  9637  9649 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:46:02.192  9637  9649 F DEBUG   : 6 total frames
+10-15 07:46:02.192  9637  9649 F DEBUG   : backtrace:
+10-15 07:46:02.192  9637  9649 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:02.192  9637  9649 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:02.192  9637  9649 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:02.192  9637  9649 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:02.192  9637  9649 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:02.192  9637  9649 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:04.194  9662  9684 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:04.194  9662  9684 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:04.194  9662  9684 F DEBUG   : Revision: '0'
+10-15 07:46:04.194  9662  9684 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:04.194  9662  9684 F DEBUG   : Timestamp: 2026-10-15 07:46:03.026349047+0000
+10-15 07:46:04.194  9662  9684 F DEBUG   : Process uptime: 1s
+10-15 07:46:04.194  9662  9684 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:16
+10-15 07:46:04.194  9662  9684 F DEBUG   : pid: 9662, tid: 9684, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:16 <<<
+10-15 07:46:04.194  9662  9684 F DEBUG   : uid: 90025
+10-15 07:46:04.194  9662  9684 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:04.194  9662  9684 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:04.194  9662  9684 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:46:04.194  9662  9684 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000074a28201  r15 00000000000025be
+10-15 07:46:04.195  9662  9684 F DEBUG   :     rdi 00000000000025be  rsi 00000000000025d4
+10-15 07:46:04.195  9662  9684 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:46:04.195  9662  9684 F DEBUG   : 6 total frames
+10-15 07:46:04.195  9662  9684 F DEBUG   : backtrace:
+10-15 07:46:04.195  9662  9684 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:04.195  9662  9684 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:04.195  9662  9684 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:04.195  9662  9684 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:04.195  9662  9684 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:04.195  9662  9684 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:05.115  9672  9686 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:05.115  9672  9686 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:05.115  9672  9686 F DEBUG   : Revision: '0'
+10-15 07:46:05.115  9672  9686 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:05.115  9672  9686 F DEBUG   : Timestamp: 2026-10-15 07:46:03.090630607+0000
+10-15 07:46:05.115  9672  9686 F DEBUG   : Process uptime: 1s
+10-15 07:46:05.115  9672  9686 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:17
+10-15 07:46:05.115  9672  9686 F DEBUG   : pid: 9672, tid: 9686, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:17 <<<
+10-15 07:46:05.115  9672  9686 F DEBUG   : uid: 90026
+10-15 07:46:05.115  9672  9686 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:05.115  9672  9686 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:05.115  9672  9686 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:46:05.115  9672  9686 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 000000000e145f01  r15 00000000000025c8
+10-15 07:46:05.115  9672  9686 F DEBUG   :     rdi 00000000000025c8  rsi 00000000000025d6
+10-15 07:46:05.115  9672  9686 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:46:05.115  9672  9686 F DEBUG   : 6 total frames
+10-15 07:46:05.115  9672  9686 F DEBUG   : backtrace:
+10-15 07:46:05.115  9672  9686 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:05.115  9672  9686 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:05.115  9672  9686 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:05.115  9672  9686 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:05.115  9672  9686 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:05.115  9672  9686 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:07.173  9699  9711 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:07.173  9699  9711 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:07.173  9699  9711 F DEBUG   : Revision: '0'
+10-15 07:46:07.173  9699  9711 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:07.173  9699  9711 F DEBUG   : Timestamp: 2026-10-15 07:46:05.863729316+0000
+10-15 07:46:07.173  9699  9711 F DEBUG   : Process uptime: 1s
+10-15 07:46:07.173  9699  9711 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:18
+10-15 07:46:07.173  9699  9711 F DEBUG   : pid: 9699, tid: 9711, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:18 <<<
+10-15 07:46:07.173  9699  9711 F DEBUG   : uid: 90027
+10-15 07:46:07.173  9699  9711 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:07.173  9699  9711 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:07.173  9699  9711 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:46:07.173  9699  9711 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000df95c301  r15 00000000000025e3
+10-15 07:46:07.173  9699  9711 F DEBUG   :     rdi 00000000000025e3  rsi 00000000000025ef
+10-15 07:46:07.173  9699  9711 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:46:07.173  9699  9711 F DEBUG   : 6 total frames
+10-15 07:46:07.173  9699  9711 F DEBUG   : backtrace:
+10-15 07:46:07.173  9699  9711 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:07.173  9699  9711 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.173  9699  9711 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.173  9699  9711 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.173  9699  9711 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.173  9699  9711 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:07.702  9712  9723 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:07.702  9712  9723 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:07.702  9712  9723 F DEBUG   : Revision: '0'
+10-15 07:46:07.702  9712  9723 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:07.702  9712  9723 F DEBUG   : Timestamp: 2026-10-15 07:46:05.998202857+0000
+10-15 07:46:07.702  9712  9723 F DEBUG   : Process uptime: 1s
+10-15 07:46:07.702  9712  9723 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:19
+10-15 07:46:07.702  9712  9723 F DEBUG   : pid: 9712, tid: 9723, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:19 <<<
+10-15 07:46:07.702  9712  9723 F DEBUG   : uid: 90028
+10-15 07:46:07.702  9712  9723 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:07.702  9712  9723 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:07.702  9712  9723 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3cabfeb0  r11 0000000000000246
+10-15 07:46:07.702  9712  9723 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 0000000049694701  r15 00000000000025f0
+10-15 07:46:07.702  9712  9723 F DEBUG   :     rdi 00000000000025f0  rsi 00000000000025fb
+10-15 07:46:07.702  9712  9723 F DEBUG   :     rbp 000070ce3cabff50  rsp 000070ce3cabfea8  rip 000070d143f2b808
+10-15 07:46:07.702  9712  9723 F DEBUG   : 6 total frames
+10-15 07:46:07.702  9712  9723 F DEBUG   : backtrace:
+10-15 07:46:07.702  9712  9723 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:07.702  9712  9723 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.702  9712  9723 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.702  9712  9723 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.702  9712  9723 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:07.702  9712  9723 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 07:46:09.205  9737  9748 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 07:46:09.205  9737  9748 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 07:46:09.206  9737  9748 F DEBUG   : Revision: '0'
+10-15 07:46:09.206  9737  9748 F DEBUG   : ABI: 'x86_64'
+10-15 07:46:09.206  9737  9748 F DEBUG   : Timestamp: 2026-10-15 07:46:08.505096407+0000
+10-15 07:46:09.206  9737  9748 F DEBUG   : Process uptime: 2s
+10-15 07:46:09.206  9737  9748 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:20
+10-15 07:46:09.206  9737  9748 F DEBUG   : pid: 9737, tid: 9748, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:20 <<<
+10-15 07:46:09.206  9737  9748 F DEBUG   : uid: 90029
+10-15 07:46:09.206  9737  9748 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 07:46:09.206  9737  9748 F DEBUG   :     rax 0000000000000000  rbx 000070d14d640000  rcx 000070d143f2b808  rdx 000000000000000b
+10-15 07:46:09.206  9737  9748 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070ce3ccbfeb0  r11 0000000000000246
+10-15 07:46:09.206  9737  9748 F DEBUG   :     r12 000070d14d8190d8  r13 000000000070ce85  r14 00000000da32c401  r15 0000000000002609
+10-15 07:46:09.206  9737  9748 F DEBUG   :     rdi 0000000000002609  rsi 0000000000002614
+10-15 07:46:09.206  9737  9748 F DEBUG   :     rbp 000070ce3ccbff50  rsp 000070ce3ccbfea8  rip 000070d143f2b808
+10-15 07:46:09.206  9737  9748 F DEBUG   : 6 total frames
+10-15 07:46:09.206  9737  9748 F DEBUG   : backtrace:
+10-15 07:46:09.206  9737  9748 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 07:46:09.206  9737  9748 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:09.206  9737  9748 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:09.206  9737  9748 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:09.206  9737  9748 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 07:46:09.206  9737  9748 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)

@@ -14,10 +14,10 @@
 
 | Gate | पास होने की शर्त | आज की स्थिति |
 |---|---|---|
-| G1 Exact UI parity | Chrome Stable 155.0.8059.x (phone) के matched reference screenshots के सामने हर UI region: element, label, bounds, state और transition मेल खाएँ | **BLOCKED**: Stable 155 का reference नहीं है (emulator पर Chrome 133)। Chrome 133 बनाम artifact की तुलना की गई है (`reports/ui-compare/`) |
+| G1 Exact UI parity | Chrome Stable 155.0.8059.x (phone) के matched reference screenshots के सामने हर UI region: element, label, bounds, state और transition मेल खाएँ | **BLOCKED**: Stable 155 का reference नहीं है (emulator पर Chrome 133)। Chrome 133 बनाम Chromium 155 artifact की तुलना की गई: सभी 20 साझा screens mismatch (run 38701948978, `reports/ui-compare/`) |
 | G2 Exact feature parity | हर feature का व्यवहार-परीक्षण, और उसकी Google service/locale/account/OS निर्भरता दर्ज | **NOT FINISHED**: `FEATURE_PARITY.md` |
-| G3 Beyond-Chrome | G1+G2 baseline बिना regression के; हर नई सुविधा का functioning implementation और same-device तुलना | **NOT STARTED** (केवल योजना, नीचे) |
-| G4 Android delivery | Source provenance, reproducible build, असली install/launch, compatibility, असली device या CI evidence, signed secure updates | **PARTIAL**: official snapshot का verified fetch और emulator पर install/launch PASS; अपना source build BLOCKED (§Research 3) |
+| G3 Beyond-Chrome | G1+G2 baseline बिना regression के; हर नई सुविधा का functioning implementation और same-device तुलना | **NOT STARTED** (केवल योजना, नीचे)। C1/C2 rendering-रणनीति का synthetic prototype: desktop 3×10/10, Android emulator 10/10 (Chrome 133, Chromium 155 x64)। यह shipped capability नहीं है |
+| G4 Android delivery | Source provenance, reproducible build, असली install/launch, compatibility, असली device या CI evidence, signed secure updates | **PARTIAL**: official snapshot का verified fetch और emulator पर install/launch PASS; release-artifacts run 38700392608 में SHA-256 + apksigner v2 + 16 KB zipalign PASS; ARM64 translation में 5 में से 2 runs में ANR; अपना source build BLOCKED (preflight exit 3); physical device और signed updates NOT RUN |
 | G5 Arena E2E | अनुमति-प्राप्त, उपयोगकर्ता-साक्षी session: long history load, streaming/recovery, no reload, no data loss | **NOT RUN** |
 
 ## C. Chrome से आगे की capabilities: हर एक का मापनीय लक्ष्य

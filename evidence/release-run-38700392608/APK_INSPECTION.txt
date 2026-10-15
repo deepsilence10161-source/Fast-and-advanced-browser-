@@ -1,0 +1,28 @@
+== rel/ChromePublic-AndroidDesktop_x64.apk
+package: name='org.chromium.chrome' versionCode='805900079' versionName='155.0.8059.0' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+targetSdkVersion:'37'
+application-label:'Chromium'
+native-code: 'x86_64'
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Number of signers: 1
+zipalign -P 16 (16 KB page) : OK
+size_bytes: 414179322
+== rel/ChromePublic-Android_Arm64.apk
+package: name='org.chromium.chrome' versionCode='805900004' versionName='155.0.8059.0' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+targetSdkVersion:'37'
+application-label:'Chromium'
+native-code: 'arm64-v8a'
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Number of signers: 1
+zipalign -P 16 (16 KB page) : OK
+size_bytes: 381736687

@@ -1,0 +1,400 @@
+10-15 08:07:52.652  9302  9313 F DEBUG   : Timestamp: 2026-10-15 08:07:52.531122078+0000
+10-15 08:07:52.652  9302  9313 F DEBUG   : Process uptime: 1s
+10-15 08:07:52.652  9302  9313 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25
+10-15 08:07:52.652  9302  9313 F DEBUG   : pid: 9302, tid: 9313, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25 <<<
+10-15 08:07:52.652  9302  9313 F DEBUG   : uid: 90025
+10-15 08:07:52.652  9302  9313 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:52.652  9302  9313 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:52.652  9302  9313 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:52.652  9302  9313 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 00000000ab151801  r15 0000000000002456
+10-15 08:07:52.652  9302  9313 F DEBUG   :     rdi 0000000000002456  rsi 0000000000002461
+10-15 08:07:52.652  9302  9313 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:52.652  9302  9313 F DEBUG   : 6 total frames
+10-15 08:07:52.652  9302  9313 F DEBUG   : backtrace:
+10-15 08:07:52.652  9302  9313 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:52.652  9302  9313 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:52.652  9302  9313 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:52.652  9302  9313 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:52.652  9302  9313 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:52.652  9302  9313 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:52.666   634  1197 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:25 (pid 9302) has died: vis BTOP
+10-15 08:07:52.667   634  1197 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:25 in 1000ms for connection
+10-15 08:07:53.462   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:07:54.160   634  1091 I ActivityManager: Start proc 9314:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26/u0ai26 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:26}
+10-15 08:07:54.169  9314  9314 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 isIsolatedProcess=true splits=<none>
+10-15 08:07:54.307  9314  9325 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.307  9314  9325 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.307  9314  9325 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:07:54.307  9314  9325 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:07:54.307  9314  9325 F DEBUG   : Revision: '0'
+10-15 08:07:54.307  9314  9325 F DEBUG   : ABI: 'x86_64'
+10-15 08:07:54.307  9314  9325 F DEBUG   : Timestamp: 2026-10-15 08:07:54.183024912+0000
+10-15 08:07:54.307  9314  9325 F DEBUG   : Process uptime: 1s
+10-15 08:07:54.307  9314  9325 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26
+10-15 08:07:54.307  9314  9325 F DEBUG   : pid: 9314, tid: 9325, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 <<<
+10-15 08:07:54.307  9314  9325 F DEBUG   : uid: 90026
+10-15 08:07:54.307  9314  9325 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:54.307  9314  9325 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:54.307  9314  9325 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:54.307  9314  9325 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 00000000bf456401  r15 0000000000002462
+10-15 08:07:54.307  9314  9325 F DEBUG   :     rdi 0000000000002462  rsi 000000000000246d
+10-15 08:07:54.307  9314  9325 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:54.307  9314  9325 F DEBUG   : 6 total frames
+10-15 08:07:54.307  9314  9325 F DEBUG   : backtrace:
+10-15 08:07:54.307  9314  9325 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:54.307  9314  9325 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.307  9314  9325 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.307  9314  9325 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.307  9314  9325 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.307  9314  9325 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:54.304  9314  9314 W ChildProcessMai: type=1400 audit(0.0:310): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:07:54.304  9314  9314 W ChildProcessMai: type=1400 audit(0.0:311): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:07:54.323   634   728 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:26 (pid 9314) has died: vis BTOP
+10-15 08:07:54.323   634   728 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:26 in 1000ms for connection
+10-15 08:07:54.356   634  1197 I ActivityManager: Start proc 9326:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27/u0ai27 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:27}
+10-15 08:07:54.367  9326  9326 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 isIsolatedProcess=true splits=<none>
+10-15 08:07:54.503  9326  9337 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.503  9326  9337 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.503  9326  9337 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:07:54.503  9326  9337 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:07:54.503  9326  9337 F DEBUG   : Revision: '0'
+10-15 08:07:54.503  9326  9337 F DEBUG   : ABI: 'x86_64'
+10-15 08:07:54.503  9326  9337 F DEBUG   : Timestamp: 2026-10-15 08:07:54.379945981+0000
+10-15 08:07:54.503  9326  9337 F DEBUG   : Process uptime: 1s
+10-15 08:07:54.503  9326  9337 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27
+10-15 08:07:54.503  9326  9337 F DEBUG   : pid: 9326, tid: 9337, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 <<<
+10-15 08:07:54.503  9326  9337 F DEBUG   : uid: 90027
+10-15 08:07:54.503  9326  9337 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:54.503  9326  9337 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:54.503  9326  9337 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:54.503  9326  9337 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 00000000f4032a01  r15 000000000000246e
+10-15 08:07:54.503  9326  9337 F DEBUG   :     rdi 000000000000246e  rsi 0000000000002479
+10-15 08:07:54.503  9326  9337 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:54.503  9326  9337 F DEBUG   : 6 total frames
+10-15 08:07:54.503  9326  9337 F DEBUG   : backtrace:
+10-15 08:07:54.503  9326  9337 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:54.503  9326  9337 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.503  9326  9337 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.503  9326  9337 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.503  9326  9337 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.503  9326  9337 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:54.518   634  1871 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:27 (pid 9326) has died: vis BTOP
+10-15 08:07:54.519   634  1871 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:27 in 1000ms for connection
+10-15 08:07:54.552   634  1871 I ActivityManager: Start proc 9338:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28/u0ai28 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:28}
+10-15 08:07:54.562  9338  9338 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 isIsolatedProcess=true splits=<none>
+10-15 08:07:54.696  9338  9350 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.696  9338  9350 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.696  9338  9350 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:07:54.696  9338  9350 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:07:54.696  9338  9350 F DEBUG   : Revision: '0'
+10-15 08:07:54.696  9338  9350 F DEBUG   : ABI: 'x86_64'
+10-15 08:07:54.696  9338  9350 F DEBUG   : Timestamp: 2026-10-15 08:07:54.575281376+0000
+10-15 08:07:54.696  9338  9350 F DEBUG   : Process uptime: 1s
+10-15 08:07:54.696  9338  9350 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28
+10-15 08:07:54.696  9338  9350 F DEBUG   : pid: 9338, tid: 9350, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 <<<
+10-15 08:07:54.696  9338  9350 F DEBUG   : uid: 90028
+10-15 08:07:54.696  9338  9350 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:54.696  9338  9350 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:54.696  9338  9350 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:54.696  9338  9350 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 0000000059747d01  r15 000000000000247a
+10-15 08:07:54.696  9338  9350 F DEBUG   :     rdi 000000000000247a  rsi 0000000000002486
+10-15 08:07:54.696  9338  9350 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:54.696  9338  9350 F DEBUG   : 6 total frames
+10-15 08:07:54.696  9338  9350 F DEBUG   : backtrace:
+10-15 08:07:54.696  9338  9350 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:54.696  9338  9350 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.696  9338  9350 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.696  9338  9350 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.696  9338  9350 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.697  9338  9350 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:54.710   634  1871 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:28 (pid 9338) has died: vis BTOP
+10-15 08:07:54.711   634  1871 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:28 in 1000ms for connection
+10-15 08:07:54.743   634  1871 I ActivityManager: Start proc 9351:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29/u0ai29 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:29}
+10-15 08:07:54.753  9351  9351 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 isIsolatedProcess=true splits=<none>
+10-15 08:07:54.886  9351  9362 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.886  9351  9362 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:54.886  9351  9362 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:07:54.886  9351  9362 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:07:54.886  9351  9362 F DEBUG   : Revision: '0'
+10-15 08:07:54.886  9351  9362 F DEBUG   : ABI: 'x86_64'
+10-15 08:07:54.886  9351  9362 F DEBUG   : Timestamp: 2026-10-15 08:07:54.765050184+0000
+10-15 08:07:54.886  9351  9362 F DEBUG   : Process uptime: 1s
+10-15 08:07:54.886  9351  9362 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29
+10-15 08:07:54.886  9351  9362 F DEBUG   : pid: 9351, tid: 9362, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 <<<
+10-15 08:07:54.886  9351  9362 F DEBUG   : uid: 90029
+10-15 08:07:54.886  9351  9362 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:54.886  9351  9362 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:54.886  9351  9362 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:54.886  9351  9362 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 00000000cd521601  r15 0000000000002487
+10-15 08:07:54.886  9351  9362 F DEBUG   :     rdi 0000000000002487  rsi 0000000000002492
+10-15 08:07:54.886  9351  9362 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:54.886  9351  9362 F DEBUG   : 6 total frames
+10-15 08:07:54.886  9351  9362 F DEBUG   : backtrace:
+10-15 08:07:54.886  9351  9362 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:54.886  9351  9362 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.886  9351  9362 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.886  9351  9362 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.886  9351  9362 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:54.886  9351  9362 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:54.900   634  1871 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:29 (pid 9351) has died: vis BTOP
+10-15 08:07:54.900   634  1871 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:29 in 1000ms for connection
+10-15 08:07:55.463   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:07:57.158   634  1872 I ActivityManager: Start proc 9363:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30/u0ai30 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:30}
+10-15 08:07:57.167  9363  9363 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 isIsolatedProcess=true splits=<none>
+10-15 08:07:57.301  9363  9374 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:57.301  9363  9374 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:57.301  9363  9374 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:07:57.301  9363  9374 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:07:57.301  9363  9374 F DEBUG   : Revision: '0'
+10-15 08:07:57.301  9363  9374 F DEBUG   : ABI: 'x86_64'
+10-15 08:07:57.302  9363  9374 F DEBUG   : Timestamp: 2026-10-15 08:07:57.180387515+0000
+10-15 08:07:57.302  9363  9374 F DEBUG   : Process uptime: 1s
+10-15 08:07:57.302  9363  9374 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30
+10-15 08:07:57.302  9363  9374 F DEBUG   : pid: 9363, tid: 9374, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 <<<
+10-15 08:07:57.302  9363  9374 F DEBUG   : uid: 90030
+10-15 08:07:57.302  9363  9374 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:57.302  9363  9374 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:57.302  9363  9374 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:57.302  9363  9374 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 000000001186a801  r15 0000000000002493
+10-15 08:07:57.302  9363  9374 F DEBUG   :     rdi 0000000000002493  rsi 000000000000249e
+10-15 08:07:57.302  9363  9374 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:57.302  9363  9374 F DEBUG   : 6 total frames
+10-15 08:07:57.302  9363  9374 F DEBUG   : backtrace:
+10-15 08:07:57.302  9363  9374 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:57.302  9363  9374 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:57.302  9363  9374 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:57.302  9363  9374 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:57.303  9363  9374 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:57.303  9363  9374 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:57.296  9363  9363 W ChildProcessMai: type=1400 audit(0.0:326): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:07:57.300  9363  9363 W ChildProcessMai: type=1400 audit(0.0:327): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:07:57.318   634  1871 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:30 (pid 9363) has died: vis BTOP
+10-15 08:07:57.318   634  1871 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:30 in 1000ms for connection
+10-15 08:07:57.464   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:07:59.466   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:07:59.758   634  1872 I ActivityManager: Start proc 9375:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31/u0ai31 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:31}
+10-15 08:07:59.768  9375  9375 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 isIsolatedProcess=true splits=<none>
+10-15 08:07:59.905  9375  9385 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:59.905  9375  9385 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:07:59.905  9375  9385 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:07:59.905  9375  9385 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:07:59.905  9375  9385 F DEBUG   : Revision: '0'
+10-15 08:07:59.905  9375  9385 F DEBUG   : ABI: 'x86_64'
+10-15 08:07:59.906  9375  9385 F DEBUG   : Timestamp: 2026-10-15 08:07:59.782447786+0000
+10-15 08:07:59.906  9375  9385 F DEBUG   : Process uptime: 1s
+10-15 08:07:59.906  9375  9385 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31
+10-15 08:07:59.906  9375  9385 F DEBUG   : pid: 9375, tid: 9385, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 <<<
+10-15 08:07:59.906  9375  9385 F DEBUG   : uid: 90031
+10-15 08:07:59.906  9375  9385 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:07:59.906  9375  9385 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:07:59.906  9375  9385 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:07:59.906  9375  9385 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 000000002ea78901  r15 000000000000249f
+10-15 08:07:59.906  9375  9385 F DEBUG   :     rdi 000000000000249f  rsi 00000000000024a9
+10-15 08:07:59.906  9375  9385 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:07:59.906  9375  9385 F DEBUG   : 6 total frames
+10-15 08:07:59.906  9375  9385 F DEBUG   : backtrace:
+10-15 08:07:59.906  9375  9385 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:07:59.906  9375  9385 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:59.906  9375  9385 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:59.906  9375  9385 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:59.906  9375  9385 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:07:59.906  9375  9385 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:07:59.900  9375  9375 W ChildProcessMai: type=1400 audit(0.0:330): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:07:59.904  9375  9375 W ChildProcessMai: type=1400 audit(0.0:331): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:07:59.921   634  1871 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:31 (pid 9375) has died: vis BTOP
+10-15 08:07:59.921   634  1871 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:31 in 1000ms for connection
+10-15 08:08:01.467   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:02.545  8689  8697 D StrictMode: 	at x07.createFromParcel(chromium-ChromePublic.apk-default-805900004:153)
+10-15 08:08:02.545  8689  8697 D StrictMode: 	at qc2.onTransact(chromium-ChromePublic.apk-default-805900004:65)
+10-15 08:08:02.547   634  1091 I ActivityManager: Start proc 9387:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32/u0ai32 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:32}
+10-15 08:08:02.556  9387  9387 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 isIsolatedProcess=true splits=<none>
+10-15 08:08:02.690  9387  9399 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:02.690  9387  9399 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:02.690  9387  9399 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:08:02.690  9387  9399 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:08:02.690  9387  9399 F DEBUG   : Revision: '0'
+10-15 08:08:02.690  9387  9399 F DEBUG   : ABI: 'x86_64'
+10-15 08:08:02.690  9387  9399 F DEBUG   : Timestamp: 2026-10-15 08:08:02.568918129+0000
+10-15 08:08:02.690  9387  9399 F DEBUG   : Process uptime: 1s
+10-15 08:08:02.690  9387  9399 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32
+10-15 08:08:02.690  9387  9399 F DEBUG   : pid: 9387, tid: 9399, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 <<<
+10-15 08:08:02.690  9387  9399 F DEBUG   : uid: 90032
+10-15 08:08:02.690  9387  9399 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:08:02.690  9387  9399 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:08:02.690  9387  9399 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:08:02.690  9387  9399 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 00000000bc646501  r15 00000000000024ab
+10-15 08:08:02.690  9387  9399 F DEBUG   :     rdi 00000000000024ab  rsi 00000000000024b7
+10-15 08:08:02.690  9387  9399 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:08:02.690  9387  9399 F DEBUG   : 6 total frames
+10-15 08:08:02.690  9387  9399 F DEBUG   : backtrace:
+10-15 08:08:02.690  9387  9399 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:08:02.690  9387  9399 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:02.690  9387  9399 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:02.690  9387  9399 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:02.690  9387  9399 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:02.690  9387  9399 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:08:02.688  9387  9387 W ChildProcessMai: type=1400 audit(0.0:334): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:02.688  9387  9387 W ChildProcessMai: type=1400 audit(0.0:335): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:02.706   634  1091 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:32 (pid 9387) has died: vis BTOP
+10-15 08:08:02.706   634  1091 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:32 in 1000ms for connection
+10-15 08:08:03.468   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:05.469   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:05.519   634  1336 I ActivityManager: Start proc 9400:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33/u0ai33 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:33}
+10-15 08:08:05.531  9400  9400 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 isIsolatedProcess=true splits=<none>
+10-15 08:08:05.662  9400  9412 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:05.662  9400  9412 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:05.662  9400  9412 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:08:05.662  9400  9412 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:08:05.663  9400  9412 F DEBUG   : Revision: '0'
+10-15 08:08:05.663  9400  9412 F DEBUG   : ABI: 'x86_64'
+10-15 08:08:05.663  9400  9412 F DEBUG   : Timestamp: 2026-10-15 08:08:05.543255114+0000
+10-15 08:08:05.663  9400  9412 F DEBUG   : Process uptime: 1s
+10-15 08:08:05.663  9400  9412 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33
+10-15 08:08:05.663  9400  9412 F DEBUG   : pid: 9400, tid: 9412, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 <<<
+10-15 08:08:05.663  9400  9412 F DEBUG   : uid: 90033
+10-15 08:08:05.663  9400  9412 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:08:05.663  9400  9412 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:08:05.663  9400  9412 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba16bfeb0  r11 0000000000000246
+10-15 08:08:05.663  9400  9412 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 000000004b6a4001  r15 00000000000024b8
+10-15 08:08:05.663  9400  9412 F DEBUG   :     rdi 00000000000024b8  rsi 00000000000024c4
+10-15 08:08:05.663  9400  9412 F DEBUG   :     rbp 000070dba16bff50  rsp 000070dba16bfea8  rip 000070dea42c6808
+10-15 08:08:05.664  9400  9412 F DEBUG   : 6 total frames
+10-15 08:08:05.664  9400  9412 F DEBUG   : backtrace:
+10-15 08:08:05.664  9400  9412 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:08:05.664  9400  9412 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.664  9400  9412 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.664  9400  9412 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.664  9400  9412 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.664  9400  9412 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:08:05.660  9400  9400 W ChildProcessMai: type=1400 audit(0.0:338): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:05.660  9400  9400 W ChildProcessMai: type=1400 audit(0.0:339): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:05.677   634  1883 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:33 (pid 9400) has died: vis BTOP
+10-15 08:08:05.677   634  1883 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:33 in 1000ms for connection
+10-15 08:08:05.705   634  1871 I ActivityManager: Start proc 9413:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34/u0ai34 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:34}
+10-15 08:08:05.714  9413  9413 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34 isIsolatedProcess=true splits=<none>
+10-15 08:08:05.848  9413  9424 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:05.848  9413  9424 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:05.848  9413  9424 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:08:05.848  9413  9424 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:08:05.848  9413  9424 F DEBUG   : Revision: '0'
+10-15 08:08:05.848  9413  9424 F DEBUG   : ABI: 'x86_64'
+10-15 08:08:05.849  9413  9424 F DEBUG   : Timestamp: 2026-10-15 08:08:05.726642675+0000
+10-15 08:08:05.849  9413  9424 F DEBUG   : Process uptime: 1s
+10-15 08:08:05.849  9413  9424 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34
+10-15 08:08:05.849  9413  9424 F DEBUG   : pid: 9413, tid: 9424, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34 <<<
+10-15 08:08:05.849  9413  9424 F DEBUG   : uid: 90034
+10-15 08:08:05.849  9413  9424 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:08:05.849  9413  9424 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:08:05.849  9413  9424 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:08:05.849  9413  9424 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 0000000093928e01  r15 00000000000024c5
+10-15 08:08:05.849  9413  9424 F DEBUG   :     rdi 00000000000024c5  rsi 00000000000024d0
+10-15 08:08:05.849  9413  9424 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:08:05.849  9413  9424 F DEBUG   : 6 total frames
+10-15 08:08:05.849  9413  9424 F DEBUG   : backtrace:
+10-15 08:08:05.849  9413  9424 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:08:05.849  9413  9424 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.849  9413  9424 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.849  9413  9424 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.849  9413  9424 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:05.849  9413  9424 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:08:05.844  9413  9413 W ChildProcessMai: type=1400 audit(0.0:342): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:05.844  9413  9413 W ChildProcessMai: type=1400 audit(0.0:343): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:05.865   634  1871 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:34 (pid 9413) has died: vis BTOP
+10-15 08:08:05.865   634  1871 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:34 in 1000ms for connection
+10-15 08:08:07.470   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:09.049   634  1871 I ActivityManager: Start proc 9425:org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35/u0ai35 for  {org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:35}
+10-15 08:08:09.059  9425  9425 I cr_SplitCompatApp: version=155.0.8059.0 (805900004) minSdkVersion=29 processName=org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35 isIsolatedProcess=true splits=<none>
+10-15 08:08:09.194  9425  9436 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:09.194  9425  9436 W libc    : Access denied finding property "ro.debuggable"
+10-15 08:08:09.194  9425  9436 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-15 08:08:09.194  9425  9436 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-15 08:08:09.194  9425  9436 F DEBUG   : Revision: '0'
+10-15 08:08:09.194  9425  9436 F DEBUG   : ABI: 'x86_64'
+10-15 08:08:09.194  9425  9436 F DEBUG   : Timestamp: 2026-10-15 08:08:09.074724460+0000
+10-15 08:08:09.194  9425  9436 F DEBUG   : Process uptime: 1s
+10-15 08:08:09.194  9425  9436 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35
+10-15 08:08:09.194  9425  9436 F DEBUG   : pid: 9425, tid: 9436, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35 <<<
+10-15 08:08:09.194  9425  9436 F DEBUG   : uid: 90035
+10-15 08:08:09.194  9425  9436 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-15 08:08:09.194  9425  9436 F DEBUG   :     rax 0000000000000000  rbx 000070deb5f65000  rcx 000070dea42c6808  rdx 000000000000000b
+10-15 08:08:09.194  9425  9436 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000070dba18bfeb0  r11 0000000000000246
+10-15 08:08:09.194  9425  9436 F DEBUG   :     r12 000070deb63200d8  r13 000000000070dbeb  r14 00000000d93f6001  r15 00000000000024d1
+10-15 08:08:09.194  9425  9436 F DEBUG   :     rdi 00000000000024d1  rsi 00000000000024dc
+10-15 08:08:09.194  9425  9436 F DEBUG   :     rbp 000070dba18bff50  rsp 000070dba18bfea8  rip 000070dea42c6808
+10-15 08:08:09.194  9425  9436 F DEBUG   : 6 total frames
+10-15 08:08:09.194  9425  9436 F DEBUG   : backtrace:
+10-15 08:08:09.194  9425  9436 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-15 08:08:09.194  9425  9436 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:09.194  9425  9436 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:09.194  9425  9436 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:09.194  9425  9436 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-15 08:08:09.194  9425  9436 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-15 08:08:09.192  9425  9425 W ChildProcessMai: type=1400 audit(0.0:346): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:09.192  9425  9425 W ChildProcessMai: type=1400 audit(0.0:347): avc:  denied  { read } for  name="u:object_r:userdebug_or_eng_prop:s0" dev="tmpfs" ino=375 scontext=u:r:isolated_app:s0:c512,c768 tcontext=u:object_r:userdebug_or_eng_prop:s0 tclass=file permissive=0
+10-15 08:08:09.209   634  1336 I ActivityManager: Process org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:35 (pid 9425) has died: vis BTOP
+10-15 08:08:09.210   634  1336 W ActivityManager: Scheduling restart of crashed service org.chromium.chrome/org.chromium.content.app.SandboxedProcessService0:35 in 1000ms for connection
+10-15 08:08:09.471   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:11.472   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:13.473   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:15.474   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:17.475   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:19.476   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:21.477   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:23.478   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:25.479   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:27.480   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:29.481   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:31.482   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:33.483   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:35.484   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:37.485   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:39.487   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:41.488   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:43.489   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:45.490   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:47.491   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:49.492   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:51.493   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:53.494   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:55.495   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:57.496   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:08:59.497   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:01.498   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:03.499   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:05.500   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:07.501   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:09.502   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:11.503   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:13.504   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:15.505   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:16.538  8756  8774 E chromium: [ERROR:ui/gl/egl_util.cc:92] EGL Driver message (Error) eglCreateContext: Requested version is not supported
+10-15 08:09:17.507   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:19.508   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:21.509   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:23.510   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:25.511   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:27.512   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:29.513   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:31.514   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:33.515   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:35.516   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:37.517   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:39.518   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:41.519   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:43.520   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:45.521   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:47.522   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:49.523   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:51.525   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:53.526   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:55.527   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:57.528   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:09:59.529   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:01.530   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:03.531   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:05.532   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:07.533   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:09.534   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:11.535   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:13.536   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'
+10-15 08:10:15.537   527   527 E adbd    : failed to connect to socket 'localabstract:chrome_devtools_remote': could not connect to localabstract address 'localabstract:chrome_devtools_remote'

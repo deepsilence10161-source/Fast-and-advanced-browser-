@@ -1,0 +1,331 @@
+{
+ "key": "01_first_run_2",
+ "note": "before tapping 'Got it'",
+ "foreground": "com.android.chrome",
+ "node_count": 22,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/privacy_sandbox_notice_row_view",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/privacy_sandbox_dialog_scroll_view",
+   "cls": "android.widget.ScrollView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2127
+   ],
+   "w": 1080,
+   "h": 1999
+  },
+  {
+   "text": "Enhanced ad privacy in Chrome",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    124,
+    489,
+    955,
+    574
+   ],
+   "w": 831,
+   "h": 85
+  },
+  {
+   "text": "We\u2019re launching new privacy features that give you more choice over the ads you see.",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    627,
+    1038,
+    736
+   ],
+   "w": 996,
+   "h": 109
+  },
+  {
+   "text": "Chrome notes topics of interest based on your recent browsing history. Also, sites you visit can determine what you like. Later, sites can ask for this information to show you personalized ads. You can choose which topics and sites are used to show you ads.",
+   "desc": "",
+   "id": "com.android.chrome:id/privacy_sandbox_m1_notice_row_description_2",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    778,
+    1038,
+    1046
+   ],
+   "w": 996,
+   "h": 268
+  },
+  {
+   "text": "To measure the performance of an ad, limited types of data are shared between sites, such as whether you made a purchase after visiting a site.",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    1496,
+    1038,
+    1658
+   ],
+   "w": 996,
+   "h": 162
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/dropdown_element",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    1700,
+    1038,
+    1826
+   ],
+   "w": 996,
+   "h": 126
+  },
+  {
+   "text": "More about ads in Chrome",
+   "desc": "",
+   "id": "",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    1700,
+    975,
+    1826
+   ],
+   "w": 933,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/expand_arrow",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    975,
+    1700,
+    1038,
+    1826
+   ],
+   "w": 63,
+   "h": 126
+  },
+  {
+   "text": "You can make changes in Chrome settings.",
+   "desc": "",
+   "id": "com.android.chrome:id/privacy_sandbox_m1_notice_row_description_4",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    42,
+    1868,
+    1038,
+    1924
+   ],
+   "w": 996,
+   "h": 56
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/action_buttons",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    2169,
+    1017,
+    2295
+   ],
+   "w": 954,
+   "h": 126
+  },
+  {
+   "text": "Settings",
+   "desc": "",
+   "id": "com.android.chrome:id/settings_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    2169,
+    519,
+    2295
+   ],
+   "w": 456,
+   "h": 126
+  },
+  {
+   "text": "Got it",
+   "desc": "",
+   "id": "com.android.chrome:id/ack_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    561,
+    2169,
+    1017,
+    2295
+   ],
+   "w": 456,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/statusBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    128
+   ],
+   "w": 1080,
+   "h": 128
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/navigationBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2337,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 63
+  }
+ ],
+ "png": "01_first_run_2.png",
+ "png_bytes": 212812,
+ "time_utc": "2026-10-15T07:57:00Z"
+}

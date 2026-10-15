@@ -1,0 +1,951 @@
+{
+ "key": "10_incognito_ntp",
+ "note": "incognito new tab page",
+ "foreground": "org.chromium.chrome",
+ "node_count": 55,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/action_bar_root",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/edge_to_edge_base_layout",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2400
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/coordinator",
+   "cls": "android.view.ViewGroup",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2272
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/constrained_views_container",
+   "cls": "android.view.ViewGroup",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2272
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/secondary_ui_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2272
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/secondary_ui_container_tab_modal",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2272
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/compositor_view_holder",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2272
+  },
+  {
+   "text": "",
+   "desc": "New Incognito tab",
+   "id": "org.chromium.chrome:id/ntp_content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": true,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    275,
+    1080,
+    2180
+   ],
+   "w": 1080,
+   "h": 1905
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/ntp_scrollview",
+   "cls": "android.widget.ScrollView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    275,
+    1080,
+    2180
+   ],
+   "w": 1080,
+   "h": 1905
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_container",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    275,
+    1080,
+    2124
+   ],
+   "w": 1080,
+   "h": 1849
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    82,
+    359,
+    271,
+    548
+   ],
+   "w": 189,
+   "h": 189
+  },
+  {
+   "text": "You\u2019ve gone Incognito",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    71,
+    603,
+    661,
+    681
+   ],
+   "w": 590,
+   "h": 78
+  },
+  {
+   "text": "Others who use this device won\u2019t see your activity, so you can browse more privately. This won't change how data is collected by websites you visit and the services they use, including Google. Downloads, bookmarks and reading list items will be saved.",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_subtitle",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    71,
+    736,
+    1009,
+    995
+   ],
+   "w": 938,
+   "h": 259
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_bulletpoints_container",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    71,
+    995,
+    1008,
+    1519
+   ],
+   "w": 937,
+   "h": 524
+  },
+  {
+   "text": "Chromium won\u2019t save:\nYour browsing history\nCookies and site data\nInformation entered in forms",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_features",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    82,
+    1050,
+    593,
+    1257
+   ],
+   "w": 511,
+   "h": 207
+  },
+  {
+   "text": "Your activity might still be visible to:\nWebsites you visit\nYour employer or school\nYour internet service provider",
+   "desc": "",
+   "id": "org.chromium.chrome:id/new_tab_incognito_warning",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    82,
+    1312,
+    668,
+    1519
+   ],
+   "w": 586,
+   "h": 207
+  },
+  {
+   "text": "Learn more",
+   "desc": "Learn more about Incognito",
+   "id": "org.chromium.chrome:id/learn_more",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    71,
+    1530,
+    281,
+    1656
+   ],
+   "w": 210,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/tracking_protection_card",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    82,
+    1676,
+    998,
+    2040
+   ],
+   "w": 916,
+   "h": 364
+  },
+  {
+   "text": "Third-party cookies are blocked",
+   "desc": "",
+   "id": "org.chromium.chrome:id/tracking_protection_card_title",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    114,
+    1718,
+    966,
+    1775
+   ],
+   "w": 852,
+   "h": 57
+  },
+  {
+   "text": "When you're in Incognito mode, sites can't use third-party cookies. If a site that relies on these cookies isn't working, you can try giving that site temporary access to third-party cookies.",
+   "desc": "",
+   "id": "org.chromium.chrome:id/tracking_protection_card_description",
+   "cls": "android.widget.TextView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    114,
+    1791,
+    966,
+    1998
+   ],
+   "w": 852,
+   "h": 207
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/shadow_bottom",
+   "cls": "android.view.View",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2138,
+    1080,
+    2180
+   ],
+   "w": 1080,
+   "h": 42
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/control_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    278
+   ],
+   "w": 1080,
+   "h": 150
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/toolbar_container",
+   "cls": "android.view.ViewGroup",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    278
+   ],
+   "w": 1080,
+   "h": 150
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/toolbar",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    275
+   ],
+   "w": 1080,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/location_bar",
+   "cls": "android.view.ViewGroup",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    21,
+    128,
+    1059,
+    275
+   ],
+   "w": 1038,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/location_bar_status",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    21,
+    128,
+    106,
+    275
+   ],
+   "w": 85,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/location_bar_status_icon_view",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    32,
+    128,
+    95,
+    275
+   ],
+   "w": 63,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/location_bar_status_icon",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    32,
+    170,
+    95,
+    233
+   ],
+   "w": 63,
+   "h": 63
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/focus_thief",
+   "cls": "android.view.View",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    21,
+    128,
+    22,
+    129
+   ],
+   "w": 1,
+   "h": 1
+  },
+  {
+   "text": "Ask Google or type URL",
+   "desc": "",
+   "id": "org.chromium.chrome:id/url_bar",
+   "cls": "android.widget.EditText",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": true,
+   "checked": false,
+   "bounds": [
+    106,
+    128,
+    1059,
+    275
+   ],
+   "w": 953,
+   "h": 147
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/side_ui_web_content_hairline_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    275,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 2125
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/toolbar_progress_bar_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    276,
+    1080,
+    281
+   ],
+   "w": 1080,
+   "h": 5
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/bottom_app_bar_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2159,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 178
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/bottom_controls_wrapper",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2159,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 178
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/bottom_container_slot",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2180,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/bottom_bar_container",
+   "cls": "android.widget.LinearLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2180,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/home_button_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2180,
+    216,
+    2337
+   ],
+   "w": 216,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "Open the home page",
+   "id": "org.chromium.chrome:id/home_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    45,
+    2180,
+    171,
+    2337
+   ],
+   "w": 126,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/extra_button_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    216,
+    2180,
+    432,
+    2337
+   ],
+   "w": 216,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "Ask Gemini",
+   "id": "org.chromium.chrome:id/extra_button",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    261,
+    2180,
+    387,
+    2337
+   ],
+   "w": 126,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "New tab",
+   "id": "org.chromium.chrome:id/new_tab_button",
+   "cls": "android.widget.ImageView",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    477,
+    2180,
+    603,
+    2337
+   ],
+   "w": 126,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "See 1 tab",
+   "id": "org.chromium.chrome:id/tab_switcher_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    693,
+    2180,
+    819,
+    2337
+   ],
+   "w": 126,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/app_menu_button_container",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    864,
+    2180,
+    1080,
+    2337
+   ],
+   "w": 216,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "Customize and control Google Chrome",
+   "id": "org.chromium.chrome:id/menu_button",
+   "cls": "android.widget.Button",
+   "pkg": "org.chromium.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    909,
+    2180,
+    1035,
+    2337
+   ],
+   "w": 126,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/bottom_bar_menu_image_button",
+   "cls": "android.widget.ImageButton",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    909,
+    2180,
+    1035,
+    2337
+   ],
+   "w": 126,
+   "h": 157
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "org.chromium.chrome:id/edge_to_edge_bottom_chin",
+   "cls": "android.view.View",
+   "pkg": "org.chromium.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2337,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 63
+  }
+ ],
+ "png": "10_incognito_ntp.png",
+ "png_bytes": 217044,
+ "time_utc": "2026-10-15T07:44:40Z"
+}

@@ -1,0 +1,1508 @@
+{
+  "reference": {
+    "package": "com.android.chrome",
+    "versionName": "133.0.6943.137",
+    "primaryCpuAbi": "x86_64",
+    "android_release": "16",
+    "sdk": "36",
+    "model": "sdk_gphone64_x86_64",
+    "wm_size": "Physical size: 1080x2400",
+    "wm_density": "Physical density: 420",
+    "font_scale": "1.0",
+    "navigation_mode": "2",
+    "reached_browser_ui": true,
+    "pss_kb_after_example": 132082,
+    "timings": {
+      "cold_ms": [
+        887,
+        733,
+        806,
+        819,
+        815,
+        829,
+        905,
+        909,
+        957,
+        752
+      ],
+      "warm_ms": [
+        699,
+        366,
+        446,
+        533,
+        478,
+        490,
+        598,
+        446,
+        607,
+        592
+      ],
+      "activity": "com.android.chrome/com.google.android.apps.chrome.IntentDispatcher",
+      "cold_ms_median": 824.0,
+      "cold_ms_p95": 957,
+      "warm_ms_median": 511.5,
+      "warm_ms_p95": 699
+    },
+    "crash_buffer_lines": 0
+  },
+  "artifact": {
+    "package": "org.chromium.chrome",
+    "versionName": "155.0.8059.0",
+    "primaryCpuAbi": "x86_64",
+    "android_release": "16",
+    "sdk": "36",
+    "model": "sdk_gphone64_x86_64",
+    "wm_size": "Physical size: 1080x2400",
+    "wm_density": "Physical density: 420",
+    "font_scale": "1.0",
+    "navigation_mode": "2",
+    "reached_browser_ui": true,
+    "pss_kb_after_example": 156473,
+    "timings": {
+      "cold_ms": [
+        695,
+        720,
+        717,
+        729,
+        819,
+        683,
+        756,
+        782,
+        723,
+        686
+      ],
+      "warm_ms": [
+        693,
+        598,
+        623,
+        628,
+        664,
+        615,
+        617,
+        683,
+        656,
+        625
+      ],
+      "activity": "org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher",
+      "cold_ms_median": 721.5,
+      "cold_ms_p95": 819,
+      "warm_ms_median": 626.5,
+      "warm_ms_p95": 693
+    },
+    "crash_buffer_lines": 0
+  },
+  "chrome_stable_target": "155.0.8059.80",
+  "screens": [
+    {
+      "screen": "01_first_run",
+      "ref_note": "first launch after pm clear",
+      "id_jaccard": 0.421,
+      "text_jaccard_brand_normalised": 0.667,
+      "desc_jaccard_brand_normalised": 0.0,
+      "ids_missing_in_artifact": [
+        "fre_logo",
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "centered_content_container",
+        "edge_to_edge_base_layout",
+        "fre_bottom_group",
+        "fre_content_container",
+        "fre_icon",
+        "fre_scroll_view",
+        "fullscreen_signin"
+      ],
+      "texts_missing_in_artifact": [
+        "Use without an account"
+      ],
+      "texts_extra_in_artifact": [
+        "Stay signed out"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [
+        "By continuing, you agree to the Terms of Service. To help improve the app, <BRAND> sends usage and crash data to Google. Manage usage and crash data settings"
+      ],
+      "brand_strings_ref": [
+        "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage",
+        "Make Chrome your own"
+      ],
+      "brand_strings_artifact": [
+        "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage",
+        "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage usage and crash data settings",
+        "Make Chrome your own"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0722,
+      "evidence": "01_first_run.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "01_first_run_1",
+      "ref_note": "before tapping 'Use without an account'",
+      "id_jaccard": 0.421,
+      "text_jaccard_brand_normalised": 0.667,
+      "desc_jaccard_brand_normalised": 0.0,
+      "ids_missing_in_artifact": [
+        "fre_logo",
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "centered_content_container",
+        "edge_to_edge_base_layout",
+        "fre_bottom_group",
+        "fre_content_container",
+        "fre_icon",
+        "fre_scroll_view",
+        "fullscreen_signin"
+      ],
+      "texts_missing_in_artifact": [
+        "Use without an account"
+      ],
+      "texts_extra_in_artifact": [
+        "Stay signed out"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [
+        "By continuing, you agree to the Terms of Service. To help improve the app, <BRAND> sends usage and crash data to Google. Manage usage and crash data settings"
+      ],
+      "brand_strings_ref": [
+        "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage",
+        "Make Chrome your own"
+      ],
+      "brand_strings_artifact": [
+        "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage",
+        "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage usage and crash data settings",
+        "Make Chrome your own"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0728,
+      "evidence": "01_first_run_1.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "01_first_run_2",
+      "ref_note": "before tapping 'Got it'",
+      "id_jaccard": 0.053,
+      "text_jaccard_brand_normalised": 0.0,
+      "desc_jaccard_brand_normalised": 1.0,
+      "ids_missing_in_artifact": [
+        "ack_button",
+        "action_buttons",
+        "dropdown_element",
+        "expand_arrow",
+        "navigationBarBackground",
+        "privacy_sandbox_dialog_scroll_view",
+        "privacy_sandbox_m1_notice_row_description_2",
+        "privacy_sandbox_m1_notice_row_description_4",
+        "privacy_sandbox_notice_row_view",
+        "settings_button",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "button_bar",
+        "custom_view_not_in_scrollable",
+        "modal_dialog_view",
+        "negative_button",
+        "notification_permission_rationale_message",
+        "notification_permission_rationale_title",
+        "positive_button"
+      ],
+      "texts_missing_in_artifact": [
+        "<BRAND> notes topics of interest based on your recent browsing history. Also, sites you visit can determine what you like. Later, sites can ask for this information to show you personalized ads. You can choose which topics and sites are used to show you ads.",
+        "Enhanced ad privacy in <BRAND>",
+        "Got it",
+        "More about ads in <BRAND>",
+        "Settings",
+        "To measure the performance of an ad, limited types of data are shared between sites, such as whether you made a purchase after visiting a site.",
+        "We’re launching new privacy features that give you more choice over the ads you see.",
+        "You can make changes in <BRAND> settings."
+      ],
+      "texts_extra_in_artifact": [
+        "<BRAND> notifications make things easier",
+        "Continue",
+        "No thanks",
+        "You’ll be able to easily manage media controls, Incognito sessions, downloads and more"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [],
+      "brand_strings_ref": [
+        "Chrome notes topics of interest based on your recent browsing history. Also, sites you visit can determine what you like. Later, sites can ask for this information to show you personalized ads. You can choose which topics and sites are used to show you ads.",
+        "Enhanced ad privacy in Chrome",
+        "More about ads in Chrome",
+        "You can make changes in Chrome settings."
+      ],
+      "brand_strings_artifact": [
+        "Chrome notifications make things easier"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.3505,
+      "evidence": "01_first_run_2.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "02_ntp",
+      "ref_note": "new tab page / start surface",
+      "id_jaccard": 0.312,
+      "text_jaccard_brand_normalised": 0.0,
+      "desc_jaccard_brand_normalised": 0.2,
+      "ids_missing_in_artifact": [
+        "header_menu",
+        "header_title",
+        "lens_camera_button",
+        "main_content",
+        "menu_button_wrapper",
+        "navigationBarBackground",
+        "optional_toolbar_button",
+        "optional_toolbar_button_container",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "avatar_button",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "composeplate_button",
+        "composeplate_button_icon",
+        "composeplate_button_text",
+        "composeplate_view",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "home_button_container",
+        "image_view",
+        "incognito_button",
+        "incognito_button_icon",
+        "incognito_button_text",
+        "logo_container_view",
+        "mv_tiles_container",
+        "new_tab_button",
+        "ntp_content",
+        "ntp_customization_background_image_layout",
+        "search_box_plus_button",
+        "search_box_shadow_container",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "signin_button",
+        "tile_text_container",
+        "tile_view_highlight"
+      ],
+      "texts_missing_in_artifact": [
+        "Amazon.com",
+        "Discover",
+        "ESPN.com",
+        "Facebook",
+        "Search or type URL",
+        "Wikipedia",
+        "YouTube"
+      ],
+      "texts_extra_in_artifact": [
+        "<BRAND> Code Reviews",
+        "AI Mode",
+        "Ask Google or type URL",
+        "Can't refresh Discover",
+        "Check back later for new stories",
+        "Git Repositories on chromium",
+        "Google Open Source Programs Office",
+        "Incognito",
+        "The <BRAND> Projects `",
+        "freenode"
+      ],
+      "descs_missing_in_artifact": [
+        "Amazon.com: www.amazon.com",
+        "Card Menu Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "ESPN.com: www.espn.com",
+        "Facebook: m.facebook.com",
+        "Newsweek, 1d",
+        "Options for Discover",
+        "Search with your camera using Google Lens",
+        "Share Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "Wikipedia: en.m.wikipedia.org",
+        "YouTube: m.youtube.com"
+      ],
+      "descs_extra_in_artifact": [
+        "<BRAND> Code Reviews: codereview.chromium.org",
+        "Ask Gemini",
+        "Git Repositories on chromium: chromium.googlesource.com",
+        "Google Open Source Programs Office: developers.google.com",
+        "New Incognito tab",
+        "New tab",
+        "Open the context popup",
+        "Start search",
+        "The <BRAND> Projects `: www.chromium.org",
+        "freenode: freenode.net"
+      ],
+      "brand_strings_ref": [
+        "Customize and control Google Chrome"
+      ],
+      "brand_strings_artifact": [
+        "Chromium Code Reviews",
+        "Chromium Code Reviews: codereview.chromium.org",
+        "Customize and control Google Chrome",
+        "The Chromium Projects `",
+        "The Chromium Projects `: www.chromium.org"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.2187,
+      "evidence": "02_ntp.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "03_omnibox_focused",
+      "ref_note": "omnibox focused, keyboard expected",
+      "id_jaccard": 0.4,
+      "text_jaccard_brand_normalised": 0.0,
+      "desc_jaccard_brand_normalised": 0.027,
+      "ids_missing_in_artifact": [
+        "header_menu",
+        "header_title",
+        "lens_camera_button",
+        "location_bar_status_icon_frame",
+        "main_content",
+        "navigationBarBackground",
+        "omnibox_results_container",
+        "statusBarBackground",
+        "url_action_container"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "composeplate_button",
+        "composeplate_button_icon",
+        "composeplate_button_text",
+        "composeplate_view",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "focus_thief",
+        "image_view",
+        "incognito_button",
+        "incognito_button_icon",
+        "incognito_button_text",
+        "mv_tiles_container",
+        "ntp_content",
+        "ntp_customization_background_image_layout",
+        "omnibox_suggestions_container",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "tile_text_container",
+        "tile_view_highlight"
+      ],
+      "texts_missing_in_artifact": [
+        "Amazon.com",
+        "Discover",
+        "ESPN.com",
+        "Facebook",
+        "Search or type URL",
+        "Trending searches",
+        "Wikipedia",
+        "YouTube",
+        "exoplanets",
+        "manchester city vs psg highlights",
+        "ps5 jailbreak download games",
+        "salad and go arizona",
+        "trader joe's unexpected cheddar cheese spread"
+      ],
+      "texts_extra_in_artifact": [
+        "2027 nfl mock draft",
+        "<BRAND> Code Reviews",
+        "AI Mode",
+        "Ask Google or type URL",
+        "Can't refresh Discover",
+        "Check back later for new stories",
+        "Git Repositories on chromium",
+        "Google Open Source Programs Office",
+        "Incognito",
+        "The <BRAND> Projects `",
+        "Type @history to search your browsing history",
+        "colorado winter weather advisory snow",
+        "famitsu final fantasy resonance",
+        "freenode",
+        "royal caribbean cruise overboard",
+        "yellowjackets season 4 trailer"
+      ],
+      "descs_missing_in_artifact": [
+        "6 suggested items in list below.",
+        "Amazon.com: www.amazon.com",
+        "Card Menu Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "ESPN.com: www.espn.com",
+        "Facebook: m.facebook.com",
+        "Newsweek, 1d",
+        "Options for Discover",
+        "Refine: exoplanets",
+        "Refine: manchester city vs psg highlights",
+        "Refine: ps5 jailbreak download games",
+        "Refine: salad and go arizona",
+        "Refine: trader joe's unexpected cheddar cheese spread",
+        "Search with your camera using Google Lens",
+        "Share Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "Wikipedia: en.m.wikipedia.org",
+        "YouTube: m.youtube.com"
+      ],
+      "descs_extra_in_artifact": [
+        "2027 nfl mock draft. Search. 1 of 5 in the group Trending searches.",
+        "<BRAND> Code Reviews: codereview.chromium.org",
+        "Git Repositories on chromium: chromium.googlesource.com",
+        "Google Open Source Programs Office: developers.google.com",
+        "New Incognito tab",
+        "Open the context popup",
+        "Refine: 2027 nfl mock draft",
+        "Refine: Type @history to search your browsing history",
+        "Refine: colorado winter weather advisory snow",
+        "Refine: famitsu final fantasy resonance",
+        "Refine: royal caribbean cruise overboard",
+        "Refine: yellowjackets season 4 trailer",
+        "Start search",
+        "The <BRAND> Projects `: www.chromium.org",
+        "Type @history to search your browsing history. Navigation. 1 of 1 in the group .",
+        "colorado winter weather advisory snow. Search. 4 of 5 in the group .",
+        "famitsu final fantasy resonance. Search. 2 of 5 in the group .",
+        "freenode: freenode.net",
+        "royal caribbean cruise overboard. Search. 5 of 5 in the group .",
+        "yellowjackets season 4 trailer. Search. 3 of 5 in the group ."
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [
+        "Chromium Code Reviews",
+        "Chromium Code Reviews: codereview.chromium.org",
+        "The Chromium Projects `",
+        "The Chromium Projects `: www.chromium.org"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0246,
+      "evidence": "03_omnibox_focused.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "04_omnibox_suggestions",
+      "ref_note": "typed 'example.com'",
+      "id_jaccard": 0.42,
+      "text_jaccard_brand_normalised": 0.05,
+      "desc_jaccard_brand_normalised": 0.077,
+      "ids_missing_in_artifact": [
+        "header_menu",
+        "header_title",
+        "location_bar_status_icon_frame",
+        "main_content",
+        "navigationBarBackground",
+        "omnibox_results_container",
+        "statusBarBackground",
+        "url_action_container"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "composeplate_button",
+        "composeplate_button_icon",
+        "composeplate_button_text",
+        "composeplate_view",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "focus_thief",
+        "image_view",
+        "incognito_button",
+        "incognito_button_icon",
+        "incognito_button_text",
+        "mv_tiles_container",
+        "ntp_content",
+        "ntp_customization_background_image_layout",
+        "omnibox_suggestions_container",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "tile_text_container",
+        "tile_view_highlight"
+      ],
+      "texts_missing_in_artifact": [
+        "Amazon.com",
+        "Discover",
+        "ESPN.com",
+        "Facebook",
+        "Wikipedia",
+        "YouTube",
+        "example.com ip address",
+        "example.com mycomp.test.com localhost"
+      ],
+      "texts_extra_in_artifact": [
+        "<BRAND> Code Reviews",
+        "AI Mode",
+        "Can't refresh Discover",
+        "Check back later for new stories",
+        "Git Repositories on chromium",
+        "Google Open Source Programs Office",
+        "Incognito",
+        "The <BRAND> Projects `",
+        "example.com email",
+        "example.com login",
+        "freenode"
+      ],
+      "descs_missing_in_artifact": [
+        "Amazon.com: www.amazon.com",
+        "Card Menu Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "ESPN.com: www.espn.com",
+        "Facebook: m.facebook.com",
+        "Newsweek, 1d",
+        "Options for Discover",
+        "Refine: example.com ip address",
+        "Refine: example.com mycomp.test.com localhost",
+        "Share Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "Wikipedia: en.m.wikipedia.org",
+        "YouTube: m.youtube.com"
+      ],
+      "descs_extra_in_artifact": [
+        "<BRAND> Code Reviews: codereview.chromium.org",
+        "Git Repositories on chromium: chromium.googlesource.com",
+        "Google Open Source Programs Office: developers.google.com",
+        "New Incognito tab",
+        "Refine: example.com email",
+        "Refine: example.com login",
+        "Start search",
+        "The <BRAND> Projects `: www.chromium.org",
+        "example.com email. Search. 3 of 4 in the group .",
+        "example.com login. Search. 4 of 4 in the group .",
+        "example.com, example.com. Navigation. 1 of 4 in the group .",
+        "example.com. Search. 2 of 4 in the group .",
+        "freenode: freenode.net"
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [
+        "Chromium Code Reviews",
+        "Chromium Code Reviews: codereview.chromium.org",
+        "The Chromium Projects `",
+        "The Chromium Projects `: www.chromium.org"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0127,
+      "evidence": "04_omnibox_suggestions.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "05_page_loaded",
+      "ref_note": "https://example.com loaded",
+      "id_jaccard": 0.326,
+      "text_jaccard_brand_normalised": 0.875,
+      "desc_jaccard_brand_normalised": 0.5,
+      "ids_missing_in_artifact": [
+        "location_bar_status",
+        "location_bar_status_icon",
+        "location_bar_status_icon_frame",
+        "location_bar_status_icon_view",
+        "menu_button_wrapper",
+        "navigationBarBackground",
+        "optional_toolbar_button_container",
+        "statusBarBackground",
+        "toolbar_buttons"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "focus_thief",
+        "home_button_container",
+        "new_tab_button",
+        "omnibox_back_button",
+        "optional_button",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container"
+      ],
+      "texts_missing_in_artifact": [
+        "Example Domain"
+      ],
+      "texts_extra_in_artifact": [],
+      "descs_missing_in_artifact": [
+        "Connection is secure"
+      ],
+      "descs_extra_in_artifact": [
+        "Ask Gemini",
+        "Go back",
+        "Share"
+      ],
+      "brand_strings_ref": [
+        "Customize and control Google Chrome"
+      ],
+      "brand_strings_artifact": [
+        "Customize and control Google Chrome"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0516,
+      "evidence": "05_page_loaded.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "06_page_info",
+      "ref_note": "page info / connection security sheet",
+      "id_jaccard": 0.909,
+      "text_jaccard_brand_normalised": 1.0,
+      "desc_jaccard_brand_normalised": 1.0,
+      "ids_missing_in_artifact": [],
+      "ids_extra_in_artifact": [
+        "page_info_connection_wrapper"
+      ],
+      "texts_missing_in_artifact": [],
+      "texts_extra_in_artifact": [],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0355,
+      "evidence": "06_page_info.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "07_app_menu",
+      "ref_note": "overflow/app menu on a web page",
+      "id_jaccard": 0.526,
+      "text_jaccard_brand_normalised": 0.474,
+      "desc_jaccard_brand_normalised": 0.5,
+      "ids_missing_in_artifact": [
+        "checkbox",
+        "checkbox_icon_container",
+        "help_id",
+        "preferences_id",
+        "quick_delete_divider_line_id",
+        "request_desktop_site_id",
+        "translate_id"
+      ],
+      "ids_extra_in_artifact": [
+        "add_to_group_menu_id",
+        "app_menu_content_container",
+        "button_wrapper_five",
+        "button_wrapper_four",
+        "button_wrapper_one",
+        "button_wrapper_three",
+        "button_wrapper_two",
+        "extensions_menu_menu_id",
+        "info_menu_id",
+        "page_info_divider_line_id",
+        "reader_mode_menu_id"
+      ],
+      "texts_missing_in_artifact": [
+        "Add to Home screen",
+        "Desktop site",
+        "Help & feedback",
+        "Settings",
+        "Translate…"
+      ],
+      "texts_extra_in_artifact": [
+        "Add tab to new group",
+        "Install and create shortcut",
+        "Open extensions menu",
+        "Show Reading mode",
+        "Site controls"
+      ],
+      "descs_missing_in_artifact": [
+        "Page info",
+        "Share…",
+        "Turn on Request desktop site"
+      ],
+      "descs_extra_in_artifact": [
+        "Back"
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0569,
+      "evidence": "07_app_menu.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "08_second_tab_ntp",
+      "ref_note": "second tab opened from menu",
+      "id_jaccard": 0.241,
+      "text_jaccard_brand_normalised": 0.312,
+      "desc_jaccard_brand_normalised": 0.5,
+      "ids_missing_in_artifact": [
+        "header_menu",
+        "header_title",
+        "lens_camera_button",
+        "main_content",
+        "menu_button_wrapper",
+        "navigationBarBackground",
+        "optional_toolbar_button",
+        "optional_toolbar_button_container",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "avatar_button",
+        "background",
+        "blue_circle",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "bottom_sheet",
+        "bottom_sheet_content",
+        "cancel_button",
+        "circles_background",
+        "composeplate_button",
+        "composeplate_button_icon",
+        "composeplate_button_text",
+        "composeplate_view",
+        "constrained_views_container",
+        "customize_button",
+        "drag_handle_bar",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "home_button_container",
+        "illustration_box",
+        "image_view",
+        "incognito_button",
+        "incognito_button_icon",
+        "incognito_button_text",
+        "logo_container_view",
+        "mv_tiles_container",
+        "new_tab_button",
+        "ntp_content",
+        "ntp_customization_background_image_layout",
+        "ntp_customization_theme_tip_bottom_sheet_scrollview",
+        "ntp_customization_view_flipper",
+        "pink_circle",
+        "search_box_plus_button",
+        "search_box_shadow_container",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "shadow_layer",
+        "sheet_container",
+        "side_ui_web_content_hairline_container",
+        "signin_button",
+        "theme_tip_description",
+        "theme_tip_title",
+        "tile_text_container",
+        "tile_view_highlight",
+        "viridian_circle",
+        "wallpaper_circle",
+        "wallpaper_circle_indicator"
+      ],
+      "texts_missing_in_artifact": [
+        "Discover",
+        "Search or type URL"
+      ],
+      "texts_extra_in_artifact": [
+        "AI Mode",
+        "Ask Google or type URL",
+        "Can't refresh Discover",
+        "Check back later for new stories",
+        "Customize my homepage",
+        "Incognito",
+        "Make <BRAND> your own by choosing a custom theme",
+        "No thanks",
+        "Now you can customize your homepage"
+      ],
+      "descs_missing_in_artifact": [
+        "Card Menu Man Dragged From Iowa Meeting For Protesting Microsoft Data Center",
+        "Newsweek, 1d",
+        "Options for Discover",
+        "Search with your camera using Google Lens",
+        "Share Man Dragged From Iowa Meeting For Protesting Microsoft Data Center"
+      ],
+      "descs_extra_in_artifact": [
+        "Ask Gemini",
+        "New Incognito tab",
+        "New tab",
+        "Open the context popup",
+        "Start search"
+      ],
+      "brand_strings_ref": [
+        "Customize and control Google Chrome"
+      ],
+      "brand_strings_artifact": [
+        "Customize and control Google Chrome",
+        "Make Chrome your own by choosing a custom theme"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.4765,
+      "evidence": "08_second_tab_ntp.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "09_tab_switcher",
+      "ref_note": "tab switcher grid, 2 tabs",
+      "id_jaccard": 0.096,
+      "text_jaccard_brand_normalised": 0.0,
+      "desc_jaccard_brand_normalised": 0.045,
+      "ids_missing_in_artifact": [
+        "action_button",
+        "card_view",
+        "content_view",
+        "hub_pane_host",
+        "hub_toolbar",
+        "menu_button_container",
+        "menu_button_wrapper",
+        "navigationBarBackground",
+        "pane_frame",
+        "pane_switcher",
+        "statusBarBackground",
+        "tab_favicon",
+        "tab_list_recycler_view",
+        "tab_switcher_view_holder",
+        "tab_thumbnail",
+        "tab_title",
+        "toolbar_action_button",
+        "toolbar_action_container"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "avatar_button",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "composeplate_button",
+        "composeplate_button_icon",
+        "composeplate_button_text",
+        "composeplate_view",
+        "constrained_views_container",
+        "control_container",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "feed_stream_recycler_view",
+        "home_button",
+        "home_button_container",
+        "image_view",
+        "incognito_button",
+        "incognito_button_icon",
+        "incognito_button_text",
+        "logo_container_view",
+        "mv_tiles_container",
+        "mv_tiles_layout",
+        "new_tab_button",
+        "ntp_content",
+        "ntp_customization_background_image_layout",
+        "search_box_plus_button",
+        "search_box_shadow_container",
+        "search_provider_logo",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "signin_button",
+        "tab_switcher_button",
+        "tile_text_container",
+        "tile_view_highlight",
+        "tile_view_icon",
+        "tile_view_icon_background",
+        "tile_view_title",
+        "toolbar",
+        "toolbar_buttons",
+        "toolbar_container",
+        "voice_search_button"
+      ],
+      "texts_missing_in_artifact": [
+        "Example Domain",
+        "New tab",
+        "Search your tabs"
+      ],
+      "texts_extra_in_artifact": [
+        "AI Mode",
+        "Amazon.com",
+        "Ask Google or type URL",
+        "Can't refresh Discover",
+        "Check back later for new stories",
+        "ESPN.com",
+        "Facebook",
+        "Incognito",
+        "Wikipedia",
+        "YouTube"
+      ],
+      "descs_missing_in_artifact": [
+        "2 standard tabs",
+        "Close Example Domain tab",
+        "Close New tab tab",
+        "Example Domain, tab",
+        "Manage open tabs",
+        "New tab, tab",
+        "Tab groups"
+      ],
+      "descs_extra_in_artifact": [
+        "Amazon.com: www.amazon.com",
+        "Ask Gemini",
+        "Customize and control <BRAND>",
+        "ESPN.com: www.espn.com",
+        "Facebook: m.facebook.com",
+        "New Incognito tab",
+        "Open the context popup",
+        "Open the home page",
+        "See 2 tabs",
+        "Signed out. Opens options to sign in.",
+        "Start search",
+        "Start voice search",
+        "Wikipedia: en.m.wikipedia.org",
+        "YouTube: m.youtube.com"
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [
+        "Customize and control Google Chrome"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.07,
+      "evidence": "09_tab_switcher.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "10_incognito_ntp",
+      "ref_note": "incognito new tab page",
+      "id_jaccard": 0.421,
+      "text_jaccard_brand_normalised": 0.455,
+      "desc_jaccard_brand_normalised": 0.444,
+      "ids_missing_in_artifact": [
+        "cookie_controls_card",
+        "cookie_controls_card_subtitle",
+        "cookie_controls_card_title",
+        "cookie_controls_card_toggle",
+        "location_bar_incognito_badge",
+        "location_bar_status_icon_holding_space",
+        "menu_button_wrapper",
+        "navigationBarBackground",
+        "statusBarBackground",
+        "toolbar_buttons"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "focus_thief",
+        "home_button_container",
+        "location_bar_status_icon",
+        "new_tab_button",
+        "ntp_content",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "tracking_protection_card",
+        "tracking_protection_card_description",
+        "tracking_protection_card_title"
+      ],
+      "texts_missing_in_artifact": [
+        "Block third-party cookies",
+        "Search or type URL",
+        "When on, sites can't use cookies that track you across the web. Features on some sites may break."
+      ],
+      "texts_extra_in_artifact": [
+        "Ask Google or type URL",
+        "Third-party cookies are blocked",
+        "When you're in Incognito mode, sites can't use third-party cookies. If a site that relies on these cookies isn't working, you can try giving that site temporary access to third-party cookies."
+      ],
+      "descs_missing_in_artifact": [
+        "Block third-party cookies",
+        "Incognito mode"
+      ],
+      "descs_extra_in_artifact": [
+        "Ask Gemini",
+        "Learn more about Incognito",
+        "New tab"
+      ],
+      "brand_strings_ref": [
+        "Chrome won’t save:\nYour browsing history\nCookies and site data\nInformation entered in forms",
+        "Customize and control Google Chrome"
+      ],
+      "brand_strings_artifact": [
+        "Chromium won’t save:\nYour browsing history\nCookies and site data\nInformation entered in forms",
+        "Customize and control Google Chrome"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.1323,
+      "evidence": "10_incognito_ntp.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "10b_tab_switcher_incognito",
+      "ref_note": "tab switcher incognito pane",
+      "id_jaccard": 0.639,
+      "text_jaccard_brand_normalised": 1.0,
+      "desc_jaccard_brand_normalised": 0.5,
+      "ids_missing_in_artifact": [
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "hub_main_container",
+        "hub_overlay_container",
+        "hub_pane_host_container",
+        "pane_switcher_card",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "tab_list_container"
+      ],
+      "texts_missing_in_artifact": [],
+      "texts_extra_in_artifact": [],
+      "descs_missing_in_artifact": [
+        "2 standard tabs",
+        "New Incognito tab, tab"
+      ],
+      "descs_extra_in_artifact": [
+        "3 standard tabs",
+        "History",
+        "New Incognito tab, Tab"
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.1085,
+      "evidence": "10b_tab_switcher_incognito.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "11_settings",
+      "ref_note": "menu → Settings",
+      "id_jaccard": 0.5,
+      "text_jaccard_brand_normalised": 0.5,
+      "desc_jaccard_brand_normalised": 0.667,
+      "ids_missing_in_artifact": [
+        "menu_id_general_help",
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "edge_to_edge_base_layout",
+        "menu_id_targeted_help",
+        "preferences_header",
+        "search_box",
+        "search_icon",
+        "settings_activity",
+        "settings_content"
+      ],
+      "texts_missing_in_artifact": [
+        "Addresses and more",
+        "Google Password Manager",
+        "Notifications",
+        "Payment methods",
+        "Theme"
+      ],
+      "texts_extra_in_artifact": [
+        "Address bar",
+        "Autofill and passwords",
+        "Default browser",
+        "Search settings",
+        "Tabs and tab groups",
+        "Top"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [
+        "Search settings"
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.052,
+      "evidence": "11_settings.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "11b_settings_scrolled",
+      "ref_note": "settings scrolled",
+      "id_jaccard": 0.421,
+      "text_jaccard_brand_normalised": 0.455,
+      "desc_jaccard_brand_normalised": 0.667,
+      "ids_missing_in_artifact": [
+        "menu_id_general_help",
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "edge_to_edge_base_layout",
+        "menu_id_targeted_help",
+        "preferences_header",
+        "search_box",
+        "search_icon",
+        "settings_activity",
+        "settings_content"
+      ],
+      "texts_missing_in_artifact": [
+        "New tab page cards",
+        "Privacy and security",
+        "Safety check",
+        "Tabs",
+        "Theme",
+        "Toolbar shortcut"
+      ],
+      "texts_extra_in_artifact": [
+        "Appearance",
+        "Autofill and passwords",
+        "Default browser",
+        "Developer options",
+        "Search settings",
+        "Tabs and tab groups"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [
+        "Search settings"
+      ],
+      "brand_strings_ref": [
+        "About Chrome"
+      ],
+      "brand_strings_artifact": [
+        "About Chrome"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0395,
+      "evidence": "11b_settings_scrolled.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "12_history",
+      "ref_note": "menu → History",
+      "id_jaccard": 0.667,
+      "text_jaccard_brand_normalised": 1.0,
+      "desc_jaccard_brand_normalised": 0.4,
+      "ids_missing_in_artifact": [
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_bg",
+        "action_bar_root",
+        "edge_to_edge_base_layout",
+        "history_page_recycler_view"
+      ],
+      "texts_missing_in_artifact": [],
+      "texts_extra_in_artifact": [],
+      "descs_missing_in_artifact": [
+        "Example Domain Remove"
+      ],
+      "descs_extra_in_artifact": [
+        "Delete browsing data; select data to delete",
+        "Remove"
+      ],
+      "brand_strings_ref": [
+        "You may see the history from other apps that open links in Chrome."
+      ],
+      "brand_strings_artifact": [
+        "You may see the history from other apps that open links in Chrome."
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0084,
+      "evidence": "12_history.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "13_bookmarks",
+      "ref_note": "menu → Bookmarks",
+      "id_jaccard": 0.324,
+      "text_jaccard_brand_normalised": 0.25,
+      "desc_jaccard_brand_normalised": 0.714,
+      "ids_missing_in_artifact": [
+        "child_count_text",
+        "folder_view",
+        "navigationBarBackground",
+        "no_image_placeholder_background",
+        "no_image_placeholder_image",
+        "row_search_text",
+        "statusBarBackground",
+        "sync_promo_close_button",
+        "sync_promo_description",
+        "sync_promo_image",
+        "sync_promo_signin_button",
+        "sync_promo_title"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_bg",
+        "action_bar_root",
+        "bookmark_toolbar",
+        "edge_to_edge_base_layout",
+        "image_description_container",
+        "search_box",
+        "search_text",
+        "sheet_container",
+        "signin_promo_description",
+        "signin_promo_dismiss_button",
+        "signin_promo_primary_button",
+        "signin_promo_title",
+        "start_image"
+      ],
+      "texts_missing_in_artifact": [
+        "0",
+        "Get all your bookmarks",
+        "Mobile bookmarks",
+        "Reading list",
+        "Sign in"
+      ],
+      "texts_extra_in_artifact": [
+        "Continue",
+        "Mobile bookmarks (0)",
+        "Reading list (0)",
+        "Sign in to <BRAND>"
+      ],
+      "descs_missing_in_artifact": [
+        "Close"
+      ],
+      "descs_extra_in_artifact": [
+        "Sign in to <BRAND> Close"
+      ],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [
+        "Sign in to Chrome",
+        "Sign in to Chrome Close"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0581,
+      "evidence": "13_bookmarks.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "14_downloads",
+      "ref_note": "menu → Downloads",
+      "id_jaccard": 0.588,
+      "text_jaccard_brand_normalised": 0.6,
+      "desc_jaccard_brand_normalised": 1.0,
+      "ids_missing_in_artifact": [
+        "navigationBarBackground",
+        "statusBarBackground"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_bg",
+        "action_bar_root",
+        "download_home_divider",
+        "download_storage_summary",
+        "edge_to_edge_base_layout"
+      ],
+      "texts_missing_in_artifact": [
+        "Using 0.00 KB of 7.73 GB"
+      ],
+      "texts_extra_in_artifact": [
+        "Using 0.00 KB of 8.30 GB"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [],
+      "brand_strings_ref": [],
+      "brand_strings_artifact": [],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.0148,
+      "evidence": "14_downloads.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "15_dark_page",
+      "ref_note": "system dark theme, example.org",
+      "id_jaccard": 0.026,
+      "text_jaccard_brand_normalised": 0.0,
+      "desc_jaccard_brand_normalised": 0.0,
+      "ids_missing_in_artifact": [
+        "button_bar",
+        "custom_view_not_in_scrollable",
+        "modal_dialog_view",
+        "negative_button",
+        "positive_button"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "compositor_view_holder",
+        "constrained_views_container",
+        "control_container",
+        "coordinator",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "focus_thief",
+        "home_button",
+        "home_button_container",
+        "location_bar",
+        "menu_button",
+        "new_tab_button",
+        "omnibox_back_button",
+        "optional_button",
+        "optional_toolbar_button",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container",
+        "tab_switcher_button",
+        "toolbar",
+        "toolbar_container",
+        "toolbar_hairline",
+        "toolbar_progress_bar_container",
+        "url_bar"
+      ],
+      "texts_missing_in_artifact": [
+        "<BRAND> notifications make things easier",
+        "Continue",
+        "No thanks",
+        "You’ll be able to easily manage media controls, Incognito sessions, downloads and more"
+      ],
+      "texts_extra_in_artifact": [
+        "example.org"
+      ],
+      "descs_missing_in_artifact": [],
+      "descs_extra_in_artifact": [
+        "Ask Gemini",
+        "Customize and control <BRAND>",
+        "Go back",
+        "New tab",
+        "Open the home page",
+        "See 3 tabs",
+        "Share",
+        "Web View"
+      ],
+      "brand_strings_ref": [
+        "Chrome notifications make things easier"
+      ],
+      "brand_strings_artifact": [
+        "Customize and control Google Chrome"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.1043,
+      "evidence": "15_dark_page.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "16_landscape",
+      "ref_note": "landscape orientation",
+      "id_jaccard": 0.326,
+      "text_jaccard_brand_normalised": 0.2,
+      "desc_jaccard_brand_normalised": 0.3,
+      "ids_missing_in_artifact": [
+        "location_bar_status",
+        "location_bar_status_icon",
+        "location_bar_status_icon_frame",
+        "location_bar_status_icon_view",
+        "menu_button_wrapper",
+        "navigationBarBackground",
+        "optional_toolbar_button_container",
+        "statusBarBackground",
+        "toolbar_buttons"
+      ],
+      "ids_extra_in_artifact": [
+        "action_bar_root",
+        "app_menu_button_container",
+        "bottom_app_bar_container",
+        "bottom_bar_container",
+        "bottom_bar_menu_image_button",
+        "bottom_container_slot",
+        "bottom_controls_wrapper",
+        "constrained_views_container",
+        "edge_to_edge_base_layout",
+        "edge_to_edge_bottom_chin",
+        "extra_button",
+        "extra_button_container",
+        "focus_thief",
+        "home_button_container",
+        "new_tab_button",
+        "omnibox_back_button",
+        "optional_button",
+        "secondary_ui_container",
+        "secondary_ui_container_tab_modal",
+        "side_ui_web_content_hairline_container"
+      ],
+      "texts_missing_in_artifact": [
+        "Example Domain",
+        "This domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.",
+        "هذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمراقبة.",
+        "该域名仅用于文档示例，无需获得许可。这并非一项服务，请勿将其用于测试和监控目的。"
+      ],
+      "texts_extra_in_artifact": [],
+      "descs_missing_in_artifact": [
+        "Connection is secure",
+        "See 2 tabs"
+      ],
+      "descs_extra_in_artifact": [
+        "Ask Gemini",
+        "Go back",
+        "See 3 tabs",
+        "Share",
+        "Web View"
+      ],
+      "brand_strings_ref": [
+        "Customize and control Google Chrome"
+      ],
+      "brand_strings_artifact": [
+        "Customize and control Google Chrome"
+      ],
+      "foreground_ref": "com.android.chrome",
+      "foreground_artifact": "org.chromium.chrome",
+      "pixel_mad": 0.029,
+      "evidence": "16_landscape.png",
+      "status_vs_emulator_reference": "mismatch",
+      "status_vs_chrome_stable": "not-tested (reference is 133.0.6943.137, Stable is 155.0.8059.80)"
+    },
+    {
+      "screen": "15b_dark_menu",
+      "status_vs_emulator_reference": "not-tested",
+      "reason": "only artifact reached this screen"
+    }
+  ]
+}

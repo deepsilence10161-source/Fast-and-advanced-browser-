@@ -1,0 +1,231 @@
+{
+ "key": "01_first_run_1",
+ "note": "before tapping 'Use without an account'",
+ "foreground": "com.android.chrome",
+ "node_count": 23,
+ "nodes": [
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/content",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/fre_pager",
+   "cls": "androidx.viewpager.widget.ViewPager",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    128,
+    1080,
+    2337
+   ],
+   "w": 1080,
+   "h": 2209
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/fre_logo",
+   "cls": "android.widget.ImageView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    585,
+    1080,
+    874
+   ],
+   "w": 1080,
+   "h": 289
+  },
+  {
+   "text": "Make Chrome your own",
+   "desc": "",
+   "id": "com.android.chrome:id/title",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    937,
+    1080,
+    1022
+   ],
+   "w": 1080,
+   "h": 85
+  },
+  {
+   "text": "Sign in to get your bookmarks, passwords, and more on all your devices",
+   "desc": "",
+   "id": "com.android.chrome:id/subtitle",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    1022,
+    1080,
+    1155
+   ],
+   "w": 1080,
+   "h": 133
+  },
+  {
+   "text": "Add account to device",
+   "desc": "",
+   "id": "com.android.chrome:id/signin_fre_continue_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    1896,
+    1017,
+    2022
+   ],
+   "w": 954,
+   "h": 126
+  },
+  {
+   "text": "Use without an account",
+   "desc": "",
+   "id": "com.android.chrome:id/signin_fre_dismiss_button",
+   "cls": "android.widget.Button",
+   "pkg": "com.android.chrome",
+   "clickable": true,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    2022,
+    1017,
+    2148
+   ],
+   "w": 954,
+   "h": 126
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "com.android.chrome:id/fre_footer_viewgroup",
+   "cls": "android.widget.FrameLayout",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2148,
+    1080,
+    2295
+   ],
+   "w": 1080,
+   "h": 147
+  },
+  {
+   "text": "By continuing, you agree to the Terms of Service. To help improve the app, Chrome sends usage and crash data to Google. Manage",
+   "desc": "",
+   "id": "com.android.chrome:id/signin_fre_footer",
+   "cls": "android.widget.TextView",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    63,
+    2180,
+    1017,
+    2274
+   ],
+   "w": 954,
+   "h": 94
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/statusBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    0,
+    1080,
+    128
+   ],
+   "w": 1080,
+   "h": 128
+  },
+  {
+   "text": "",
+   "desc": "",
+   "id": "android:id/navigationBarBackground",
+   "cls": "android.view.View",
+   "pkg": "com.android.chrome",
+   "clickable": false,
+   "enabled": true,
+   "focused": false,
+   "selected": false,
+   "checked": false,
+   "bounds": [
+    0,
+    2337,
+    1080,
+    2400
+   ],
+   "w": 1080,
+   "h": 63
+  }
+ ],
+ "png": "01_first_run_1.png",
+ "png_bytes": 149601,
+ "time_utc": "2026-10-15T07:56:49Z"
+}

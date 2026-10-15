@@ -27,7 +27,9 @@ def load(d):
         b = os.path.basename(j)
         if b in ("meta.json", "provenance.json"):
             continue
-        s = json.load(open(j)); screens[s["key"]] = s
+        s = json.load(open(j))
+        if "key" not in s or "nodes" not in s: continue  # e.g. chat_fixture.json
+        screens[s["key"]] = s
     return meta, screens
 
 def sig(nodes, own_pkgs):

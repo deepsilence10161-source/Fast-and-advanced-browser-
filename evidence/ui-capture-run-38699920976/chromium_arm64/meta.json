@@ -1,0 +1,212 @@
+{
+  "label": "chromium_arm64",
+  "package": "org.chromium.chrome",
+  "versionName": "155.0.8059.0",
+  "versionCode": "805900004",
+  "primaryCpuAbi": "arm64-v8a",
+  "android_release": "16",
+  "sdk": "36",
+  "model": "sdk_gphone64_x86_64",
+  "abilist": "x86_64,arm64-v8a",
+  "native_bridge": "libndk_translation.so",
+  "locale": "",
+  "wm_size": "Physical size: 1080x2400",
+  "wm_density": "Physical density: 420",
+  "font_scale": "1.0",
+  "navigation_mode": "2",
+  "webview": "Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)",
+  "first_run_steps": 2,
+  "reached_browser_ui": true,
+  "pss_kb_after_example": 499439,
+  "findings": [
+    "page info reached via app menu > Site controls (no omnibox status icon)"
+  ],
+  "landscape_png_size": [
+    2400,
+    1080
+  ],
+  "landscape_rotated": true,
+  "start_activity": "org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher",
+  "timings": {
+    "cold_ms": [
+      1459,
+      1514,
+      1685,
+      1613,
+      1578,
+      1480,
+      1503,
+      1549,
+      1569,
+      1503
+    ],
+    "warm_ms": [
+      5523,
+      1125,
+      968,
+      1096,
+      1034,
+      1064,
+      881,
+      883,
+      874,
+      923
+    ],
+    "activity": "org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher",
+    "cold_ms_median": 1531.5,
+    "cold_ms_p95": 1685,
+    "warm_ms_median": 1001.0,
+    "warm_ms_p95": 5523
+  },
+  "steps": [
+    {
+      "key": "01_first_run",
+      "note": "first launch after pm clear",
+      "foreground": "org.chromium.chrome",
+      "node_count": 25,
+      "png_bytes": 108412
+    },
+    {
+      "key": "01_first_run_1",
+      "note": "before tapping 'Stay signed out'",
+      "foreground": "org.chromium.chrome",
+      "node_count": 25,
+      "png_bytes": 108415
+    },
+    {
+      "key": "01_first_run_2",
+      "note": "before tapping 'No thanks'",
+      "foreground": "org.chromium.chrome",
+      "node_count": 12,
+      "png_bytes": 112629
+    },
+    {
+      "key": "02_ntp",
+      "note": "new tab page / start surface",
+      "foreground": "org.chromium.chrome",
+      "node_count": 99,
+      "png_bytes": 125925
+    },
+    {
+      "key": "03_omnibox_focused",
+      "note": "omnibox focused, keyboard expected",
+      "foreground": "org.chromium.chrome",
+      "node_count": 107,
+      "png_bytes": 155755
+    },
+    {
+      "key": "04_omnibox_suggestions",
+      "note": "typed 'example.com'",
+      "foreground": "org.chromium.chrome",
+      "node_count": 101,
+      "png_bytes": 139716
+    },
+    {
+      "key": "05_page_loaded",
+      "note": "https://example.com loaded",
+      "foreground": "org.chromium.chrome",
+      "node_count": 51,
+      "png_bytes": 82194
+    },
+    {
+      "key": "06_page_info",
+      "note": "page info / connection security sheet",
+      "foreground": "org.chromium.chrome",
+      "node_count": 26,
+      "png_bytes": 137898
+    },
+    {
+      "key": "07_app_menu",
+      "note": "overflow/app menu on a web page",
+      "foreground": "org.chromium.chrome",
+      "node_count": 59,
+      "png_bytes": 177329
+    },
+    {
+      "key": "08_second_tab_ntp",
+      "note": "second tab opened from menu",
+      "foreground": "org.chromium.chrome",
+      "node_count": 121,
+      "png_bytes": 228393
+    },
+    {
+      "key": "09_tab_switcher",
+      "note": "tab switcher grid, 2 tabs",
+      "foreground": "org.chromium.chrome",
+      "node_count": 99,
+      "png_bytes": 127172
+    },
+    {
+      "key": "11_settings",
+      "note": "menu \u2192 Settings",
+      "foreground": "org.chromium.chrome",
+      "node_count": 61,
+      "png_bytes": 143147
+    },
+    {
+      "key": "11b_settings_scrolled",
+      "note": "settings scrolled",
+      "foreground": "org.chromium.chrome",
+      "node_count": 64,
+      "png_bytes": 124057
+    },
+    {
+      "key": "12_history",
+      "note": "menu \u2192 History",
+      "foreground": "org.chromium.chrome",
+      "node_count": 20,
+      "png_bytes": 60714
+    },
+    {
+      "key": "13_bookmarks",
+      "note": "menu \u2192 Bookmarks",
+      "foreground": "org.chromium.chrome",
+      "node_count": 53,
+      "png_bytes": 90212
+    },
+    {
+      "key": "14_downloads",
+      "note": "menu \u2192 Downloads",
+      "foreground": "org.chromium.chrome",
+      "node_count": 28,
+      "png_bytes": 69468
+    },
+    {
+      "key": "15_dark_page",
+      "note": "system dark theme, example.org",
+      "foreground": "org.chromium.chrome",
+      "node_count": 48,
+      "png_bytes": 80575
+    },
+    {
+      "key": "15b_dark_menu",
+      "note": "dark theme app menu",
+      "foreground": "org.chromium.chrome",
+      "node_count": 66,
+      "png_bytes": 173141
+    },
+    {
+      "key": "16_landscape",
+      "note": "landscape orientation",
+      "foreground": "org.chromium.chrome",
+      "node_count": 48,
+      "png_bytes": 77196
+    },
+    {
+      "key": "10_incognito_ntp",
+      "note": "incognito new tab page",
+      "foreground": "org.chromium.chrome",
+      "node_count": 55,
+      "png_bytes": 217044
+    },
+    {
+      "key": "10b_tab_switcher_incognito",
+      "note": "tab switcher incognito pane",
+      "foreground": "org.chromium.chrome",
+      "node_count": 56,
+      "png_bytes": 194251
+    }
+  ],
+  "anr_dialogs": 0,
+  "crash_buffer_lines": 136
+}

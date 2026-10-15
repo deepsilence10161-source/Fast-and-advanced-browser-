@@ -46,7 +46,10 @@
 | ARM runners (`ubuntu-24.04-arm`) पर `/dev/kvm` नहीं होता | [I] — कई द्वितीयक स्रोतों में; आधिकारिक पुष्टि नहीं मिली | — |
 | Emulator images (google_apis, x86_64) में `abilist = x86_64,arm64-v8a`, native bridge `libndk_translation.so` | [M] API 34/35/36 |
 | Emulator 30.0.0 नोट: Android 11+ x86_64 images ARM binaries चला सकती हैं | [P] | `https://developer.android.com/studio/releases/emulator` |
-| **ARM64 `ChromePublic.apk` 155.0.8059.0 API 36 emulator पर translation से install, launch, first-run और page load सफल** | [M] | run 38695…(ui-capture) |
+| **ARM64 `ChromePublic.apk` 155.0.8059.0 API 36 emulator पर translation से install, launch, first-run और page load सफल** | [M] | runs 38697226252, 38698517502, 38699920976 (21/21 screens, 0 ANR) |
+| **वही ARM64 build translation में अस्थिर:** 5 ARM64 runs में से 2 में "Chromium isn't responding" ANR आया (run 38697226252 में FRE पर अटका; run 38701948978 में 37 ANR dialogs, 7 screens)। x86_64 build और Chrome 133 में 0 ANR | [M] | `evidence/ui-capture-run-38701948978/chromium_arm64_FAILED_ANR/` |
+| ARM64 build के sandboxed renderer processes translation में `SIGSEGV` (`libndk_translation.so`, `berberis::RunGuestCall`) से बार-बार crash होते हैं (runs 38699920976, 38701948978, 38704128045)। Run 38704128045 में fixture page पर "Aw, Snap!"। x86_64/Chrome 133: 0 | [M] | `evidence/ui-capture-run-38704128045/chromium_arm64_renderer_SIGSEGV/logcat_tail.txt` |
+| **निष्कर्ष:** ARM64 build का web-rendering/performance परीक्षण x86_64 emulator पर विश्वसनीय नहीं है; असली ARM64 फ़ोन अनिवार्य है | [M]+[I] | — |
 | Emulator image पर Google Chrome: API34 → **113.0.5672.136**, API35 → **124.0.6367.219**, API36 → **133.0.6943.137** | [M] |
 | **निष्कर्ष:** emulator पर Chrome Stable 155 का reference **उपलब्ध नहीं** है। Play Store से update के लिए Google account चाहिए, और third-party APK mirror का उपयोग नहीं किया जाएगा (provenance/ToS जोखिम)। इसलिए Stable 155 का UI reference उपयोगकर्ता के अपने फ़ोन के गैर-निजी screenshots से ही आ सकता है। | [M]+निर्णय |
 
@@ -83,6 +86,30 @@
 1. Chromium 155 snapshot में **bottom toolbar** (Home, Ask Gemini, New tab, Tabs, Menu) और NTP पर "AI Mode" और "Incognito" chips हैं। Stable 155 में ये सभी उपयोगकर्ताओं को दिखते हैं या field trial से नियंत्रित हैं **[?]**। इसके लिए उपयोगकर्ता के फ़ोन का screenshot चाहिए।
 2. Chromium FRE "Make Chrome your own → Stay signed out" दिखाता है, जबकि emulator का Chrome 113/124 "Welcome to Chrome → Use without an account" दिखाता है। Stable 155 का FRE **[?]** है।
 3. emulator पर `https://example.org` के लिए omnibox में "Connection is not secure" दिखा **[M]**। कारण (emulator network/proxy/HTTP-only redirect) की जाँच बाकी है।
+
+4. **[M] Chromium 155 snapshot में omnibox पर security/status icon नहीं है** (`location_bar_status_icon` accessibility tree में नहीं)। Page info केवल app menu → "Site controls" से खुला (runs 38699920976, 38701948978)। Chrome 133 में icon "Connection is secure" मौजूद है। Stable 155 में **[?]**।
+5. **[M] Long-chat synthetic fixture (10 cases)** desktop Chrome 155 headless (3×10/10, run 38699618638), Android emulator पर Chrome 133 (10/10) और Chromium 155 x86_64 (10/10) में पास (run 38701948978)। यह केवल rendering-रणनीति (sequence-id dedupe/gap-resync, anchor-आधारित scroll restore, `content-visibility`) की पुष्टि है; **असली Arena का transport, latency या login इससे सिद्ध नहीं होता।**
+
+## 8b. Performance (केवल emulator; वास्तविक फ़ोन का प्रतिनिधि नहीं)
+
+`am start -W` TotalTime, 10 cold (force-stop) + 10 warm (HOME के बाद), run 38701948978 (ARM64: run 38699920976), API 36 x86_64 emulator, swiftshader GPU:
+
+| Target | cold median / p95 (ms) | warm median / p95 (ms) | PSS (example.com के बाद) |
+|---|---|---|---|
+| Chrome 133 (emulator image) | 824 / 957 | 511.5 / 699 | 132,082 KB |
+| Chromium 155 x86_64 | 721.5 / 819 | 626.5 / 693 | 156,473 KB |
+| Chromium 155 ARM64 (translation; run 38699920976) | 1531.5 / 1685 | 1001 / 5523 (एक trial 5.5 s) | 499,439 KB |
+
+10 trials में p95 व्यवहार में अधिकतम मान है। अलग Chrome versions और emulator GPU के कारण ये आँकड़े **किसी "तेज़" दावे का आधार नहीं** हैं। Same-device ARM64 benchmark आवश्यक है (G section)।
+
+## 8c. CI / runner तथ्य
+
+| तथ्य | वर्ग | स्रोत |
+|---|---|---|
+| Standard public runner: 4 CPU, 16 GB RAM, 14 GB SSD (दस्तावेज़); वास्तविक `/` पर 86 GB खाली | [P][M] | GitHub runners docs; run 38691453072 |
+| `build_chromium_baseline.sh --preflight-only` standard runner पर exit 3 (disk < 100 GB) | [M] | `unit-tests.yml` runs (जैसे 38698511862) |
+| emulator-runner `script:` की हर line अलग shell में चलती है, इसलिए logic bash फ़ाइल (`scripts/ci/run_capture.sh`) में रखा | [P][M] | action README; cancelled run 38695330921 |
+| Chrome Android का DevTools socket `chrome_devtools_remote` adb forward से उपलब्ध (emulator, USB-debugging) | [M] | run 38701948978 `journey.log` |
 
 ## 9. सीमाएँ
 

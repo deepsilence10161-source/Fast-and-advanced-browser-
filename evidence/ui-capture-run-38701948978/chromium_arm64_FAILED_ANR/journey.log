@@ -1,0 +1,73 @@
+[07:57:20] install: Success
+[07:57:21] meta: {'label': 'chromium_arm64', 'package': 'org.chromium.chrome', 'versionName': '155.0.8059.0', 'versionCode': '805900004', 'primaryCpuAbi': 'arm64-v8a', 'android_release': '16', 'sdk': '36', 'model': 'sdk_gphone64_x86_64', 'abilist': 'x86_64,arm64-v8a', 'native_bridge': 'libndk_translation.so', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': '1.0', 'navigation_mode': '2', 'webview': 'Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)'}
+[07:57:35] captured 01_first_run (7 labelled nodes, fg=org.chromium.chrome)
+[07:57:38] ANR dialog seen (#1) — tapping Wait
+[07:57:46] ANR dialog seen (#2) — tapping Wait
+[07:57:54] ANR dialog seen (#3) — tapping Wait
+[07:58:01] ANR dialog seen (#4) — tapping Wait
+[07:58:09] ANR dialog seen (#5) — tapping Wait
+[07:58:16] ANR dialog seen (#6) — tapping Wait
+[07:58:24] ANR dialog seen (#7) — tapping Wait
+[07:58:31] ANR dialog seen (#8) — tapping Wait
+[07:58:38] ANR dialog seen (#9) — tapping Wait
+[07:58:46] ANR dialog seen (#10) — tapping Wait
+[07:58:53] ANR dialog seen (#11) — tapping Wait
+[07:59:00] ANR dialog seen (#12) — tapping Wait
+[07:59:05] browser UI ready: False
+[07:59:09] ANR dialog seen (#13) — tapping Wait
+[07:59:16] captured 01_stuck (9 labelled nodes, fg=org.chromium.chrome)
+[07:59:22] ANR dialog seen (#14) — tapping Wait
+[07:59:30] captured 02_ntp (9 labelled nodes, fg=org.chromium.chrome)
+[07:59:41] tap MISS /:id/(search_box_text|url_bar)$/
+[07:59:43] omnibox navigation not confirmed; using VIEW intent
+[07:59:52] ANR dialog seen (#15) — tapping Wait
+[07:59:59] ANR dialog seen (#16) — tapping Wait
+[08:00:06] ANR dialog seen (#17) — tapping Wait
+[08:00:14] ANR dialog seen (#18) — tapping Wait
+[08:00:22] ANR dialog seen (#19) — tapping Wait
+[08:00:29] captured 05_page_loaded (9 labelled nodes, fg=org.chromium.chrome)
+[08:00:33] tap MISS /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/
+[08:00:36] tap MISS /(View site information|site information|Connection is secure)/
+[08:00:47] tap MISS /menu_button/
+[08:00:47] FINDING: no page-info/security status entry point exposed in the accessibility tree
+[08:00:57] tap MISS /menu_button/
+[08:01:08] tap MISS /(More options|Customize and control)/
+[08:01:19] tap MISS /menu_button/
+[08:01:29] tap MISS /tab_switcher_button/
+[08:01:40] tap MISS /(Switch or close tabs|tabs open)/
+[08:01:50] tap MISS /menu_button/
+[08:01:52] ANR dialog seen (#20) — tapping Wait
+[08:01:59] ANR dialog seen (#21) — tapping Wait
+[08:02:07] ANR dialog seen (#22) — tapping Wait
+[08:02:14] ANR dialog seen (#23) — tapping Wait
+[08:02:30] tap MISS /menu_button/
+[08:02:32] ANR dialog seen (#24) — tapping Wait
+[08:02:39] ANR dialog seen (#25) — tapping Wait
+[08:02:46] ANR dialog seen (#26) — tapping Wait
+[08:02:54] ANR dialog seen (#27) — tapping Wait
+[08:03:09] tap MISS /menu_button/
+[08:03:11] ANR dialog seen (#28) — tapping Wait
+[08:03:19] ANR dialog seen (#29) — tapping Wait
+[08:03:26] ANR dialog seen (#30) — tapping Wait
+[08:03:33] ANR dialog seen (#31) — tapping Wait
+[08:03:49] tap MISS /menu_button/
+[08:03:51] ANR dialog seen (#32) — tapping Wait
+[08:03:58] ANR dialog seen (#33) — tapping Wait
+[08:04:05] ANR dialog seen (#34) — tapping Wait
+[08:04:13] ANR dialog seen (#35) — tapping Wait
+[08:04:30] ANR dialog seen (#36) — tapping Wait
+[08:04:37] captured 15_dark_page (9 labelled nodes, fg=org.chromium.chrome)
+[08:04:48] tap MISS /menu_button/
+[08:04:58] ANR dialog seen (#37) — tapping Wait
+[08:05:05] captured 16_landscape (9 labelled nodes, fg=org.chromium.chrome)
+[08:05:05] landscape screenshot 2400x1080 rotated=True
+[08:05:19] tap MISS /menu_button/
+[08:05:29] ensure_main: back (overlay present)
+[08:05:31] ensure_main: relaunch (foreground=com.google.android.apps.nexuslauncher)
+[08:05:39] ensure_main: back (overlay present)
+[08:05:41] ensure_main: relaunch (foreground=com.google.android.apps.nexuslauncher)
+[08:06:40] timings: {'cold_ms': [1155, 1060, 1085, 1066, 1041, 1034, 1147, 1053, 1026, 1101], 'warm_ms': [1792, 777, 794, 810, 641, 762, 757, 646, 777, 759], 'activity': 'org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher', 'cold_ms_median': 1063.0, 'cold_ms_p95': 1155, 'warm_ms_median': 769.5, 'warm_ms_p95': 1792}
+[08:06:40] done
+ui_capture exit=0
+devtools sockets: stetho_com.google.android.apps.messaging_devtools_remote webview_devtools_remote_4392 ; using: none
+chat_fixture exit=2
