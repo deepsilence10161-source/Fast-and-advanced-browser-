@@ -321,9 +321,15 @@ def main():
     shell("cmd uimode night no"); time.sleep(2)
 
     # 16 landscape
-    shell("settings put system user_rotation 1"); time.sleep(4)
-    d.capture("16_landscape", "landscape orientation")
-    shell("settings put system user_rotation 0"); time.sleep(3)
+    shell("settings put system user_rotation 1"); shell("wm user-rotation lock 1"); time.sleep(5)
+    rec = d.capture("16_landscape", "landscape orientation")
+    from struct import unpack
+    with open(os.path.join(a.out, rec["png"]), "rb") as f:
+        hdr = f.read(24)
+    w, h = unpack(">II", hdr[16:24]) if hdr[:8] == b"\x89PNG\r\n\x1a\n" else (0, 0)
+    meta["landscape_png_size"] = [w, h]; meta["landscape_rotated"] = w > h
+    d.log(f"landscape screenshot {w}x{h} rotated={w > h}")
+    shell("wm user-rotation lock 0"); shell("settings put system user_rotation 0"); time.sleep(3)
 
     # 10 incognito (kept last: FLAG_SECURE + observed adb hang afterwards)
     if d.tap(r"menu_button", ("id",)) and d.tap(r"^New Incognito tab$", ("text",)):

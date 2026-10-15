@@ -26,6 +26,8 @@ jobs:
           python3 scripts/fetch_snapshot.py --prefix $PREFIX --near "${{ inputs.chromium_position || '1697595' }}" --out dl > /dev/null
           rm -f dl/*.zip; python3 -c "import json;d=json.load(open('dl/provenance.json'));print(json.dumps({k:d[k] for k in ('prefix','snapshot_revision','REVISIONS','zip_sha256','zip_crc32c_verified')},indent=1))"
           mkdir -p out/${{ matrix.target }} && cp dl/provenance.json out/${{ matrix.target }}/provenance.json
+      - name: Harness deps
+        run: pip install -q websocket-client
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules

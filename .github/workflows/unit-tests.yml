@@ -17,3 +17,30 @@ jobs:
         run: |
           set +e; bash scripts/build_chromium_baseline.sh --preflight-only; rc=$?; set -e
           echo "preflight exit=$rc (expected 3 = host below official minimum on standard runner)"; test $rc -eq 3
+  chat-experiment-desktop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        repeat: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Node unit tests (ChatStore)
+        run: node --test experiments/chat-rendering/
+      - name: Synthetic fixture in desktop Google Chrome (mobile-like 393x851 window)
+        run: |
+          pip install -q websocket-client
+          google-chrome --version
+          (cd experiments/chat-rendering && exec python3 -m http.server 8000 --bind 127.0.0.1) >/dev/null 2>&1 &
+          sleep 1
+          google-chrome --headless=new --no-first-run --no-default-browser-check --user-data-dir="$RUNNER_TEMP/prof" \
+            --remote-debugging-port=9222 --window-size=393,851 "http://127.0.0.1:8000/fixture.html?n=300" >/dev/null 2>&1 &
+          mkdir -p out
+          python3 scripts/ci/run_chat_fixture.py --platform "desktop-chrome-headless-run${{ matrix.repeat }}" --out out/chat_fixture_desktop --timeout 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chat-desktop-${{ matrix.repeat }}
+          path: out/
