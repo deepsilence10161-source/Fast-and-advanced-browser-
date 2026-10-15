@@ -141,6 +141,8 @@ if [ -f "$PK/progress.json" ]; then
   if [ "$REM0" -gt $(( PREVREM + PREVREM/50 + 50 )) ]; then echo "WATCHDOG FAIL: restore के बाद काम बढ़ गया ($PREVREM -> $REM0)"; exit 1; fi
 fi
 
+if [ "${CHECK_ONLY:-0}" = 1 ]; then ev "CHECK_ONLY: restore + gn + ninja -n सफल; कुल/बचे edges=$REM0"; out done false; exit 0; fi
+
 # ---------- 3. deadline तक compile ----------
 NOW=$(date +%s); BUDGET=$(( DEADLINE - NOW ))
 log "compile: budget ${BUDGET}s, -j$JOBS, $REM0 edges बाकी"

@@ -1,0 +1,27 @@
+name: Chromium state restore check (read-only)
+# Build-state (draft release) से src/out restore करके gn + ninja -n चलाता है। कुछ upload नहीं करता।
+on:
+  workflow_dispatch:
+    inputs:
+      tag: { default: "155.0.8059.80" }
+      cpu: { type: choice, options: [x64, arm64], default: x64 }
+permissions:
+  contents: write   # draft release पढ़ने के लिए (drafts केवल write-access को दिखते हैं); script CHECK_ONLY में upload नहीं करता
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Restore + dry-run
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          CPU: ${{ inputs.cpu }}
+          STAGE: 99
+          DEADLINE: "0"
+          CHECK_ONLY: "1"
+          STATE: crstate-${{ inputs.tag }}-${{ inputs.cpu }}-a1
+          OUTPUTS_DIR: ${{ runner.temp }}/outputs
+        run: bash scripts/ci/chromium_stage.sh
