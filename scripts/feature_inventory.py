@@ -101,6 +101,7 @@ def main():
                      "external_dependency": dep, "evidence": ev,
                      "status_vs_chrome_stable": "not-tested",
                      "status_vs_emulator_reference": ("mismatch-or-verified (see evidence)" if exercised else "not-tested")})
+    os.makedirs("reports", exist_ok=True); os.makedirs("native-app", exist_ok=True)
     json.dump({"stable": a.stable, "commit": a.commit, "features": rows}, open("reports/feature-parity.json", "w"), indent=1, ensure_ascii=False)
     L = ["# Feature parity matrix", "",
          f"- Chrome Stable target: **{a.stable}** (source commit `{a.commit}`)",

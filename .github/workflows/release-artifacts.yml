@@ -1,0 +1,55 @@
+name: Release artifacts (verified upstream APK + source ZIP, with checksums)
+on:
+  workflow_dispatch:
+    inputs:
+      chromium_position:
+        description: "Chromium main-branch position (nearest snapshot >= this). Default = M155 branch point"
+        default: "1697595"
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Fetch + verify official Chromium snapshots (MD5 + CRC32C)
+        run: |
+          pip install -q crc32c
+          mkdir -p rel
+          for P in Android_Arm64 AndroidDesktop_x64; do
+            python3 scripts/fetch_snapshot.py --prefix $P --near "${{ inputs.chromium_position || '1697595' }}" --out dl_$P > /dev/null
+            APK=$(find dl_$P -name ChromePublic.apk | head -1)
+            cp "$APK" rel/ChromePublic-$P.apk
+            cp dl_$P/provenance.json rel/provenance-$P.json
+            # upstream license notices travel with the binary
+            find dl_$P -maxdepth 3 -iname 'LICENSE*' -exec cp {} rel/ \; 2>/dev/null || true
+          done
+      - name: Inspect APKs (signature, package, version, ABI)
+        run: |
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          for f in rel/*.apk; do
+            echo "== $f" | tee -a rel/APK_INSPECTION.txt
+            "$BT/aapt2" dump badging "$f" | grep -E "^(package|sdkVersion|targetSdkVersion|native-code|application-label):" | tee -a rel/APK_INSPECTION.txt
+            "$BT/apksigner" verify --verbose --print-certs "$f" | grep -E "Verified using|Signer #1 certificate (DN|SHA-256)|Number of signers" | tee -a rel/APK_INSPECTION.txt
+            "$BT/zipalign" -c -P 16 4 "$f" && echo "zipalign -P 16 (16 KB page) : OK" | tee -a rel/APK_INSPECTION.txt || echo "zipalign -P 16 (16 KB page) : FAIL" | tee -a rel/APK_INSPECTION.txt
+            ls -l "$f" | awk '{print "size_bytes: "$5}' | tee -a rel/APK_INSPECTION.txt
+          done
+      - name: Source ZIP + manifest (tracked files only; secrets scanned)
+        run: |
+          git archive --format=zip --prefix=Fast-and-advanced-browser-/ -o rel/source-$(git rev-parse --short HEAD).zip HEAD
+          git ls-files > rel/SOURCE_MANIFEST.txt
+          if git ls-files | grep -E -i '(\.jks|\.keystore|\.pem|\.p12|gh_token|\.env)$'; then echo "forbidden file in source"; exit 1; fi
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz | tar xz gitleaks
+          mkdir -p /tmp/src && (cd /tmp/src && unzip -q "$GITHUB_WORKSPACE"/rel/source-*.zip)
+          ./gitleaks dir /tmp/src --no-banner --redact --exit-code 1
+      - name: Checksums
+        run: |
+          cd rel && sha256sum * | grep -v SHA256SUMS > SHA256SUMS.txt && cat SHA256SUMS.txt
+          echo "commit: $GITHUB_SHA  run: $GITHUB_RUN_ID" > BUILD_INFO.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: rel/
+          retention-days: 90

@@ -91,7 +91,7 @@ def main():
         bad = zf.testzip()
         if bad: raise SystemExit(f"corrupt member {bad}")
         apks = [m for m in zf.namelist() if m.endswith(".apk")]
-        zf.extractall(a.out, members=apks + [m for m in zf.namelist() if m.endswith(("REVISIONS", ".json"))])
+        zf.extractall(a.out, members=apks + [m for m in zf.namelist() if m.endswith(("REVISIONS", ".json")) or os.path.basename(m).upper().startswith("LICENSE")])
     revisions = None
     try:
         with urllib.request.urlopen(DL + f"{a.prefix}/{rev}/REVISIONS", timeout=60) as r: revisions = json.loads(r.read())
