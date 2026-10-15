@@ -75,6 +75,17 @@ class Device:
             hits.sort(key=lambda n: (not n["clickable"], n["w"] * n["h"]))
         return hits[0] if hits else None
 
+    anr_count = 0
+    def handle_anr(self, xml=None):
+        xml = xml if xml is not None else self.dump()
+        if re.search(r"isn(&apos;|')t responding", xml):
+            self.anr_count += 1
+            self.log(f"ANR dialog seen (#{self.anr_count}) — tapping Wait")
+            n = self.find(r":id/aerr_wait$", ("id",), xml=xml)
+            if n: self.tap_node(n); time.sleep(5)
+            return True
+        return False
+
     def tap_node(self, n):
         x = (n["bounds"][0] + n["bounds"][2]) // 2
         y = (n["bounds"][1] + n["bounds"][3]) // 2
@@ -108,6 +119,7 @@ class Device:
     # ---------- capture ----------
     def capture(self, key, note=""):
         time.sleep(1.0)
+        self.handle_anr()
         png = os.path.join(self.out, f"{key}.png")
         with open(png, "wb") as f:
             f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=60).stdout)
@@ -158,6 +170,7 @@ def ensure_main(d, tries=4):
         if d.foreground_pkg() != d.pkg:
             d.log("ensure_main: relaunch (foreground=%s)" % d.foreground_pkg()); launch(d); continue
         xml = d.dump()
+        if d.handle_anr(xml): continue
         if d.find(r":id/(chrome_item_picker_container|bottom_sheet|sheet_container|menu_list)$", ("id",), xml=xml, clickable_pref=False) \
            or not d.find(r":id/(menu_button|tab_switcher_button)$", ("id",), xml=xml, clickable_pref=False):
             d.log("ensure_main: back (overlay present)"); d.back(); continue
@@ -232,6 +245,7 @@ def main():
     while time.time() - t0 < 90:
         ok, xml = is_browser_ready(d)
         if ok: ready = True; break
+        if d.handle_anr(xml): continue
         n = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if n:
             fre_i += 1
@@ -264,11 +278,8 @@ def main():
     opened = d.tap(r":id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$", ("id",), tries=1) \
              or d.tap(r"(View site information|site information|Connection is secure)", ("desc",), tries=1)
     if not opened:
-        ub = d.find(r":id/url_bar$", ("id",))
-        if ub:
-            shell(f"input tap {max(5, ub['bounds'][0] - 45)} {(ub['bounds'][1] + ub['bounds'][3]) // 2}"); time.sleep(2)
-            opened = d.foreground_pkg() == a.package and bool(d.find(r"(Connection|secure|Cookies|Site settings|Permissions)", ("text",)))
-            d.log(f"page-info via status-icon position: {opened}")
+        d.log("FINDING: no page-info/security status entry point exposed in the accessibility tree")
+        meta.setdefault("findings", []).append("page-info entry point (location_bar_status_icon) absent from a11y tree on page")
     if opened:
         d.capture("06_page_info", "page info / connection security sheet")
         d.back(); ensure_main(d)
@@ -329,7 +340,7 @@ def main():
         act = shell(f"cmd package resolve-activity --brief {a.package} | tail -1").strip()
     meta["start_activity"] = act
     meta["timings"] = start_timings(a.package, act, a.cold, a.warm, log) if "/" in act else None
-    meta["steps"] = d.steps
+    meta["steps"] = d.steps; meta["anr_dialogs"] = d.anr_count
     crash = sh("logcat", "-d", "-b", "crash")
     meta["crash_buffer_lines"] = len([l for l in crash.splitlines() if a.package in l or "FATAL" in l])
     open(os.path.join(a.out, "crash.txt"), "w").write(crash)

@@ -1,0 +1,19 @@
+name: Unit tests (lightweight gate)
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - run: pip install -q pillow
+      - run: python3 -m unittest discover -s tests -v
+      - name: Build-script preflight must refuse an undersized host
+        run: |
+          set +e; bash scripts/build_chromium_baseline.sh --preflight-only; rc=$?; set -e
+          echo "preflight exit=$rc (expected 3 = host below official minimum on standard runner)"; test $rc -eq 3
