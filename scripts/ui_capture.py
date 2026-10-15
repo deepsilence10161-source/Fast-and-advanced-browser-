@@ -277,6 +277,14 @@ def main():
     # 06 page info
     opened = d.tap(r":id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$", ("id",), tries=1) \
              or d.tap(r"(View site information|site information|Connection is secure)", ("desc",), tries=1)
+    if not opened and d.tap(r"menu_button", ("id",)):
+        if d.tap(r"^(Site controls|Site settings|Page info)$", ("text", "desc")):
+            time.sleep(2)
+            opened = d.foreground_pkg() == a.package
+            d.log(f"page-info via app menu 'Site controls': {opened}")
+            if opened: meta.setdefault("findings", []).append("page info reached via app menu > Site controls (no omnibox status icon)")
+        else:
+            d.back()
     if not opened:
         d.log("FINDING: no page-info/security status entry point exposed in the accessibility tree")
         meta.setdefault("findings", []).append("page-info entry point (location_bar_status_icon) absent from a11y tree on page")
