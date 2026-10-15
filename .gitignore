@@ -1,0 +1,6 @@
+# secrets / tokens कभी commit न हों
+.secrets/
+*.token
+.env
+.env.*
+!.env.example
