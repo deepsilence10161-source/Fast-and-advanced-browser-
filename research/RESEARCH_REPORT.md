@@ -50,7 +50,8 @@
 | `chrome_public_apk` (x64, release, non-component, symbol_level 0) | gn: 63,340 targets; ninja: **57,552 edges** | [M] | run 38751068356 |
 | Restore (src 13.4 GB download + extract) | 514 s; restore के बाद gn + `ninja -n` सफल | [M] | run 38751068356 |
 | Resume की शुद्धता | PAX tar nanosecond mtime रखता है → restore के बाद बचा काम उतना ही; seconds-only/नई mtime पर पूरा rebuild (watchdog इसी को पकड़ता है) | [M] | `tests/test_scripts.py::TestStagedBuildResume` |
-| कुल build समय | **अभी अज्ञात [?]**: stage 0 की compile दर से पता चलेगा | [?] | runs 38745313869 (x64), 38750988168 (arm64) |
+| Stage 0 (x64) का माप | sync 608 s; deps+hooks 95 s; src 42 GB (third_party 31 GB) → pack 14.0 GB, upload 942 s; compile 4 घंटे 19 मिनट में **33,501 / 57,552 edges**; RAM उपयोग 2–6 GB, swap 0; out 6.0 GB → pack 0.84 GB, upload 62 s | [M] | run 38745313869, job 116457313511 |
+| कुल build समय | कम-से-कम 2 stages (≈ 9+ घंटे)। Edges का भार एक-समान नहीं होता (linking, Java/R8 बाकी हैं), इसलिए सटीक अनुमान [?] | [I] | — |
 
 **नया निष्कर्ष:** पूरा source build मुफ़्त standard runners पर **संभव** है (कई घंटे, कई stages)। Paid runner की आवश्यकता नहीं। Pipeline: `.github/workflows/chromium-source-build.yml` → `chromium-stage.yml` → `scripts/ci/chromium_stage.sh`। Build-state इसी repo के draft release `crstate-<tag>-<cpu>-a1` में रहती है। APK सत्यापित होने के बाद उसे हटाया जा सकता है।
 

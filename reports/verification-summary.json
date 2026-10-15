@@ -278,7 +278,7 @@
    "layer": "L2",
    "platform": "github ubuntu-24.04 standard runner (staged)",
    "status": "NOT RUN / BLOCKED",
-   "detail": "IN PROGRESS: x64 run 38745313869, arm64 run 38750988168",
+   "detail": "IN PROGRESS: x64 s0 built 33501/57552 edges in 4h19m (job 116457313511), s1 running; arm64 run 38750988168 s0 running",
    "evidence": "pending"
   }
  ],

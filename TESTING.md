@@ -79,7 +79,8 @@ Download के बाद local `sha256sum -c SHA256SUMS.txt` = 7/7 OK।
 | Resume-विधि (local + CI unit): ninja बीच में रोकना → PAX pack/restore → बचा काम बराबर (16→16); negative control (seconds-only tar + नई source mtime) पर 30/30 rebuild, यानी watchdog इसे पकड़ता है | PASS (desktop/browser component) | `tests/test_scripts.py::TestStagedBuildResume` |
 | Fresh stage: tag 155.0.8059.80 का बिना-history sync + android deps + hooks + gn gen + src pack (13.4 GB, 8 भाग) upload | PASS (CI) | run 38745313869 (s0), state release `crstate-155.0.8059.80-x64-a1` |
 | Restore check: src download/checksum/extract (514 s), commit `43a195105613…` सत्यापित, gn (63,340 targets), `ninja -n` = 57,552 edges | PASS (CI) | run 38751068356 |
-| Stage chain से पूरा `chrome_public_apk` (x64, arm64) | **चल रहा है** — परिणाम अभी नहीं | runs 38745313869, 38750988168 |
+| Stage 0 → 1 हस्तांतरण (x64): s0 ने 33,501/57,552 edges बनाए, timeout पर ninja साफ़ रुका (rc 124), out-state 0.84 GB upload हुआ, s1 अपने-आप शुरू हुआ | PASS (CI) | job 116457313511, `progress.json` |
+| Stage chain से पूरा `chrome_public_apk` (x64, arm64) | **चल रहा है** — APK अभी नहीं बना | runs 38745313869 (s1 चालू), 38750988168 (s0 चालू) |
 | APK सत्यापन (apksigner, aapt2 badging, SHA-256) और emulator install/launch | NOT RUN (build पूरा होने के बाद) | — |
 
 पहले के `build_chromium_baseline.sh --preflight-only` (exit 3) का अर्थ अब केवल इतना है कि वह local guard 100 GB से कम disk पर मना करता है। Standard runner पर cleanup के बाद 111 GB मिलते हैं (मापा गया)। "Source build असंभव" वाला पुराना निष्कर्ष वापस लिया गया (RESEARCH_REPORT §3b)।
