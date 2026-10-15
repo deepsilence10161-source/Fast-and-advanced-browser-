@@ -60,7 +60,9 @@ ARM64 का कुल रिकॉर्ड (journey): 6 runs (38695373107, 386
 | `ChromePublic-AndroidDesktop_x64.apk` (414,179,322 B) | `a2e1ed8f06201687dbd85e3750780bf17c4bacc067b29ecf4c0f895ee1b93191` | v2, 1 signer | OK |
 | `source-3524e07.zip` | `dc22789b25ea69afd7b59757b9d9fa1c2c783111c2a750f1767970622da5e50e` | gitleaks साफ़ | — |
 
-Download के बाद local `sha256sum -c SHA256SUMS.txt` = 7/7 OK। सीमा: `apksigner --print-certs` का signer DN grep से नहीं आया। Signature verify हुई, पर signer की पहचान दर्ज नहीं है।
+Download के बाद local `sha256sum -c SHA256SUMS.txt` = 7/7 OK।
+
+**अंतिम release run 38705582126** (commit `31b8091`, सभी docs/evidence सहित): दोनों APK के SHA-256 ऊपर वाले से **बिल्कुल समान** (fetch reproducible); `source-31b8091.zip` (358 files) SHA-256 `578d7d2fa1338e36598524410c599716caa7972ab479c26591836c588bed49d4`; 7/7 checksums local रूप से OK। सीमा: `apksigner --print-certs` का signer DN grep से नहीं आया। Signature verify हुई, पर signer की पहचान दर्ज नहीं है।
 
 ### 2.5 Unit / static
 | Test | Result | Run |

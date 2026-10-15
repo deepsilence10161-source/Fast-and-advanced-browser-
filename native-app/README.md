@@ -14,6 +14,9 @@
 SHA-256 checksums, `apksigner` result, `aapt2 badging` और 16 KB zipalign check `TESTING.md` में और release artifact की `SHA256SUMS.txt` / `APK_INSPECTION.txt` में हैं।
 
 ## Download कैसे करें
+
+नवीनतम सत्यापित release: Actions run **38705582126** (commit `31b8091`)।
+
 1. GitHub → **Actions → "Release artifacts (verified upstream APK + source ZIP, with checksums)"**। नवीनतम सफल run खोलें (या "Run workflow" दबाकर नया चलाएँ)।
 2. नीचे **Artifacts → `release-artifacts`** download करें (GitHub login आवश्यक; 90 दिन तक उपलब्ध)।
 3. जाँचें: `sha256sum -c SHA256SUMS.txt`, सभी पंक्तियाँ `OK` होनी चाहिए।
