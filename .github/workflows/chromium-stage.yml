@@ -1,0 +1,41 @@
+name: Chromium build stage (reusable)
+# एक stage = एक standard runner job (<6 h)। scripts/ci/chromium_stage.sh देखें।
+on:
+  workflow_call:
+    inputs:
+      tag:   { type: string, required: true }
+      cpu:   { type: string, required: true }
+      stage: { type: number, required: true }
+    outputs:
+      done:
+        value: ${{ jobs.stage.outputs.done }}
+permissions:
+  contents: write   # build-state के लिए draft release (assets)
+jobs:
+  stage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    outputs:
+      done: ${{ steps.s.outputs.done }}
+    steps:
+      - name: Deadline (job start + 290 min compile window)
+        run: echo "DEADLINE=$(( $(date +%s) + 290*60 ))" >> "$GITHUB_ENV"
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Build stage ${{ inputs.stage }}
+        id: s
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          CPU: ${{ inputs.cpu }}
+          STAGE: ${{ inputs.stage }}
+          STATE: crstate-${{ inputs.tag }}-${{ inputs.cpu }}-a1
+          OUTPUTS_DIR: ${{ runner.temp }}/outputs
+        run: bash scripts/ci/chromium_stage.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: crbuild-${{ inputs.tag }}-${{ inputs.cpu }}-s${{ inputs.stage }}
+          path: ${{ runner.temp }}/outputs
+          if-no-files-found: ignore
+          retention-days: 90

@@ -1,0 +1,59 @@
+name: Chromium source build (staged, free standard runners)
+# Chromium Android (chrome_public_apk) का असली source build, Chrome Stable tag पर।
+# 6 घंटे की job-सीमा के कारण chained stages; state इसी repo के draft release में।
+# दोबारा चलाने पर जहाँ रुका था वहीं से आगे बढ़ता है (state सुरक्षित रहती है)।
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Chromium tag (Chrome Stable)"
+        default: "155.0.8059.80"
+      cpu:
+        description: "target_cpu"
+        type: choice
+        options: [x64, arm64]
+        default: x64
+permissions:
+  contents: write
+concurrency:
+  group: crbuild-${{ inputs.tag }}-${{ inputs.cpu }}
+  cancel-in-progress: false
+jobs:
+  s0:
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 0 }
+  s1:
+    needs: s0
+    if: needs.s0.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 1 }
+  s2:
+    needs: s1
+    if: needs.s1.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 2 }
+  s3:
+    needs: s2
+    if: needs.s2.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 3 }
+  s4:
+    needs: s3
+    if: needs.s3.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 4 }
+  s5:
+    needs: s4
+    if: needs.s4.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 5 }
+  s6:
+    needs: s5
+    if: needs.s5.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 6 }
+  s7:
+    needs: s6
+    if: needs.s6.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 7 }
