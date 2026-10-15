@@ -1,0 +1,49 @@
+name: UI capture (Chrome reference vs Chromium artifact, Android emulator)
+on:
+  workflow_dispatch:
+    inputs:
+      chromium_position:
+        description: "Chromium main-branch position (nearest snapshot >= this). Default = M155 branch point"
+        default: "1697595"
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [chrome_ref, chromium_arm64, chromium_desktop_x64]
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Fetch official Chromium snapshot (MD5 + CRC32C verified)
+        if: matrix.target != 'chrome_ref'
+        run: |
+          pip install -q crc32c
+          PREFIX=$([ "${{ matrix.target }}" = chromium_arm64 ] && echo Android_Arm64 || echo AndroidDesktop_x64)
+          python3 scripts/fetch_snapshot.py --prefix $PREFIX --near "${{ inputs.chromium_position || '1697595' }}" --out dl > /dev/null
+          rm -f dl/*.zip; python3 -c "import json;d=json.load(open('dl/provenance.json'));print(json.dumps({k:d[k] for k in ('prefix','snapshot_revision','REVISIONS','zip_sha256','zip_crc32c_verified')},indent=1))"
+          mkdir -p out/${{ matrix.target }} && cp dl/provenance.json out/${{ matrix.target }}/provenance.json
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Scripted UI journey on emulator (API 36, Pixel 6 profile)
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          ram-size: 4096M
+          disk-size: 8G
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
+          disable-animations: true
+          script: bash scripts/ci/run_capture.sh ${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ui-${{ matrix.target }}
+          path: out/
