@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
       - name: Node unit tests (ChatStore)
-        run: node --test experiments/chat-rendering/
+        run: node --test experiments/chat-rendering/chat-store.test.js
       - name: Synthetic fixture in desktop Google Chrome (mobile-like 393x851 window)
         run: |
           pip install -q websocket-client

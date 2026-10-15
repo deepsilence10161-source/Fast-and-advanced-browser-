@@ -1,4 +1,4 @@
-// node --test experiments/chat-rendering/
+// node --test experiments/chat-rendering/chat-store.test.js
 "use strict";
 const test = require("node:test");
 const assert = require("node:assert/strict");
