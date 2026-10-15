@@ -16,13 +16,17 @@ Usage:
 """
 import argparse, json, os, re, statistics, subprocess, sys, time, xml.etree.ElementTree as ET
 
-def sh(*args, timeout=120, check=False):
-    r = subprocess.run(["adb", *args], capture_output=True, timeout=timeout)
+def sh(*args, timeout=45, check=False):
+    try:
+        r = subprocess.run(["adb", *args], capture_output=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        print(f"[adb timeout] {' '.join(args)[:120]}", flush=True)
+        return ""
     if check and r.returncode != 0:
         raise RuntimeError(f"adb {' '.join(args)} failed: {r.stderr.decode(errors='replace')}")
     return r.stdout.decode("utf-8", errors="replace")
 
-def shell(cmd, timeout=120):
+def shell(cmd, timeout=45):
     return sh("shell", cmd, timeout=timeout)
 
 class Device:
@@ -34,7 +38,7 @@ class Device:
     def dump(self, retries=4):
         for i in range(retries):
             shell("rm -f /sdcard/ui.xml")
-            o = shell("uiautomator dump /sdcard/ui.xml", timeout=60)
+            o = shell("uiautomator dump /sdcard/ui.xml", timeout=25)
             x = sh("exec-out", "cat", "/sdcard/ui.xml")
             if x.strip().startswith("<?xml"):
                 return x
@@ -146,16 +150,30 @@ def wait_ready(d, seconds=60):
             time.sleep(2)
     return False
 
+def ensure_main(d, tries=4):
+    """Return to the tabbed browser surface: close pickers/sheets, relaunch if another app is in front."""
+    for _ in range(tries):
+        if subprocess.run(["adb", "get-state"], capture_output=True, timeout=20).stdout.decode().strip() != "device":
+            d.log("ensure_main: device not ready, waiting"); subprocess.run(["timeout", "60", "adb", "wait-for-device"]); continue
+        if d.foreground_pkg() != d.pkg:
+            d.log("ensure_main: relaunch (foreground=%s)" % d.foreground_pkg()); launch(d); continue
+        xml = d.dump()
+        if d.find(r":id/(chrome_item_picker_container|bottom_sheet|sheet_container|menu_list)$", ("id",), xml=xml, clickable_pref=False) \
+           or not d.find(r":id/(menu_button|tab_switcher_button)$", ("id",), xml=xml, clickable_pref=False):
+            d.log("ensure_main: back (overlay present)"); d.back(); continue
+        return True
+    return False
+
 def start_timings(pkg, activity, n_cold, n_warm, log):
     res = {"cold_ms": [], "warm_ms": [], "activity": activity}
     for i in range(n_cold):
         shell(f"am force-stop {pkg}"); time.sleep(1.5)
-        o = shell(f"am start -W -n {activity} -a android.intent.action.VIEW -d about:blank", timeout=120)
+        o = shell(f"am start -W -n {activity} -a android.intent.action.VIEW -d about:blank", timeout=40)
         m = re.search(r"TotalTime:\s*(\d+)", o)
         if m: res["cold_ms"].append(int(m.group(1)))
     for i in range(n_warm):
         shell("input keyevent KEYCODE_HOME"); time.sleep(1.5)
-        o = shell(f"am start -W -n {activity} -a android.intent.action.VIEW -d about:blank", timeout=120)
+        o = shell(f"am start -W -n {activity} -a android.intent.action.VIEW -d about:blank", timeout=40)
         m = re.search(r"TotalTime:\s*(\d+)", o)
         if m: res["warm_ms"].append(int(m.group(1)))
     for k in ("cold_ms", "warm_ms"):
@@ -198,6 +216,7 @@ def main():
     meta["navigation_mode"] = shell("settings get secure navigation_mode").strip()
     meta["webview"] = shell("dumpsys webviewupdate | grep 'Current WebView package'").strip()
     log(f"meta: {meta}")
+    json.dump(meta, open(os.path.join(a.out, "meta.json"), "w"), indent=2)   # early write (watchdog safety)
 
     d = Device(a.package, a.out, log)
     shell(f"pm clear {a.package}"); shell("cmd uimode night no")
@@ -229,47 +248,49 @@ def main():
     time.sleep(3); d.capture("02_ntp", "new tab page / start surface")
 
     # 03 omnibox focus
-    if d.tap(r"(search_box_text|url_bar|search_box)", ("id",)):
+    if d.tap(r":id/(search_box_text|url_bar)$", ("id",)):
         d.capture("03_omnibox_focused", "omnibox focused, keyboard expected")
-        d.text("example"); time.sleep(2)
-        d.capture("04_omnibox_suggestions", "typed 'example'")
-        shell("input keyevent KEYCODE_MOVE_END")
-        d.text(".com"); d.key("KEYCODE_ENTER", 6)
-    else:
-        shell(f"am start -a android.intent.action.VIEW -d https://example.com {a.package}"); time.sleep(6)
-    wait_ready(d, 20)
+        d.text("example.com"); time.sleep(2.5)
+        d.capture("04_omnibox_suggestions", "typed 'example.com'")
+        d.key("KEYCODE_ENTER", 7)
+    if not d.find(r"example\.com", ("text",)):
+        d.log("omnibox navigation not confirmed; using VIEW intent")
+        shell(f"am start -a android.intent.action.VIEW -d https://example.com {a.package}"); time.sleep(7)
+    ensure_main(d)
     d.capture("05_page_loaded", "https://example.com loaded")
     meta["pss_kb_after_example"] = pss_kb(a.package)
 
     # 06 page info
-    if d.tap(r"(location_bar_status_icon|security_button|status_view|page_info)", ("id",)) or d.tap(r"(View site information|Connection is secure|site information)", ("desc",)):
+    opened = d.tap(r":id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$", ("id",), tries=1) \
+             or d.tap(r"(View site information|site information|Connection is secure)", ("desc",), tries=1)
+    if not opened:
+        ub = d.find(r":id/url_bar$", ("id",))
+        if ub:
+            shell(f"input tap {max(5, ub['bounds'][0] - 45)} {(ub['bounds'][1] + ub['bounds'][3]) // 2}"); time.sleep(2)
+            opened = d.foreground_pkg() == a.package and bool(d.find(r"(Connection|secure|Cookies|Site settings|Permissions)", ("text",)))
+            d.log(f"page-info via status-icon position: {opened}")
+    if opened:
         d.capture("06_page_info", "page info / connection security sheet")
-        d.back()
+        d.back(); ensure_main(d)
 
     # 07 app menu
     if d.tap(r"menu_button", ("id",)) or d.tap(r"(More options|Customize and control)", ("desc",)):
         d.capture("07_app_menu", "overflow/app menu on a web page")
-        d.back()
+        d.back(); ensure_main(d)
 
     # 08 new tab via menu, 09 tab switcher
     if d.tap(r"menu_button", ("id",)) and d.tap(r"^New tab$", ("text",)):
         d.capture("08_second_tab_ntp", "second tab opened from menu")
     if d.tap(r"tab_switcher_button", ("id",)) or d.tap(r"(Switch or close tabs|tabs open)", ("desc",)):
         time.sleep(2); d.capture("09_tab_switcher", "tab switcher grid, 2 tabs")
-        d.back()
-
-    # 10 incognito
-    if d.tap(r"menu_button", ("id",)) and d.tap(r"^New Incognito tab$", ("text",)):
-        d.capture("10_incognito_ntp", "incognito new tab page")
-        if d.tap(r"tab_switcher_button", ("id",)) or d.tap(r"(Switch or close tabs|tabs open)", ("desc",)):
-            time.sleep(2); d.capture("10b_tab_switcher_incognito", "tab switcher incognito pane"); d.back()
+        d.back(); ensure_main(d)
 
     # 11-14 menu destinations
     for key, label in (("11_settings", r"^Settings$"), ("12_history", r"^History$"),
                        ("13_bookmarks", r"^Bookmarks$"), ("14_downloads", r"^Downloads$")):
         if d.tap(r"menu_button", ("id",)):
             if not d.find(label, ("text",)):
-                shell("input swipe 540 1600 540 700 300"); time.sleep(1)
+                shell("input swipe 800 1700 800 700 400"); time.sleep(1.2)
             if d.tap(label, ("text",)):
                 time.sleep(2); d.capture(key, f"menu → {label.strip('^$')}")
                 if key == "11_settings":
@@ -278,8 +299,7 @@ def main():
                 d.back(2)
             else:
                 d.back()
-        if d.foreground_pkg() != a.package:
-            launch(d)
+        ensure_main(d)
 
     # 15 dark theme
     shell("cmd uimode night yes"); time.sleep(3)
@@ -293,6 +313,15 @@ def main():
     shell("settings put system user_rotation 1"); time.sleep(4)
     d.capture("16_landscape", "landscape orientation")
     shell("settings put system user_rotation 0"); time.sleep(3)
+
+    # 10 incognito (kept last: FLAG_SECURE + observed adb hang afterwards)
+    if d.tap(r"menu_button", ("id",)) and d.tap(r"^New Incognito tab$", ("text",)):
+        d.capture("10_incognito_ntp", "incognito new tab page")
+        if d.tap(r"tab_switcher_button", ("id",)) or d.tap(r"(Switch or close tabs|tabs open)", ("desc",)):
+            time.sleep(2); d.capture("10b_tab_switcher_incognito", "tab switcher incognito pane"); d.back()
+    # Incognito windows set FLAG_SECURE (screenshots blank by design) — force-stop afterwards
+    shell(f"am force-stop {a.package}"); time.sleep(2); launch(d); ensure_main(d)
+
 
     # 17 performance (same device, about:blank, am start -W)
     act = shell(f"cmd package resolve-activity --brief -a android.intent.action.VIEW -d https://example.com {a.package} | tail -1").strip()

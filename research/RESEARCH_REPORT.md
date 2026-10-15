@@ -1,0 +1,90 @@
+# शोध रिपोर्ट — Android Chrome क्लोन (चरण 1)
+
+- **जाँच की तारीख:** 15 अक्टूबर 2026 (Asia/Calcutta; सिस्टम द्वारा पुष्ट)
+- **Repository:** `deepsilence10161-source/Fast-and-advanced-browser-`
+- **वर्गीकरण-कुंजी:** **[P]** प्राथमिक/आधिकारिक स्रोत · **[M]** आज इस परियोजना में मापा/देखा गया · **[U]** उपयोगकर्ता द्वारा दिया तथ्य · **[I]** अनुमान · **[?]** अज्ञात/अपरीक्षित
+
+---
+
+## 1. लक्ष्य-संस्करण (reference) तय करना
+
+| तथ्य | मान | वर्ग | स्रोत |
+|---|---|---|---|
+| Chrome Android Stable (आज serving) | `155.0.8059.39 / .41 / .79 / .80` + `156.0.8078.39` का 0.25% early-stable rollout | [P][M] | Google VersionHistory API `https://versionhistory.googleapis.com/v1/chrome/platforms/android/channels/stable/versions/all/releases?filter=endtime=none` (15-10-2026 को query किया) |
+| Stable 155 का Chromium source commit | `155.0.8059.80` → `43a195105613ac83c21d3f14de279f4a045c7da0`; `155.0.8059.79` → `a49e2e3d4addfd84e765b52afe230bedb81096db`; main-branch position `1697595` | [P][M] | Chromium Dash `https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Android` |
+| Chrome 155 Android release नोट | 155.0.8059.39 (6 अक्टूबर 2026), 155.0.8059.79 सुरक्षा अद्यतन (13 अक्टूबर 2026) | [P] | `https://chromereleases.googleblog.com/2026/10/chrome-for-android-update_01835271525.html` |
+| **इस परियोजना का UI reference लक्ष्य** | **Google Chrome Stable 155.0.8059.x, phone form-factor** | निर्णय | ऊपर के आधार पर |
+
+**महत्त्वपूर्ण भेद:** Chromium snapshot ≠ Google Chrome Stable। Stable में Google का branding, Google services, Play Services पर निर्भरताएँ और server-side **field trials/variations** होते हैं, जिनसे UI बदल सकता है। Chromium snapshot में ये नहीं होते [I — Chromium का variations seed public build में नहीं आता; इसे अलग से सत्यापित करना है, देखें §8]।
+
+## 2. Upstream source और artifact
+
+| तथ्य | मान | वर्ग |
+|---|---|---|
+| Official public prebuilt bucket | `gs://chromium-browser-snapshots`, prefixes: `Android/`, `Android_Arm64/`, `AndroidDesktop_x64/`, `AndroidDesktop_arm64/` (`Android_x64/` मौजूद **नहीं**) | [P][M] |
+| M155 branch point के सबसे पास का snapshot | `Android_Arm64/1697603` और `AndroidDesktop_x64/1697602` | [M] |
+| Snapshot के अंदर APK | `ChromePublic.apk`, `ContentShell.apk`, `SystemWebView.apk` (+ desktop में `SystemWebViewShell.apk`) | [M] |
+| Installed version | `org.chromium.chrome` **155.0.8059.0** (versionCode 805900004 arm64; 805900079 desktop x64) | [M] |
+| सत्यापन | GCS metadata के MD5 और CRC32C से पूरी zip जाँची जाती है, फिर `zipfile.testzip()`; हर APK का SHA-256 `provenance.json` में दर्ज होता है | [M] `scripts/fetch_snapshot.py` |
+
+## 3. Build क्षमता (पूरा Chromium source build)
+
+| तथ्य | मान | वर्ग | स्रोत |
+|---|---|---|---|
+| Android build की न्यूनतम आवश्यकता | x86-64 Linux, ≥8 GB RAM (16 GB से अधिक की सलाह), ≥100 GB खाली disk | [P] | `https://chromium.googlesource.com/chromium/src/+/main/docs/android_build_instructions.md` |
+| GitHub standard runner (public repo) | 4 CPU, 16 GB RAM, **14 GB SSD (गारंटी)**, public repo में मुफ़्त | [P] | `https://docs.github.com/en/actions/reference/runners/github-hosted-runners` |
+| वास्तविक runner पर मापा गया | 4 CPU, 15 GiB RAM, `/` पर 86 GB खाली, `/dev/kvm` मौजूद | [M] run 38691453072 |
+| Agent sandbox | 2 CPU, ~1.9 GiB RAM, 25 GB disk, KVM नहीं | [M] |
+| **निष्कर्ष** | पूरा source build standard runner पर **BLOCKED** है: guaranteed disk (14 GB) 100 GB से बहुत कम है, और 4 cores पर पूरा build 6 घंटे की job सीमा में पूरा होना अपेक्षित नहीं [I]। larger runner/cloud VM सशुल्क है और उपयोगकर्ता की लागत-स्वीकृति के बिना शुरू नहीं किया जाएगा। | [P]+[I] |
+
+## 4. Android परीक्षण क्षमता (E2E)
+
+| तथ्य | वर्ग | स्रोत |
+|---|---|---|
+| GitHub-hosted Linux runners Android emulator का hardware acceleration देते हैं | [P] | GitHub runners reference (ऊपर) |
+| KVM के लिए udev rule आवश्यक; `reactivecircus/android-emulator-runner` v2.38.0 (commit `a421e43…` pin किया) | [P][M] | `https://github.com/ReactiveCircus/android-emulator-runner` |
+| ARM runners (`ubuntu-24.04-arm`) पर `/dev/kvm` नहीं होता | [I] — कई द्वितीयक स्रोतों में; आधिकारिक पुष्टि नहीं मिली | — |
+| Emulator images (google_apis, x86_64) में `abilist = x86_64,arm64-v8a`, native bridge `libndk_translation.so` | [M] API 34/35/36 |
+| Emulator 30.0.0 नोट: Android 11+ x86_64 images ARM binaries चला सकती हैं | [P] | `https://developer.android.com/studio/releases/emulator` |
+| **ARM64 `ChromePublic.apk` 155.0.8059.0 API 36 emulator पर translation से install, launch, first-run और page load सफल** | [M] | run 38695…(ui-capture) |
+| Emulator image पर Google Chrome: API34 → **113.0.5672.136**, API35 → **124.0.6367.219**, API36 → **133.0.6943.137** | [M] |
+| **निष्कर्ष:** emulator पर Chrome Stable 155 का reference **उपलब्ध नहीं** है। Play Store से update के लिए Google account चाहिए, और third-party APK mirror का उपयोग नहीं किया जाएगा (provenance/ToS जोखिम)। इसलिए Stable 155 का UI reference उपयोगकर्ता के अपने फ़ोन के गैर-निजी screenshots से ही आ सकता है। | [M]+निर्णय |
+
+## 5. Google login, OAuth, Sync, private APIs
+
+| तथ्य | वर्ग | स्रोत |
+|---|---|---|
+| "A developer must not direct a Google OAuth 2.0 authorization request to an embedded user-agent under the developer's control … All browsing environments must allow the user to verify the current connection … including the requested URI and connection security information." (अंतिम संशोधन 5 अगस्त 2026) | [P] | `https://developers.google.com/identity/protocols/oauth2/policies#browsers` |
+| WebView cookies/login मुख्य browser से साझा नहीं करता; Custom Tabs default browser का session साझा करता है और UI पर नियंत्रण सीमित है | [P] | `https://developer.android.com/develop/ui/views/layout/webapps/in-app-browsing-embedded-web` |
+| Custom Tab embedder को cookies, passwords, पूरा DOM, script injection या network interception नहीं मिलता | [P] | Chromium Custom Tabs Security FAQ |
+| Chromium में sign-in प्रतिबंधित है: OAuth token generation restricted है, केवल test-account group को छूट; अपनी keys से वितरण संभव है पर keys साझा नहीं की जा सकतीं, और कई APIs का quota नहीं होता | [P] | `https://www.chromium.org/developers/how-tos/api-keys/` |
+| **निष्कर्ष:** (1) WebView-आधारित ऐप Google login/Arena का पूर्ण समाधान नहीं है। (2) पूरे Chromium browser में Google **website** login और Chrome **browser-level Sync** अलग चीज़ें हैं; Sync हमारे build में Google की अनुमति के बिना उपलब्ध नहीं होगा। (3) website login को वास्तविक उपयोगकर्ता-साक्षी परीक्षण से सत्यापित करना होगा। | [P]+[I] |
+
+## 6. Branding / trademark / license
+
+| तथ्य | वर्ग | स्रोत |
+|---|---|---|
+| Google trademarks या उनसे भ्रमित करने वाले नाम/logo लिखित अनुमति के बिना उपयोग न करें (Chrome Web Store branding guideline) | [P] | `https://developer.chrome.com/docs/webstore/branding` |
+| Chromium source BSD-style और अन्य open-source licenses में है; "Google Chrome" नाम/logo और Google services के अधिकार अलग हैं | [P]/[I] | Chromium `LICENSE`, `about:credits` |
+| Snapshot के resource strings में "Customize and control **Google Chrome**" और "Ask **Gemini**" दिखे | [M] | ui-capture `02_ntp.json` |
+| **Engineering/legal gate:** UI layout, व्यवहार और interaction की हूबहू parity (मूल आवश्यकता) बनी रहेगी। लेकिन वितरित build में "Google Chrome" नाम/logo तभी रहेगा जब उपयोगकर्ता के पास अधिकार हो; अन्यथा अलग नाम/logo रखा जाएगा। यह दायरे में कटौती नहीं, बल्कि वितरण से पहले का एक स्पष्ट legal gate है। | निर्णय |
+
+## 7. Arena / लंबी चैट समस्या
+
+| तथ्य | वर्ग | स्रोत |
+|---|---|---|
+| उपयोगकर्ता Google खाते से Arena में login करता है; लंबी chat देर से खुलती है, नए उत्तर के लिए hard refresh करना पड़ता है | [U] | hand-off निर्देश |
+| `content-visibility` off-screen rendering work कम करता है, पर server latency या टूटी stream ठीक नहीं करता | [P] | `https://web.dev/articles/content-visibility` |
+| SSE में `Last-Event-ID` से reconnect/replay होता है, बशर्ते server इसका समर्थन करे | [P] | `https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events` |
+| Arena का वास्तविक transport (SSE, WebSocket या polling), event IDs और reconnect व्यवहार | [?] — अनिरीक्षित; केवल उपयोगकर्ता की अनुमति और उसके अपने session में, privacy-safe तरीके से ही जाँचा जाएगा |
+
+## 8. नए खुले प्रश्न (आज के परीक्षण से उठे)
+
+1. Chromium 155 snapshot में **bottom toolbar** (Home, Ask Gemini, New tab, Tabs, Menu) और NTP पर "AI Mode" और "Incognito" chips हैं। Stable 155 में ये सभी उपयोगकर्ताओं को दिखते हैं या field trial से नियंत्रित हैं **[?]**। इसके लिए उपयोगकर्ता के फ़ोन का screenshot चाहिए।
+2. Chromium FRE "Make Chrome your own → Stay signed out" दिखाता है, जबकि emulator का Chrome 113/124 "Welcome to Chrome → Use without an account" दिखाता है। Stable 155 का FRE **[?]** है।
+3. emulator पर `https://example.org` के लिए omnibox में "Connection is not secure" दिखा **[M]**। कारण (emulator network/proxy/HTTP-only redirect) की जाँच बाकी है।
+
+## 9. सीमाएँ
+
+- Search snippets का उपयोग केवल दिशा पाने के लिए किया गया; निर्णायक तथ्य ऊपर दिए आधिकारिक पृष्ठों से पढ़े गए।
+- ARM64 translation पर मापे गए performance आँकड़े वास्तविक ARM64 फ़ोन के प्रतिनिधि **नहीं** हैं।
