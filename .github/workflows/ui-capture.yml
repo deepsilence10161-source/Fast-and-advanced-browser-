@@ -11,6 +11,9 @@ on:
       source_tag:
         description: "chromium_source_* के लिए: इस परियोजना के source build का Chromium tag"
         default: "155.0.8059.80"
+      source_variant:
+        description: "chromium_source_* के लिए: state variant (a1 = baseline; branded/patched builds अलग variant में)"
+        default: "a1"
 permissions:
   contents: write   # chromium_source_*: APK draft build-state release में है (drafts केवल write-access को दिखते हैं)। कुछ upload नहीं होता।
 jobs:
@@ -38,7 +41,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           CPU=${{ matrix.target }}; CPU=${CPU#chromium_source_}; TAG="${{ inputs.source_tag || '155.0.8059.80' }}"
-          ST=crstate-$TAG-$CPU-a1; mkdir -p dl out/${{ matrix.target }}
+          ST=crstate-$TAG-$CPU-${{ inputs.source_variant || 'a1' }}; mkdir -p dl out/${{ matrix.target }}
           gh release download "$ST" -R "$GITHUB_REPOSITORY" -p "ChromePublic-$TAG-$CPU.apk" -O dl/ChromePublic.apk
           gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/${{ matrix.target }}/BUILD_INFO.txt
           sha256sum dl/ChromePublic.apk; grep -A1 -- '--- sha256' out/${{ matrix.target }}/BUILD_INFO.txt

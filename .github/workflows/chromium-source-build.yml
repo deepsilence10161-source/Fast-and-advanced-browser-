@@ -13,47 +13,53 @@ on:
         type: choice
         options: [x64, arm64]
         default: x64
+      variant:
+        description: "state variant (a1 = baseline, बिना patches वाला मूल build)"
+        default: "a1"
+      seed:
+        description: "नई variant के लिए src/out किस variant से (जैसे a1); खाली = fresh sync"
+        default: ""
 permissions:
   contents: write
 concurrency:
-  group: crbuild-${{ inputs.tag }}-${{ inputs.cpu }}
+  group: crbuild-${{ inputs.tag }}-${{ inputs.cpu }}-${{ inputs.variant }}
   cancel-in-progress: false
 jobs:
   s0:
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 0 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 0, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s1:
     needs: s0
     if: needs.s0.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 1 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 1, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s2:
     needs: s1
     if: needs.s1.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 2 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 2, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s3:
     needs: s2
     if: needs.s2.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 3 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 3, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s4:
     needs: s3
     if: needs.s3.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 4 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 4, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s5:
     needs: s4
     if: needs.s4.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 5 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 5, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s6:
     needs: s5
     if: needs.s5.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 6 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 6, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
   s7:
     needs: s6
     if: needs.s6.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
-    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 7 }
+    with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 7, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }

@@ -129,3 +129,106 @@ class TestStageLib(unittest.TestCase):
         self.assertEqual(self._count(), (0, "R=0"))
     def test_missing_ninja_binary(self):
         self.assertEqual(self._count("/nonexistent/ninja"), (0, "R=0"))
+
+
+class TestPatches(unittest.TestCase):
+    """scripts/ci/patches.py: हर stage pristine src + पिछला out restore करता है, फिर patches लगाता है।
+    ninja से असली multi-stage अनुकरण: वही patches -> कोई rebuild नहीं; patch बदला/हटाया -> ठीक प्रभावित
+    outputs दोबारा बनें और हटाए गए patch का पुराना output न बचे (negative control: सीधा patch यह चूकता है)।"""
+    CI = os.path.join(os.path.dirname(__file__), "..", "scripts", "ci")
+    def setUp(self):
+        import shutil, subprocess
+        if not shutil.which("ninja") or not shutil.which("patch"): self.skipTest("ninja/patch नहीं मिला")
+        sys.path.insert(0, self.CI); import patches; self.P = patches
+        self.d = tempfile.mkdtemp(); pr = os.path.join(self.d, "pristine", "src")
+        os.makedirs(os.path.join(pr, "out", "X"))
+        lines = ["rule cp", "  command = cp $in $out"]
+        for i in (1, 2, 3):
+            open(os.path.join(pr, f"f{i}.txt"), "w").write(f"orig{i}\n")
+            lines.append(f"build o{i}: cp ../../f{i}.txt")
+        lines.append("build all: phony o1 o2 o3")
+        open(os.path.join(pr, "out", "X", "build.ninja"), "w").write("\n".join(lines) + "\n")
+        self._sh("tar --format=posix -C pristine -cf src.tar --exclude=./src/out ./src && "
+                 "tar --format=posix -C pristine/src -cf out.tar out/X")   # stage-0 जैसा: pristine src + खाली out
+        self.pd = os.path.join(self.d, "patches"); os.makedirs(self.pd)
+        for i in (1, 2):
+            open(os.path.join(self.pd, f"p{i}.patch"), "w").write(
+                f"--- a/f{i}.txt\n+++ b/f{i}.txt\n@@ -1 +1 @@\n-orig{i}\n+PATCHED{i}\n")
+        self.n = 0
+    def _sh(self, cmd, cwd=None):
+        import subprocess
+        return subprocess.run(["bash", "-c", cmd], cwd=cwd or self.d, capture_output=True, text=True)
+    def _series(self, *names):
+        open(os.path.join(self.pd, "series"), "w").write("# test\n" + "\n".join(names) + "\n")
+    def _remaining(self, src):
+        import re
+        m = re.findall(r"^\[(\d+)/(\d+)\]", self._sh("ninja -C out/X -n all", src).stdout, re.M)
+        return int(m[-1][1]) if m else 0
+    def _stage(self, prev, naive=False):
+        """एक stage: pristine src + पिछला out restore, patches, ninja, out + progress.json सहेजना।"""
+        import time
+        time.sleep(1.1)                                  # असली stages घंटों के अंतर पर होते हैं
+        self.n += 1; w = os.path.join(self.d, f"st{self.n}"); os.makedirs(w); src = os.path.join(w, "src")
+        self._sh(f"tar -xf src.tar -C {w} && tar -xf out.tar -C {src}")
+        pj = os.path.join(w, "patches.json")
+        if naive:
+            for name in [l.strip() for l in open(os.path.join(self.pd, "series")) if l.strip() and not l.startswith("#")]:
+                self._sh(f"patch -p1 --forward --batch -i {self.pd}/{name}", src)
+            rc = 0
+        else:
+            rc = self.P.apply(src, self.pd, prev, pj)
+            if rc != 0: return rc, None, None, None, None
+        rem = self._remaining(src)
+        self._sh("ninja -C out/X all", src)
+        self._sh(f"tar --format=posix -C {src} -cf {self.d}/out.tar out/X")
+        prog = os.path.join(w, "progress.json")
+        pt = json.load(open(pj)) if not naive else {}
+        pt.pop("changed", None)
+        json.dump({"out_prefix": f"out-s{self.n}", "remaining_edges": 0, "patches": pt}, open(prog, "w"))
+        outs = {i: open(os.path.join(src, "out", "X", f"o{i}")).read().strip() for i in (1, 2, 3)}
+        return rc, rem, prog, outs, (json.load(open(pj)) if not naive else None)
+
+    def test_multistage_resume_change_and_drop(self):
+        self._series("p1.patch")
+        rc, rem, prog, outs, pj = self._stage("-")
+        self.assertEqual((rc, rem), (0, 3)); self.assertTrue(pj["changed"])
+        self.assertEqual(outs, {1: "PATCHED1", 2: "orig2", 3: "orig3"})
+        rc, rem, prog, outs, pj = self._stage(prog)                    # वही patches: शून्य rebuild
+        self.assertEqual((rc, rem), (0, 0)); self.assertFalse(pj["changed"])
+        self.assertEqual(outs[1], "PATCHED1")
+        self._series("p2.patch")                                       # p1 हटाया, p2 जोड़ा
+        rc, rem, prog, outs, pj = self._stage(prog)
+        self.assertEqual((rc, rem), (0, 2)); self.assertTrue(pj["changed"])
+        self.assertEqual(outs, {1: "orig1", 2: "PATCHED2", 3: "orig3"})  # हटाए patch का output नहीं बचा
+        rc, rem, prog, outs, pj = self._stage(prog)                    # स्थिर: फिर शून्य rebuild
+        self.assertEqual((rc, rem), (0, 0)); self.assertEqual(outs[1], "orig1")
+
+    def test_negative_control_naive_patching_keeps_stale_output(self):
+        self._series("p1.patch"); self._stage("-", naive=True)
+        self._series("p2.patch")
+        _, _, _, outs, _ = self._stage("-", naive=True)
+        self.assertEqual(outs[1], "PATCHED1")       # यही bug patches.py रोकता है
+
+    def test_old_progress_without_patches_and_empty_series(self):
+        os.remove(os.path.join(self.pd, "p1.patch")); os.remove(os.path.join(self.pd, "p2.patch"))
+        old = os.path.join(self.d, "old.json"); json.dump({"out_prefix": "out-s0", "remaining_edges": 5}, open(old, "w"))
+        self.assertEqual(self.P.series_hash(self.pd, []), "none")
+        _, rem, _, _, pj = self._stage(old)
+        self.assertFalse(pj["changed"]); self.assertEqual(pj["hash"], "none")
+
+    def test_args_gn_changes_hash_and_bad_patch_fails(self):
+        self._series("p1.patch"); h1 = self.P.series_hash(self.pd, ["p1.patch"])
+        open(os.path.join(self.pd, "args.gn"), "w").write('chrome_public_manifest_package = "org.example.b"\n')
+        self.assertNotEqual(h1, self.P.series_hash(self.pd, ["p1.patch"]))
+        open(os.path.join(self.pd, "bad.patch"), "w").write("--- a/f3.txt\n+++ b/f3.txt\n@@ -1 +1 @@\n-nomatch\n+x\n")
+        self._series("bad.patch")
+        rc, *_ = self._stage("-")
+        self.assertEqual(rc, 1)
+        self._series("../etc.patch"); rc, *_ = self._stage("-"); self.assertEqual(rc, 1)
+
+    def test_stage_script_wiring(self):
+        s = open(os.path.join(self.CI, "chromium_stage.sh")).read()
+        for must in ['patches.py" apply src', 'PATCH_CHANGED" = 0', '"patches":pt', 'EXP_PKG', 'BUILD_KEY" > "$PK/DONE"',
+                     'SEED_STATE', 'GITHUB_RUN_ID']:
+            self.assertIn(must, s)
+        self.assertNotIn("state mismatch", s)

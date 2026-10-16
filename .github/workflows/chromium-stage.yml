@@ -6,6 +6,8 @@ on:
       tag:   { type: string, required: true }
       cpu:   { type: string, required: true }
       stage: { type: number, required: true }
+      variant: { type: string, required: false, default: "a1" }   # state release: crstate-<tag>-<cpu>-<variant>
+      seed:    { type: string, required: false, default: "" }     # खाली नई variant के लिए src/out इस variant से
     outputs:
       done:
         value: ${{ jobs.stage.outputs.done }}
@@ -29,13 +31,14 @@ jobs:
           TAG: ${{ inputs.tag }}
           CPU: ${{ inputs.cpu }}
           STAGE: ${{ inputs.stage }}
-          STATE: crstate-${{ inputs.tag }}-${{ inputs.cpu }}-a1
+          STATE: crstate-${{ inputs.tag }}-${{ inputs.cpu }}-${{ inputs.variant }}
+          SEED_STATE: ${{ inputs.seed != '' && format('crstate-{0}-{1}-{2}', inputs.tag, inputs.cpu, inputs.seed) || '' }}
           OUTPUTS_DIR: ${{ runner.temp }}/outputs
         run: bash scripts/ci/chromium_stage.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: crbuild-${{ inputs.tag }}-${{ inputs.cpu }}-s${{ inputs.stage }}
+          name: crbuild-${{ inputs.tag }}-${{ inputs.cpu }}-${{ inputs.variant }}-s${{ inputs.stage }}
           path: ${{ runner.temp }}/outputs
           if-no-files-found: ignore
           retention-days: 90

@@ -14,6 +14,9 @@
 #
 # Env (workflow से): TAG CPU STAGE DEADLINE(epoch) STATE(release tag) GH_TOKEN GITHUB_REPOSITORY
 #                    OUTPUTS_DIR(APK/evidence के लिए) GITHUB_OUTPUT
+#                    SEED_STATE (वैकल्पिक): नई variant state खाली हो तो pristine src और शुरुआती out
+#                    इसी (जैसे baseline) state से — patched build केवल बदले हिस्से compile करता है।
+# इस परियोजना के source बदलाव: patches/series + patches/*.patch + patches/args.gn (scripts/ci/patches.py)।
 set -euo pipefail
 : "${TAG:?}" "${CPU:?}" "${STAGE:?}" "${DEADLINE:?}" "${STATE:?}" "${OUTPUTS_DIR:?}"
 ROOT=/home/runner/cr                    # हर stage में एक ही absolute path (ninja/Java build configs के लिए)
@@ -26,7 +29,9 @@ mkdir -p "$OUTPUTS_DIR" "$PK"
 EVID="$OUTPUTS_DIR/stage-$STAGE.txt"; : > "$EVID"
 ev(){ echo "$*" | tee -a "$EVID"; }
 
-# ---------- 0. args.gn (इसी का hash state की पहचान का हिस्सा है) ----------
+CI_DIR=$(cd "$(dirname "$(readlink -f "$0")")" && pwd); REPO_DIR=$(cd "$CI_DIR/../.." && pwd)
+PDIR="$REPO_DIR/patches"
+# ---------- 0. args.gn (base + patches/args.gn) ----------
 ARGS=$(cat <<EOF
 target_os = "android"
 target_cpu = "$CPU"
@@ -43,6 +48,12 @@ treat_warnings_as_errors = false
 android_static_analysis = "off"
 EOF
 )
+EXTRA=$(python3 "$CI_DIR/patches.py" args "$PDIR")
+if [ -n "$EXTRA" ]; then ARGS=$(printf '%s\n%s' "$ARGS" "$EXTRA"); fi
+PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")
+BUILD_KEY=$(printf '%s\n%s\n' "$PATCH_HASH" "$ARGS" | sha256sum | cut -c1-16)   # DONE इसी key का
+EXP_PKG=$(sed -n 's/^ *chrome_public_manifest_package *= *"\([^"]*\)".*/\1/p' <<<"$ARGS" | tail -1)
+EXP_PKG=${EXP_PKG:-org.chromium.chrome}
 
 # ---------- 1. runner तैयार करना ----------
 log "runner: $(nproc) CPU, $(free -g | awk '/Mem:/{print $2}') GB RAM"; df -h / /mnt 2>/dev/null | sed 's/^/  /'
@@ -62,8 +73,10 @@ mkdir -p "$ROOT"
 export PATH="$ROOT/depot_tools:$PATH" DEPOT_TOOLS_UPDATE=0 DEPOT_TOOLS_METRICS=0 GCLIENT_SUPPRESS_GIT_VERSION_WARNING=1
 
 R="$GITHUB_REPOSITORY"
-assets(){ gh release view "$STATE" -R "$R" --json assets -q '.assets[].name' 2>/dev/null || true; }
-fetch_asset(){ gh release download "$STATE" -R "$R" -p "$1" -O - ; }
+assets_of(){ gh release view "$1" -R "$R" --json assets -q '.assets[].name' 2>/dev/null || true; }
+assets(){ assets_of "$STATE"; }
+fetch_from(){ gh release download "$1" -R "$R" -p "$2" -O - ; }
+fetch_asset(){ fetch_from "$STATE" "$1"; }
 upload(){ local i; for i in 1 2 3 4; do gh release upload "$STATE" -R "$R" --clobber "$@" && return 0; log "upload retry $i"; sleep $((i*15)); done; return 1; }
 
 if ! gh release view "$STATE" -R "$R" >/dev/null 2>&1; then
@@ -72,11 +85,23 @@ if ! gh release view "$STATE" -R "$R" >/dev/null 2>&1; then
   log "state release बनाया: $STATE"
 fi
 A=$(assets)
-if grep -qx DONE <<<"$A"; then log "state DONE है — build पहले ही पूरा"; out done true; ev "status=already-done"; exit 0; fi
+ev "patch_hash=$PATCH_HASH build_key=$BUILD_KEY expected_package=$EXP_PKG"
+if grep -qx DONE <<<"$A"; then
+  D=$(fetch_asset DONE | head -1)
+  # "done" = patch-mechanism से पहले का baseline DONE (b7a2f0d), उसी base args पर
+  if [ "$D" = "$BUILD_KEY" ] || { [ "$D" = done ] && [ "$PATCH_HASH" = none ]; }; then log "state DONE है (इसी build key पर) — build पहले ही पूरा"; out done true; ev "status=already-done"; exit 0; fi
+  log "DONE पुरानी key ($D) का — patches/args बदले, incremental build"; gh release delete-asset "$STATE" DONE -R "$R" -y >/dev/null
+fi
+# src और शुरुआती out कहाँ से: अपनी state, वरना SEED_STATE
+SEED="${SEED_STATE:-}"; SA=""; [ -n "$SEED" ] && SA=$(assets_of "$SEED")
+SRC_STATE=""; OUT_STATE=""
+if grep -q '^src\.tar\.zst\.part' <<<"$A"; then SRC_STATE=$STATE; elif grep -q '^src\.tar\.zst\.part' <<<"$SA"; then SRC_STATE=$SEED; fi
+if grep -qx progress.json <<<"$A"; then OUT_STATE=$STATE; elif [ -n "$SRC_STATE" ] && grep -qx progress.json <<<"$SA"; then OUT_STATE=$SEED; fi
+ev "src_state=${SRC_STATE:-none} out_state=${OUT_STATE:-none}"
 
 # ---------- 2. fresh या restore ----------
 cd "$ROOT"
-if ! grep -q '^src\.tar\.zst\.part' <<<"$A"; then
+if [ -z "$SRC_STATE" ]; then
   MODE=fresh; log "MODE=fresh: Chromium $TAG source sync (बिना history)"
   t0=$(date +%s)
   mkdir -p src && git -C src init -q && git -C src remote add origin https://chromium.googlesource.com/chromium/src.git
@@ -93,8 +118,6 @@ EOF
   src/build/install-build-deps.sh --android --no-prompt --no-chromeos-fonts --no-arm >"$PK/deps.log" 2>&1 || { tail -40 "$PK/deps.log"; exit 1; }
   (cd src && gclient runhooks) >"$PK/hooks.log" 2>&1 || { tail -50 "$PK/hooks.log"; exit 1; }
   ev "deps_hooks_seconds=$(( $(date +%s)-t1 ))"
-  mkdir -p "src/$OUTD"; printf '%s\n' "$ARGS" > "src/$OUTD/args.gn"
-  (cd src && buildtools/linux64/gn gen "$OUTD") | tail -2
   echo "$COMMIT" > "$ROOT/COMMIT"
   du -sh src 2>/dev/null | sed 's/^/  src total: /'
   du -sh src/third_party src/chrome src/out 2>/dev/null | sed 's/^/  /'
@@ -108,38 +131,50 @@ EOF
 else
   MODE=restore; log "MODE=restore"
   t0=$(date +%s)
-  fetch_asset src.sha256 > "$PK/src.sha256"
+  fetch_from "$SRC_STATE" src.sha256 > "$PK/src.sha256"
   for p in $(grep -o 'src\.tar\.zst\.part[0-9]*' "$PK/src.sha256"); do
-    fetch_asset "$p" > "$PK/$p"; (cd "$PK" && grep " $p\$" src.sha256 | sha256sum -c --quiet) || { echo "checksum FAIL $p"; exit 1; }
+    fetch_from "$SRC_STATE" "$p" > "$PK/$p"; (cd "$PK" && grep " $p\$" src.sha256 | sha256sum -c --quiet) || { echo "checksum FAIL $p"; exit 1; }
     cat "$PK/$p"; rm -f "$PK/$p"
   done | zstd -dc -T0 | tar -x -C "$ROOT"
   COMMIT=$(cat "$ROOT/COMMIT"); ev "tag=$TAG commit=$COMMIT"
   src/build/install-build-deps.sh --android --no-prompt --no-chromeos-fonts --no-arm >"$PK/deps.log" 2>&1 || { tail -40 "$PK/deps.log"; exit 1; }
-  if grep -q '^progress.json$' <<<"$A"; then
-    fetch_asset progress.json > "$PK/progress.json"
+  if [ -n "$OUT_STATE" ]; then
+    fetch_from "$OUT_STATE" progress.json > "$PK/progress.json"
     PREV=$(python3 -c "import json;print(json.load(open('$PK/progress.json'))['out_prefix'])")
-    fetch_asset "$PREV.sha256" > "$PK/out.sha256"
+    fetch_from "$OUT_STATE" "$PREV.sha256" > "$PK/out.sha256"
     for p in $(grep -o "$PREV\.tar\.zst\.part[0-9]*" "$PK/out.sha256"); do
-      fetch_asset "$p" > "$PK/$p"; (cd "$PK" && grep " $p\$" out.sha256 | sha256sum -c --quiet) || { echo "checksum FAIL $p"; exit 1; }
+      fetch_from "$OUT_STATE" "$p" > "$PK/$p"; (cd "$PK" && grep " $p\$" out.sha256 | sha256sum -c --quiet) || { echo "checksum FAIL $p"; exit 1; }
       cat "$PK/$p"; rm -f "$PK/$p"
     done | zstd -dc -T0 | tar -x -C "$ROOT/src"
-  else
-    mkdir -p "src/$OUTD"; printf '%s\n' "$ARGS" > "src/$OUTD/args.gn"; (cd src && buildtools/linux64/gn gen "$OUTD") | tail -2
   fi
   ev "restore_seconds=$(( $(date +%s)-t0 ))"
 fi
-# args अपरिवर्तित हों (state की पहचान)
-diff <(printf '%s\n' "$ARGS") "src/$OUTD/args.gn" >/dev/null || { echo "args.gn बदल गया — state mismatch"; exit 1; }
+# ---------- 2b. इस परियोजना के patches (pristine src पर; mtime स्थिर epoch पर — patches.py देखें) ----------
+# पिछली patch-स्थिति progress.json में है (out state के साथ परमाणु), इसलिए restore हुआ out और उसकी patch-स्थिति हमेशा मेल खाते हैं
+PREVP=-; [ -f "$PK/progress.json" ] && PREVP="$PK/progress.json"
+python3 "$CI_DIR/patches.py" apply src "$PDIR" "$PREVP" "$PK/patches.json"
+PATCH_CHANGED=$(python3 -c "import json;print(int(json.load(open('$PK/patches.json'))['changed']))")
+cp "$PK/patches.json" "$OUTPUTS_DIR/patches.json"
+ev "patch_changed=$PATCH_CHANGED"
+# ---------- 2c. args.gn (बदले हों तो लिखें; gn gen हर बार — सस्ता और idempotent) ----------
+ARGS_CHANGED=0
+if [ ! -f "src/$OUTD/args.gn" ] || ! diff -q <(printf '%s\n' "$ARGS") "src/$OUTD/args.gn" >/dev/null; then
+  if [ -f "src/$OUTD/args.gn" ]; then ARGS_CHANGED=1; log "args.gn बदले:"; diff "src/$OUTD/args.gn" <(printf '%s\n' "$ARGS") || true; fi
+  mkdir -p "src/$OUTD"; printf '%s\n' "$ARGS" > "src/$OUTD/args.gn"
+fi
+(cd src && buildtools/linux64/gn gen "$OUTD") | tail -2
+ev "args_changed=$ARGS_CHANGED"
 
 NINJA=src/third_party/ninja/ninja; [ -x "$NINJA" ] || NINJA=ninja
-source "$(dirname "$(readlink -f "$0")")/stage_lib.sh"
+source "$CI_DIR/stage_lib.sh"
 remaining(){ count_remaining "$NINJA" "src/$OUTD" chrome_public_apk; }
 REM0=$(remaining); REM0=${REM0:-0}; ev "remaining_edges_at_start=$REM0"
 if [ -f "$PK/progress.json" ]; then
   PREVREM=$(python3 -c "import json;print(json.load(open('$PK/progress.json'))['remaining_edges'])")
   ev "remaining_edges_prev_stage_end=$PREVREM"
   # watchdog: restore से पूरा हुआ काम दोबारा dirty हो गया तो रुकें (mtime/restore गड़बड़)
-  if [ "$REM0" -gt $(( PREVREM + PREVREM/50 + 50 )) ]; then echo "WATCHDOG FAIL: restore के बाद काम बढ़ गया ($PREVREM -> $REM0)"; exit 1; fi
+  # (patches/args बदलने पर काम का बढ़ना अपेक्षित है — तब watchdog लागू नहीं)
+  if [ "$PATCH_CHANGED" = 0 ] && [ "$ARGS_CHANGED" = 0 ] && [ "$REM0" -gt $(( PREVREM + PREVREM/50 + 50 )) ]; then echo "WATCHDOG FAIL: restore के बाद काम बढ़ गया ($PREVREM -> $REM0)"; exit 1; fi
 fi
 
 if [ "${CHECK_ONLY:-0}" = 1 ]; then ev "CHECK_ONLY: restore + gn + ninja -n सफल; कुल/बचे edges=$REM0"; out done false; exit 0; fi
@@ -161,7 +196,9 @@ ev "ninja_rc=$RC remaining_edges_at_end=$REM1"
 tail -c 200000 "$PK/ninja.log" > "$OUTPUTS_DIR/ninja-tail-stage-$STAGE.log" 2>/dev/null || true
 
 # ---------- 4. out state pack/upload ----------
-PREFIX="out-s$STAGE"
+# हर stage/run का अलग नाम: restore का स्रोत (पिछला out) नया pack पूरा upload होने तक अछूता रहे
+# (एक ही नाम पर --clobber से upload बीच में विफल हो तो एकमात्र out state नष्ट हो सकती थी)
+PREFIX="out-s$STAGE-r${GITHUB_RUN_ID:-0}-${GITHUB_RUN_ATTEMPT:-1}"
 # हमेशा pack (build पूरा होने पर भी): आगे कोई कदम विफल हो तो काम न खोए (~1 GB, ~2 मिनट)
 if true; then
   log "out pack + upload ($PREFIX)"; t3=$(date +%s)
@@ -170,14 +207,15 @@ if true; then
   (cd "$PK" && sha256sum $PREFIX.tar.zst.part* > $PREFIX.sha256)
   ev "out_pack_bytes=$(cat "$PK"/$PREFIX.tar.zst.part* | wc -c)"
   for f in "$PK"/$PREFIX.tar.zst.part*; do upload "$f"; rm -f "$f"; done; upload "$PK/$PREFIX.sha256"
-  python3 - "$PK/progress.json" <<EOF
+  python3 - "$PK/progress.json" "$PK/patches.json" <<EOF
 import json,sys,time
+pt=json.load(open(sys.argv[2])); pt.pop("changed",None)
 json.dump({"tag":"$TAG","cpu":"$CPU","commit":"$COMMIT","stage":$STAGE,"out_prefix":"$PREFIX",
-  "remaining_edges":$REM1,"ninja_rc":$RC,"time":int(time.time())},open(sys.argv[1],"w"))
+  "remaining_edges":$REM1,"ninja_rc":$RC,"time":int(time.time()),"patches":pt},open(sys.argv[1],"w"))
 EOF
   upload "$PK/progress.json"
   # पुराने out-s* assets हटाना
-  for old in $(assets | grep -E '^out-s[0-9]+\.' | grep -v "^$PREFIX\." || true); do gh release delete-asset "$STATE" "$old" -R "$R" -y >/dev/null || true; done
+  for old in $(assets | grep -E '^out-s[0-9]+(-r[0-9]+-[0-9]+)?\.' | grep -v "^$PREFIX\." || true); do gh release delete-asset "$STATE" "$old" -R "$R" -y >/dev/null || true; done
   ev "out_pack_upload_seconds=$(( $(date +%s)-t3 ))"
 fi
 if [ "$RC" -ne 0 ] && [ "$RC" -ne 124 ]; then echo "BUILD ERROR (ninja rc=$RC) — state सुरक्षित, chain रुकी"; out done false; exit 1; fi
@@ -196,6 +234,8 @@ BT=$(ls -d src/third_party/android_sdk/public/build-tools/* 2>/dev/null | sort -
 {
   echo "tag=$TAG"; echo "commit=$COMMIT"; echo "cpu=$CPU"; echo "built_on=github ubuntu-24.04 standard runner (staged, stage $STAGE)"
   echo "build_tools=$(basename "$BT")"
+  echo "patch_hash=$PATCH_HASH build_key=$BUILD_KEY"
+  echo "--- patches"; python3 -c "import json;[print(x) for x in json.load(open('$PK/patches.json'))['series']]"
   echo "--- args.gn"; cat "src/$OUTD/args.gn"
   echo "--- sha256"; sha256sum "$APK" | cut -d' ' -f1
   echo "--- bytes"; stat -c %s "$APK"
@@ -207,6 +247,6 @@ cat "$OUTPUTS_DIR/BUILD_INFO.txt"
 set -e
 upload "$OUTPUTS_DIR/BUILD_INFO.txt"
 [ "$SIGRC" = 0 ] || { echo "apksigner verify विफल (rc=$SIGRC)"; out done false; exit 1; }
-grep -q "^package: name='org.chromium.chrome'" "$PK/badging.txt" || { echo "badging में अपेक्षित package नहीं"; out done false; exit 1; }
-echo done > "$PK/DONE"; upload "$PK/DONE"
+grep -q "^package: name='$EXP_PKG'" "$PK/badging.txt" || { echo "badging में अपेक्षित package ($EXP_PKG) नहीं"; out done false; exit 1; }
+echo "$BUILD_KEY" > "$PK/DONE"; upload "$PK/DONE"
 out done true; ev "status=DONE"
