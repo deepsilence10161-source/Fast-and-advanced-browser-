@@ -46,6 +46,12 @@ jobs:
           gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/${{ matrix.target }}/BUILD_INFO.txt
           sha256sum dl/ChromePublic.apk; grep -A1 -- '--- sha256' out/${{ matrix.target }}/BUILD_INFO.txt
           test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/${{ matrix.target }}/BUILD_INFO.txt | tail -1)"
+      - uses: actions/setup-java@v4
+        if: startsWith(matrix.target, 'chromium_source_')
+        with: { distribution: temurin, java-version: "17" }
+      - name: Throwaway-key re-signed copy (negative update test)
+        if: startsWith(matrix.target, 'chromium_source_')
+        run: bash scripts/ci/make_foreign_apk.sh dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
       - name: Harness deps
         run: pip install -q websocket-client
       - name: Enable KVM
@@ -63,7 +69,9 @@ jobs:
           disk-size: 8G
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
           disable-animations: true
-          script: bash scripts/ci/run_capture.sh ${{ matrix.target }}
+          script: |
+            bash scripts/ci/run_capture.sh ${{ matrix.target }}
+            if [ -f dl/ChromePublic.apk ] && [ -f "$RUNNER_TEMP/foreign.apk" ]; then bash scripts/ci/device_checks.sh ${{ matrix.target }} dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

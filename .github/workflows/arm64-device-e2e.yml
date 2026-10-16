@@ -1,0 +1,78 @@
+name: ARM64 device E2E (Redroid, native arm64 Android on free arm runner)
+# x86_64 emulator पर arm64 APK translation (libndk_translation) में renderer crash करता है, और GitHub के
+# arm runners पर KVM नहीं (runner-images #14062)। Redroid = container में असली Android, host के ARM CPU पर
+# native (कोई CPU emulation/translation नहीं) — user के ARM64 phone जैसा code-path। GPU: software (guest)।
+on:
+  workflow_dispatch:
+    inputs:
+      source_tag:
+        default: "155.0.8059.80"
+      source_variant:
+        description: "state variant (b1 = Swiftra)"
+        default: "b1"
+      redroid_image:
+        description: "redroid image (multi-arch)"
+        default: "redroid/redroid:14.0.0_64only-latest"
+permissions:
+  contents: write   # draft state release पढ़ना (drafts केवल write-access को दिखते हैं)
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    env:
+      T: chromium_source_arm64
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - name: Host + binder kernel module
+        run: |
+          uname -a; nproc; free -g | head -2; df -h / | tail -1
+          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder" 2>/dev/null || {
+            sudo apt-get update -qq && sudo apt-get install -y -qq "linux-modules-extra-$(uname -r)" >/dev/null
+            sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"; }
+          sudo modprobe ashmem_linux 2>/dev/null || echo "ashmem_linux नहीं (नए kernel में memfd — ठीक)"
+          lsmod | grep -E "binder|ashmem" || true; ls -l /dev/binder* /dev/binderfs 2>/dev/null || true
+          sudo apt-get install -y -qq adb >/dev/null; adb version | head -1
+      - name: Boot Redroid (native arm64 Android)
+        run: |
+          mkdir -p "$RUNNER_TEMP/rd"
+          docker run -d --name rd --privileged -v "$RUNNER_TEMP/rd:/data" -p 5555:5555 "${{ inputs.redroid_image || 'redroid/redroid:14.0.0_64only-latest' }}" \
+            androidboot.redroid_width=1080 androidboot.redroid_height=2400 androidboot.redroid_dpi=420 \
+            androidboot.redroid_gpu_mode=guest
+          for i in $(seq 1 60); do adb connect 127.0.0.1:5555 >/dev/null 2>&1
+            [ "$(timeout 10 adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ] && { echo "booted after ~$((i*5)) s"; break; }; sleep 5; done
+          adb devices -l
+          for p in ro.product.cpu.abi ro.product.cpu.abilist ro.build.version.release ro.build.version.sdk ro.dalvik.vm.native.bridge; do echo "$p=$(adb shell getprop $p | tr -d '\r')"; done
+          test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
+          adb shell settings put global window_animation_scale 0; adb shell settings put global transition_animation_scale 0; adb shell settings put global animator_duration_scale 0
+      - name: Fetch source-built APK + BUILD_INFO (SHA-256 must match)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ inputs.source_tag || '155.0.8059.80' }}"; ST=crstate-$TAG-arm64-${{ inputs.source_variant || 'b1' }}
+          mkdir -p dl out/$T
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p "ChromePublic-$TAG-arm64.apk" -O dl/ChromePublic.apk
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/$T/BUILD_INFO.txt
+          test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/$T/BUILD_INFO.txt | tail -1)"
+          echo "sha256 OK"; grep -E "^(package|application-label|native-code)" out/$T/BUILD_INFO.txt
+      - name: Throwaway-key re-signed copy (negative update test)
+        run: bash scripts/ci/make_foreign_apk.sh dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
+      - name: Harness deps
+        run: pip install -q websocket-client pillow
+      - name: UI journey + long-chat fixture
+        run: bash scripts/ci/run_capture.sh "$T"
+      - name: Device checks (launcher, non-debuggable, same-key update, foreign-key rejected, scroll jank, reinstall)
+        run: bash scripts/ci/device_checks.sh "$T" dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
+      - name: Meta
+        if: always()
+        run: |
+          adb shell getprop > out/$T/getprop.txt 2>/dev/null || true
+          docker logs rd 2>&1 | tail -100 > out/$T/redroid_container.log || true
+          grep -h -E "DEVICE_CHECKS|passed;|ui_capture exit|chat_fixture exit" out/$T/*.txt out/$T/journey.log 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: arm64-device-e2e-${{ inputs.source_variant || 'b1' }}
+          path: out/
