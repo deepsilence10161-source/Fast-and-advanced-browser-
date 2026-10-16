@@ -29,9 +29,11 @@ Device checks: 01 installed · 02 launcher activity · 03 launcher app-drawer �
 5. **Harness FRE**: overlay पर BACK दबाने से FRE बंद हो जाता था → FRE buttons tap; system dialog
    ("Set Swiftra as your default browser app?" — Chromium का default-browser promo, Redroid पर कोई default browser नहीं) → दर्ज + Cancel।
 
-## नया खुला finding (FAIL, upstream से)
-- **Tab switcher में BACK → app बाहर (launcher)**: सभी Chromium builds (a1 baseline, snapshot builds, b1) में; असली Chrome
-  (`chrome_ref`) app में रहता है। Chrome-parity अंतर, b1 का regression नहीं। जाँच/सुधार बाकी।
+## Finding वापस लिया (ईमानदार सुधार)
+- पहले लिखा: "tab switcher में BACK → app बाहर (FAIL)"। **गलत था**: `09_tab_switcher.png` असल में NTP है — step 08 पर
+  NTP customization promo sheet ("Now you can customize your homepage") ने tab-switcher tap निगल लिया; फिर NTP पर BACK से app
+  background (Chrome में भी यही)। Chromium 155 `HubCoordinator.handleBackPress()` → `selectCurrentTabAndHideHub()`।
+  पुराने सभी runs (snapshot builds भी) में यही harness गलती थी। Harness अब promo बंद करता, hub खुलना और BACK पर tab assert करता है।
 - Page-info: omnibox status icon a11y tree में नहीं; app menu > "Site controls" से खुलता है (पहले से दर्ज)।
 
 ## Performance (software GPU — प्रतिनिधि नहीं, तुलना के लिए नहीं)

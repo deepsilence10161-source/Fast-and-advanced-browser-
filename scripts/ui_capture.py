@@ -196,6 +196,31 @@ def wait_ready(d, seconds=60):
             time.sleep(2)
     return False
 
+def is_hub_open(d, xml=None):
+    xml = xml if xml is not None else d.dump()
+    return bool(re.search(r':id/(hub_pane_host|tab_list_recycler_view|tab_switcher_view_holder)"', xml))
+
+def wait_for(d, pred, seconds):
+    t0 = time.time()
+    while time.time() - t0 < seconds:
+        if pred(d): return True
+        time.sleep(1)
+    return False
+
+PROMO_DISMISS = r"^(No thanks|No, thanks|Not now|Got it|Dismiss)$"
+
+def dismiss_promo_sheet(d):
+    """Bottom-sheet promos (NTP customization, default browser, …) — दर्ज करके बंद।"""
+    xml = d.dump()
+    if not re.search(r':id/(bottom_sheet|sheet_container|bottom_sheet_content)', xml): return False
+    btn = d.find(PROMO_DISMISS, ("text",), xml=xml)
+    if not btn: return False
+    title = d.find(r".{12,}", ("text",), xml=xml, clickable_pref=False)
+    d.log(f"promo sheet dismissed: {title['text'] if title else '?'} -> {btn['text']}")
+    d.promos = getattr(d, "promos", []) + [title["text"] if title else "?"]
+    d.tap_node(btn); time.sleep(1.5)
+    return True
+
 def ensure_main(d, tries=4):
     """Return to the tabbed browser surface: close pickers/sheets, relaunch if another app is in front."""
     for _ in range(tries):
@@ -345,9 +370,30 @@ def main():
     # 08 new tab via menu, 09 tab switcher
     if d.tap(r"menu_button", ("id",)) and d.tap(r"^New tab$", ("text",)):
         d.capture("08_second_tab_ntp", "second tab opened from menu")
-    if d.tap(r"tab_switcher_button", ("id",)) or d.tap(r"(Switch or close tabs|tabs open)", ("desc",)):
-        time.sleep(2); d.capture("09_tab_switcher", "tab switcher grid, 2 tabs")
-        d.back(); ensure_main(d)
+    # NTP promo sheet ("Now you can customize your homepage") tab-switcher tap को निगल लेता था → 09 असल में NTP था
+    # और BACK से app बाहर गया (runs 38913748996/38913752278 के screenshots) — पहले promo बंद, फिर hub की पुष्टि।
+    dismiss_promo_sheet(d)
+    hub_open = False
+    for attempt in range(2):
+        if d.tap(r"tab_switcher_button", ("id",)) or d.tap(r"(Switch or close tabs|tabs open)", ("desc",)):
+            hub_open = wait_for(d, is_hub_open, 8)
+            if hub_open: break
+            d.log(f"tab switcher not open after tap (attempt {attempt + 1})"); dismiss_promo_sheet(d)
+    meta["tab_switcher_opened"] = hub_open
+    if hub_open:
+        xml = d.dump()
+        meta["tab_switcher_tabs"] = len(re.findall(r'content-desc="[^"]*, tab"', xml))
+        time.sleep(1); d.capture("09_tab_switcher", "tab switcher grid, 2 tabs")
+        d.back(); time.sleep(1.5)
+        xml = d.dump()
+        back_ok = d.foreground_pkg() == d.pkg and not is_hub_open(d, xml) and \
+            bool(d.find(r":id/(menu_button|tab_switcher_button)$", ("id",), xml=xml, clickable_pref=False))
+        meta["tab_switcher_back_returns_to_tab"] = back_ok
+        d.log(f"tab switcher: opened, tabs={meta['tab_switcher_tabs']}, BACK returns to tab: {back_ok}")
+        if back_ok: d.capture("09b_after_back_from_switcher", "BACK from tab switcher -> current tab")
+    else:
+        d.log("FINDING: tab switcher did not open")
+    ensure_main(d)
 
     # 11-14 menu destinations
     for key, label in (("11_settings", r"^Settings$"), ("12_history", r"^History$"),
@@ -403,6 +449,7 @@ def main():
     crash = sh("logcat", "-d", "-b", "crash")
     meta["crash_buffer_lines"] = len([l for l in crash.splitlines() if a.package in l or "FATAL" in l])
     open(os.path.join(a.out, "crash.txt"), "w").write(crash)
+    meta["promo_sheets"] = getattr(d, "promos", [])
     json.dump(meta, open(os.path.join(a.out, "meta.json"), "w"), indent=2)
     log("done")
 

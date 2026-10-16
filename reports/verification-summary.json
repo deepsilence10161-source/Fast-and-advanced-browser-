@@ -413,8 +413,8 @@
    "id": "tab-switcher-back-parity",
    "layer": "L3",
    "platform": "all Chromium builds",
-   "status": "FAIL",
-   "detail": "BACK in tab switcher exits to launcher; Chrome stays in app (upstream difference, not a b1 regression)",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "earlier FAIL retracted: harness artifact (NTP promo sheet swallowed the tab-switcher tap; '09' screenshot was the NTP). Re-test pending with hub-open + BACK-returns-to-tab assertions",
    "evidence": "journey logs"
   },
   {
