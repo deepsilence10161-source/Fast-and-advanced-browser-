@@ -85,7 +85,14 @@ df -h / /mnt | sed 's/^/  /'; free -g | sed 's/^/  /'
 ev "runner_cpu=$(nproc) ram_gb=$(free -g | awk '/Mem:/{print $2}') root_free=$(df -BG --output=avail / | tail -1 | tr -d ' ')"
 
 mkdir -p "$ROOT"
-[ -d "$ROOT/depot_tools" ] || git clone -q --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git "$ROOT/depot_tools"
+# googlesource कभी-कभी HTTP 503 देता है (run 38931719693) — backoff के साथ 5 प्रयास
+if [ ! -d "$ROOT/depot_tools" ]; then
+  for t in 1 2 3 4 5; do
+    git clone -q --depth 1 https://chromium.googlesource.com/chromium/tools/depot_tools.git "$ROOT/depot_tools" && break
+    rm -rf "$ROOT/depot_tools"; [ "$t" = 5 ] && { echo "depot_tools clone 5 बार विफल"; exit 1; }
+    echo "depot_tools clone विफल (प्रयास $t) — $((t*20))s बाद फिर"; sleep $((t*20))
+  done
+fi
 export PATH="$ROOT/depot_tools:$PATH" DEPOT_TOOLS_UPDATE=0 DEPOT_TOOLS_METRICS=0 GCLIENT_SUPPRESS_GIT_VERSION_WARNING=1
 
 R="$GITHUB_REPOSITORY"

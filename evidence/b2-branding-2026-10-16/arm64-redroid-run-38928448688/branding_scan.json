@@ -1,0 +1,67 @@
+{
+ "leaks": 8,
+ "by_screen": {
+  "02_ntp.xml": [
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ],
+  "05_page_loaded.xml": [
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ],
+  "08_second_tab_ntp.xml": [
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ],
+  "09b_after_back_from_switcher.xml": [
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ],
+  "10_incognito_ntp.xml": [
+   {
+    "field": "text",
+    "value": "Chromium won’t save:\nYour browsing history\nCookies and site data\nInformation entered in forms",
+    "id": "com.swiftra.app:id/new_tab_incognito_features",
+    "class": "android.widget.TextView"
+   },
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ],
+  "15_dark_page.xml": [
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ],
+  "16_landscape.xml": [
+   {
+    "field": "content-desc",
+    "value": "Customize and control Google Chrome",
+    "id": "com.swiftra.app:id/menu_button",
+    "class": "android.widget.Button"
+   }
+  ]
+ }
+}
