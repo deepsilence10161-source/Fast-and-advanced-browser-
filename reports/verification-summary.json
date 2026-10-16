@@ -278,8 +278,8 @@
    "layer": "L2",
    "platform": "github ubuntu-24.04 standard runner (staged)",
    "status": "PASS (static/signature/format only)",
-   "detail": "arm64: run 38841258069 (6cb8de2) completed chrome_public_apk (8895/8895) from saved state; APK 395857811 bytes sha256 a3a30881fa6d2a1e3a4fde98097309b9980f3b153bb3e8e0d6004b6d0cda98da; apksigner v2 rc 0; aapt2 org.chromium.chrome 155.0.8059.80 (805908004) arm64-v8a targetSdk 37. Earlier failures: bug #1 (APK lost after completion, x64 job 116601424088, arm64 job 116738710930), bug #2 (stage_lib path, run 38837246181); both reproduced by tests/test_stage_e2e.py and fixed. x64 re-run 38841255946 in progress.",
-   "evidence": "run 38841258069; evidence/source-build-arm64-ui-run-38856553471/BUILD_INFO.txt"
+   "detail": "arm64: run 38841258069 (6cb8de2) completed chrome_public_apk (8895/8895) from saved state; APK 395857811 bytes sha256 a3a30881fa6d2a1e3a4fde98097309b9980f3b153bb3e8e0d6004b6d0cda98da; apksigner v2 rc 0; aapt2 org.chromium.chrome 155.0.8059.80 (805908004) arm64-v8a targetSdk 37. Earlier failures: bug #1 (APK lost after completion, x64 job 116601424088, arm64 job 116738710930), bug #2 (stage_lib path, run 38837246181); both reproduced by tests/test_stage_e2e.py and fixed. x64: run 38841255946 completed (24053 edges), APK 397403679 bytes sha256 11c8110a952f6c5bb4825ade3a53cdfe13292bd76c53a8f15ddd5f76a327c392, apksigner v2 rc 0, aapt2 org.chromium.chrome 805908008 x86_64.",
+   "evidence": "run 38841258069; evidence/source-build-arm64-ui-run-38856553471/BUILD_INFO.txt; run 38841255946; evidence/source-build-x64-ui-run-38865720986/BUILD_INFO.txt"
   },
   {
    "id": "stage-lib-regression",
@@ -320,6 +320,22 @@
    "status": "FAIL",
    "detail": "environment: 68 sandboxed renderer SIGSEGV in libndk_translation.so (berberis_HandleNoExec), 'Aw, Snap!' on pages; same as official snapshot run 38704128045. Needs real ARM64 device (NOT RUN).",
    "evidence": "evidence/source-build-arm64-ui-run-38856553471/"
+  },
+  {
+   "id": "source-apk-x64-emulator-ui",
+   "layer": "L3",
+   "platform": "Android emulator API 36 x86_64 (native)",
+   "status": "PASS (Android emulator)",
+   "detail": "install Success; full UI journey incl. page rendering; 0 renderer crashes; cold median 1432.5 ms p95 1516; warm median 736 ms p95 1679; PSS 178 MB",
+   "evidence": "ui-capture run 38865720986"
+  },
+  {
+   "id": "source-apk-x64-chat-fixture",
+   "layer": "L3",
+   "platform": "Android emulator API 36 x86_64 (native)",
+   "status": "PASS (Android emulator)",
+   "detail": "synthetic long-chat fixture 10/10 (not real Arena): 300 msgs first render 839.5 ms, drift -0.11 px, no reload, exactly-once resume",
+   "evidence": "evidence/source-build-x64-ui-run-38865720986/chat_fixture.txt"
   }
  ],
  "performance_emulator_only": {

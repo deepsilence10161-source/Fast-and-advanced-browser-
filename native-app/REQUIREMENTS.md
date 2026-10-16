@@ -13,7 +13,7 @@ Chromium का आधिकारिक public snapshot `ChromePublic.apk` 155.
 | 1 | Chrome Android की exact UI | नहीं (upstream Chromium UI ही है) | Emulator पर 20 screens का Chrome 133 reference बनाम Chromium 155 तुलना | `reports/ui-compare/*/COMPARISON.md`, run 38701948978 | सभी 20 साझा screens **mismatch** (Chrome 133 के सामने) | Stable 155 reference उपलब्ध नहीं (emulator पर 133)। उपयोगकर्ता के फ़ोन के non-private screenshots चाहिए। Chrome branding के लिए Google की लिखित अनुमति चाहिए |
 | 2 | सभी Chrome features हूबहू | नहीं | 50 feature क्षेत्र source से trace, 20 screens पर व्यवहार देखा | `native-app/FEATURE_PARITY.md`, `reports/feature-parity.json` | Stable के सामने हर feature `not-tested` | Google-keyed सेवाएँ (Sync, sign-in, Safe Browsing keys, Discover, Gemini) fork में उपलब्ध नहीं या सीमित |
 | 3 | Chrome से आगे की मापनीय क्षमताएँ | नहीं (केवल C1 का synthetic prototype) | Synthetic chat fixture | `experiments/chat-rendering/`, नीचे की पंक्ति A3 | — | Chrome baseline पहले पास होना चाहिए; असली फ़ोन पर same-device benchmark चाहिए |
-| 4 | वास्तविक निर्माण और परीक्षण जारी | आंशिक: CI, capture, release pipeline, **staged source build pipeline (सत्र 2)** | हाँ | `TESTING.md` §2.6 | इतिहास `TESTING.md` में | Source build चालू है (runs 38745313869 x64, 38750988168 arm64); paid runner की ज़रूरत नहीं निकली |
+| 4 | वास्तविक निर्माण और परीक्षण जारी | आंशिक: CI, capture, release pipeline, **staged source build pipeline (सत्र 2)** | हाँ | `TESTING.md` §2.6 | इतिहास `TESTING.md` में | Source build से APK बने और सत्यापित: arm64 (run 38841258069) और x64 (run 38841255946), मुफ़्त runners पर; x64 emulator पर पूरा UI + chat fixture 10/10 PASS (run 38865720986) |
 
 ## Gates (B)
 | Gate | Status | Evidence | Blocker |
@@ -23,7 +23,7 @@ Chromium का आधिकारिक public snapshot `ChromePublic.apk` 155.
 | Exact feature parity | **NOT RUN / BLOCKED** | `native-app/FEATURE_PARITY.md` | Reference + Google services |
 | Beyond-Chrome capabilities | **NOT RUN / BLOCKED** | `native-app/SCOPE_AND_ADVANCED_CAPABILITIES.md` | Baseline पहले, फिर real device |
 | Android delivery: provenance | **PASS (static/signature/format only)** | `evidence/release-run-38700392608/` (GCS MD5+CRC32C, SHA-256, apksigner v2, aapt2, zipalign 16 KB) | — |
-| Android delivery: reproducible build | **IN PROGRESS** (सत्र 2): मुफ़्त standard runners पर staged source build चल रहा है, tag 155.0.8059.80 (commit `43a1951…`), x64 run 38745313869 और arm64 run 38750988168। Restore-path PASS (run 38751068356: 57,552 edges, restore 514 s) | `research/RESEARCH_REPORT.md` §3b, `scripts/ci/chromium_stage.sh` | APK बनना और सत्यापित होना बाकी; कुल समय अभी अज्ञात |
+| Android delivery: reproducible build | **PARTIAL** (सत्र 2): staged source build से x64 और arm64 APK बने (runs 38841255946, 38841258069), apksigner/aapt2 PASS; byte-for-byte reproducibility की जाँच NOT RUN, tag 155.0.8059.80 (commit `43a1951…`), x64 run 38745313869 और arm64 run 38750988168। Restore-path PASS (run 38751068356: 57,552 edges, restore 514 s) | `research/RESEARCH_REPORT.md` §3b, `scripts/ci/chromium_stage.sh` | APK बनना और सत्यापित होना बाकी; कुल समय अभी अज्ञात |
 | Android delivery: install + launch (emulator) | **PASS (Android emulator)** | run 38701948978: तीनों targets `reached_browser_ui` | — |
 | Android delivery: install + launch (physical ARM64) | **NOT RUN / BLOCKED** | — | उपयोगकर्ता का फ़ोन |
 | Android delivery: signed secure updates | **NOT RUN / BLOCKED** | — | अपना signing key + update channel नहीं (Chromium snapshot का upstream test signature है) |
