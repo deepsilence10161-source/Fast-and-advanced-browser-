@@ -49,6 +49,7 @@ jobs:
           adb devices -l
           for p in ro.product.cpu.abi ro.product.cpu.abilist ro.build.version.release ro.build.version.sdk ro.dalvik.vm.native.bridge; do echo "$p=$(adb shell getprop $p | tr -d '\r')"; done
           test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
+          adb logcat -G 32M || true    # बड़ा buffer: मौत का कारण rotate न हो
           adb shell settings put global window_animation_scale 0; adb shell settings put global transition_animation_scale 0; adb shell settings put global animator_duration_scale 0
       - name: Fetch source-built APK + BUILD_INFO (SHA-256 must match)
         env:
@@ -68,6 +69,9 @@ jobs:
         run: bash scripts/ci/run_capture.sh "$T"
       - name: Device checks (launcher, non-debuggable, same-key update, foreign-key rejected, scroll jank, reinstall)
         run: bash scripts/ci/device_checks.sh "$T" dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
+      - name: Crash/exit diagnostics (launch probe, ApplicationExitInfo, tombstones, full logcat)
+        if: always()
+        run: bash scripts/ci/diag_dump.sh "$T"
       - name: Meta
         if: always()
         run: |

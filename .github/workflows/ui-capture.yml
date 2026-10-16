@@ -72,6 +72,7 @@ jobs:
           script: |
             bash scripts/ci/run_capture.sh ${{ matrix.target }}
             if [ -f dl/ChromePublic.apk ] && [ -f "$RUNNER_TEMP/foreign.apk" ]; then bash scripts/ci/device_checks.sh ${{ matrix.target }} dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"; fi
+            if [ -f dl/ChromePublic.apk ]; then bash scripts/ci/diag_dump.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
