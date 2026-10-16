@@ -68,3 +68,16 @@ class LogoAssets(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PopularSitesOverlay(unittest.TestCase):
+    """पहली NTP के tiles: Chromium-dev सूची (chromium.org, codereview, freenode, chrome://flags) की जगह
+    gstatic suggested_sites_DEFAULT_7.json (वही जो fetch के बाद दिखती है)।"""
+    def test_no_chromium_dev_tiles(self):
+        p = os.path.join(ROOT, "patches", "overlay", "components", "ntp_tiles", "resources", "default_popular_sites.json")
+        j = json.load(open(p, encoding="utf-8"))
+        self.assertEqual(len(j), 8)
+        for x in j:
+            self.assertTrue(x["url"].startswith(("https://", "http://")), x)
+            self.assertNotRegex(x["title"] + x["url"], r"(?i)chrom|freenode")
+            self.assertTrue(set(x) <= {"title", "url", "favicon_url", "large_icon_url", "title_source"}, x)

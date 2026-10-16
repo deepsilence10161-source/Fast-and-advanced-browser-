@@ -451,6 +451,23 @@ def main():
     meta["crash_buffer_lines"] = len([l for l in crash.splitlines() if a.package in l or "FATAL" in l])
     open(os.path.join(a.out, "crash.txt"), "w").write(crash)
     meta["promo_sheets"] = getattr(d, "promos", [])
+    # b2: app UI में Chrome/Chromium नाम (हर capture xml) — मापने योग्य branding जाँच; chrome_ref के लिए केवल जानकारी
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "ci"))
+        import branding_scan
+        by = {}
+        for f in sorted(os.listdir(a.out)):
+            if f.endswith(".xml"):
+                l = branding_scan.scan_xml(open(os.path.join(a.out, f), encoding="utf-8", errors="replace").read(), a.package)
+                if l:
+                    by[f] = l
+        meta["branding_leaks"] = sum(len(v) for v in by.values())
+        meta["branding_leak_values"] = sorted({x["value"] for v in by.values() for x in v})
+        json.dump({"leaks": meta["branding_leaks"], "by_screen": by}, open(os.path.join(a.out, "branding_scan.json"), "w"),
+                  ensure_ascii=False, indent=1)
+        log(f"branding scan: {meta['branding_leaks']} leaks")
+    except Exception as e:  # जाँच harness को न तोड़े
+        meta["branding_leaks"] = None; meta["branding_scan_error"] = repr(e)
     json.dump(meta, open(os.path.join(a.out, "meta.json"), "w"), indent=2)
     log("done")
 
