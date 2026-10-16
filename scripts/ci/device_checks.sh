@@ -52,7 +52,7 @@ inst(){ local tag=$1; shift; local t0=$SECONDS o rc
   o=$(timeout 300 adb install "$@" 2>&1); rc=$?
   printf '=== %s: adb install %s (rc=%s, %ss)\n%s\n' "$tag" "$*" "$rc" "$((SECONDS-t0))" "$o" | tr -d '\r' >> "$IL"
   printf '%s' "$o" | tr -d '\r' | grep -v '^[[:space:]]*$' | tail -1; }
-sig(){ sh "dumpsys package $PKG" 60 | grep -m1 -oE 'signatures:\[[^]]*\]'; }
+sig(){ sh "dumpsys package $PKG" 60 | grep -m1 -oE 'signatures:\[[^]]*\]' | head -1; }
 
 # 5 update with the same key (in-place upgrade keeps data)
 sh "am force-stop $PKG"

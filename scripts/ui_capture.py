@@ -116,6 +116,11 @@ class Device:
         m = re.search(r"\s([\w.]+)/", o)
         return m.group(1) if m else ""
 
+    def foreground_activity(self):
+        o = shell("dumpsys activity activities | grep -E 'topResumedActivity|mResumedActivity' | head -1")
+        m = re.search(r"\s([\w.]+/[\w.$]+)", o)
+        return m.group(1) if m else ""
+
     # ---------- capture ----------
     def capture(self, key, note=""):
         time.sleep(1.0)
@@ -144,8 +149,20 @@ def is_browser_ready(d):
     xml = d.dump()
     return bool(d.find(r"(search_box_text|url_bar|search_box|location_bar)", ("id",), xml=xml)), xml
 
+def launcher_component(pkg):
+    """MAIN/LAUNCHER activity (वही जो launcher icon खोलता है)।"""
+    o = shell(f"cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.LAUNCHER {pkg}")
+    last = [l.strip() for l in o.splitlines() if l.strip()]
+    return last[-1] if last and last[-1].startswith(pkg + "/") else None
+
 def launch(d):
-    shell(f"monkey -p {d.pkg} -c android.intent.category.LAUNCHER 1")
+    """Launcher-icon जैसा start। पहले `am start -n <launcher activity>` (हर Android पर), monkey केवल fallback:
+    Redroid (run 38909149132) पर `monkey -c LAUNCHER 1` ने कोई process शुरू ही नहीं किया था।"""
+    comp = launcher_component(d.pkg)
+    o = shell(f"am start -W -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n {comp}", timeout=40) if comp else ""
+    if not comp or "Error" in o or "Status: ok" not in o:
+        d.log(f"launch: am start failed ({comp}: {o.strip()[-120:]!r}); monkey fallback")
+        shell(f"monkey -p {d.pkg} -c android.intent.category.LAUNCHER 1")
     time.sleep(6)
 
 def wait_ready(d, seconds=60):
@@ -172,6 +189,9 @@ def ensure_main(d, tries=4):
             d.log("ensure_main: relaunch (foreground=%s)" % d.foreground_pkg()); launch(d); continue
         xml = d.dump()
         if d.handle_anr(xml): continue
+        fre = d.find(FRE_BUTTONS, ("text",), xml=xml)
+        if fre and "firstrun" in (d.foreground_activity() or "").lower():   # FRE पर BACK = FRE बंद (run 38909149132)
+            d.log(f"ensure_main: FRE button {fre['text']}"); d.tap_node(fre); time.sleep(3); continue
         if d.find(r":id/(chrome_item_picker_container|bottom_sheet|sheet_container|menu_list)$", ("id",), xml=xml, clickable_pref=False) \
            or not d.find(r":id/(menu_button|tab_switcher_button)$", ("id",), xml=xml, clickable_pref=False):
             d.log("ensure_main: back (overlay present)"); d.back(); continue
@@ -185,6 +205,8 @@ def start_timings(pkg, activity, n_cold, n_warm, log):
         o = shell(f"am start -W -n {activity} -a android.intent.action.VIEW -d about:blank", timeout=40)
         m = re.search(r"TotalTime:\s*(\d+)", o)
         if m: res["cold_ms"].append(int(m.group(1)))
+        la = re.search(r"Activity:\s*(\S+)", o)
+        if la: res.setdefault("landing_activities", set()).add(la.group(1))
     for i in range(n_warm):
         shell("input keyevent KEYCODE_HOME"); time.sleep(1.5)
         o = shell(f"am start -W -n {activity} -a android.intent.action.VIEW -d about:blank", timeout=40)
@@ -195,6 +217,9 @@ def start_timings(pkg, activity, n_cold, n_warm, log):
         if v:
             res[k + "_median"] = statistics.median(v)
             res[k + "_p95"] = v[min(len(v) - 1, int(round(0.95 * (len(v) - 1))))]
+    # FRE पूरा न हुआ हो तो cold start FirstRunActivity तक का होता है — browser start से तुलना योग्य नहीं
+    res["landing_activities"] = sorted(res.get("landing_activities", ()))
+    res["comparable"] = bool(res["landing_activities"]) and not any("firstrun" in x.lower() for x in res["landing_activities"])
     log(f"timings: {res}")
     return res
 
