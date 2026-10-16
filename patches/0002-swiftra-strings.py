@@ -22,6 +22,10 @@ GRDS = [
     "components/components_chromium_strings.grd",
     "chrome/browser/ui/android/strings/android_chrome_strings.grd",
     "components/browser_ui/strings/android/browser_ui_strings.grd",
+    "ui/android/java/strings/android_ui_strings.grd",          # menu button: "Customize and control Google Chrome"
+    # बड़ी साझा grd — केवल सूचीबद्ध grdp के messages (incognito NTP "Chromium won't save", sad tab "Restart Chromium");
+    # translations में नाम-बदलाव भी केवल उन्हीं messages का जिनका English बदला
+    ("components/components_strings.grd", ["components/new_or_sad_tab_strings.grdp"]),
 ]
 PROTECT = re.compile(
     r"Chromium(?:\s+(?:open[\s-]?source|project|Authors))|The Chromium Authors|Chromium\s*OS\b|ChromiumOS|"
@@ -42,9 +46,16 @@ RULES = [(re.compile(r"Google\s+Chrome" + NR), BRAND),
 # शब्द बदलकर प्रत्यय वही (fi "Swiftran" व्याकरण-सही)। Chromebook/Chromecast आदि पहले ही mask।
 # बाईं सीमा भी नहीं: Zulu जैसी भाषाएँ 1-3 अक्षर के (बड़े अक्षर वाले भी) उपसर्ग जोड़ती हैं ("seChromium", "IChromium");
 # translations में बड़े C वाला "Chrome" शब्द-बीच केवल यही नाम होता है।
+# लिप्यंतरित नाम (hi/ne/mr "क्रोमियम"/"क्रोम", ur "کروم") — Latin "Swiftra" (बाकी hi translations जैसा)। "क्रोम" के बाद
+# मात्रा हो तो दूसरा शब्द; बुक/कास्ट/ओएस/वेब स्टोर = सुरक्षित उत्पाद-नाम। (ru "Кроме"=अलावा, el "Χρώμα"=रंग — नहीं छूते)
+DEVA_MATRA = "\u093e-\u094c\u0962\u0963"
 TR_RULES = [(re.compile(r"Google\s+Chrome(?![A-Z])"), BRAND),
             (re.compile(r"Chromium(?![A-Z])"), BRAND),
-            (re.compile(r"Chrome(?![A-Z])"), BRAND)]
+            (re.compile(r"Chrome(?![A-Z])"), BRAND),
+            (re.compile("गूगल\\s+क्रोम(?![" + DEVA_MATRA + "])(?!\\s*(?:बुक|कास्ट|ओएस|OS|वेब\\s*स्टोर))"), BRAND),
+            (re.compile("क्रोमियम"), BRAND),
+            (re.compile("क्रोम(?![" + DEVA_MATRA + "])(?!\\s*(?:बुक|कास्ट|ओएस|OS|वेब\\s*स्टोर))"), BRAND),
+            (re.compile("(?<![\u0600-\u06ff])کروم(?![\u0600-\u06ff])"), BRAND)]
 
 
 def brand_text(t, tr=False):
@@ -93,12 +104,17 @@ def message_ids(src, grd_path):
             for n in res.Preorder() if isinstance(n, M.MessageNode)]
 
 
-def process(src, rel, log):
+def process(src, rel, log, scope=None):
     path = os.path.join(src, rel)
     base = os.path.dirname(rel)
     orig = open(path, encoding="utf-8").read()
     # grd + उसकी <part> (.grdp) फ़ाइलें — messages दोनों में
     files = [rel] + [os.path.normpath(os.path.join(base, f)) for f in re.findall(r'<part\s+file="([^"]+)"', orig)]
+    if scope is not None:
+        missing = [f for f in scope if f not in files]
+        if missing:
+            raise SystemExit(f"[strings] {rel}: scope की फ़ाइल grd का <part> नहीं: {missing}")
+        files = list(scope)
     edits = {}
     for f in files:
         t = open(os.path.join(src, f), encoding="utf-8").read()
@@ -117,6 +133,8 @@ def process(src, rel, log):
     # तो उनके translations नहीं छूते।
     skip_tr = {i for i, txt in new_msgs if PROTECT.search(txt)}
     all_new = set(new_ids)
+    # scoped grd: केवल बदले (branded) messages के translations छूते हैं; बाकी साझा grd अछूती
+    brand_ids = all_new if scope is None else set(n for o, n in zip(old_ids, new_ids) if o != n)
     new = "\n".join(edits.get(f) or open(os.path.join(src, f), encoding="utf-8").read() for f in files)
     if len(old_ids) != len(new_ids):
         raise SystemExit(f"[strings] {rel}: message संख्या बदली ({len(old_ids)} -> {len(new_ids)})")
@@ -136,7 +154,10 @@ def process(src, rel, log):
             continue
         xs = open(xp, encoding="utf-8").read()
         present = set(re.findall(r'<translation\s+id="(\d+)"', xs))
-        before = len(present & set(old_ids))
+        # coverage = कितने (नए) messages का अनुवाद है; Chrome/Chromium वाले दो variants एक ही नए text/ID में मिल
+        # सकते हैं ("Restart Chrome"/"Restart Chromium" -> "Restart Swiftra") — वह नुकसान नहीं
+        before = len({remap.get(i, i) for i in present & set(old_ids)})
+        emitted = set()
 
         def tr(m):
             nonlocal moved, dropped, rebranded
@@ -146,10 +167,13 @@ def process(src, rel, log):
                 if n in present and n not in remap:   # नया text पहले से अनुवादित (दूसरे message का) — वही रखें
                     dropped += 1; return ""
                 moved += 1
-            elif i in all_new:
+            elif i in brand_ids:
                 n = i
             else:
                 return m.group(0)                      # इस grd का message नहीं
+            if n in emitted:                           # merge: नया ID इस xtb में पहले ही लिखा गया
+                dropped += 1; return ""
+            emitted.add(n)
             body = m.group(4) if n in skip_tr else brand_markup(m.group(4), tr=True)
             if i == n and body != m.group(4):
                 rebranded += 1
@@ -162,7 +186,7 @@ def process(src, rel, log):
             open(xp, "w", encoding="utf-8").write(nxs); touched.append(xrel)
     left = [m for m in re.findall(r"[^\n>]{0,30}\bChrom(?:e|ium)\b[^\n<]{0,30}",
                                   "\n".join(brand_text_check(b) for b in MSG_RX.findall(new)))]
-    log(f"[strings] {rel}: {len(remap)} IDs बदले, {len(xtbs)} xtb, {moved} translations नए ID पर, {rebranded} अपरिवर्तित-ID translations में नाम बदला, {dropped} दोहराव हटे, "
+    log(f"[strings] {rel}: {len(remap)} IDs बदले, {len(xtbs)} xtb, {moved} translations नए ID पर, {rebranded} अपरिवर्तित-ID translations में नाम बदला, {dropped} दोहराव/merge हटे, "
         f"बचे सुरक्षित उल्लेख {len(left)}")
     return touched
 
@@ -185,11 +209,12 @@ def main():
         print(__doc__, file=sys.stderr); return 2
     src = sys.argv[1]
     log = lambda s: print(s, file=sys.stderr)
-    for rel in GRDS:
+    entries = [(g, None) if isinstance(g, str) else g for g in GRDS]
+    for rel, _ in entries:
         if not os.path.isfile(os.path.join(src, rel)):
             log(f"[strings] grd नहीं मिला: {rel}"); return 1
-    for rel in GRDS:
-        for t in process(src, rel, log):
+    for rel, scope in entries:
+        for t in process(src, rel, log, scope):
             print("TOUCHED " + t)
     return 0
 

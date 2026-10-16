@@ -42,7 +42,11 @@ class Rules(unittest.TestCase):
     def test_translation_inflections_and_prefixes(self):
         tr = {"Chromen": "Swiftran", "Chromiumu": "Swiftrau", "ስለChromium": "ስለSwiftra", "seChromium": "seSwiftra",
               "IChromium": "ISwiftra", "Chrome में": "Swiftra में", "Chromecastiin": "Chromecastiin",
-              "Chromebookilla": "Chromebookilla", "Chrome 网上应用店": "Swiftra 网上应用店"}
+              "Chromebookilla": "Chromebookilla", "Chrome 网上应用店": "Swiftra 网上应用店",
+              # लिप्यंतरित (hi/ne/ur); मिलते-जुलते शब्द नहीं छूते
+              "क्रोमियम को फिर से शुरू करें": "Swiftra को फिर से शुरू करें", "क्रोमियमले": "Swiftraले",
+              "गूगल क्रोम में": "Swiftra में", "क्रोमबुक पर": "क्रोमबुक पर", "क्रोम वेब स्टोर": "क्रोम वेब स्टोर",
+              "क्रोमा": "क्रोमा", "کروم کو": "Swiftra کو", "Кроме того": "Кроме того", "Χρώμα": "Χρώμα"}
         for a, b in tr.items():
             self.assertEqual(rb.brand_markup(a, tr=True), b, a)
 
@@ -66,10 +70,20 @@ GRD = textwrap.dedent('''\
           <if expr="is_android">
             <message name="IDS_QUIT" desc="x">Press to quit</message>
           </if>
+          <if expr="_google_chrome">
+            <message name="IDS_RESTART" desc="x">Restart Chrome</message>
+          </if>
+          <if expr="not _google_chrome">
+            <message name="IDS_RESTART" desc="x">Restart Chromium</message>
+          </if>
         </messages>
       </release>
     </grit>
 ''')
+
+
+def xtb_name(rel):
+    return os.path.splitext(os.path.basename(rel))[0] + "_hi.xtb"
 
 
 @unittest.skipUnless(GRIT_DIR and os.path.isfile(os.path.join(GRIT_DIR, "grit.py")), "GRIT_DIR नहीं")
@@ -83,9 +97,44 @@ class TransformWithRealGrit(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.src)
 
+    def _mk_scoped(self, rel, part):
+        """scoped entry: grd में अपना message (scope बाहर) + <part> (scope भीतर)।"""
+        d = os.path.join(self.src, os.path.dirname(rel)); os.makedirs(os.path.join(d, "translations"), exist_ok=True)
+        prel = os.path.relpath(os.path.join(self.src, part), d)
+        g = GRD.replace('<message name="IDS_PLAIN" desc="x">Settings</message>',
+                        '<message name="IDS_OUT" desc="x">Open Chrome Settings</message>\n'
+                        f'          <part file="{prel}" />')
+        body = GRD.split("<messages fallback_to_english=\"true\">")[1].split("</messages>")[0]
+        body = body.replace('<message name="IDS_PLAIN" desc="x">Settings</message>', "")
+        g = g.split("<messages fallback_to_english=\"true\">")[0] + '<messages fallback_to_english="true">\n' + \
+            '          <message name="IDS_OUT" desc="x">Open Chrome Settings</message>\n' + \
+            f'          <part file="{prel}" />\n        </messages>' + g.split("</messages>")[1]
+        os.makedirs(os.path.dirname(os.path.join(self.src, part)), exist_ok=True)
+        open(os.path.join(self.src, part), "w", encoding="utf-8").write(
+            '<?xml version="1.0" encoding="utf-8"?>\n<grit-part>' + body + '</grit-part>\n')
+        p = os.path.join(self.src, rel); open(p, "w", encoding="utf-8").write(g.replace("t_hi.xtb", xtb_name(rel)))
+        ids = {txt: i for i, txt in rb.message_ids(self.src, p)}
+        xtb = ['<?xml version="1.0" ?>', '<!DOCTYPE translationbundle>', '<translationbundle lang="hi">',
+               f'<translation id="{ids["Open Chrome Settings"]}">Chrome सेटिंग खोलें</translation>',
+               f'<translation id="{ids["About Chrome"]}">Chrome के बारे में</translation>',
+               f'<translation id="{ids["Press to quit"]}">Chrome बंद करने के लिए दबाएं</translation>',
+               f'<translation id="{ids["Restart Chrome"]}">Chrome रीस्टार्ट करें</translation>',
+               f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>', '</translationbundle>']
+        open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
+        return ids
+
+    def _mk_all(self):
+        out = {}
+        for e in rb.GRDS:
+            if isinstance(e, str):
+                out[e] = self._mk(e)
+            else:
+                out[e[0]] = self._mk_scoped(e[0], e[1][0])
+        return out
+
     def _mk(self, rel):
         d = os.path.join(self.src, os.path.dirname(rel)); os.makedirs(os.path.join(d, "translations"), exist_ok=True)
-        p = os.path.join(self.src, rel); open(p, "w", encoding="utf-8").write(GRD)
+        p = os.path.join(self.src, rel); open(p, "w", encoding="utf-8").write(GRD.replace("t_hi.xtb", xtb_name(rel)))
         ids = {}
         for i, txt in rb.message_ids(self.src, p):
             ids[txt] = i
@@ -94,17 +143,37 @@ class TransformWithRealGrit(unittest.TestCase):
                 f'<translation id="{ids["Visit Chrome Web Store"]}">Chrome वेब स्टोर पर जाएं</translation>',
                 f'<translation id="{ids["Settings"]}">सेटिंग</translation>',
                 f'<translation id="{ids["Press to quit"]}">Chrome बंद करने के लिए दबाएं</translation>',
+                f'<translation id="{ids["Restart Chrome"]}">Chrome रीस्टार्ट करें</translation>',
+                f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>',
                 '<translation id="111">दूसरी grd का Chrome</translation>', '</translationbundle>']
-        open(os.path.join(d, "translations", "t_hi.xtb"), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
+        open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
         return ids
 
     def test_remap_keeps_translations_and_ids_match_grit(self):
-        rels = rb.GRDS
-        old = {r: self._mk(r) for r in rels}
+        rels = [e for e in rb.GRDS if isinstance(e, str)]
+        old = self._mk_all()
         out = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True)
         self.assertEqual(out.returncode, 0, out.stderr)
         touched = [l[8:] for l in out.stdout.splitlines() if l.startswith("TOUCHED ")]
-        self.assertEqual(len(touched), 2 * len(rels), touched)          # हर grd + उसका xtb
+        self.assertEqual(len(touched), 2 * len(rb.GRDS), touched)      # हर grd (या scoped part) + उसका xtb
+        # scoped entry: केवल part बदला; grd का अपना message और उसका translation अछूते
+        for e in rb.GRDS:
+            if isinstance(e, str):
+                continue
+            g, part = e[0], e[1][0]
+            self.assertIn(part, touched); self.assertNotIn(g, touched)
+            self.assertIn("Open Chrome Settings", open(os.path.join(self.src, g), encoding="utf-8").read())
+            pt = open(os.path.join(self.src, part), encoding="utf-8").read()
+            self.assertIn(">About Swiftra</message>", pt); self.assertIn("Restart Swiftra", pt)
+            new = {txt: i for i, txt in rb.message_ids(self.src, os.path.join(self.src, g))}
+            x = open(os.path.join(self.src, os.path.dirname(g), "translations", xtb_name(g)), encoding="utf-8").read()
+            tr = dict(re.findall(r'<translation id="(\d+)">(.*?)</translation>', x))
+            self.assertEqual(tr[new["Open Chrome Settings"]], "Chrome सेटिंग खोलें")       # scope बाहर
+            self.assertEqual(tr[new["About Swiftra"]], "Swiftra के बारे में")
+            self.assertEqual(tr[new["Press to quit"]], "Chrome बंद करने के लिए दबाएं")    # ID न बदला -> scoped में नहीं छूता
+            self.assertEqual(tr[new["Restart Swiftra"]], "Swiftra रीस्टार्ट करें")
+            ids_in_x = re.findall(r'<translation id="(\d+)">', x)
+            self.assertEqual(len(ids_in_x), len(set(ids_in_x)))
         for r in rels:
             p = os.path.join(self.src, r)
             g = open(p, encoding="utf-8").read()
@@ -113,7 +182,7 @@ class TransformWithRealGrit(unittest.TestCase):
             self.assertIn("Visit Chrome Web Store", g)
             self.assertIn('&lt;link&gt;</ph>Swiftra<ph name="END_LINK">', g)
             new = {txt: i for i, txt in rb.message_ids(self.src, p)}       # असली grit से नए IDs
-            x = open(os.path.join(os.path.dirname(p), "translations", "t_hi.xtb"), encoding="utf-8").read()
+            x = open(os.path.join(os.path.dirname(p), "translations", xtb_name(r)), encoding="utf-8").read()
             tr = dict(re.findall(r'<translation id="(\d+)">(.*?)</translation>', x))
             self.assertEqual(tr[new["About Swiftra"]], "Swiftra के बारे में")
             self.assertNotIn(old[r]["About Chrome"], tr)
@@ -121,15 +190,19 @@ class TransformWithRealGrit(unittest.TestCase):
             self.assertEqual(tr[new["Press to quit"]], "Swiftra बंद करने के लिए दबाएं")       # ID वही, अनुवाद में नाम बदला
             self.assertEqual(tr[new["Settings"]], "सेटिंग")
             self.assertEqual(tr["111"], "दूसरी grd का Chrome")                          # दूसरी grd का message नहीं छूता
+            ids_in_x = re.findall(r'<translation id="(\d+)">', x)
+            self.assertEqual(len(ids_in_x), len(set(ids_in_x)))                          # merge के बाद कोई duplicate ID नहीं
+            self.assertEqual(tr[new["Restart Swiftra"]], "Swiftra रीस्टार्ट करें")
 
     def test_deterministic(self):
-        for r in rb.GRDS: self._mk(r)
+        self._mk_all()
         a = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True).stdout
-        snap = {r: open(os.path.join(self.src, r), encoding="utf-8").read() for r in rb.GRDS}
-        for r in rb.GRDS: self._mk(r)
+        files = [l[8:] for l in a.splitlines() if l.startswith("TOUCHED ")]
+        snap = {r: open(os.path.join(self.src, r), encoding="utf-8").read() for r in files}
+        self._mk_all()
         b = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True).stdout
         self.assertEqual(a, b)
-        for r in rb.GRDS: self.assertEqual(snap[r], open(os.path.join(self.src, r), encoding="utf-8").read())
+        for r in files: self.assertEqual(snap[r], open(os.path.join(self.src, r), encoding="utf-8").read())
 
     def test_missing_grd_fails(self):
         out = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True)

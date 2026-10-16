@@ -43,7 +43,11 @@ Google Chrome / Chromium / Chrome -> Swiftra (केवल `<ph>` के बा�
 fingerprint पर remap; translations में भी नाम बदला (विभक्ति/उपसर्ग सहित)। सुरक्षित (नहीं बदलते): The Chromium Authors /
 open source project, ChromeOS/ChromiumOS, Chrome Web Store, Chromebook/cast/box, Chrome Remote Desktop/Enterprise, और
 Google के कानूनी दस्तावेज़ों के नाम (ऐसे messages के translations भी नहीं छूते)।
-Self-check: हर xtb में translation coverage पहले = बाद, वरना build विफल। Tests: tests/test_strings_rebrand.py (असली grit)।
++ `ui/android/java/strings/android_ui_strings.grd` (menu button "Customize and control Google Chrome") और scoped
+`components/components_strings.grd` -> केवल `new_or_sad_tab_strings.grdp` (Incognito "Chromium won't save", "Restart Chromium");
+scoped grd में translations केवल बदले messages के। Chrome/Chromium variants एक ही नए ID में merge (xtb में duplicate नहीं)।
+लिप्यंतरित नाम भी: hi/ne "क्रोमियम"/"क्रोम", ur "کروم" -> Swiftra (Chromebook/Web Store/OS रूप सुरक्षित)।
+Self-check: हर xtb में (नए-ID अर्थ में) translation coverage पहले = बाद, वरना build विफल। Tests: tests/test_strings_rebrand.py (असली grit)।
 सीमा: कुछ विभक्ति-प्रधान भाषाओं (hr, hu…) में "Swiftrau"/"Swiftraot" जैसे रूप — native review आवश्यक।
 
 ## overlay: Swiftra product logo (b2)
