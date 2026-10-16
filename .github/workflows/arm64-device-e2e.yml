@@ -21,6 +21,9 @@ jobs:
     timeout-minutes: 90
     env:
       T: chromium_source_arm64
+      # adb server local port 5555 को "emulator-5554" के रूप में भी खोज लेता है — वही device दो नाम
+      # (run 38905074382: "more than one device")। एक serial तय: सारे adb/harness calls इसी पर।
+      ANDROID_SERIAL: 127.0.0.1:5555
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
@@ -68,7 +71,8 @@ jobs:
       - name: Meta
         if: always()
         run: |
-          adb shell getprop > out/$T/getprop.txt 2>/dev/null || true
+          mkdir -p out/$T; adb shell getprop > out/$T/getprop.txt 2>/dev/null || true
+          mkdir -p out/$T; adb devices -l > out/$T/adb_devices.txt 2>&1 || true
           docker logs rd 2>&1 | tail -100 > out/$T/redroid_container.log || true
           grep -h -E "DEVICE_CHECKS|passed;|ui_capture exit|chat_fixture exit" out/$T/*.txt out/$T/journey.log 2>/dev/null || true
       - uses: actions/upload-artifact@v4
