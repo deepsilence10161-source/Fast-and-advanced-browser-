@@ -424,6 +424,14 @@
    "status": "NOT RUN / BLOCKED",
    "detail": "no physical device available to the assistant",
    "evidence": "-"
+  },
+  {
+   "id": "b2-in-app-branding",
+   "layer": "L3",
+   "platform": "x64 Android emulator API 36 + arm64 Redroid 14 (not a real phone)",
+   "status": "PASS (Android emulator)",
+   "detail": "App-UI branding leaks on ~24 captured screens: 38/36 (b1) -> 0/0. Strings transform (6 grds incl. scoped components_strings, ID remap, 81 locales, 0 translation loss), Swiftra product-logo/Lottie overlay, NTP popular-sites fallback, FRE footer no false UMA claim (0003). device checks 9/9, chat 10/10, 0 crashes. Not covered: uncaptured screens, remaining grds; inflected-language forms need native review; legal gate G1 (Google ToS link, own ToS/Privacy needed).",
+   "evidence": "evidence/b2-branding-2026-10-16/ ; builds 38935765027, 38931729325 ; E2E 38938906018, 38938909743"
   }
  ],
  "performance_emulator_only": {
