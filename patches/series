@@ -2,3 +2,4 @@
 # खाली = baseline (hash "none")। विवरण: patches/README.md
 # b1: Swiftra branding (app नाम); icon = patches/overlay/, package/debuggable = patches/args.gn
 0001-swiftra-app-name.patch
+0002-swiftra-strings.py

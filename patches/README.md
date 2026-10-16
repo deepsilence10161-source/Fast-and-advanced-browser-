@@ -35,3 +35,13 @@ Staged source build (`scripts/ci/chromium_stage.sh`) हर stage में **pr
 - अलग workflow step "Release signing" (केवल उसी के env में secrets) `finalize_apk.sh` चलाता है: keystore 700-dir में decode → `apksigner sign` (password `file:` से, कभी argv/log में नहीं; `--alignment-preserved true` ताकि 16 KB lib alignment बनी रहे) → keystore तुरंत मिटाया → cert SHA-256 का मिलान **upload से पहले** (गलत key = FAIL, APK upload नहीं) → badging gates (package, non-debuggable) → DONE।
 - Keystore का password args.gn / BUILD_INFO / state tar / logs में नहीं जाता (gn के `android_keystore_*` args इसी कारण उपयोग नहीं किए)।
 - Keystore की मूल प्रति: maintainer के पास (offline backup ज़रूरी — key खोने पर उसी package पर update असंभव)।
+
+## 0002-swiftra-strings.py (b2 — in-app strings)
+Deterministic transform (diff से संभव नहीं क्योंकि English text बदलते ही grit fingerprint ID बदलते हैं)।
+4 grd (chromium_strings, components_chromium_strings, android_chrome_strings, browser_ui_strings) में
+Google Chrome / Chromium / Chrome -> Swiftra (केवल `<ph>` के बाहर का text; desc नहीं)। सभी xtb के translation ID नए
+fingerprint पर remap; translations में भी नाम बदला (विभक्ति/उपसर्ग सहित)। सुरक्षित (नहीं बदलते): The Chromium Authors /
+open source project, ChromeOS/ChromiumOS, Chrome Web Store, Chromebook/cast/box, Chrome Remote Desktop/Enterprise, और
+Google के कानूनी दस्तावेज़ों के नाम (ऐसे messages के translations भी नहीं छूते)।
+Self-check: हर xtb में translation coverage पहले = बाद, वरना build विफल। Tests: tests/test_strings_rebrand.py (असली grit)।
+सीमा: कुछ विभक्ति-प्रधान भाषाओं (hr, hu…) में "Swiftrau"/"Swiftraot" जैसे रूप — native review आवश्यक।

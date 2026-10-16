@@ -17,6 +17,10 @@ Overlay (binary assets, जैसे launcher icon PNG — जो diff से �
   * symlink / ".." -> त्रुटि। overlay पहले, फिर series patches (patch overlay वाली फ़ाइल पर भी लग सकता है)।
   * overlay की फ़ाइलें (path+content) hash में और touched-files सूची में शामिल।
 
+Transform scripts (series में ".py" प्रविष्टि — जैसे in-app strings का नाम बदलना, जो diff से संभव नहीं):
+  `python3 <script> <src>` pristine src पर; stdout की "TOUCHED <path>" पंक्तियाँ touched-files में
+  (absolute / ".." / src के बाहर / अनुपस्थित path -> त्रुटि); non-zero exit -> त्रुटि; script की सामग्री hash में।
+
 Usage: patches.py apply <src-dir> <patch-dir> <prev-json|-> <out-json>
             prev-json = पिछले stage का progress.json (उसकी "patches" key) या "-"
        patches.py args  <patch-dir>          # patches/args.gn (न हो तो खाली)
@@ -123,6 +127,24 @@ def apply(src, pdir, prev_json, out_json, now=None):
         files.append(rel)
     for name in series:
         p = os.path.join(pdir, name)
+        if name.endswith(".py"):
+            # deterministic transform (जैसे 0002-swiftra-strings.py): pristine src पर चलती है, stdout में "TOUCHED <path>"
+            r = subprocess.run([sys.executable, p, src], capture_output=True, text=True)
+            sys.stderr.write(r.stderr)
+            if r.returncode != 0:
+                print(f"[patches] {name} विफल (rc={r.returncode})", file=sys.stderr)
+                return 1
+            real_src = os.path.realpath(src)
+            for line in r.stdout.splitlines():
+                if not line.startswith("TOUCHED "):
+                    continue
+                rel = line[8:].strip()
+                fp = os.path.realpath(os.path.join(src, rel))
+                if os.path.isabs(rel) or ".." in rel.split("/") or not fp.startswith(real_src + os.sep) or not os.path.isfile(fp):
+                    print(f"[patches] {name}: अमान्य TOUCHED path {rel!r}", file=sys.stderr)
+                    return 1
+                files.append(rel)
+            continue
         r = subprocess.run(["patch", "-d", src, "-p1", "--forward", "--batch", "--no-backup-if-mismatch", "-i", p],
                            capture_output=True, text=True)
         if r.returncode != 0:
