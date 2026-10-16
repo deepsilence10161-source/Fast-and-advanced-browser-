@@ -4,4 +4,9 @@ useDefault = true
 
 [allowlist]
 description = "local token vault"
-paths = ['''^/home/user/\.secrets/gh_token$''']
+paths = [
+  '''^/home/user/\.secrets/gh_token$''',
+  '''^/home/user/\.secrets/swiftra-release\.p12$''',   # release keystore की तिजोरी (600)
+  '''^/home/user/\.secrets/swiftra-ks-pass$''',
+  '''^/home/user/\.cache/pip/''',                     # तीसरे-पक्ष package cache (snapshot में नहीं; README उदाहरण)
+]

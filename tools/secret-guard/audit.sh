@@ -34,5 +34,16 @@ if [ "${1:-}" != --no-network ]; then
   exp=$("$SG_VAULT/gh.sh" /rate_limit -D - -o /dev/null | grep -i '^github-authentication-token-expiration' | cut -d' ' -f2- | tr -d '\r')
   [ -n "$exp" ] && note "token expiry: $exp — काम पूरा होने पर revoke/rotate करें"
 fi
+# 17 release keystore (Swiftra signing): vault में 600; password vault के बाहर/किसी argv में नहीं
+KSP="$SG_VAULT/swiftra-ks-pass"; KS="$SG_VAULT/swiftra-release.p12"
+if [ -f "$KSP" ] || [ -f "$KS" ]; then
+  kp_ok=1
+  for f in "$KS" "$KSP"; do [ -f "$f" ] && [ ! -L "$f" ] && [ "$(stat -c %a "$f")" = 600 ] || kp_ok=0; done
+  [ -s "$KSP" ] && hits=$(grep -rIlF --exclude-dir=.secrets -f "$KSP" "$SG_HOME" 2>/dev/null) || hits=""
+  [ -n "$hits" ] && kp_ok=0
+  grep -laF -f "$KSP" /proc/[0-9]*/cmdline 2>/dev/null | grep -q . && kp_ok=0
+  [ $kp_ok = 1 ] && ok "17 release keystore: vault में 600; password vault के बाहर/argv में नहीं" \
+    || { bad "17 release keystore perms/रिसाव"; [ -n "$hits" ] && echo "$hits" | sed 's/^/      /'; }
+fi
 [ -f /tmp/arena-workspace/hydrate.zip ] && note "/tmp/arena-workspace/hydrate.zip: platform का workspace-restore archive (vault की प्रति सहित); workspace के बाहर, snapshot में नहीं"
 echo "AUDIT: $P पास, $F विफल"; [ $F = 0 ]

@@ -18,7 +18,8 @@ sg_vault_fix() {   # vault: dir 700, token 600, regular file, हमारा ow
   [ -f "$SG_TOKEN" ] || { echo "[secret-guard] token फ़ाइल नहीं मिली" >&2; return 1; }
   [ "$(stat -c %U "$SG_TOKEN")" = "$(id -un)" ] || { echo "[secret-guard] token का owner अलग है — इनकार" >&2; return 1; }
   chmod 700 "$SG_VAULT" && chmod 600 "$SG_TOKEN" || return 1
-  local f; for f in "$SG_VAULT"/*; do [ "$f" = "$SG_TOKEN" ] || chmod 700 "$f"; done
+  # helpers (executable) 700; बाकी सब data (token, release keystore, password) 600
+  local f; for f in "$SG_VAULT"/*; do case "$(basename "$f")" in *.sh) chmod 700 "$f";; *) chmod 600 "$f";; esac; done
   [ "$(stat -c %a "$SG_VAULT")" = 700 ] && [ "$(stat -c %a "$SG_TOKEN")" = 600 ]
 }
 
