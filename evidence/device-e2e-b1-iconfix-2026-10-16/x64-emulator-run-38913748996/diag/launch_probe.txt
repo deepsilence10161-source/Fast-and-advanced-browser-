@@ -1,0 +1,34 @@
+package=com.swiftra.app
+--- am start -W
+Starting: Intent { act=android.intent.action.VIEW dat=https://example.org/... pkg=com.swiftra.app }
+Status: ok
+LaunchState: COLD
+Activity: com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+TotalTime: 717
+WaitTime: 726
+Complete
+t=1s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=2s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=3s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=4s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=5s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=6s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=7s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=8s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=9s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=10s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=11s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=12s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=13s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=14s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=15s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=16s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=17s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=18s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=19s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=20s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=21s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=22s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=23s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=24s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=25s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity

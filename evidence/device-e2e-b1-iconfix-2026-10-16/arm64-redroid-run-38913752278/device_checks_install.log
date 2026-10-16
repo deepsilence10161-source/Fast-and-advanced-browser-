@@ -1,0 +1,9 @@
+=== 05: adb install -r dl/ChromePublic.apk (rc=0, 2s)
+Performing Streamed Install
+Success
+=== 06: adb install -r /home/runner/work/_temp/foreign.apk (rc=1, 0s)
+adb: failed to install /home/runner/work/_temp/foreign.apk: Failure [INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.swiftra.app signatures do not match newer version; ignoring!]
+Performing Streamed Install
+=== 09: adb install dl/ChromePublic.apk (rc=0, 2s)
+Performing Streamed Install
+Success

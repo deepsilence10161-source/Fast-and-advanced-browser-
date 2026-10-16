@@ -1,0 +1,9 @@
+== launch probe (आखिरी 5)
+t=21s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=22s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=23s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=24s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+t=25s pid=10268 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+== exit reasons (ApplicationExitInfo)
+== fatal markers
+10-16 14:20:20.825   447   447 I Zygote  : Process 9943 exited due to signal 9 (Killed)

@@ -1,0 +1,70 @@
+tag=155.0.8059.80
+commit=43a195105613ac83c21d3f14de279f4a045c7da0
+cpu=x64
+built_on=github ubuntu-24.04 standard runner (staged, stage 0)
+build_tools=37.0.0
+patch_hash=52d3f36e924833ff6b06efa09b83a5e46c4a565a261bab650293631b5efde40c build_key=144f71b7f511c974
+signing=release signer_cert_sha256=029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06 expected_cert_sha256=029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06
+--- patches
+0001-swiftra-app-name.patch
+overlay: chrome/android/java/res_chromium_base/drawable/themed_app_icon.xml
+overlay: chrome/android/java/res_chromium_base/mipmap-hdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-hdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-hdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-mdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-mdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-mdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xhdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xhdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xhdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxhdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxhdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxhdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxxhdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png
+--- args.gn
+target_os = "android"
+target_cpu = "x64"
+is_debug = false
+is_official_build = false
+is_component_build = false
+symbol_level = 0
+blink_symbol_level = 0
+v8_symbol_level = 0
+dcheck_always_on = false
+use_siso = false
+use_remoteexec = false
+treat_warnings_as_errors = false
+android_static_analysis = "off"
+chrome_public_manifest_package = "com.swiftra.app"
+debuggable_apks = false
+--- sha256
+e298584d324f42e90761ed04ac3ba3455ea9f3d3570d75d18c14b117e392c38e
+--- bytes
+397756209
+--- clang
+llvmorg-24-init-7747-g62397f8b-27
+--- apksigner verify (rc=0)
+
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): false
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+V3.0 Signer: certificate DN: CN=Swiftra, O=Swiftra, C=IN
+V3.0 Signer: certificate SHA-256 digest: 029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06
+V3.0 Signer: certificate SHA-1 digest: 56d9b5b2ad23243cd16f0f2e6164384ba8faeb02
+V3.0 Signer: certificate MD5 digest: afe4fa2488c3b5c81348219a3533e3bf
+V3.0 Signer: key algorithm: RSA
+V3.0 Signer: key size (bits): 4096
+--- aapt2 badging (rc=0)
+package: name='com.swiftra.app' versionCode='805908008' versionName='155.0.8059.80' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+minSdkVersion:'29'
+targetSdkVersion:'37'
+application-label:'Swiftra'
+native-code: 'x86_64'

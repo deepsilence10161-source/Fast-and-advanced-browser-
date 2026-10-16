@@ -1,0 +1,20 @@
+{
+ "method": "rAF intervals during real adb touch swipes (CDP)",
+ "match": "example.org",
+ "scroll_height_px": 49538,
+ "screen": "1080x2400",
+ "scroll_events": 121,
+ "max_scroll_y_css_px": 5686.47607421875,
+ "metrics": {
+  "frames": 121,
+  "duration_s": 8.0,
+  "fps": 15.0,
+  "p50_ms": 66.7,
+  "p90_ms": 66.7,
+  "p99_ms": 66.8,
+  "max_ms": 66.8,
+  "vsync_ms": 17.17,
+  "janky_frames": 120,
+  "janky_pct": 100.0
+ }
+}

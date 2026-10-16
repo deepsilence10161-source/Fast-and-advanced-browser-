@@ -376,6 +376,54 @@
    "status": "NOT RUN",
    "detail": "awaiting user install of crstate-155.0.8059.80-arm64-b1 APK",
    "evidence": ""
+  },
+  {
+   "id": "b1-icon-launcher",
+   "layer": "L3",
+   "platform": "x64 emulator + arm64 Redroid",
+   "status": "FAIL",
+   "detail": "glyph missing (roundIcon = background + transparent fg; ic_launcher = white bg + fg). Fixed in 26f8a45",
+   "evidence": "evidence/device-e2e-b1-iconfix-2026-10-16/bug-icon-before/"
+  },
+  {
+   "id": "b1-iconfix-build",
+   "layer": "L2",
+   "platform": "github ubuntu-latest",
+   "status": "PASS (static/signature/format only)",
+   "detail": "x64 e298584d…c38e, arm64 11cd819c…dbbb; release cert 029de0fa…",
+   "evidence": "runs 38907965672, 38907969325"
+  },
+  {
+   "id": "b1-x64-device-e2e",
+   "layer": "L3",
+   "platform": "Android 16 emulator x86_64",
+   "status": "PASS (Android emulator)",
+   "detail": "device checks 9/9, UI journey ready, fixture 10/10, app crash 0",
+   "evidence": "run 38913748996"
+  },
+  {
+   "id": "b1-arm64-redroid-e2e",
+   "layer": "L3",
+   "platform": "Redroid 14 container, native arm64 CPU, software GPU (NOT an actual device)",
+   "status": "PASS (Android emulator)",
+   "detail": "device checks 9/9, UI journey ready, fixture 10/10, app crash 0, no ApplicationExitInfo deaths",
+   "evidence": "run 38913752278"
+  },
+  {
+   "id": "tab-switcher-back-parity",
+   "layer": "L3",
+   "platform": "all Chromium builds",
+   "status": "FAIL",
+   "detail": "BACK in tab switcher exits to launcher; Chrome stays in app (upstream difference, not a b1 regression)",
+   "evidence": "journey logs"
+  },
+  {
+   "id": "b1-arm64-actual-phone",
+   "layer": "L4",
+   "platform": "actual Android device",
+   "status": "NOT RUN / BLOCKED",
+   "detail": "no physical device available to the assistant",
+   "evidence": "-"
   }
  ],
  "performance_emulator_only": {
@@ -434,6 +482,23 @@
     "pss_kb": 508221,
     "anr_dialogs": 0,
     "version": "155.0.8059.0"
+   },
+   "38913748996/chromium_source_x64_b1_iconfix": {
+    "cold_ms_median": 712.0,
+    "cold_ms_p95": 771,
+    "warm_ms_median": 498.0,
+    "pss_kb": 151307,
+    "landing": "ChromeTabbedActivity",
+    "scroll_fps": 21.5
+   },
+   "38913752278/chromium_source_arm64_b1_iconfix_redroid": {
+    "cold_ms_median": 669.5,
+    "cold_ms_p95": 717,
+    "warm_ms_median": 246.5,
+    "pss_kb": 284382,
+    "landing": "ChromeTabbedActivity",
+    "scroll_fps": 15.0,
+    "note": "Redroid container, software GPU"
    }
   }
  }

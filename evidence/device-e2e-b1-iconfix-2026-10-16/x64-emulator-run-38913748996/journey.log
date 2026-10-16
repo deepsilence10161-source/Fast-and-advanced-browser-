@@ -1,0 +1,53 @@
+[14:13:48] install: Success
+[14:13:48] meta: {'label': 'chromium_source_x64', 'package': 'com.swiftra.app', 'versionName': '155.0.8059.80', 'versionCode': '805908008', 'primaryCpuAbi': 'x86_64', 'android_release': '16', 'sdk': '36', 'model': 'sdk_gphone64_x86_64', 'abilist': 'x86_64,arm64-v8a', 'native_bridge': 'libndk_translation.so', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': '1.0', 'navigation_mode': '2', 'webview': 'Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)'}
+[14:14:00] captured 01_first_run (16 labelled nodes, fg=com.swiftra.app)
+[14:14:06] captured 01_first_run_1 (16 labelled nodes, fg=com.swiftra.app)
+[14:14:15] captured 01_first_run_2 (8 labelled nodes, fg=com.swiftra.app)
+[14:14:21] browser UI ready: True
+[14:14:27] captured 02_ntp (82 labelled nodes, fg=com.swiftra.app)
+[14:14:32] tap OK  /:id/(search_box_text|url_bar)$/ -> com.swiftra.app:id/search_box_text
+[14:14:35] captured 03_omnibox_focused (82 labelled nodes, fg=com.swiftra.app)
+[14:14:42] captured 04_omnibox_suggestions (78 labelled nodes, fg=com.swiftra.app)
+[14:14:58] captured 05_page_loaded (40 labelled nodes, fg=com.swiftra.app)
+[14:15:02] tap MISS /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/
+[14:15:06] tap MISS /(View site information|site information|Connection is secure)/
+[14:15:10] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:15:14] tap OK  /^(Site controls|Site settings|Page info)$/ -> com.swiftra.app:id/menu_item_text
+[14:15:16] page-info via app menu 'Site controls': True
+[14:15:19] captured 06_page_info (13 labelled nodes, fg=com.swiftra.app)
+[14:15:28] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:15:32] captured 07_app_menu (59 labelled nodes, fg=com.swiftra.app)
+[14:15:41] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:15:45] tap OK  /^New tab$/ -> com.swiftra.app:id/menu_item_text
+[14:15:48] captured 08_second_tab_ntp (101 labelled nodes, fg=com.swiftra.app)
+[14:15:52] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[14:15:58] captured 09_tab_switcher (82 labelled nodes, fg=com.swiftra.app)
+[14:16:01] ensure_main: relaunch (foreground=com.google.android.apps.nexuslauncher)
+[14:16:17] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:16:23] tap OK  /^Settings$/ -> com.swiftra.app:id/menu_item_text
+[14:16:28] captured 11_settings (36 labelled nodes, fg=com.swiftra.app)
+[14:16:33] captured 11b_settings_scrolled (31 labelled nodes, fg=com.swiftra.app)
+[14:16:43] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:16:49] tap OK  /^History$/ -> com.swiftra.app:id/menu_item_text
+[14:16:54] captured 12_history (19 labelled nodes, fg=com.swiftra.app)
+[14:17:04] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:17:10] tap OK  /^Bookmarks$/ -> com.swiftra.app:id/menu_item_text
+[14:17:15] captured 13_bookmarks (37 labelled nodes, fg=com.swiftra.app)
+[14:17:25] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:17:31] tap OK  /^Downloads$/ -> com.swiftra.app:id/menu_item_text
+[14:17:36] captured 14_downloads (16 labelled nodes, fg=com.swiftra.app)
+[14:17:55] captured 15_dark_page (35 labelled nodes, fg=com.swiftra.app)
+[14:17:59] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:18:02] captured 15b_dark_menu (59 labelled nodes, fg=com.swiftra.app)
+[14:18:14] captured 16_landscape (35 labelled nodes, fg=com.swiftra.app)
+[14:18:14] landscape screenshot 2400x1080 rotated=True
+[14:18:21] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:18:25] tap OK  /^New Incognito tab$/ -> com.swiftra.app:id/title
+[14:18:28] captured 10_incognito_ntp (47 labelled nodes, fg=com.swiftra.app)
+[14:18:32] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[14:18:37] captured 10b_tab_switcher_incognito (38 labelled nodes, fg=com.swiftra.app)
+[14:19:37] timings: {'cold_ms': [771, 660, 696, 734, 664, 694, 724, 768, 724, 700], 'warm_ms': [530, 499, 497, 488, 551, 435, 877, 413, 391, 596], 'activity': 'com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher', 'landing_activities': ['com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity'], 'cold_ms_median': 712.0, 'cold_ms_p95': 771, 'warm_ms_median': 498.0, 'warm_ms_p95': 877, 'comparable': True}
+[14:19:37] done
+ui_capture exit=0
+devtools sockets: chrome_devtools_remote stetho_com.google.android.apps.messaging_devtools_remote webview_devtools_remote_5036 ; using: chrome_devtools_remote
+chat_fixture exit=0

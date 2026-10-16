@@ -1,0 +1,59 @@
+package=com.swiftra.app
+--- am start -W
+Starting: Intent { act=android.intent.action.VIEW dat=https://example.org/... pkg=com.swiftra.app }
+Status: ok
+LaunchState: COLD
+Activity: com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+TotalTime: 411
+WaitTime: 415
+Complete
+tr: write error: Broken pipe
+t=1s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=2s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=3s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=4s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=5s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=6s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=7s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=8s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=9s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=10s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=11s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=12s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=13s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=14s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=15s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=16s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=17s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=18s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=19s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=20s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=21s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=22s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=23s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=24s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity
+tr: write error: Broken pipe
+t=25s pid=8624 fg=com.swiftra.app/org.chromium.chrome.browser.firstrun.FirstRunActivity

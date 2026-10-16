@@ -1,0 +1,38 @@
+[
+ {
+  "status": "PASS",
+  "check": "01 package installed (com.swiftra.app)"
+ },
+ {
+  "status": "PASS",
+  "check": "02 launcher entry — com.swiftra.app/com.google.android.apps.chrome.Main"
+ },
+ {
+  "status": "PASS",
+  "check": "03 launcher app drawer में \"Swiftra\" — launcher=\"com.android.launcher3\", screenshot launcher_drawer.png"
+ },
+ {
+  "status": "PASS",
+  "check": "04 non-debuggable — flags:flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ] | run-as: run-as: package not debuggable: com.swiftra.app"
+ },
+ {
+  "status": "PASS",
+  "check": "05 same-key update (install -r)"
+ },
+ {
+  "status": "PASS",
+  "check": "06 foreign-key update rejected — INSTALL_FAILED_UPDATE_INCOMPATIBLE; installed signer unchanged signatures:[567ab55c]"
+ },
+ {
+  "status": "PASS",
+  "check": "07 touch scroll measured (software GPU, संख्या प्रतिनिधि नहीं) — {\"scroll_events\": 121, \"max_scroll_y_css_px\": 5686.47607421875, \"screen\": \"1080x2400\"} {\"frames\": 121, \"duration_s\": 8.0, \"fps\": 15.0, \"p50_ms\": 66.7, \"p90_ms\": 66.7, \"p99_ms\": 66.8, \"max_ms\": 66.8, \"vsync_ms\": 17.17, \"janky_frames\": 120, \"janky_pct\": 100.0}"
+ },
+ {
+  "status": "PASS",
+  "check": "08 alive, crash buffer clean — pid=8265"
+ },
+ {
+  "status": "PASS",
+  "check": "09 uninstall + reinstall"
+ }
+]
