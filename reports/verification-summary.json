@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-15",
+ "generated": "2026-10-16",
  "timezone": "Asia/Calcutta",
  "repo": "deepsilence10161-source/Fast-and-advanced-browser-",
  "status_vocabulary": [
@@ -344,6 +344,38 @@
    "status": "PASS (actual device)",
    "detail": "user-reported: install succeeded after re-download; websites open normally (no 'Aw, Snap!'). First attempt failed with 'package appears to be invalid'; re-download fixed it, which suggests the first file was incomplete or corrupt (not confirmed). Screenshots/model pending.",
    "evidence": "user message 2026-10-16"
+  },
+  {
+   "id": "b1-swiftra-release-signing-ci",
+   "layer": "L4",
+   "platform": "GitHub Actions ubuntu-24.04 (x64 run 38896651753, arm64 run 38896660409)",
+   "status": "PASS (static/signature/format only)",
+   "detail": "package com.swiftra.app, label Swiftra, non-debuggable, apksigner v3 CN=Swiftra RSA-4096 cert 029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06 matches patches/signing_cert_sha256.txt; secrets only in sign step. x64 SHA-256 9d88a604292d036840ccd0b48e055ca7686bd9cbed51bb0448639250a15a8e79 (397,723,443 B); arm64 5135db70117508fba4c96cb9742fd4d89e0b5a03117338512ea80d90c9c50316 (396,177,489 B). First attempt (runs 38892991040/38892993229) FAIL: build-tools 37 cert format not parsed; gate refused upload; fixed b621868.",
+   "evidence": "evidence/source-build-b1-swiftra-run-38899621628/BUILD_INFO-x64.txt, evidence/source-build-b1-swiftra-run-38899621628/BUILD_INFO-arm64.txt"
+  },
+  {
+   "id": "b1-swiftra-icons-in-apk",
+   "layer": "L2",
+   "platform": "desktop analysis of x64 b1 APK",
+   "status": "PASS (static/signature/format only)",
+   "detail": "15 launcher PNGs pixel-identical (WebP in APK; visible diff 0); themed monochrome path present, Chromium path absent.",
+   "evidence": "evidence/source-build-b1-swiftra-run-38899621628/branding_check.md"
+  },
+  {
+   "id": "b1-swiftra-x64-emulator-journey",
+   "layer": "L3",
+   "platform": "Android emulator API 36 x86_64 (ui-capture run 38899621628)",
+   "status": "PASS (Android emulator)",
+   "detail": "full UI journey in com.swiftra.app, renderer crash 0, cold median 1060 ms, warm median 796 ms, PSS 127 MB; chat fixture 10/10. Remaining in-app 'Chrome'/'Chromium' strings + FRE logo listed for b2.",
+   "evidence": "evidence/source-build-b1-swiftra-run-38899621628/journey.log, evidence/source-build-b1-swiftra-run-38899621628/chat_fixture.txt"
+  },
+  {
+   "id": "b1-swiftra-arm64-actual-device",
+   "layer": "L4",
+   "platform": "user's Android phone",
+   "status": "NOT RUN",
+   "detail": "awaiting user install of crstate-155.0.8059.80-arm64-b1 APK",
+   "evidence": ""
   }
  ],
  "performance_emulator_only": {
