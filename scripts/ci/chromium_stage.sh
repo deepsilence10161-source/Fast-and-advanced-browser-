@@ -132,7 +132,8 @@ fi
 diff <(printf '%s\n' "$ARGS") "src/$OUTD/args.gn" >/dev/null || { echo "args.gn बदल गया — state mismatch"; exit 1; }
 
 NINJA=src/third_party/ninja/ninja; [ -x "$NINJA" ] || NINJA=ninja
-remaining(){ "$NINJA" -C "src/$OUTD" -n chrome_public_apk 2>/dev/null | grep -o '^\[[0-9]*/[0-9]*\]' | tail -1 | tr -d '[]' | cut -d/ -f2; }
+source "$(dirname "$(readlink -f "$0")")/stage_lib.sh"
+remaining(){ count_remaining "$NINJA" "src/$OUTD" chrome_public_apk; }
 REM0=$(remaining); REM0=${REM0:-0}; ev "remaining_edges_at_start=$REM0"
 if [ -f "$PK/progress.json" ]; then
   PREVREM=$(python3 -c "import json;print(json.load(open('$PK/progress.json'))['remaining_edges'])")
@@ -153,7 +154,7 @@ if [ "$BUDGET" -gt 300 ]; then
   set +e
   timeout -s INT -k 180 "$BUDGET" "$NINJA" -C "src/$OUTD" -j "$JOBS" chrome_public_apk > "$PK/ninja.log" 2>&1
   RC=$?; set -e; kill $MON 2>/dev/null || true
-  grep -E '^\[[0-9]+/[0-9]+\]' "$PK/ninja.log" | tail -3; grep -E 'FAILED|error:' "$PK/ninja.log" | head -20 || true
+  { grep -E '^\[[0-9]+/[0-9]+\]' "$PK/ninja.log" | tail -3; grep -E 'FAILED|error:' "$PK/ninja.log" | head -20; } || true
 else RC=124; fi
 REM1=$(remaining); REM1=${REM1:-0}
 ev "ninja_rc=$RC remaining_edges_at_end=$REM1"
@@ -161,7 +162,8 @@ tail -c 200000 "$PK/ninja.log" > "$OUTPUTS_DIR/ninja-tail-stage-$STAGE.log" 2>/d
 
 # ---------- 4. out state pack/upload ----------
 PREFIX="out-s$STAGE"
-if [ "$RC" -ne 0 ] || [ "$REM1" -ne 0 ]; then
+# हमेशा pack (build पूरा होने पर भी): आगे कोई कदम विफल हो तो काम न खोए (~1 GB, ~2 मिनट)
+if true; then
   log "out pack + upload ($PREFIX)"; t3=$(date +%s)
   du -sh "src/$OUTD" | sed 's/^/  out: /'
   tar --format=posix -C "$ROOT/src" -cf - "$OUTD" | zstd -T0 -3 -q | split -b 1900m -d -a 3 - "$PK/$PREFIX.tar.zst.part"
@@ -181,21 +183,30 @@ fi
 if [ "$RC" -ne 0 ] && [ "$RC" -ne 124 ]; then echo "BUILD ERROR (ninja rc=$RC) — state सुरक्षित, chain रुकी"; out done false; exit 1; fi
 if [ "$REM1" -ne 0 ]; then log "समय समाप्त, $REM1 edges बाकी → अगला stage"; out done false; exit 0; fi
 
-# ---------- 5. पूरा: APK सत्यापन ----------
+# ---------- 5. पूरा: पहले APK सुरक्षित, फिर सत्यापन ----------
 APK="src/$OUTD/apks/ChromePublic.apk"; [ -f "$APK" ] || { echo "APK नहीं मिला"; exit 1; }
-BT=$(ls -d src/third_party/android_sdk/public/build-tools/* | sort -V | tail -1)
+NAME="ChromePublic-$TAG-$CPU.apk"
+cp "$APK" "$OUTPUTS_DIR/$NAME"           # workflow artifact में भी जाएगा
+upload "$OUTPUTS_DIR/$NAME"               # सबसे पहले: महँगा परिणाम कभी न खोए
+set +e                                    # रिपोर्ट के कदम script को नहीं रोकेंगे; निर्णायक जाँचें नीचे स्पष्ट हैं
 export PATH="$ROOT/src/third_party/jdk/current/bin:$PATH"   # /usr/lib/jvm हटाया गया था; Chromium का अपना JDK
-cp "$APK" "$OUTPUTS_DIR/ChromePublic-$TAG-$CPU.apk"
+BT=$(ls -d src/third_party/android_sdk/public/build-tools/* 2>/dev/null | sort -V | tail -1)
+"$BT/apksigner" verify --print-certs -v "$APK" > "$PK/apksigner.txt" 2>&1; SIGRC=$?
+"$BT/aapt2" dump badging "$APK" > "$PK/badging.txt" 2>&1; AAPTRC=$?
 {
-  echo "tag=$TAG"; echo "commit=$COMMIT"; echo "cpu=$CPU"; echo "built_on=github ubuntu-24.04 standard runner (staged)"
+  echo "tag=$TAG"; echo "commit=$COMMIT"; echo "cpu=$CPU"; echo "built_on=github ubuntu-24.04 standard runner (staged, stage $STAGE)"
+  echo "build_tools=$(basename "$BT")"
   echo "--- args.gn"; cat "src/$OUTD/args.gn"
   echo "--- sha256"; sha256sum "$APK" | cut -d' ' -f1
   echo "--- bytes"; stat -c %s "$APK"
-  echo "--- clang"; cat src/third_party/llvm-build/Release+Asserts/cr_build_revision 2>/dev/null || true
-  echo "--- apksigner verify"; "$BT/apksigner" verify --print-certs -v "$APK" 2>&1 | grep -vi warning | head -20
-  echo "--- aapt2 badging"; "$BT/aapt2" dump badging "$APK" 2>/dev/null | grep -E "^(package|sdkVersion|targetSdkVersion|native-code|application-label):"
+  echo "--- clang"; cat src/third_party/llvm-build/Release+Asserts/cr_build_revision 2>/dev/null
+  echo "--- apksigner verify (rc=$SIGRC)"; grep -vi warning "$PK/apksigner.txt" | sed -n 1,25p
+  echo "--- aapt2 badging (rc=$AAPTRC)"; grep -E "^(package|sdkVersion|targetSdkVersion|native-code|application-label):" "$PK/badging.txt"
 } > "$OUTPUTS_DIR/BUILD_INFO.txt"
 cat "$OUTPUTS_DIR/BUILD_INFO.txt"
-upload "$OUTPUTS_DIR/ChromePublic-$TAG-$CPU.apk" "$OUTPUTS_DIR/BUILD_INFO.txt"
+set -e
+upload "$OUTPUTS_DIR/BUILD_INFO.txt"
+[ "$SIGRC" = 0 ] || { echo "apksigner verify विफल (rc=$SIGRC)"; out done false; exit 1; }
+grep -q "^package: name='org.chromium.chrome'" "$PK/badging.txt" || { echo "badging में अपेक्षित package नहीं"; out done false; exit 1; }
 echo done > "$PK/DONE"; upload "$PK/DONE"
 out done true; ev "status=DONE"

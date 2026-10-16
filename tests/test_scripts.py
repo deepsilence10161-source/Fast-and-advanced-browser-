@@ -104,3 +104,28 @@ class TestStagedBuildResume(unittest.TestCase):
         s = open(p).read()
         for must in ['use_siso = false', 'use_remoteexec = false', 'is_debug = false', '--format=posix', 'WATCHDOG']:
             self.assertIn(must, s)
+
+
+class TestStageLib(unittest.TestCase):
+    """count_remaining: set -euo pipefail में भी कभी script न रोके (सत्र-2 bug का regression test)।"""
+    LIB = os.path.join(os.path.dirname(__file__), "..", "scripts", "ci", "stage_lib.sh")
+    def setUp(self):
+        import shutil
+        if not shutil.which("ninja"): self.skipTest("ninja नहीं मिला")
+        self.d = tempfile.mkdtemp(); os.makedirs(os.path.join(self.d, "out"))
+        with open(os.path.join(self.d, "in.txt"), "w") as f: f.write("x")
+        with open(os.path.join(self.d, "out", "build.ninja"), "w") as f:
+            f.write("rule cp\n  command = cp $in $out\nbuild a: cp ../in.txt\nbuild b: cp a\nbuild all: phony b\n")
+    def _count(self, ninja="ninja"):
+        import subprocess
+        r = subprocess.run(["bash", "-c", f'set -euo pipefail; source "{self.LIB}"; X=$(count_remaining {ninja} "{self.d}/out" all); echo "R=$X"'],
+                           capture_output=True, text=True)
+        return r.returncode, r.stdout.strip()
+    def test_pending(self):
+        self.assertEqual(self._count(), (0, "R=2"))
+    def test_no_work_to_do_returns_zero_without_aborting(self):
+        import subprocess
+        subprocess.run(["ninja", "-C", os.path.join(self.d, "out"), "all"], capture_output=True, check=True)
+        self.assertEqual(self._count(), (0, "R=0"))
+    def test_missing_ninja_binary(self):
+        self.assertEqual(self._count("/nonexistent/ninja"), (0, "R=0"))
