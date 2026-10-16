@@ -11,6 +11,7 @@ on:
     outputs:
       done:
         value: ${{ jobs.stage.outputs.done }}
+    # secrets: caller `secrets: inherit` से। केवल "Release signing" step को मिलते हैं (build step को नहीं)।
 permissions:
   contents: write   # build-state के लिए draft release (assets)
 jobs:
@@ -18,7 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 355
     outputs:
-      done: ${{ steps.s.outputs.done }}
+      done: ${{ steps.sign.outputs.done || steps.s.outputs.done }}
     steps:
       - name: Deadline (job start + 290 min compile window)
         run: echo "DEADLINE=$(( $(date +%s) + 290*60 ))" >> "$GITHUB_ENV"
@@ -35,6 +36,14 @@ jobs:
           SEED_STATE: ${{ inputs.seed != '' && format('crstate-{0}-{1}-{2}', inputs.tag, inputs.cpu, inputs.seed) || '' }}
           OUTPUTS_DIR: ${{ runner.temp }}/outputs
         run: bash scripts/ci/chromium_stage.sh
+      - name: Release signing + finalize (secrets केवल इस step में)
+        id: sign
+        if: steps.s.outputs.sign == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SIGNING_KS_B64: ${{ secrets.SWIFTRA_KS_B64 }}
+          SIGNING_KS_PASS: ${{ secrets.SWIFTRA_KS_PASS }}
+        run: bash scripts/ci/finalize_apk.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with:

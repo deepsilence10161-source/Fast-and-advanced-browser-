@@ -15,6 +15,12 @@ try:
         exact = [t, base64.b64encode(f"x-access-token:{t}".encode()).decode()]
 except OSError:
     pass
+try:  # release keystore password (Swiftra signing)
+    k = open("/home/user/.secrets/swiftra-ks-pass").read().strip()
+    if k:
+        exact.append(k)
+except OSError:
+    pass
 rx = [re.compile(p) for p in PATTERNS]
 data = sys.stdin.buffer.read().decode("utf-8", "surrogateescape")
 for e in exact:

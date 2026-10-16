@@ -1,0 +1,2 @@
+chrome_public_manifest_package = "com.swiftra.app"
+debuggable_apks = false

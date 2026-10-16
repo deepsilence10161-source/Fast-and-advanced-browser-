@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Swiftra themed (monochrome) launcher icon. Original geometric artwork for this project. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="90dp"
+    android:height="90dp"
+    android:viewportWidth="90"
+    android:viewportHeight="90">
+    <path android:pathData="M27.72,30.60L37.80,30.60L49.32,45.00L37.80,59.40L27.72,59.40L39.24,45.00Z" android:fillColor="#000000"/>
+    <path android:pathData="M40.68,30.60L50.76,30.60L62.28,45.00L50.76,59.40L40.68,59.40L52.20,45.00Z" android:fillColor="#000000"/>
+</vector>

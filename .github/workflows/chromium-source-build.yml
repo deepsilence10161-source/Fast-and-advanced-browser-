@@ -28,38 +28,46 @@ jobs:
   s0:
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 0, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s1:
     needs: s0
     if: needs.s0.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 1, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s2:
     needs: s1
     if: needs.s1.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 2, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s3:
     needs: s2
     if: needs.s2.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 3, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s4:
     needs: s3
     if: needs.s3.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 4, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s5:
     needs: s4
     if: needs.s4.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 5, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s6:
     needs: s5
     if: needs.s5.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 6, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit
   s7:
     needs: s6
     if: needs.s6.outputs.done == 'false'
     uses: ./.github/workflows/chromium-stage.yml
     with: { tag: "${{ inputs.tag }}", cpu: "${{ inputs.cpu }}", stage: 7, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}" }
+    secrets: inherit

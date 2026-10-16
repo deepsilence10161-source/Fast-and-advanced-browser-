@@ -226,9 +226,87 @@ class TestPatches(unittest.TestCase):
         self.assertEqual(rc, 1)
         self._series("../etc.patch"); rc, *_ = self._stage("-"); self.assertEqual(rc, 1)
 
+    def _overlay(self, rel, data):
+        fp = os.path.join(self.pd, "overlay", rel); os.makedirs(os.path.dirname(fp), exist_ok=True)
+        open(fp, "wb").write(data)
+
+    def test_overlay_multistage_change_and_drop(self):
+        """overlay (binary icon जैसा): लगे, स्थिर रहे (शून्य rebuild), हटाने पर मूल लौटे — और patch के साथ मिल सके।"""
+        import shutil
+        self._series("p1.patch")
+        h_patch_only = self.P.series_hash(self.pd, ["p1.patch"])
+        self._overlay("f3.txt", b"OVERLAY3\n")
+        self.assertNotEqual(h_patch_only, self.P.series_hash(self.pd, ["p1.patch"]))
+        rc, rem, prog, outs, pj = self._stage("-")
+        self.assertEqual((rc, rem), (0, 3)); self.assertEqual(pj["overlay"], ["f3.txt"])
+        self.assertEqual(outs, {1: "PATCHED1", 2: "orig2", 3: "OVERLAY3"})
+        self.assertIn("f3.txt", pj["files"])
+        rc, rem, prog, outs, pj = self._stage(prog)                    # वही: शून्य rebuild
+        self.assertEqual((rc, rem), (0, 0)); self.assertFalse(pj["changed"]); self.assertEqual(outs[3], "OVERLAY3")
+        self._overlay("f3.txt", b"OVERLAY3-v2\n")   # hash बदला -> सभी patched/overlay फ़ाइलें नए epoch पर (o1,o3), o2 नहीं
+        rc, rem, prog, outs, pj = self._stage(prog)
+        self.assertEqual((rc, rem), (0, 2)); self.assertEqual(outs[3], "OVERLAY3-v2")
+        shutil.rmtree(os.path.join(self.pd, "overlay"))                # overlay हटाया -> मूल लौटे
+        self.assertEqual(self.P.series_hash(self.pd, ["p1.patch"]), h_patch_only)   # पुराना सूत्र अपरिवर्तित
+        rc, rem, prog, outs, pj = self._stage(prog)                    # हटाई overlay फ़ाइल भी touch -> मूल लौटा
+        self.assertEqual((rc, rem), (0, 2)); self.assertEqual(outs, {1: "PATCHED1", 2: "orig2", 3: "orig3"})
+        rc, rem, prog, outs, pj = self._stage(prog)                    # फिर स्थिर
+        self.assertEqual((rc, rem), (0, 0))
+
+    def test_overlay_errors_and_empty(self):
+        self._series()
+        os.makedirs(os.path.join(self.pd, "overlay"))
+        self.assertEqual(self.P.series_hash(self.pd, []), "none")      # खाली overlay = baseline
+        self._overlay("nope/new.txt", b"x")                            # लक्ष्य src में नहीं -> त्रुटि
+        rc, *_ = self._stage("-"); self.assertEqual(rc, 1)
+        os.remove(os.path.join(self.pd, "overlay", "nope", "new.txt"))
+        os.symlink("/etc/passwd", os.path.join(self.pd, "overlay", "f2.txt"))   # symlink -> त्रुटि
+        rc, *_ = self._stage("-"); self.assertEqual(rc, 1)
+
+    def test_repo_overlay_targets_are_known_chromium_icons(self):
+        """repo के असली overlay: केवल res_chromium_base के ज्ञात icon resources, सही pixel आकार।"""
+        sys.path.insert(0, self.CI); import patches
+        pd = os.path.join(os.path.dirname(__file__), "..", "patches")
+        ov = patches.overlay_files(pd)
+        if not ov: self.skipTest("कोई overlay नहीं")
+        base = "chrome/android/java/res_chromium_base/"
+        size = {"mdpi": 1, "hdpi": 1.5, "xhdpi": 2, "xxhdpi": 3, "xxxhdpi": 4}
+        try:
+            from PIL import Image
+        except ImportError:
+            Image = None
+        for rel in ov:
+            self.assertTrue(rel.startswith(base), rel)
+            leaf = rel[len(base):]
+            if leaf == "drawable/themed_app_icon.xml":
+                import xml.dom.minidom as M; d = M.parse(os.path.join(pd, "overlay", rel))
+                self.assertEqual(d.documentElement.getAttribute("android:viewportWidth"), "90"); continue
+            dens, name = leaf.split("/")
+            self.assertIn(name, ("app_icon.png", "layered_app_icon.png", "layered_app_icon_background.png"))
+            f = size[dens.replace("mipmap-", "")]
+            if Image:
+                w = Image.open(os.path.join(pd, "overlay", rel)).size
+                self.assertEqual(w, ((round(48 * f),) * 2) if name == "app_icon.png" else ((round(108 * f),) * 2), rel)
+
     def test_stage_script_wiring(self):
         s = open(os.path.join(self.CI, "chromium_stage.sh")).read()
-        for must in ['patches.py" apply src', 'PATCH_CHANGED" = 0', '"patches":pt', 'EXP_PKG', 'BUILD_KEY" > "$PK/DONE"',
-                     'SEED_STATE', 'GITHUB_RUN_ID']:
+        f = open(os.path.join(self.CI, "finalize_apk.sh")).read()
+        for must in ['patches.py" apply src', 'PATCH_CHANGED" = 0', '"patches":pt', 'EXP_PKG', 'SEED_STATE', 'GITHUB_RUN_ID',
+                     'finalize.env', 'exec bash "$CI_DIR/finalize_apk.sh"', 'out sign true']:
             self.assertIn(must, s)
         self.assertNotIn("state mismatch", s)
+        self.assertNotIn("SIGNING_KS", s)                      # build step कभी secrets न छुए
+        for must in ['BUILD_KEY" > "$PK/DONE"', 'EXP_CERT', '--alignment-preserved true', 'file:$KSD/kpass', 'rm -rf "$KSD"']:
+            self.assertIn(must, f)
+        self.assertNotIn("pass:", f)                           # password कभी argv में नहीं
+        # workflow: secrets केवल sign step के env में; build step में नहीं
+        import yaml
+        wf = yaml.safe_load(open(os.path.join(self.CI, "..", "..", ".github", "workflows", "chromium-stage.yml")))
+        steps = wf["jobs"]["stage"]["steps"]
+        build = [x for x in steps if x.get("id") == "s"][0]; sign = [x for x in steps if x.get("id") == "sign"][0]
+        self.assertFalse(any("secrets." in str(v) for v in build.get("env", {}).values()))
+        self.assertIn("secrets.SWIFTRA_KS_B64", sign["env"]["SIGNING_KS_B64"])
+        self.assertEqual(sign["if"], "steps.s.outputs.sign == 'true'")
+        self.assertIn("steps.sign.outputs.done", wf["jobs"]["stage"]["outputs"]["done"])
+        caller = yaml.safe_load(open(os.path.join(self.CI, "..", "..", ".github", "workflows", "chromium-source-build.yml")))
+        self.assertTrue(all(j.get("secrets") == "inherit" for j in caller["jobs"].values()))

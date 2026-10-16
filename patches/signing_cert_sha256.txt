@@ -1,0 +1,5 @@
+# Swiftra release signing certificate का SHA-256 (public जानकारी — private key नहीं)।
+# यह फ़ाइल मौजूद हो तो release signing अनिवार्य: scripts/ci/finalize_apk.sh secrets
+# SWIFTRA_KS_B64 / SWIFTRA_KS_PASS से sign करके इसी digest से मिलान करता है; मेल न हो तो FAIL।
+# Cert: CN=Swiftra, O=Swiftra, C=IN; RSA 4096; मान्य 2026-10-16 से 2056-10-08 तक।
+029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06

@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
-      - run: pip install -q pillow ninja
+      - run: pip install -q pillow ninja pyyaml
       - run: python3 -m unittest discover -s tests -v
       - name: Build-script preflight must refuse an undersized host
         run: |

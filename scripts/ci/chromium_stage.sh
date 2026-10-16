@@ -51,9 +51,25 @@ EOF
 EXTRA=$(python3 "$CI_DIR/patches.py" args "$PDIR")
 if [ -n "$EXTRA" ]; then ARGS=$(printf '%s\n%s' "$ARGS" "$EXTRA"); fi
 PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")
-BUILD_KEY=$(printf '%s\n%s\n' "$PATCH_HASH" "$ARGS" | sha256sum | cut -c1-16)   # DONE इसी key का
+# release signing: patches/signing_cert_sha256.txt (public, अपेक्षित cert SHA-256) हो तो ज़रूरी (finalize_apk.sh)
+EXP_CERT=""
+if [ -f "$PDIR/signing_cert_sha256.txt" ]; then
+  EXP_CERT=$(grep -v '^#' "$PDIR/signing_cert_sha256.txt" | tr -d ' :\n\r' | tr 'A-F' 'a-f')
+  [[ "$EXP_CERT" =~ ^[0-9a-f]{64}$ ]] || { echo "patches/signing_cert_sha256.txt अमान्य (64 hex चाहिए)"; exit 1; }
+fi
+if [ -n "$EXP_CERT" ]; then   # cert न हो तो key पुराने सूत्र जैसी (मौजूदा DONE संगत)
+  BUILD_KEY=$(printf '%s\n%s\nsign=%s\n' "$PATCH_HASH" "$ARGS" "$EXP_CERT" | sha256sum | cut -c1-16)
+else
+  BUILD_KEY=$(printf '%s\n%s\n' "$PATCH_HASH" "$ARGS" | sha256sum | cut -c1-16)   # DONE इसी key का
+fi
+EXP_NONDEBUG=0; grep -Eq '^ *debuggable_apks *= *false' <<<"$ARGS" && EXP_NONDEBUG=1
 EXP_PKG=$(sed -n 's/^ *chrome_public_manifest_package *= *"\([^"]*\)".*/\1/p' <<<"$ARGS" | tail -1)
 EXP_PKG=${EXP_PKG:-org.chromium.chrome}
+
+# baseline (a1) state सत्यापित, बिना-patch संदर्भ है — उस पर patches/signing कभी न लगें (गलती से default variant)
+if [[ "$STATE" == *-a1 ]] && [ "${CHECK_ONLY:-0}" != 1 ] && { [ "$PATCH_HASH" != none ] || [ -n "$EXP_CERT" ]; }; then
+  echo "REFUSED: baseline variant a1 पर patches/signing नहीं लगेंगे — variant=b1 seed=a1 जैसे नई variant चुनें"; exit 1
+fi
 
 # ---------- 1. runner तैयार करना ----------
 log "runner: $(nproc) CPU, $(free -g | awk '/Mem:/{print $2}') GB RAM"; df -h / /mnt 2>/dev/null | sed 's/^/  /'
@@ -222,32 +238,14 @@ fi
 if [ "$RC" -ne 0 ] && [ "$RC" -ne 124 ]; then echo "BUILD ERROR (ninja rc=$RC) — state सुरक्षित, chain रुकी"; out done false; exit 1; fi
 if [ "$REM1" -ne 0 ]; then log "समय समाप्त, $REM1 edges बाकी → अगला stage"; out done false; exit 0; fi
 
-# ---------- 5. पूरा: पहले APK सुरक्षित, फिर सत्यापन ----------
+# ---------- 5. पूरा: signing/सत्यापन/DONE -> finalize_apk.sh ----------
 APK="src/$OUTD/apks/ChromePublic.apk"; [ -f "$APK" ] || { echo "APK नहीं मिला"; exit 1; }
-NAME="ChromePublic-$TAG-$CPU.apk"
-cp "$APK" "$OUTPUTS_DIR/$NAME"           # workflow artifact में भी जाएगा
-upload "$OUTPUTS_DIR/$NAME"               # सबसे पहले: महँगा परिणाम कभी न खोए
-set +e                                    # रिपोर्ट के कदम script को नहीं रोकेंगे; निर्णायक जाँचें नीचे स्पष्ट हैं
-export PATH="$ROOT/src/third_party/jdk/current/bin:$PATH"   # /usr/lib/jvm हटाया गया था; Chromium का अपना JDK
-BT=$(ls -d src/third_party/android_sdk/public/build-tools/* 2>/dev/null | sort -V | tail -1)
-"$BT/apksigner" verify --print-certs -v "$APK" > "$PK/apksigner.txt" 2>&1; SIGRC=$?
-"$BT/aapt2" dump badging "$APK" > "$PK/badging.txt" 2>&1; AAPTRC=$?
-{
-  echo "tag=$TAG"; echo "commit=$COMMIT"; echo "cpu=$CPU"; echo "built_on=github ubuntu-24.04 standard runner (staged, stage $STAGE)"
-  echo "build_tools=$(basename "$BT")"
-  echo "patch_hash=$PATCH_HASH build_key=$BUILD_KEY"
-  echo "--- patches"; python3 -c "import json;[print(x) for x in json.load(open('$PK/patches.json'))['series']]"
-  echo "--- args.gn"; cat "src/$OUTD/args.gn"
-  echo "--- sha256"; sha256sum "$APK" | cut -d' ' -f1
-  echo "--- bytes"; stat -c %s "$APK"
-  echo "--- clang"; cat src/third_party/llvm-build/Release+Asserts/cr_build_revision 2>/dev/null
-  echo "--- apksigner verify (rc=$SIGRC)"; grep -vi warning "$PK/apksigner.txt" | sed -n 1,25p
-  echo "--- aapt2 badging (rc=$AAPTRC)"; grep -E "^(package|sdkVersion|targetSdkVersion|native-code|application-label):" "$PK/badging.txt"
-} > "$OUTPUTS_DIR/BUILD_INFO.txt"
-cat "$OUTPUTS_DIR/BUILD_INFO.txt"
-set -e
-upload "$OUTPUTS_DIR/BUILD_INFO.txt"
-[ "$SIGRC" = 0 ] || { echo "apksigner verify विफल (rc=$SIGRC)"; out done false; exit 1; }
-grep -q "^package: name='$EXP_PKG'" "$PK/badging.txt" || { echo "badging में अपेक्षित package ($EXP_PKG) नहीं"; out done false; exit 1; }
-echo "$BUILD_KEY" > "$PK/DONE"; upload "$PK/DONE"
-out done true; ev "status=DONE"
+declare -p TAG CPU STAGE STATE R ROOT OUTD OUTPUTS_DIR COMMIT PATCH_HASH BUILD_KEY EXP_PKG EXP_CERT EXP_NONDEBUG > "$PK/finalize.env"
+if [ -n "$EXP_CERT" ]; then
+  # signing अलग step में (केवल उसे secrets)। तब तक unsigned परिणाम सुरक्षित रखें (DONE नहीं)।
+  cp "$APK" "$PK/presign-ChromePublic-$TAG-$CPU.apk"; upload "$PK/presign-ChromePublic-$TAG-$CPU.apk"
+  rm -f "$PK/presign-ChromePublic-$TAG-$CPU.apk"
+  log "build पूरा — release signing अगले step में (secrets केवल वहाँ)"; ev "status=built-needs-signing"
+  out sign true; exit 0
+fi
+exec bash "$CI_DIR/finalize_apk.sh"
