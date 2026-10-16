@@ -336,6 +336,14 @@
    "status": "PASS (Android emulator)",
    "detail": "synthetic long-chat fixture 10/10 (not real Arena): 300 msgs first render 839.5 ms, drift -0.11 px, no reload, exactly-once resume",
    "evidence": "evidence/source-build-x64-ui-run-38865720986/chat_fixture.txt"
+  },
+  {
+   "id": "source-apk-arm64-actual-device",
+   "layer": "L4",
+   "platform": "user's Android phone (model not yet reported)",
+   "status": "PASS (actual device)",
+   "detail": "user-reported: install succeeded after re-download; websites open normally (no 'Aw, Snap!'). First attempt failed with 'package appears to be invalid'; re-download fixed it, which suggests the first file was incomplete or corrupt (not confirmed). Screenshots/model pending.",
+   "evidence": "user message 2026-10-16"
   }
  ],
  "performance_emulator_only": {
