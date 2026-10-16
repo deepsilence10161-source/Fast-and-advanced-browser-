@@ -1,0 +1,22 @@
+--- a/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/fullscreen_signin/FullscreenSigninMediator.java
++++ b/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/fullscreen_signin/FullscreenSigninMediator.java
+@@ -21,6 +21,7 @@
+ import org.chromium.base.Log;
+ import org.chromium.base.ResettersForTesting;
+ import org.chromium.base.ThreadUtils;
++import org.chromium.build.BuildConfig;
+ import org.chromium.build.annotations.MonotonicNonNull;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+@@ -365,7 +366,10 @@
+ 
+         mModel.set(
+                 FullscreenSigninProperties.FOOTER_STRING,
+-                getFooterString(!mAllowMetricsAndCrashUploading));
++                // Swiftra: metrics/crash reporting is disabled completely in non-Google-branded builds
++                // (components/metrics/metrics_service_accessor.cc), so the "sends usage and crash data
++                // to Google" line would be false. Show only the ToS line (existing policy-disabled path).
++                getFooterString(!mAllowMetricsAndCrashUploading || !BuildConfig.IS_CHROME_BRANDED));
+         mModel.set(FullscreenSigninProperties.SHOW_INITIAL_LOAD_PROGRESS_SPINNER, false);
+ 
+         // Apply supervised account properties

@@ -57,3 +57,9 @@ Lottie python-lottie 0.7.2 + cairosvg से render करके जाँचा
 `components/ntp_tiles/resources/default_popular_sites.json` — non-Google-branded Android build का bundled fallback
 (Chromium-dev सूची: chromium.org, codereview, freenode, chrome://flags) पहली NTP पर दिखता था (b1 capture 02_ntp.xml);
 अब gstatic `chrome/ntp/suggested_sites_DEFAULT_7.json` (वही सूची जो fetch के बाद आती है; देश-विशिष्ट सूची बाद में आती है)।
+
+## 0003-fre-no-false-uma-claim.patch (b2 — privacy text सत्यता)
+FRE footer की "To help improve the app, Swiftra sends usage and crash data to Google" पंक्ति इस build के लिए झूठी थी:
+Chromium 155 `components/metrics/metrics_service_accessor.cc` — non-Google-branded build में metrics reporting पूरी तरह बंद।
+`FullscreenSigninMediator` में `!BuildConfig.IS_CHROME_BRANDED` होने पर footer केवल ToS पंक्ति (upstream का policy-disabled रास्ता)।
+बाकी (legal gate G1): ToS link अभी Google Terms of Service पर जाता है — Swiftra की अपनी ToS/Privacy चाहिए।

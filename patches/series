@@ -3,3 +3,4 @@
 # b1: Swiftra branding (app नाम); icon = patches/overlay/, package/debuggable = patches/args.gn
 0001-swiftra-app-name.patch
 0002-swiftra-strings.py
+0003-fre-no-false-uma-claim.patch

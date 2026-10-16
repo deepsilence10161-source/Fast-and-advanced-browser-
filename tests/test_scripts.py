@@ -312,6 +312,12 @@ class TestPatches(unittest.TestCase):
             from PIL import Image
         except ImportError:
             Image = None
+        # b2 overlays (exact सूची) — आयाम/सामग्री tests/test_brand_logo.py जाँचता है
+        b2 = {f"components/browser_ui/styles/android/java/res_chromium/drawable-{d}/{n}.png"
+              for d in size for n in ("fre_product_logo", "product_logo_name")}
+        b2 |= {"components/browser_ui/styles/android/java/res_chromium/raw/signin_spin.json",
+               "components/ntp_tiles/resources/default_popular_sites.json"}
+        ov = [r for r in ov if r not in b2]
         for rel in ov:
             self.assertTrue(rel.startswith(base), rel)
             leaf = rel[len(base):]
