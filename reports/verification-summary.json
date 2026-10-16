@@ -277,9 +277,17 @@
    "id": "source-build-chrome_public_apk",
    "layer": "L2",
    "platform": "github ubuntu-24.04 standard runner (staged)",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "IN PROGRESS: x64 s0 built 33501/57552 edges in 4h19m (job 116457313511), s1 running; arm64 run 38750988168 s0 running",
+   "status": "FAIL",
+   "detail": "x64 compiled to completion in stage 1 (24053/24053, job 116601424088) but completion step crashed (set -e + grep on no-work-to-do), APK lost; fixed in b7a2f0d; re-run 38837246181 in progress",
    "evidence": "pending"
+  },
+  {
+   "id": "stage-lib-regression",
+   "layer": "L1",
+   "platform": "desktop + github ubuntu",
+   "status": "PASS (desktop/browser component)",
+   "detail": "count_remaining: pending=2, no-work=0, missing ninja=0 under set -euo pipefail; old code reproduced rc=1",
+   "evidence": "tests/test_scripts.py::TestStageLib"
   }
  ],
  "performance_emulator_only": {

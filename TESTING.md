@@ -80,7 +80,11 @@ Download के बाद local `sha256sum -c SHA256SUMS.txt` = 7/7 OK।
 | Fresh stage: tag 155.0.8059.80 का बिना-history sync + android deps + hooks + gn gen + src pack (13.4 GB, 8 भाग) upload | PASS (CI) | run 38745313869 (s0), state release `crstate-155.0.8059.80-x64-a1` |
 | Restore check: src download/checksum/extract (514 s), commit `43a195105613…` सत्यापित, gn (63,340 targets), `ninja -n` = 57,552 edges | PASS (CI) | run 38751068356 |
 | Stage 0 → 1 हस्तांतरण (x64): s0 ने 33,501/57,552 edges बनाए, timeout पर ninja साफ़ रुका (rc 124), out-state 0.84 GB upload हुआ, s1 अपने-आप शुरू हुआ | PASS (CI) | job 116457313511, `progress.json` |
-| Stage chain से पूरा `chrome_public_apk` (x64, arm64) | **चल रहा है** — APK अभी नहीं बना | runs 38745313869 (s1 चालू), 38750988168 (s0 चालू) |
+| Stage 1 (x64) restore + watchdog | PASS (CI): restore 677 s, बचे edges 24,051 → 24,053 (watchdog सीमा के भीतर) | job 116601424088 |
+| Stage 1 (x64) compile | **build पूरा हुआ**: `[24053/24053] ACTION //chrome/android:chrome_public_apk__create` (~3 घंटे 50 मिनट) | job 116601424088 log |
+| Stage 1 (x64) completion step | **FAIL (script bug)**: ninja के "no work to do" पर `grep` का exit 1, `set -euo pipefail` के कारण script रुक गई। APK upload नहीं हुआ और runner के साथ खो गया। Out-state s0 सुरक्षित रहा। सुधार: `scripts/ci/stage_lib.sh::count_remaining` (कभी non-zero नहीं), APK सबसे पहले upload, out-state हमेशा save, सत्यापन non-fatal पर स्पष्ट gates के साथ। Regression tests `TestStageLib` (3)। पुराना code local पर rc=1 से पुनःउत्पन्न किया | commit b7a2f0d |
+| x64 पुनः-run (सुधरे script से, out-s0 से resume) | **चल रहा है** | run 38837246181 |
+| arm64 chain | s0, s1 PASS (timeout पर state save); s2 चालू (पुराने script पर। पूरा हुआ तो वही bug लगेगा, तब out-s1 से नए script के साथ दोबारा चलेगा) | run 38750988168 |
 | APK सत्यापन (apksigner, aapt2 badging, SHA-256) और emulator install/launch | NOT RUN (build पूरा होने के बाद) | — |
 
 पहले के `build_chromium_baseline.sh --preflight-only` (exit 3) का अर्थ अब केवल इतना है कि वह local guard 100 GB से कम disk पर मना करता है। Standard runner पर cleanup के बाद 111 GB मिलते हैं (मापा गया)। "Source build असंभव" वाला पुराना निष्कर्ष वापस लिया गया (RESEARCH_REPORT §3b)।
