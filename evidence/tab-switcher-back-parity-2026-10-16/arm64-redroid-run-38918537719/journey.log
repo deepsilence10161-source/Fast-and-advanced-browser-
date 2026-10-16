@@ -1,0 +1,56 @@
+[14:48:16] install: Success
+[14:48:16] meta: {'label': 'chromium_source_arm64', 'package': 'com.swiftra.app', 'versionName': '155.0.8059.80', 'versionCode': '805908004', 'primaryCpuAbi': 'arm64-v8a', 'android_release': '14', 'sdk': '34', 'model': 'redroid14_arm64_only', 'abilist': 'arm64-v8a', 'native_bridge': '0', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': 'null', 'navigation_mode': '0', 'webview': 'Current WebView package (name, version): (com.android.webview, 125.0.6422.113)'}
+[14:48:26] captured 01_first_run (14 labelled nodes, fg=com.swiftra.app)
+[14:48:31] captured 01_first_run_1 (14 labelled nodes, fg=com.swiftra.app)
+[14:48:36] system dialog: Set Swiftra as your default browser app? -> CANCEL
+[14:48:44] captured 01_first_run_2 (8 labelled nodes, fg=com.swiftra.app)
+[14:48:49] browser UI ready: True
+[14:48:55] captured 02_ntp (80 labelled nodes, fg=com.swiftra.app)
+[14:48:59] tap OK  /:id/(search_box_text|url_bar)$/ -> com.swiftra.app:id/search_box_text
+[14:49:02] captured 03_omnibox_focused (82 labelled nodes, fg=com.swiftra.app)
+[14:49:10] captured 04_omnibox_suggestions (78 labelled nodes, fg=com.swiftra.app)
+[14:49:26] captured 05_page_loaded (39 labelled nodes, fg=com.swiftra.app)
+[14:49:30] tap MISS /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/
+[14:49:33] tap MISS /(View site information|site information|Connection is secure)/
+[14:49:37] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:49:41] tap OK  /^(Site controls|Site settings|Page info)$/ -> com.swiftra.app:id/menu_item_text
+[14:49:43] page-info via app menu 'Site controls': True
+[14:49:46] captured 06_page_info (13 labelled nodes, fg=com.swiftra.app)
+[14:49:56] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:49:59] captured 07_app_menu (59 labelled nodes, fg=com.swiftra.app)
+[14:50:09] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:50:13] tap OK  /^New tab$/ -> com.swiftra.app:id/menu_item_text
+[14:50:16] captured 08_second_tab_ntp (99 labelled nodes, fg=com.swiftra.app)
+[14:50:18] promo sheet dismissed: Now you can customize your homepage -> No thanks
+[14:50:24] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[14:50:32] captured 09_tab_switcher (44 labelled nodes, fg=com.swiftra.app)
+[14:50:37] tab switcher: opened, tabs=2, BACK returns to tab: True
+[14:50:40] captured 09b_after_back_from_switcher (82 labelled nodes, fg=com.swiftra.app)
+[14:50:48] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:50:54] tap OK  /^Settings$/ -> com.swiftra.app:id/menu_item_text
+[14:51:00] captured 11_settings (32 labelled nodes, fg=com.swiftra.app)
+[14:51:05] captured 11b_settings_scrolled (30 labelled nodes, fg=com.swiftra.app)
+[14:51:15] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:51:21] tap OK  /^History$/ -> com.swiftra.app:id/menu_item_text
+[14:51:26] captured 12_history (19 labelled nodes, fg=com.swiftra.app)
+[14:51:36] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:51:42] tap OK  /^Bookmarks$/ -> com.swiftra.app:id/menu_item_text
+[14:51:48] captured 13_bookmarks (30 labelled nodes, fg=com.swiftra.app)
+[14:51:58] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:52:04] tap OK  /^Downloads$/ -> com.swiftra.app:id/menu_item_text
+[14:52:09] captured 14_downloads (16 labelled nodes, fg=com.swiftra.app)
+[14:52:27] captured 15_dark_page (39 labelled nodes, fg=com.swiftra.app)
+[14:52:31] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:52:35] captured 15b_dark_menu (59 labelled nodes, fg=com.swiftra.app)
+[14:52:46] captured 16_landscape (36 labelled nodes, fg=com.swiftra.app)
+[14:52:46] landscape screenshot 2400x1080 rotated=True
+[14:52:54] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[14:52:58] tap OK  /^New Incognito tab$/ -> com.swiftra.app:id/title
+[14:53:01] captured 10_incognito_ntp (46 labelled nodes, fg=com.swiftra.app)
+[14:53:05] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[14:53:10] captured 10b_tab_switcher_incognito (38 labelled nodes, fg=com.swiftra.app)
+[14:54:05] timings: {'cold_ms': [694, 697, 704, 707, 695, 732, 751, 701, 712, 769], 'warm_ms': [309, 250, 252, 254, 253, 252, 255, 254, 254, 255], 'activity': 'com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher', 'landing_activities': ['com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity'], 'cold_ms_median': 705.5, 'cold_ms_p95': 769, 'warm_ms_median': 254.0, 'warm_ms_p95': 309, 'comparable': True}
+[14:54:05] done
+ui_capture exit=0
+devtools sockets: chrome_devtools_remote ; using: chrome_devtools_remote
+chat_fixture exit=0

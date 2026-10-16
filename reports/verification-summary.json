@@ -1,505 +1,505 @@
 {
- "generated": "2026-10-16",
- "timezone": "Asia/Calcutta",
- "repo": "deepsilence10161-source/Fast-and-advanced-browser-",
- "status_vocabulary": [
-  "PASS (actual Android device)",
-  "PASS (Android emulator)",
-  "PASS (desktop/browser component)",
-  "PASS (static/signature/format only)",
-  "NOT RUN / BLOCKED",
-  "FAIL"
- ],
- "artifact": {
-  "description": "Official Chromium public snapshot ChromePublic.apk, unmodified; NOT Google Chrome Stable; NOT a project source build",
-  "package": "org.chromium.chrome",
-  "versionName": "155.0.8059.0",
-  "variants": [
-   {
-    "prefix": "Android_Arm64",
-    "snapshot": 1697603,
-    "versionCode": 805900004,
-    "abi": "arm64-v8a",
-    "bytes": 381736687,
-    "sha256": "7f5793c0a152b583afbba6ff73ca0927e58cf9d66b19d11a321efaf78071d501"
-   },
-   {
-    "prefix": "AndroidDesktop_x64",
-    "snapshot": 1697602,
-    "versionCode": 805900079,
-    "abi": "x86_64",
-    "bytes": 414179322,
-    "sha256": "a2e1ed8f06201687dbd85e3750780bf17c4bacc067b29ecf4c0f895ee1b93191"
-   }
+  "generated": "2026-10-16",
+  "timezone": "Asia/Calcutta",
+  "repo": "deepsilence10161-source/Fast-and-advanced-browser-",
+  "status_vocabulary": [
+    "PASS (actual Android device)",
+    "PASS (Android emulator)",
+    "PASS (desktop/browser component)",
+    "PASS (static/signature/format only)",
+    "NOT RUN / BLOCKED",
+    "FAIL"
   ],
-  "source_zip": {
-   "name": "source-3524e07.zip",
-   "sha256": "dc22789b25ea69afd7b59757b9d9fa1c2c783111c2a750f1767970622da5e50e"
+  "artifact": {
+    "description": "Official Chromium public snapshot ChromePublic.apk, unmodified; NOT Google Chrome Stable; NOT a project source build",
+    "package": "org.chromium.chrome",
+    "versionName": "155.0.8059.0",
+    "variants": [
+      {
+        "prefix": "Android_Arm64",
+        "snapshot": 1697603,
+        "versionCode": 805900004,
+        "abi": "arm64-v8a",
+        "bytes": 381736687,
+        "sha256": "7f5793c0a152b583afbba6ff73ca0927e58cf9d66b19d11a321efaf78071d501"
+      },
+      {
+        "prefix": "AndroidDesktop_x64",
+        "snapshot": 1697602,
+        "versionCode": 805900079,
+        "abi": "x86_64",
+        "bytes": 414179322,
+        "sha256": "a2e1ed8f06201687dbd85e3750780bf17c4bacc067b29ecf4c0f895ee1b93191"
+      }
+    ],
+    "source_zip": {
+      "name": "source-3524e07.zip",
+      "sha256": "dc22789b25ea69afd7b59757b9d9fa1c2c783111c2a750f1767970622da5e50e"
+    },
+    "download": "GitHub Actions run 38700392608 artifact 'release-artifacts' (90-day retention)"
   },
-  "download": "GitHub Actions run 38700392608 artifact 'release-artifacts' (90-day retention)"
- },
- "target_reference": {
-  "chrome_stable": "155.0.8059.80",
-  "commit": "43a195105613ac83c21d3f14de279f4a045c7da0",
-  "branch_position": 1697595,
-  "available_reference": "com.android.chrome 133.0.6943.137 on API 36 emulator image (proxy only)"
- },
- "results": [
-  {
-   "id": "unit-python",
-   "layer": "L1",
-   "platform": "desktop",
-   "status": "PASS (desktop/browser component)",
-   "detail": "10/10",
-   "evidence": "unit-tests.yml runs 38699618638+"
+  "target_reference": {
+    "chrome_stable": "155.0.8059.80",
+    "commit": "43a195105613ac83c21d3f14de279f4a045c7da0",
+    "branch_position": 1697595,
+    "available_reference": "com.android.chrome 133.0.6943.137 on API 36 emulator image (proxy only)"
   },
-  {
-   "id": "unit-node-chatstore",
-   "layer": "L1",
-   "platform": "desktop",
-   "status": "PASS (desktop/browser component)",
-   "detail": "6/6",
-   "evidence": "unit-tests.yml runs 38699618638+"
-  },
-  {
-   "id": "build-preflight-refusal",
-   "layer": "L1",
-   "platform": "github ubuntu-latest",
-   "status": "PASS (static/signature/format only)",
-   "detail": "exit 3 (disk < 100 GB) as expected",
-   "evidence": "run 38698511862+"
-  },
-  {
-   "id": "chat-fixture-desktop",
-   "layer": "L2",
-   "platform": "desktop HeadlessChrome 155 Linux",
-   "status": "PASS (desktop/browser component)",
-   "detail": "3 x 10/10; viewport 500x764",
-   "evidence": "evidence/chat-desktop-run-38699618638/",
-   "runs": [
+  "results": [
     {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-     "viewport": [
-      500,
-      764
-     ]
+      "id": "unit-python",
+      "layer": "L1",
+      "platform": "desktop",
+      "status": "PASS (desktop/browser component)",
+      "detail": "10/10",
+      "evidence": "unit-tests.yml runs 38699618638+"
     },
     {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-     "viewport": [
-      500,
-      764
-     ]
+      "id": "unit-node-chatstore",
+      "layer": "L1",
+      "platform": "desktop",
+      "status": "PASS (desktop/browser component)",
+      "detail": "6/6",
+      "evidence": "unit-tests.yml runs 38699618638+"
     },
     {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
-     "viewport": [
-      500,
-      764
-     ]
+      "id": "build-preflight-refusal",
+      "layer": "L1",
+      "platform": "github ubuntu-latest",
+      "status": "PASS (static/signature/format only)",
+      "detail": "exit 3 (disk < 100 GB) as expected",
+      "evidence": "run 38698511862+"
+    },
+    {
+      "id": "chat-fixture-desktop",
+      "layer": "L2",
+      "platform": "desktop HeadlessChrome 155 Linux",
+      "status": "PASS (desktop/browser component)",
+      "detail": "3 x 10/10; viewport 500x764",
+      "evidence": "evidence/chat-desktop-run-38699618638/",
+      "runs": [
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "viewport": [
+            500,
+            764
+          ]
+        },
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "viewport": [
+            500,
+            764
+          ]
+        },
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "viewport": [
+            500,
+            764
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chat-fixture-android-chrome133",
+      "layer": "L3",
+      "platform": "Android 16 emulator x86_64",
+      "status": "PASS (Android emulator)",
+      "detail": "10/10 in runs 38701948978 and 38704128045",
+      "runs": [
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
+          "viewport": [
+            412,
+            786
+          ]
+        },
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
+          "viewport": [
+            412,
+            786
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chat-fixture-android-chromium155-x64",
+      "layer": "L3",
+      "platform": "Android 16 emulator x86_64",
+      "status": "PASS (Android emulator)",
+      "detail": "10/10 in runs 38701948978 and 38704128045",
+      "runs": [
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+          "viewport": [
+            411,
+            725
+          ]
+        },
+        {
+          "passed": 10,
+          "total": 10,
+          "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+          "viewport": [
+            411,
+            725
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chat-fixture-android-chromium155-arm64",
+      "layer": "L3",
+      "platform": "Android 16 emulator, arm64 via libndk_translation",
+      "status": "FAIL",
+      "detail": "environment: renderer SIGSEGV in libndk_translation.so ('Aw, Snap!') run 38704128045; ANR run 38701948978; wrong devtools socket run 38699920976",
+      "evidence": "evidence/ui-capture-run-38704128045/chromium_arm64_renderer_SIGSEGV/"
+    },
+    {
+      "id": "ui-journey-chrome_ref",
+      "layer": "L3",
+      "platform": "Android 16 emulator",
+      "status": "PASS (Android emulator)",
+      "detail": "20/21 screens (15b dark menu missed); reference capture only",
+      "evidence": "evidence/ui-capture-run-38701948978/chrome_ref/"
+    },
+    {
+      "id": "ui-journey-chromium-x64",
+      "layer": "L3",
+      "platform": "Android 16 emulator",
+      "status": "PASS (Android emulator)",
+      "detail": "21/21 screens; install/launch/FRE/page/menu/tabs/settings/history/bookmarks/downloads/dark/landscape/incognito",
+      "evidence": "evidence/ui-capture-run-38701948978/chromium_desktop_x64/"
+    },
+    {
+      "id": "ui-journey-chromium-arm64",
+      "layer": "L3",
+      "platform": "Android 16 emulator, arm64 translation",
+      "status": "PASS (Android emulator)",
+      "detail": "21/21 in runs 38699920976 and 38704128045; FAIL (ANR) in 2 of 6 runs",
+      "evidence": "evidence/ui-capture-run-38699920976/chromium_arm64/"
+    },
+    {
+      "id": "ui-parity-vs-chrome133-proxy",
+      "layer": "L3",
+      "platform": "Android 16 emulator",
+      "status": "FAIL",
+      "detail": "20/20 shared screens mismatch (ids/text/a11y/pixels)",
+      "evidence": "reports/ui-compare/"
+    },
+    {
+      "id": "ui-parity-vs-chrome-stable-155",
+      "layer": "L3/L6",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "no Stable 155 reference; needs user phone screenshots"
+    },
+    {
+      "id": "feature-parity-vs-stable",
+      "layer": "L3/L6",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "50 features traced to source (50/50 paths exist at stable commit); behaviour vs Stable not tested",
+      "evidence": "native-app/FEATURE_PARITY.md, reports/feature-parity.json"
+    },
+    {
+      "id": "apk-integrity",
+      "layer": "L4",
+      "status": "PASS (static/signature/format only)",
+      "detail": "GCS MD5+CRC32C, SHA-256 (7/7 re-verified after download), apksigner v2, aapt2 badging, zipalign -P 16",
+      "evidence": "evidence/release-run-38700392608/"
+    },
+    {
+      "id": "secret-scan",
+      "layer": "L5",
+      "status": "PASS (static/signature/format only)",
+      "detail": "gitleaks full history every push; source zip scanned in release",
+      "evidence": "secret-scan.yml"
+    },
+    {
+      "id": "physical-arm64-device",
+      "layer": "L6",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "needs user's phone"
+    },
+    {
+      "id": "full-source-build",
+      "layer": "build",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "official minimum 100 GB disk / 8 GB RAM; free runner insufficient; superseded by staged build on free runners (see source-build-chrome_public_apk)"
+    },
+    {
+      "id": "google-signin-sync",
+      "layer": "L7",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "Chromium forks restricted (API keys/OAuth); website login needs user-witnessed test"
+    },
+    {
+      "id": "arena-long-chat-e2e",
+      "layer": "L7",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "user-witnessed own-account session required; protocol in TESTING.md section 6"
+    },
+    {
+      "id": "beyond-chrome-capabilities",
+      "layer": "all",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "Chrome baseline must pass first; only synthetic C1/C2 prototype exists"
+    },
+    {
+      "id": "staged-build-resume-unit",
+      "layer": "L1",
+      "platform": "desktop + github ubuntu",
+      "status": "PASS (desktop/browser component)",
+      "detail": "PAX restore keeps ninja progress 16->16; negative control 30/30 rebuild",
+      "evidence": "tests/test_scripts.py::TestStagedBuildResume"
+    },
+    {
+      "id": "source-build-restore-check",
+      "layer": "L2",
+      "platform": "github ubuntu-24.04 standard runner",
+      "status": "PASS (static/signature/format only)",
+      "detail": "tag 155.0.8059.80 commit 43a195105613ac83c21d3f14de279f4a045c7da0; src 13.4 GB; restore 514 s; gn 63340 targets; chrome_public_apk x64 57552 ninja edges",
+      "evidence": "run 38751068356"
+    },
+    {
+      "id": "source-build-chrome_public_apk",
+      "layer": "L2",
+      "platform": "github ubuntu-24.04 standard runner (staged)",
+      "status": "PASS (static/signature/format only)",
+      "detail": "arm64: run 38841258069 (6cb8de2) completed chrome_public_apk (8895/8895) from saved state; APK 395857811 bytes sha256 a3a30881fa6d2a1e3a4fde98097309b9980f3b153bb3e8e0d6004b6d0cda98da; apksigner v2 rc 0; aapt2 org.chromium.chrome 155.0.8059.80 (805908004) arm64-v8a targetSdk 37. Earlier failures: bug #1 (APK lost after completion, x64 job 116601424088, arm64 job 116738710930), bug #2 (stage_lib path, run 38837246181); both reproduced by tests/test_stage_e2e.py and fixed. x64: run 38841255946 completed (24053 edges), APK 397403679 bytes sha256 11c8110a952f6c5bb4825ade3a53cdfe13292bd76c53a8f15ddd5f76a327c392, apksigner v2 rc 0, aapt2 org.chromium.chrome 805908008 x86_64.",
+      "evidence": "run 38841258069; evidence/source-build-arm64-ui-run-38856553471/BUILD_INFO.txt; run 38841255946; evidence/source-build-x64-ui-run-38865720986/BUILD_INFO.txt"
+    },
+    {
+      "id": "stage-lib-regression",
+      "layer": "L1",
+      "platform": "desktop + github ubuntu",
+      "status": "PASS (desktop/browser component)",
+      "detail": "count_remaining: pending=2, no-work=0, missing ninja=0 under set -euo pipefail; old code reproduced rc=1",
+      "evidence": "tests/test_scripts.py::TestStageLib"
+    },
+    {
+      "id": "stage-script-e2e",
+      "layer": "L1",
+      "platform": "desktop + github ubuntu (unit-tests run 38841054480)",
+      "status": "PASS (desktop/browser component)",
+      "detail": "real chromium_stage.sh with stubbed gh/sudo/zstd/gn/apksigner/aapt2 and real ninja: timeout stage, completion (APK/BUILD_INFO/DONE), already-done, branded variant from seed (2 edges, package gate), negative gate, patch removal, watchdog. Negative controls on 47ce94e and b7a2f0d reproduce both CI failures.",
+      "evidence": "tests/test_stage_e2e.py"
+    },
+    {
+      "id": "patch-mechanism",
+      "layer": "L1",
+      "platform": "desktop + github ubuntu",
+      "status": "PASS (desktop/browser component)",
+      "detail": "stable-epoch mtimes: same patches = 0 rebuild; changed/dropped patch rebuilds exactly affected outputs; naive patching negative control leaves stale output. Not yet run on real Chromium.",
+      "evidence": "tests/test_scripts.py::TestPatches"
+    },
+    {
+      "id": "source-apk-arm64-emulator-ui",
+      "layer": "L3",
+      "platform": "Android emulator API 36 x86_64 (ARM translation)",
+      "status": "PASS (Android emulator)",
+      "detail": "install Success; full UI journey captured (first-run..incognito); cold median 1809 ms p95 1963; warm median 910 ms",
+      "evidence": "ui-capture run 38856553471"
+    },
+    {
+      "id": "source-apk-arm64-emulator-render",
+      "layer": "L3",
+      "platform": "Android emulator API 36 x86_64 (ARM translation)",
+      "status": "FAIL",
+      "detail": "environment: 68 sandboxed renderer SIGSEGV in libndk_translation.so (berberis_HandleNoExec), 'Aw, Snap!' on pages; same as official snapshot run 38704128045. Needs real ARM64 device (NOT RUN).",
+      "evidence": "evidence/source-build-arm64-ui-run-38856553471/"
+    },
+    {
+      "id": "source-apk-x64-emulator-ui",
+      "layer": "L3",
+      "platform": "Android emulator API 36 x86_64 (native)",
+      "status": "PASS (Android emulator)",
+      "detail": "install Success; full UI journey incl. page rendering; 0 renderer crashes; cold median 1432.5 ms p95 1516; warm median 736 ms p95 1679; PSS 178 MB",
+      "evidence": "ui-capture run 38865720986"
+    },
+    {
+      "id": "source-apk-x64-chat-fixture",
+      "layer": "L3",
+      "platform": "Android emulator API 36 x86_64 (native)",
+      "status": "PASS (Android emulator)",
+      "detail": "synthetic long-chat fixture 10/10 (not real Arena): 300 msgs first render 839.5 ms, drift -0.11 px, no reload, exactly-once resume",
+      "evidence": "evidence/source-build-x64-ui-run-38865720986/chat_fixture.txt"
+    },
+    {
+      "id": "source-apk-arm64-actual-device",
+      "layer": "L4",
+      "platform": "user's Android phone (model not yet reported)",
+      "status": "PASS (actual device)",
+      "detail": "user-reported: install succeeded after re-download; websites open normally (no 'Aw, Snap!'). First attempt failed with 'package appears to be invalid'; re-download fixed it, which suggests the first file was incomplete or corrupt (not confirmed). Screenshots/model pending.",
+      "evidence": "user message 2026-10-16"
+    },
+    {
+      "id": "b1-swiftra-release-signing-ci",
+      "layer": "L4",
+      "platform": "GitHub Actions ubuntu-24.04 (x64 run 38896651753, arm64 run 38896660409)",
+      "status": "PASS (static/signature/format only)",
+      "detail": "package com.swiftra.app, label Swiftra, non-debuggable, apksigner v3 CN=Swiftra RSA-4096 cert 029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06 matches patches/signing_cert_sha256.txt; secrets only in sign step. x64 SHA-256 9d88a604292d036840ccd0b48e055ca7686bd9cbed51bb0448639250a15a8e79 (397,723,443 B); arm64 5135db70117508fba4c96cb9742fd4d89e0b5a03117338512ea80d90c9c50316 (396,177,489 B). First attempt (runs 38892991040/38892993229) FAIL: build-tools 37 cert format not parsed; gate refused upload; fixed b621868.",
+      "evidence": "evidence/source-build-b1-swiftra-run-38899621628/BUILD_INFO-x64.txt, evidence/source-build-b1-swiftra-run-38899621628/BUILD_INFO-arm64.txt"
+    },
+    {
+      "id": "b1-swiftra-icons-in-apk",
+      "layer": "L2",
+      "platform": "desktop analysis of x64 b1 APK",
+      "status": "PASS (static/signature/format only)",
+      "detail": "15 launcher PNGs pixel-identical (WebP in APK; visible diff 0); themed monochrome path present, Chromium path absent.",
+      "evidence": "evidence/source-build-b1-swiftra-run-38899621628/branding_check.md"
+    },
+    {
+      "id": "b1-swiftra-x64-emulator-journey",
+      "layer": "L3",
+      "platform": "Android emulator API 36 x86_64 (ui-capture run 38899621628)",
+      "status": "PASS (Android emulator)",
+      "detail": "full UI journey in com.swiftra.app, renderer crash 0, cold median 1060 ms, warm median 796 ms, PSS 127 MB; chat fixture 10/10. Remaining in-app 'Chrome'/'Chromium' strings + FRE logo listed for b2.",
+      "evidence": "evidence/source-build-b1-swiftra-run-38899621628/journey.log, evidence/source-build-b1-swiftra-run-38899621628/chat_fixture.txt"
+    },
+    {
+      "id": "b1-swiftra-arm64-actual-device",
+      "layer": "L4",
+      "platform": "user's Android phone",
+      "status": "NOT RUN",
+      "detail": "awaiting user install of crstate-155.0.8059.80-arm64-b1 APK",
+      "evidence": ""
+    },
+    {
+      "id": "b1-icon-launcher",
+      "layer": "L3",
+      "platform": "x64 emulator + arm64 Redroid",
+      "status": "FAIL",
+      "detail": "glyph missing (roundIcon = background + transparent fg; ic_launcher = white bg + fg). Fixed in 26f8a45",
+      "evidence": "evidence/device-e2e-b1-iconfix-2026-10-16/bug-icon-before/"
+    },
+    {
+      "id": "b1-iconfix-build",
+      "layer": "L2",
+      "platform": "github ubuntu-latest",
+      "status": "PASS (static/signature/format only)",
+      "detail": "x64 e298584d…c38e, arm64 11cd819c…dbbb; release cert 029de0fa…",
+      "evidence": "runs 38907965672, 38907969325"
+    },
+    {
+      "id": "b1-x64-device-e2e",
+      "layer": "L3",
+      "platform": "Android 16 emulator x86_64",
+      "status": "PASS (Android emulator)",
+      "detail": "device checks 9/9, UI journey ready, fixture 10/10, app crash 0",
+      "evidence": "run 38913748996"
+    },
+    {
+      "id": "b1-arm64-redroid-e2e",
+      "layer": "L3",
+      "platform": "Redroid 14 container, native arm64 CPU, software GPU (NOT an actual device)",
+      "status": "PASS (Android emulator)",
+      "detail": "device checks 9/9, UI journey ready, fixture 10/10, app crash 0, no ApplicationExitInfo deaths",
+      "evidence": "run 38913752278"
+    },
+    {
+      "id": "tab-switcher-back-parity",
+      "layer": "L3",
+      "platform": "x64 Android emulator API 36 + arm64 Redroid 14 (not a real phone)",
+      "status": "PASS (Android emulator)",
+      "detail": "Hub opens with 2 tabs; BACK returns to the current tab (matches Chromium 155 HubCoordinator.handleBackPress -> selectCurrentTabAndHideHub); no relaunch, 0 crashes, device checks 9/9. Earlier FAIL retracted (harness artifact).",
+      "evidence": "evidence/tab-switcher-back-parity-2026-10-16/ ; runs 38918534121, 38918537719, 38916663718, 38916666704"
+    },
+    {
+      "id": "b1-arm64-actual-phone",
+      "layer": "L4",
+      "platform": "actual Android device",
+      "status": "NOT RUN / BLOCKED",
+      "detail": "no physical device available to the assistant",
+      "evidence": "-"
     }
-   ]
-  },
-  {
-   "id": "chat-fixture-android-chrome133",
-   "layer": "L3",
-   "platform": "Android 16 emulator x86_64",
-   "status": "PASS (Android emulator)",
-   "detail": "10/10 in runs 38701948978 and 38704128045",
-   "runs": [
-    {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
-     "viewport": [
-      412,
-      786
-     ]
-    },
-    {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36",
-     "viewport": [
-      412,
-      786
-     ]
+  ],
+  "performance_emulator_only": {
+    "note": "am start -W TotalTime ms, 10 cold + 10 warm; large run-to-run variance; not representative, not for browser comparison",
+    "runs": {
+      "38701948978/chrome_ref": {
+        "cold_ms_median": 824.0,
+        "cold_ms_p95": 957,
+        "warm_ms_median": 511.5,
+        "warm_ms_p95": 699,
+        "pss_kb": 132082,
+        "anr_dialogs": 0,
+        "version": "133.0.6943.137"
+      },
+      "38701948978/chromium_desktop_x64": {
+        "cold_ms_median": 721.5,
+        "cold_ms_p95": 819,
+        "warm_ms_median": 626.5,
+        "warm_ms_p95": 693,
+        "pss_kb": 156473,
+        "anr_dialogs": 0,
+        "version": "155.0.8059.0"
+      },
+      "38699920976/chromium_arm64": {
+        "cold_ms_median": 1531.5,
+        "cold_ms_p95": 1685,
+        "warm_ms_median": 1001.0,
+        "warm_ms_p95": 5523,
+        "pss_kb": 499439,
+        "anr_dialogs": 0,
+        "version": "155.0.8059.0"
+      },
+      "38704128045/chrome_ref": {
+        "cold_ms_median": 1263.0,
+        "cold_ms_p95": 1345,
+        "warm_ms_median": 779.0,
+        "warm_ms_p95": 1206,
+        "pss_kb": 129910,
+        "anr_dialogs": 0,
+        "version": "133.0.6943.137"
+      },
+      "38704128045/chromium_desktop_x64": {
+        "cold_ms_median": 1181.5,
+        "cold_ms_p95": 1299,
+        "warm_ms_median": 1136.5,
+        "warm_ms_p95": 1666,
+        "pss_kb": 156099,
+        "anr_dialogs": 0,
+        "version": "155.0.8059.0"
+      },
+      "38704128045/chromium_arm64_renderer_SIGSEGV": {
+        "cold_ms_median": 1404.5,
+        "cold_ms_p95": 1510,
+        "warm_ms_median": 943.0,
+        "warm_ms_p95": 4909,
+        "pss_kb": 508221,
+        "anr_dialogs": 0,
+        "version": "155.0.8059.0"
+      },
+      "38913748996/chromium_source_x64_b1_iconfix": {
+        "cold_ms_median": 712.0,
+        "cold_ms_p95": 771,
+        "warm_ms_median": 498.0,
+        "pss_kb": 151307,
+        "landing": "ChromeTabbedActivity",
+        "scroll_fps": 21.5
+      },
+      "38913752278/chromium_source_arm64_b1_iconfix_redroid": {
+        "cold_ms_median": 669.5,
+        "cold_ms_p95": 717,
+        "warm_ms_median": 246.5,
+        "pss_kb": 284382,
+        "landing": "ChromeTabbedActivity",
+        "scroll_fps": 15.0,
+        "note": "Redroid container, software GPU"
+      }
     }
-   ]
-  },
-  {
-   "id": "chat-fixture-android-chromium155-x64",
-   "layer": "L3",
-   "platform": "Android 16 emulator x86_64",
-   "status": "PASS (Android emulator)",
-   "detail": "10/10 in runs 38701948978 and 38704128045",
-   "runs": [
-    {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
-     "viewport": [
-      411,
-      725
-     ]
-    },
-    {
-     "passed": 10,
-     "total": 10,
-     "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
-     "viewport": [
-      411,
-      725
-     ]
-    }
-   ]
-  },
-  {
-   "id": "chat-fixture-android-chromium155-arm64",
-   "layer": "L3",
-   "platform": "Android 16 emulator, arm64 via libndk_translation",
-   "status": "FAIL",
-   "detail": "environment: renderer SIGSEGV in libndk_translation.so ('Aw, Snap!') run 38704128045; ANR run 38701948978; wrong devtools socket run 38699920976",
-   "evidence": "evidence/ui-capture-run-38704128045/chromium_arm64_renderer_SIGSEGV/"
-  },
-  {
-   "id": "ui-journey-chrome_ref",
-   "layer": "L3",
-   "platform": "Android 16 emulator",
-   "status": "PASS (Android emulator)",
-   "detail": "20/21 screens (15b dark menu missed); reference capture only",
-   "evidence": "evidence/ui-capture-run-38701948978/chrome_ref/"
-  },
-  {
-   "id": "ui-journey-chromium-x64",
-   "layer": "L3",
-   "platform": "Android 16 emulator",
-   "status": "PASS (Android emulator)",
-   "detail": "21/21 screens; install/launch/FRE/page/menu/tabs/settings/history/bookmarks/downloads/dark/landscape/incognito",
-   "evidence": "evidence/ui-capture-run-38701948978/chromium_desktop_x64/"
-  },
-  {
-   "id": "ui-journey-chromium-arm64",
-   "layer": "L3",
-   "platform": "Android 16 emulator, arm64 translation",
-   "status": "PASS (Android emulator)",
-   "detail": "21/21 in runs 38699920976 and 38704128045; FAIL (ANR) in 2 of 6 runs",
-   "evidence": "evidence/ui-capture-run-38699920976/chromium_arm64/"
-  },
-  {
-   "id": "ui-parity-vs-chrome133-proxy",
-   "layer": "L3",
-   "platform": "Android 16 emulator",
-   "status": "FAIL",
-   "detail": "20/20 shared screens mismatch (ids/text/a11y/pixels)",
-   "evidence": "reports/ui-compare/"
-  },
-  {
-   "id": "ui-parity-vs-chrome-stable-155",
-   "layer": "L3/L6",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "no Stable 155 reference; needs user phone screenshots"
-  },
-  {
-   "id": "feature-parity-vs-stable",
-   "layer": "L3/L6",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "50 features traced to source (50/50 paths exist at stable commit); behaviour vs Stable not tested",
-   "evidence": "native-app/FEATURE_PARITY.md, reports/feature-parity.json"
-  },
-  {
-   "id": "apk-integrity",
-   "layer": "L4",
-   "status": "PASS (static/signature/format only)",
-   "detail": "GCS MD5+CRC32C, SHA-256 (7/7 re-verified after download), apksigner v2, aapt2 badging, zipalign -P 16",
-   "evidence": "evidence/release-run-38700392608/"
-  },
-  {
-   "id": "secret-scan",
-   "layer": "L5",
-   "status": "PASS (static/signature/format only)",
-   "detail": "gitleaks full history every push; source zip scanned in release",
-   "evidence": "secret-scan.yml"
-  },
-  {
-   "id": "physical-arm64-device",
-   "layer": "L6",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "needs user's phone"
-  },
-  {
-   "id": "full-source-build",
-   "layer": "build",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "official minimum 100 GB disk / 8 GB RAM; free runner insufficient; superseded by staged build on free runners (see source-build-chrome_public_apk)"
-  },
-  {
-   "id": "google-signin-sync",
-   "layer": "L7",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "Chromium forks restricted (API keys/OAuth); website login needs user-witnessed test"
-  },
-  {
-   "id": "arena-long-chat-e2e",
-   "layer": "L7",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "user-witnessed own-account session required; protocol in TESTING.md section 6"
-  },
-  {
-   "id": "beyond-chrome-capabilities",
-   "layer": "all",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "Chrome baseline must pass first; only synthetic C1/C2 prototype exists"
-  },
-  {
-   "id": "staged-build-resume-unit",
-   "layer": "L1",
-   "platform": "desktop + github ubuntu",
-   "status": "PASS (desktop/browser component)",
-   "detail": "PAX restore keeps ninja progress 16->16; negative control 30/30 rebuild",
-   "evidence": "tests/test_scripts.py::TestStagedBuildResume"
-  },
-  {
-   "id": "source-build-restore-check",
-   "layer": "L2",
-   "platform": "github ubuntu-24.04 standard runner",
-   "status": "PASS (static/signature/format only)",
-   "detail": "tag 155.0.8059.80 commit 43a195105613ac83c21d3f14de279f4a045c7da0; src 13.4 GB; restore 514 s; gn 63340 targets; chrome_public_apk x64 57552 ninja edges",
-   "evidence": "run 38751068356"
-  },
-  {
-   "id": "source-build-chrome_public_apk",
-   "layer": "L2",
-   "platform": "github ubuntu-24.04 standard runner (staged)",
-   "status": "PASS (static/signature/format only)",
-   "detail": "arm64: run 38841258069 (6cb8de2) completed chrome_public_apk (8895/8895) from saved state; APK 395857811 bytes sha256 a3a30881fa6d2a1e3a4fde98097309b9980f3b153bb3e8e0d6004b6d0cda98da; apksigner v2 rc 0; aapt2 org.chromium.chrome 155.0.8059.80 (805908004) arm64-v8a targetSdk 37. Earlier failures: bug #1 (APK lost after completion, x64 job 116601424088, arm64 job 116738710930), bug #2 (stage_lib path, run 38837246181); both reproduced by tests/test_stage_e2e.py and fixed. x64: run 38841255946 completed (24053 edges), APK 397403679 bytes sha256 11c8110a952f6c5bb4825ade3a53cdfe13292bd76c53a8f15ddd5f76a327c392, apksigner v2 rc 0, aapt2 org.chromium.chrome 805908008 x86_64.",
-   "evidence": "run 38841258069; evidence/source-build-arm64-ui-run-38856553471/BUILD_INFO.txt; run 38841255946; evidence/source-build-x64-ui-run-38865720986/BUILD_INFO.txt"
-  },
-  {
-   "id": "stage-lib-regression",
-   "layer": "L1",
-   "platform": "desktop + github ubuntu",
-   "status": "PASS (desktop/browser component)",
-   "detail": "count_remaining: pending=2, no-work=0, missing ninja=0 under set -euo pipefail; old code reproduced rc=1",
-   "evidence": "tests/test_scripts.py::TestStageLib"
-  },
-  {
-   "id": "stage-script-e2e",
-   "layer": "L1",
-   "platform": "desktop + github ubuntu (unit-tests run 38841054480)",
-   "status": "PASS (desktop/browser component)",
-   "detail": "real chromium_stage.sh with stubbed gh/sudo/zstd/gn/apksigner/aapt2 and real ninja: timeout stage, completion (APK/BUILD_INFO/DONE), already-done, branded variant from seed (2 edges, package gate), negative gate, patch removal, watchdog. Negative controls on 47ce94e and b7a2f0d reproduce both CI failures.",
-   "evidence": "tests/test_stage_e2e.py"
-  },
-  {
-   "id": "patch-mechanism",
-   "layer": "L1",
-   "platform": "desktop + github ubuntu",
-   "status": "PASS (desktop/browser component)",
-   "detail": "stable-epoch mtimes: same patches = 0 rebuild; changed/dropped patch rebuilds exactly affected outputs; naive patching negative control leaves stale output. Not yet run on real Chromium.",
-   "evidence": "tests/test_scripts.py::TestPatches"
-  },
-  {
-   "id": "source-apk-arm64-emulator-ui",
-   "layer": "L3",
-   "platform": "Android emulator API 36 x86_64 (ARM translation)",
-   "status": "PASS (Android emulator)",
-   "detail": "install Success; full UI journey captured (first-run..incognito); cold median 1809 ms p95 1963; warm median 910 ms",
-   "evidence": "ui-capture run 38856553471"
-  },
-  {
-   "id": "source-apk-arm64-emulator-render",
-   "layer": "L3",
-   "platform": "Android emulator API 36 x86_64 (ARM translation)",
-   "status": "FAIL",
-   "detail": "environment: 68 sandboxed renderer SIGSEGV in libndk_translation.so (berberis_HandleNoExec), 'Aw, Snap!' on pages; same as official snapshot run 38704128045. Needs real ARM64 device (NOT RUN).",
-   "evidence": "evidence/source-build-arm64-ui-run-38856553471/"
-  },
-  {
-   "id": "source-apk-x64-emulator-ui",
-   "layer": "L3",
-   "platform": "Android emulator API 36 x86_64 (native)",
-   "status": "PASS (Android emulator)",
-   "detail": "install Success; full UI journey incl. page rendering; 0 renderer crashes; cold median 1432.5 ms p95 1516; warm median 736 ms p95 1679; PSS 178 MB",
-   "evidence": "ui-capture run 38865720986"
-  },
-  {
-   "id": "source-apk-x64-chat-fixture",
-   "layer": "L3",
-   "platform": "Android emulator API 36 x86_64 (native)",
-   "status": "PASS (Android emulator)",
-   "detail": "synthetic long-chat fixture 10/10 (not real Arena): 300 msgs first render 839.5 ms, drift -0.11 px, no reload, exactly-once resume",
-   "evidence": "evidence/source-build-x64-ui-run-38865720986/chat_fixture.txt"
-  },
-  {
-   "id": "source-apk-arm64-actual-device",
-   "layer": "L4",
-   "platform": "user's Android phone (model not yet reported)",
-   "status": "PASS (actual device)",
-   "detail": "user-reported: install succeeded after re-download; websites open normally (no 'Aw, Snap!'). First attempt failed with 'package appears to be invalid'; re-download fixed it, which suggests the first file was incomplete or corrupt (not confirmed). Screenshots/model pending.",
-   "evidence": "user message 2026-10-16"
-  },
-  {
-   "id": "b1-swiftra-release-signing-ci",
-   "layer": "L4",
-   "platform": "GitHub Actions ubuntu-24.04 (x64 run 38896651753, arm64 run 38896660409)",
-   "status": "PASS (static/signature/format only)",
-   "detail": "package com.swiftra.app, label Swiftra, non-debuggable, apksigner v3 CN=Swiftra RSA-4096 cert 029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06 matches patches/signing_cert_sha256.txt; secrets only in sign step. x64 SHA-256 9d88a604292d036840ccd0b48e055ca7686bd9cbed51bb0448639250a15a8e79 (397,723,443 B); arm64 5135db70117508fba4c96cb9742fd4d89e0b5a03117338512ea80d90c9c50316 (396,177,489 B). First attempt (runs 38892991040/38892993229) FAIL: build-tools 37 cert format not parsed; gate refused upload; fixed b621868.",
-   "evidence": "evidence/source-build-b1-swiftra-run-38899621628/BUILD_INFO-x64.txt, evidence/source-build-b1-swiftra-run-38899621628/BUILD_INFO-arm64.txt"
-  },
-  {
-   "id": "b1-swiftra-icons-in-apk",
-   "layer": "L2",
-   "platform": "desktop analysis of x64 b1 APK",
-   "status": "PASS (static/signature/format only)",
-   "detail": "15 launcher PNGs pixel-identical (WebP in APK; visible diff 0); themed monochrome path present, Chromium path absent.",
-   "evidence": "evidence/source-build-b1-swiftra-run-38899621628/branding_check.md"
-  },
-  {
-   "id": "b1-swiftra-x64-emulator-journey",
-   "layer": "L3",
-   "platform": "Android emulator API 36 x86_64 (ui-capture run 38899621628)",
-   "status": "PASS (Android emulator)",
-   "detail": "full UI journey in com.swiftra.app, renderer crash 0, cold median 1060 ms, warm median 796 ms, PSS 127 MB; chat fixture 10/10. Remaining in-app 'Chrome'/'Chromium' strings + FRE logo listed for b2.",
-   "evidence": "evidence/source-build-b1-swiftra-run-38899621628/journey.log, evidence/source-build-b1-swiftra-run-38899621628/chat_fixture.txt"
-  },
-  {
-   "id": "b1-swiftra-arm64-actual-device",
-   "layer": "L4",
-   "platform": "user's Android phone",
-   "status": "NOT RUN",
-   "detail": "awaiting user install of crstate-155.0.8059.80-arm64-b1 APK",
-   "evidence": ""
-  },
-  {
-   "id": "b1-icon-launcher",
-   "layer": "L3",
-   "platform": "x64 emulator + arm64 Redroid",
-   "status": "FAIL",
-   "detail": "glyph missing (roundIcon = background + transparent fg; ic_launcher = white bg + fg). Fixed in 26f8a45",
-   "evidence": "evidence/device-e2e-b1-iconfix-2026-10-16/bug-icon-before/"
-  },
-  {
-   "id": "b1-iconfix-build",
-   "layer": "L2",
-   "platform": "github ubuntu-latest",
-   "status": "PASS (static/signature/format only)",
-   "detail": "x64 e298584d…c38e, arm64 11cd819c…dbbb; release cert 029de0fa…",
-   "evidence": "runs 38907965672, 38907969325"
-  },
-  {
-   "id": "b1-x64-device-e2e",
-   "layer": "L3",
-   "platform": "Android 16 emulator x86_64",
-   "status": "PASS (Android emulator)",
-   "detail": "device checks 9/9, UI journey ready, fixture 10/10, app crash 0",
-   "evidence": "run 38913748996"
-  },
-  {
-   "id": "b1-arm64-redroid-e2e",
-   "layer": "L3",
-   "platform": "Redroid 14 container, native arm64 CPU, software GPU (NOT an actual device)",
-   "status": "PASS (Android emulator)",
-   "detail": "device checks 9/9, UI journey ready, fixture 10/10, app crash 0, no ApplicationExitInfo deaths",
-   "evidence": "run 38913752278"
-  },
-  {
-   "id": "tab-switcher-back-parity",
-   "layer": "L3",
-   "platform": "all Chromium builds",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "earlier FAIL retracted: harness artifact (NTP promo sheet swallowed the tab-switcher tap; '09' screenshot was the NTP). Re-test pending with hub-open + BACK-returns-to-tab assertions",
-   "evidence": "journey logs"
-  },
-  {
-   "id": "b1-arm64-actual-phone",
-   "layer": "L4",
-   "platform": "actual Android device",
-   "status": "NOT RUN / BLOCKED",
-   "detail": "no physical device available to the assistant",
-   "evidence": "-"
   }
- ],
- "performance_emulator_only": {
-  "note": "am start -W TotalTime ms, 10 cold + 10 warm; large run-to-run variance; not representative, not for browser comparison",
-  "runs": {
-   "38701948978/chrome_ref": {
-    "cold_ms_median": 824.0,
-    "cold_ms_p95": 957,
-    "warm_ms_median": 511.5,
-    "warm_ms_p95": 699,
-    "pss_kb": 132082,
-    "anr_dialogs": 0,
-    "version": "133.0.6943.137"
-   },
-   "38701948978/chromium_desktop_x64": {
-    "cold_ms_median": 721.5,
-    "cold_ms_p95": 819,
-    "warm_ms_median": 626.5,
-    "warm_ms_p95": 693,
-    "pss_kb": 156473,
-    "anr_dialogs": 0,
-    "version": "155.0.8059.0"
-   },
-   "38699920976/chromium_arm64": {
-    "cold_ms_median": 1531.5,
-    "cold_ms_p95": 1685,
-    "warm_ms_median": 1001.0,
-    "warm_ms_p95": 5523,
-    "pss_kb": 499439,
-    "anr_dialogs": 0,
-    "version": "155.0.8059.0"
-   },
-   "38704128045/chrome_ref": {
-    "cold_ms_median": 1263.0,
-    "cold_ms_p95": 1345,
-    "warm_ms_median": 779.0,
-    "warm_ms_p95": 1206,
-    "pss_kb": 129910,
-    "anr_dialogs": 0,
-    "version": "133.0.6943.137"
-   },
-   "38704128045/chromium_desktop_x64": {
-    "cold_ms_median": 1181.5,
-    "cold_ms_p95": 1299,
-    "warm_ms_median": 1136.5,
-    "warm_ms_p95": 1666,
-    "pss_kb": 156099,
-    "anr_dialogs": 0,
-    "version": "155.0.8059.0"
-   },
-   "38704128045/chromium_arm64_renderer_SIGSEGV": {
-    "cold_ms_median": 1404.5,
-    "cold_ms_p95": 1510,
-    "warm_ms_median": 943.0,
-    "warm_ms_p95": 4909,
-    "pss_kb": 508221,
-    "anr_dialogs": 0,
-    "version": "155.0.8059.0"
-   },
-   "38913748996/chromium_source_x64_b1_iconfix": {
-    "cold_ms_median": 712.0,
-    "cold_ms_p95": 771,
-    "warm_ms_median": 498.0,
-    "pss_kb": 151307,
-    "landing": "ChromeTabbedActivity",
-    "scroll_fps": 21.5
-   },
-   "38913752278/chromium_source_arm64_b1_iconfix_redroid": {
-    "cold_ms_median": 669.5,
-    "cold_ms_p95": 717,
-    "warm_ms_median": 246.5,
-    "pss_kb": 284382,
-    "landing": "ChromeTabbedActivity",
-    "scroll_fps": 15.0,
-    "note": "Redroid container, software GPU"
-   }
-  }
- }
 }
