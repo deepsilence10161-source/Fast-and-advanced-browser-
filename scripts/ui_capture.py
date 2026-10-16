@@ -234,7 +234,8 @@ def ensure_main(d, tries=4):
         fre = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if fre and "firstrun" in (d.foreground_activity() or "").lower():   # FRE पर BACK = FRE बंद (run 38909149132)
             d.log(f"ensure_main: FRE button {fre['text']}"); d.tap_node(fre); time.sleep(3); continue
-        if d.find(r":id/(chrome_item_picker_container|bottom_sheet|sheet_container|menu_list)$", ("id",), xml=xml, clickable_pref=False) \
+        # sheet_container NTP पर हमेशा पूरे आकार में रहता है (sheet न हो तब भी) → उस पर BACK = app बाहर (run 38916663718)
+        if d.find(r":id/(chrome_item_picker_container|bottom_sheet|bottom_sheet_content|menu_list)$", ("id",), xml=xml, clickable_pref=False) \
            or not d.find(r":id/(menu_button|tab_switcher_button)$", ("id",), xml=xml, clickable_pref=False):
             d.log("ensure_main: back (overlay present)"); d.back(); continue
         return True
@@ -382,7 +383,7 @@ def main():
     meta["tab_switcher_opened"] = hub_open
     if hub_open:
         xml = d.dump()
-        meta["tab_switcher_tabs"] = len(re.findall(r'content-desc="[^"]*, tab"', xml))
+        meta["tab_switcher_tabs"] = len(re.findall(r'content-desc="[^"]*, tab"', xml, re.I))
         time.sleep(1); d.capture("09_tab_switcher", "tab switcher grid, 2 tabs")
         d.back(); time.sleep(1.5)
         xml = d.dump()
