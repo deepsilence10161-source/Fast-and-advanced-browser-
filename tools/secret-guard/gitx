@@ -1,5 +1,8 @@
 #!/bin/bash
-# Usage: gitx <git args...>  — GitHub auth सहित, output redacted
+# Usage: gitx <git args...> — पहले secret-guard self-heal, फिर hooks (repo से, core.hooksPath) सहित git; output redacted।
 set -o pipefail
-git -c credential.helper= -c credential.helper=/home/user/.secrets/git-cred.sh -c credential.useHttpPath=false "$@" 2>&1 \
- | /home/user/tools/secret-guard/redact.py
+SG=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
+source "$SG/lib.sh"
+sg_heal || { echo "[gitx] secret-guard ठीक नहीं हो सका — git नहीं चलाया (fail-closed)" >&2; exit 1; }
+git -c core.hooksPath="$SG/hooks" -c credential.helper= -c credential.helper=/home/user/.secrets/git-cred.sh \
+    -c credential.useHttpPath=false "$@" 2>&1 | python3 "$SG/redact.py"

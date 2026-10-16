@@ -5,7 +5,7 @@ top=$(git rev-parse --show-toplevel); rc=0
 while read -r lref lsha rref rsha; do
   [ "$lsha" = "$Z" ] && continue
   if [ "$rsha" = "$Z" ]; then rng="$lsha --not --remotes"; else rng="$rsha..$lsha"; fi
-  /home/user/tools/secret-guard/scan.sh range "$top" "$rng" >&2 || rc=1
+  "$(dirname "$(readlink -f "$0")")/../scan.sh" range "$top" "$rng" >&2 || rc=1
 done
 [ $rc = 0 ] || echo "PUSH रोका गया: push होने वाले commits में secret/token मिला या स्कैनर विफल हुआ।" >&2
 exit $rc

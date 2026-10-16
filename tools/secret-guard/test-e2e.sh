@@ -2,12 +2,16 @@
 # Token-सुरक्षा E2E परीक्षण। असली token केवल local repo में (कभी push नहीं); push-tests केवल नकली token से।
 # Usage: test-e2e.sh <local-clone-path>
 set -u
-REPO=${1:?repo path}; SG=/home/user/tools/secret-guard; S=/home/user/.secrets
+REPO=${1:?repo path}; SG=$(cd "$(dirname "$(readlink -f "$0")")" && pwd); S=/home/user/.secrets
 OWNER_REPO=$(git -C "$REPO" remote get-url origin | sed -E 's#https://github.com/##; s#\.git$##')
 P=0; F=0; ok(){ echo "PASS  $1"; P=$((P+1)); }; bad(){ echo "FAIL  $1"; F=$((F+1)); }
 FAKE="github_pat_$(python3 -c "import secrets,string;a=string.ascii_letters+string.digits;print('11'+''.join(secrets.choice(a) for _ in range(20))+'_'+''.join(secrets.choice(a) for _ in range(59)))")"
 GC="git -c user.name=sg-test -c user.email=sg-test@users.noreply.github.com"
-cd "$REPO"; START=$(git rev-parse --abbrev-ref HEAD); BASE=$(git rev-parse HEAD)
+cd "$REPO"
+# सुरक्षा: यह test `reset --hard` + `clean` करता है — uncommitted काम हो तो चलने से इनकार
+[ -z "$(git status --porcelain)" ] || { echo "इनकार: working tree में uncommitted बदलाव हैं। पहले commit करें।"; exit 2; }
+bash "$SG/../bootstrap.sh" >/dev/null 2>&1 || { echo "bootstrap विफल"; exit 2; }
+START=$(git rev-parse --abbrev-ref HEAD); BASE=$(git rev-parse HEAD)
 cleanup(){ git reset -q --hard "$BASE"; git checkout -q "$START" 2>/dev/null; git clean -qfd; git branch -D sg-t1 sg-t2 >/dev/null 2>&1; }
 
 # 1 API helper
@@ -54,6 +58,22 @@ git checkout -q "$START"; git branch -qD sg-t2
 mv /home/user/.cache/gitleaks/gitleaks /home/user/.cache/gitleaks/gitleaks.off; echo x > sg_f.txt; git add sg_f.txt
 $GC commit -qm t >/tmp/sg11 2>&1 && { bad "11 स्कैनर गायब होने पर भी commit हुआ"; git reset -q --hard "$BASE"; } || ok "11 स्कैनर न होने पर commit रुका (fail-closed)"
 mv /home/user/.cache/gitleaks/gitleaks.off /home/user/.cache/gitleaks/gitleaks; git reset -q sg_f.txt; rm -f sg_f.txt
+
+# 14 snapshot-loss simulation: perms ढीली, origin/hooksPath/~/tools/gitleaks गायब, hooks non-executable → gitx self-heal
+chmod 755 $S; chmod 644 $S/gh_token; git config --unset core.hooksPath; git config --remove-section remote.origin
+rm -f /home/user/tools; mv /home/user/.cache/gitleaks /home/user/.cache/gitleaks.bak; chmod -x $SG/hooks/*
+$SG/gitx status -s >/tmp/sg14 2>&1
+if bash $SG/audit.sh --no-network >/tmp/sg14b 2>&1; then ok "14 snapshot-loss के बाद gitx ने सब अपने-आप ठीक किया (audit पास)"; else bad "14 self-heal अधूरा"; grep FAIL /tmp/sg14b; cat /tmp/sg14; fi
+rm -rf /home/user/.cache/gitleaks.bak
+cp $S/gh_token sg_real2.txt; git add sg_real2.txt
+if $GC commit -qm t >/tmp/sg14c 2>&1; then bad "14b heal के बाद असली token commit हो गया"; git reset -q --hard "$BASE"; else ok "14b heal के बाद भी असली token commit रुका"; git reset -q -- sg_real2.txt; fi
+shred -u sg_real2.txt 2>/dev/null
+# 15-17 token केवल GitHub host को
+$S/gh.sh https://example.com/ >/tmp/sg15 2>&1 && bad "15 gh.sh ने non-GitHub host पर request भेजी" || { grep -q "केवल GitHub API host" /tmp/sg15 && ok "15 gh.sh non-GitHub host को token नहीं भेजता" || bad "15 कारण गलत"; }
+o=$(printf 'protocol=https\nhost=evil.example.com\n\n' | $S/git-cred.sh get); [ -z "$o" ] && ok "16 git-cred.sh दूसरे host को कुछ नहीं देता" || bad "16 git-cred.sh ने दूसरे host को credential दिया"
+o=$(printf 'protocol=http\nhost=github.com\n\n' | $S/git-cred.sh get); [ -z "$o" ] && ok "17 git-cred.sh plain-http पर कुछ नहीं देता" || bad "17 http पर credential"
+# 18 पूरा audit (network सहित)
+bash $SG/audit.sh >/tmp/sg18 2>&1 && ok "18 audit: $(grep -o 'AUDIT: .*' /tmp/sg18)" || { bad "18 audit"; grep FAIL /tmp/sg18; }
 cleanup
 # 12 workspace और history साफ़
 $SG/scan.sh dir /home/user >/tmp/sg12 2>&1 && ok "12 पूरा workspace साफ़ (.secrets छोड़कर)" || { bad "12 workspace"; cat /tmp/sg12; }
