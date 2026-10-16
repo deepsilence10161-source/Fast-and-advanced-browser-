@@ -32,11 +32,19 @@ def glyph(n, box, ox, oy, alpha_b=200):
     return im
 
 
-def layered(px):            # 108dp canvas; glyph 44dp, केंद्र में (safe zone 66dp के भीतर)
+def layered(px):
+    """108dp canvas, glyph 44dp केंद्र में (safe zone 66dp के भीतर)।
+    Chromium का resource ढाँचा (res_chromium_base, drawable-v26):
+      ic_launcher       = <background @android:color/white> + <foreground layered_app_icon>
+      ic_launcher_round = <background layered_app_icon_background> + <foreground पारदर्शी shape>
+    इसलिए दोनों PNG में *पूरा* icon (gradient + glyph) होना ज़रूरी है — सिर्फ़ foreground में glyph रखने से
+    Pixel launcher (roundIcon) पर glyph गायब हो जाता है (x64 emulator launcher_drawer.png, run 38904972738)।
+    """
     n = px * SS; box = 44 / 108 * n; o = (n - box) / 2
-    fg = glyph(n, box, o, o).resize((px, px), Image.LANCZOS)
-    bg = gradient(px)
-    return fg, bg
+    full = gradient(n).convert("RGBA")
+    full.alpha_composite(glyph(n, box, o, o))
+    full = full.resize((px, px), Image.LANCZOS)
+    return full.copy(), full.convert("RGB")
 
 
 def legacy(px):             # 48dp: गोल gradient + glyph

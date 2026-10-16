@@ -46,32 +46,44 @@ else
   res SKIP "04 non-debuggable" "build debuggable है (baseline)"
 fi
 
+# install output पूरा log में (केवल आखिरी line पर भरोसा नहीं — x64 run 38904972738 में खाली मिली थी)
+IL="$OUT/device_checks_install.log"; : > "$IL"
+inst(){ local tag=$1; shift; local t0=$SECONDS o rc
+  o=$(timeout 300 adb install "$@" 2>&1); rc=$?
+  printf '=== %s: adb install %s (rc=%s, %ss)\n%s\n' "$tag" "$*" "$rc" "$((SECONDS-t0))" "$o" | tr -d '\r' >> "$IL"
+  printf '%s' "$o" | tr -d '\r' | grep -v '^[[:space:]]*$' | tail -1; }
+sig(){ sh "dumpsys package $PKG" 60 | grep -m1 -oE 'signatures:\[[^]]*\]'; }
+
 # 5 update with the same key (in-place upgrade keeps data)
-sh "am force-stop $PKG"; sh "mkdir -p /sdcard/Download" >/dev/null
-U=$(timeout 300 adb install -r "$APK" 2>&1 | tr -d '\r' | tail -1)
+sh "am force-stop $PKG"
+U=$(inst 05 -r "$APK")
 [ "$U" = Success ] && res PASS "05 same-key update (install -r)" || res FAIL "05 same-key update" "$U"
 
 # 6 update with a different key must be rejected (protects users from fake updates)
 if [ -n "$FOREIGN" ] && [ -f "$FOREIGN" ]; then
-  U=$(timeout 300 adb install -r "$FOREIGN" 2>&1 | tr -d '\r' | tail -1)
-  grep -q "INSTALL_FAILED_UPDATE_INCOMPATIBLE" <<<"$U" && res PASS "06 foreign-key update rejected" "$U" || res FAIL "06 foreign-key update NOT rejected" "$U"
+  S0=$(sig); U=$(inst 06 -r "$FOREIGN"); S1=$(sig)
+  FULL=$(sed -n '/^=== 06:/,$p' "$IL")
+  if grep -q "INSTALL_FAILED_UPDATE_INCOMPATIBLE" <<<"$FULL" && [ -n "$S0" ] && [ "$S0" = "$S1" ]; then
+    res PASS "06 foreign-key update rejected" "INSTALL_FAILED_UPDATE_INCOMPATIBLE; installed signer unchanged $S1"
+  else
+    res FAIL "06 foreign-key update NOT rejected" "last='$U' signer_before='$S0' after='$S1' (पूरा: device_checks_install.log)"
+  fi
 else res SKIP "06 foreign-key update" "foreign APK नहीं दिया"; fi
 
-# 7 scrolling smoothness on a real page (gfxinfo; software GPU पर संख्या प्रतिनिधि नहीं)
+# 7 real touch-scroll frame pacing on a web page (CDP rAF; gfxinfo/HWUI web content के frames नहीं गिनता)
 sh "am start -a android.intent.action.VIEW -d https://example.org $PKG" >/dev/null; sleep 6
-sh "dumpsys gfxinfo $PKG reset" >/dev/null
-for i in 1 2 3 4 5 6 7 8; do sh "input swipe 540 1800 540 600 250" >/dev/null; sh "input swipe 540 600 540 1800 250" >/dev/null; done
-G=$(sh "dumpsys gfxinfo $PKG" 60)
-TF=$(grep -m1 "Total frames rendered" <<<"$G" | grep -oE "[0-9]+$"); JK=$(grep -m1 "Janky frames:" <<<"$G" | sed 's/.*Janky frames: *//')
-P50=$(grep -m1 "50th percentile" <<<"$G" | grep -oE "[0-9]+ms"); P90=$(grep -m1 "90th percentile" <<<"$G" | grep -oE "[0-9]+ms"); P99=$(grep -m1 "99th percentile" <<<"$G" | grep -oE "[0-9]+ms")
-[ -n "$TF" ] && [ "${TF:-0}" -gt 0 ] && res PASS "07 scroll frames measured" "frames=$TF janky=$JK p50=$P50 p90=$P90 p99=$P99" || res FAIL "07 gfxinfo" "no frames"
+DS=""; for i in 1 2 3 4 5 6; do DS=$(sh "cat /proc/net/unix" | grep -o '@chrome_devtools_remote[A-Za-z0-9_]*' | head -1 | tr -d '@'); [ -n "$DS" ] && break; sleep 3; done
+timeout 20 adb forward tcp:9222 "localabstract:${DS:-chrome_devtools_remote}" >/dev/null 2>&1
+SJ=$(timeout 150 ${DC_SCROLL_CMD:-python3 scripts/ci/scroll_jank.py} --out "$OUT/scroll_jank" 2>&1 | tail -1)   # DC_SCROLL_CMD: केवल unit test
+case "$SJ" in OK*) res PASS "07 touch scroll measured (software GPU, संख्या प्रतिनिधि नहीं)" "${SJ#OK }";; *) res FAIL "07 touch scroll" "${SJ:-no output}";; esac
+timeout 15 adb exec-out screencap -p > "$OUT/scroll_after.png" 2>/dev/null
 
 # 8 process alive, no crash during checks
 PID=$(sh "pidof $PKG"); CR=$(timeout 30 adb logcat -d -b crash 2>/dev/null | grep -c "$PKG" || true)
 [ -n "$PID" ] && [ "${CR:-0}" = 0 ] && res PASS "08 alive, crash buffer clean" "pid=$PID" || res FAIL "08 crash/dead" "pid=${PID:-none} crash_lines=$CR"
 
 # 9 uninstall + clean reinstall
-U1=$(timeout 120 adb uninstall "$PKG" 2>&1 | tr -d '\r' | tail -1); U2=$(timeout 300 adb install "$APK" 2>&1 | tr -d '\r' | tail -1)
+U1=$(timeout 120 adb uninstall "$PKG" 2>&1 | tr -d '\r' | tail -1); U2=$(inst 09 "$APK")
 [ "$U1" = Success ] && [ "$U2" = Success ] && res PASS "09 uninstall + reinstall" || res FAIL "09 uninstall/reinstall" "$U1 / $U2"
 
 echo "DEVICE_CHECKS: $P पास, $F विफल" | tee -a "$R"

@@ -325,6 +325,26 @@ class TestPatches(unittest.TestCase):
                 w = Image.open(os.path.join(pd, "overlay", rel)).size
                 self.assertEqual(w, ((round(48 * f),) * 2) if name == "app_icon.png" else ((round(108 * f),) * 2), rel)
 
+    def test_layered_icons_each_contain_full_artwork(self):
+        """regression (run 38904972738, Pixel launcher): ic_launcher_round = layered_app_icon_background + पारदर्शी fg,
+        ic_launcher = सफ़ेद bg + layered_app_icon — इसलिए *दोनों* PNG अकेले में पूरा icon (gradient + सफ़ेद glyph) दिखाएँ।"""
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("PIL नहीं")
+        pd = os.path.join(os.path.dirname(__file__), "..", "patches", "overlay", "chrome", "android", "java", "res_chromium_base")
+        if not os.path.isdir(pd): self.skipTest("कोई overlay नहीं")
+        for dens in ("mipmap-mdpi", "mipmap-hdpi", "mipmap-xhdpi", "mipmap-xxhdpi", "mipmap-xxxhdpi"):
+            for name in ("layered_app_icon.png", "layered_app_icon_background.png"):
+                im = Image.open(os.path.join(pd, dens, name)).convert("RGBA"); n = im.size[0]
+                white = sum(1 for y in range(n) for x in range(n)
+                            if min(im.getpixel((x, y))[:3]) > 235 and im.getpixel((x, y))[3] > 240)
+                self.assertGreater(white / (n * n), 0.03, f"{dens}/{name}: glyph नहीं दिखा")
+                for c in ((1, 1), (n - 2, n - 2), (1, n - 2), (n - 2, 1)):      # full-bleed, opaque, सफ़ेद नहीं
+                    r, g, b, a = im.getpixel(c)
+                    self.assertEqual(a, 255, f"{dens}/{name} कोना पारदर्शी")
+                    self.assertLess(min(r, g, b), 200, f"{dens}/{name} कोना सफ़ेद")
+
     def test_stage_script_wiring(self):
         s = open(os.path.join(self.CI, "chromium_stage.sh")).read()
         f = open(os.path.join(self.CI, "finalize_apk.sh")).read()
