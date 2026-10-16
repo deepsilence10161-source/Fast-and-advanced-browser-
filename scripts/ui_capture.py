@@ -165,12 +165,28 @@ def launch(d):
         shell(f"monkey -p {d.pkg} -c android.intent.category.LAUNCHER 1")
     time.sleep(6)
 
+def handle_system_dialog(d, xml):
+    """System dialogs (default-browser role prompt / runtime permission)। Chromium का default-browser promo उस
+    device पर आता है जहाँ कोई default browser नहीं (Redroid run 38911943802)। दर्ज करके "Cancel/Don't allow"।"""
+    if d.foreground_pkg() not in ("com.android.permissioncontroller", "com.google.android.permissioncontroller"):
+        return False
+    title = d.find(r"\?\s*$", ("text",), xml=xml, clickable_pref=False) or d.find(r".+", ("text",), xml=xml, clickable_pref=False)
+    btn = d.find(r"^(Cancel|Don't allow|Don’t allow|Not now|No thanks)$", ("text",), xml=xml) \
+        or d.find(r":id/(permission_deny_button|button2)$", ("id",), xml=xml)
+    d.log(f"system dialog: {title['text'] if title else '?'} -> {btn['text'] if btn and btn.get('text') else 'BACK'}")
+    d.system_dialogs = getattr(d, "system_dialogs", []) + [title["text"] if title else "?"]
+    if btn: d.tap_node(btn)
+    else: d.back()
+    time.sleep(2)
+    return True
+
 def wait_ready(d, seconds=60):
     t0 = time.time()
     while time.time() - t0 < seconds:
         ok, xml = is_browser_ready(d)
         if ok:
             return True
+        if handle_system_dialog(d, xml): continue
         # handle first-run / promo dialogs generically
         n = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if n:
@@ -185,6 +201,7 @@ def ensure_main(d, tries=4):
     for _ in range(tries):
         if subprocess.run(["adb", "get-state"], capture_output=True, timeout=20).stdout.decode().strip() != "device":
             d.log("ensure_main: device not ready, waiting"); subprocess.run(["timeout", "60", "adb", "wait-for-device"]); continue
+        if handle_system_dialog(d, d.dump()): continue
         if d.foreground_pkg() != d.pkg:
             d.log("ensure_main: relaunch (foreground=%s)" % d.foreground_pkg()); launch(d); continue
         xml = d.dump()
@@ -272,6 +289,7 @@ def main():
         ok, xml = is_browser_ready(d)
         if ok: ready = True; break
         if d.handle_anr(xml): continue
+        if handle_system_dialog(d, xml): continue
         n = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if n:
             fre_i += 1
@@ -280,6 +298,7 @@ def main():
         else:
             time.sleep(2)
     meta["first_run_steps"] = fre_i; meta["reached_browser_ui"] = ready
+    meta["system_dialogs"] = getattr(d, "system_dialogs", [])
     log(f"browser UI ready: {ready}")
     if not ready:
         d.capture("01_stuck", "browser UI not reached in 90s")

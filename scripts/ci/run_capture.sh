@@ -24,8 +24,10 @@ done
 echo "devtools sockets: ${ALLS:-none}; using: ${SOCK:-none}" | tee -a "$OUT/journey.log"
 timeout 30 adb shell uiautomator dump /sdcard/fx.xml >/dev/null 2>&1; timeout 15 adb pull /sdcard/fx.xml "$OUT/chat_fixture_ui.xml" >/dev/null 2>&1
 timeout 15 adb exec-out screencap -p > "$OUT/chat_fixture_device.png"
+# सही platform label: Redroid (container, native arm64) बनाम emulator
+case "$(timeout 15 adb shell getprop ro.hardware | tr -d '\r')" in redroid) PLAT=android-redroid-container;; ranchu|goldfish) PLAT=android-emulator;; *) PLAT=android-device;; esac
 timeout 20 adb forward tcp:9222 "localabstract:${SOCK:-chrome_devtools_remote}"
-timeout 200 python3 scripts/ci/run_chat_fixture.py --platform "android-emulator:$T" --out "$OUT/chat_fixture" --timeout 180 2>&1 | tee "$OUT/chat_fixture.txt"
+timeout 200 python3 scripts/ci/run_chat_fixture.py --platform "$PLAT:$T" --out "$OUT/chat_fixture" --timeout 180 2>&1 | tee "$OUT/chat_fixture.txt"
 echo "chat_fixture exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 kill $HTTP_PID 2>/dev/null
 timeout 60 adb logcat -d | grep -iE "chromium|chrome|FATAL|AndroidRuntime|ndk_translation|DEBUG" | tail -400 > "$OUT/logcat_tail.txt"
