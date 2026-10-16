@@ -19,9 +19,9 @@
 # इस परियोजना के source बदलाव: patches/series + patches/*.patch + patches/args.gn (scripts/ci/patches.py)।
 set -euo pipefail
 : "${TAG:?}" "${CPU:?}" "${STAGE:?}" "${DEADLINE:?}" "${STATE:?}" "${OUTPUTS_DIR:?}"
-ROOT=/home/runner/cr                    # हर stage में एक ही absolute path (ninja/Java build configs के लिए)
+ROOT=${CR_ROOT:-/home/runner/cr}        # हर stage में एक ही absolute path (ninja/Java build configs के लिए)
 OUTD=out/$CPU
-PK=/home/runner/pk                      # pack/upload के लिए अस्थायी जगह
+PK=${CR_PK:-/home/runner/pk}            # pack/upload के लिए अस्थायी जगह
 JOBS=${JOBS:-4}
 log(){ echo "[$(date -u +%H:%M:%S)] $*"; }
 out(){ echo "$1=$2" >> "${GITHUB_OUTPUT:-/dev/null}"; }
@@ -184,11 +184,12 @@ NOW=$(date +%s); BUDGET=$(( DEADLINE - NOW ))
 log "compile: budget ${BUDGET}s, -j$JOBS, $REM0 edges बाकी"
 RC=0
 if [ "$BUDGET" -gt 300 ]; then
-  ( while sleep 600; do free -g | awk '/Mem:/{printf "mem used %sG; ",$3} /Swap:/{printf "swap used %sG; ",$3}'; df -BG --output=avail / | tail -1 | sed 's/^/disk free /'; done ) &
+  # monitor अपने process group में (setsid): अंत में पूरा group बंद, ताकि orphan `sleep` output pipe न पकड़े रहे
+  setsid bash -c 'while sleep 600; do free -g | awk '"'"'/Mem:/{printf "mem used %sG; ",$3} /Swap:/{printf "swap used %sG; ",$3}'"'"'; df -BG --output=avail / | tail -1 | sed "s/^/disk free /"; done' &
   MON=$!
   set +e
   timeout -s INT -k 180 "$BUDGET" "$NINJA" -C "src/$OUTD" -j "$JOBS" chrome_public_apk > "$PK/ninja.log" 2>&1
-  RC=$?; set -e; kill $MON 2>/dev/null || true
+  RC=$?; set -e; kill -- -"$MON" 2>/dev/null || kill "$MON" 2>/dev/null || true
   { grep -E '^\[[0-9]+/[0-9]+\]' "$PK/ninja.log" | tail -3; grep -E 'FAILED|error:' "$PK/ninja.log" | head -20; } || true
 else RC=124; fi
 REM1=$(remaining); REM1=${REM1:-0}
