@@ -277,9 +277,9 @@
    "id": "source-build-chrome_public_apk",
    "layer": "L2",
    "platform": "github ubuntu-24.04 standard runner (staged)",
-   "status": "FAIL",
-   "detail": "x64: compiled to completion in stage 1 (24053/24053, job 116601424088) but completion step crashed (bug #1: set -e + grep on no-work-to-do), APK lost; re-run 38837246181 (b7a2f0d) failed after restore (bug #2: relative stage_lib.sh path after cd). arm64: run 38750988168 s2 compiled to completion (8895/8895) then lost APK to bug #1. Both bugs reproduced by tests/test_stage_e2e.py negative controls; fixed in eb4e22f/6cb8de2. Re-dispatched from saved state: runs 38841255946, 38841258069 (6cb8de2) in progress.",
-   "evidence": "pending"
+   "status": "PASS (static/signature/format only)",
+   "detail": "arm64: run 38841258069 (6cb8de2) completed chrome_public_apk (8895/8895) from saved state; APK 395857811 bytes sha256 a3a30881fa6d2a1e3a4fde98097309b9980f3b153bb3e8e0d6004b6d0cda98da; apksigner v2 rc 0; aapt2 org.chromium.chrome 155.0.8059.80 (805908004) arm64-v8a targetSdk 37. Earlier failures: bug #1 (APK lost after completion, x64 job 116601424088, arm64 job 116738710930), bug #2 (stage_lib path, run 38837246181); both reproduced by tests/test_stage_e2e.py and fixed. x64 re-run 38841255946 in progress.",
+   "evidence": "run 38841258069; evidence/source-build-arm64-ui-run-38856553471/BUILD_INFO.txt"
   },
   {
    "id": "stage-lib-regression",
@@ -304,6 +304,22 @@
    "status": "PASS (desktop/browser component)",
    "detail": "stable-epoch mtimes: same patches = 0 rebuild; changed/dropped patch rebuilds exactly affected outputs; naive patching negative control leaves stale output. Not yet run on real Chromium.",
    "evidence": "tests/test_scripts.py::TestPatches"
+  },
+  {
+   "id": "source-apk-arm64-emulator-ui",
+   "layer": "L3",
+   "platform": "Android emulator API 36 x86_64 (ARM translation)",
+   "status": "PASS (Android emulator)",
+   "detail": "install Success; full UI journey captured (first-run..incognito); cold median 1809 ms p95 1963; warm median 910 ms",
+   "evidence": "ui-capture run 38856553471"
+  },
+  {
+   "id": "source-apk-arm64-emulator-render",
+   "layer": "L3",
+   "platform": "Android emulator API 36 x86_64 (ARM translation)",
+   "status": "FAIL",
+   "detail": "environment: 68 sandboxed renderer SIGSEGV in libndk_translation.so (berberis_HandleNoExec), 'Aw, Snap!' on pages; same as official snapshot run 38704128045. Needs real ARM64 device (NOT RUN).",
+   "evidence": "evidence/source-build-arm64-ui-run-38856553471/"
   }
  ],
  "performance_emulator_only": {

@@ -1,0 +1,53 @@
+[05:37:59] install: Success
+[05:38:00] meta: {'label': 'chromium_source_arm64', 'package': 'org.chromium.chrome', 'versionName': '155.0.8059.80', 'versionCode': '805908004', 'primaryCpuAbi': 'arm64-v8a', 'android_release': '16', 'sdk': '36', 'model': 'sdk_gphone64_x86_64', 'abilist': 'x86_64,arm64-v8a', 'native_bridge': 'libndk_translation.so', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': '1.0', 'navigation_mode': '2', 'webview': 'Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)'}
+[05:38:13] captured 01_first_run (16 labelled nodes, fg=org.chromium.chrome)
+[05:38:19] captured 01_first_run_1 (16 labelled nodes, fg=org.chromium.chrome)
+[05:38:33] captured 01_first_run_2 (8 labelled nodes, fg=org.chromium.chrome)
+[05:38:38] browser UI ready: True
+[05:38:45] captured 02_ntp (82 labelled nodes, fg=org.chromium.chrome)
+[05:38:50] tap OK  /:id/(search_box_text|url_bar)$/ -> org.chromium.chrome:id/search_box_text
+[05:38:56] captured 03_omnibox_focused (83 labelled nodes, fg=org.chromium.chrome)
+[05:39:04] captured 04_omnibox_suggestions (78 labelled nodes, fg=org.chromium.chrome)
+[05:39:18] captured 05_page_loaded (41 labelled nodes, fg=org.chromium.chrome)
+[05:39:22] tap MISS /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/
+[05:39:26] tap MISS /(View site information|site information|Connection is secure)/
+[05:39:30] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:39:34] tap OK  /^(Site controls|Site settings|Page info)$/ -> org.chromium.chrome:id/menu_item_text
+[05:39:36] page-info via app menu 'Site controls': True
+[05:39:39] captured 06_page_info (14 labelled nodes, fg=org.chromium.chrome)
+[05:39:47] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:39:50] captured 07_app_menu (51 labelled nodes, fg=org.chromium.chrome)
+[05:39:58] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:40:02] tap OK  /^New tab$/ -> org.chromium.chrome:id/menu_item_text
+[05:40:05] captured 08_second_tab_ntp (101 labelled nodes, fg=org.chromium.chrome)
+[05:40:09] tap OK  /tab_switcher_button/ -> org.chromium.chrome:id/tab_switcher_button
+[05:40:14] captured 09_tab_switcher (82 labelled nodes, fg=org.chromium.chrome)
+[05:40:16] ensure_main: relaunch (foreground=com.google.android.apps.nexuslauncher)
+[05:40:28] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:40:34] tap OK  /^Settings$/ -> org.chromium.chrome:id/menu_item_text
+[05:40:39] captured 11_settings (36 labelled nodes, fg=org.chromium.chrome)
+[05:40:45] captured 11b_settings_scrolled (31 labelled nodes, fg=org.chromium.chrome)
+[05:40:53] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:40:59] tap OK  /^History$/ -> org.chromium.chrome:id/menu_item_text
+[05:41:04] captured 12_history (13 labelled nodes, fg=org.chromium.chrome)
+[05:41:12] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:41:18] tap OK  /^Bookmarks$/ -> org.chromium.chrome:id/menu_item_text
+[05:41:23] captured 13_bookmarks (37 labelled nodes, fg=org.chromium.chrome)
+[05:41:31] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:41:37] tap OK  /^Downloads$/ -> org.chromium.chrome:id/menu_item_text
+[05:41:43] captured 14_downloads (16 labelled nodes, fg=org.chromium.chrome)
+[05:41:59] captured 15_dark_page (38 labelled nodes, fg=org.chromium.chrome)
+[05:42:03] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:42:06] captured 15b_dark_menu (59 labelled nodes, fg=org.chromium.chrome)
+[05:42:18] captured 16_landscape (38 labelled nodes, fg=org.chromium.chrome)
+[05:42:18] landscape screenshot 2400x1080 rotated=True
+[05:42:25] tap OK  /menu_button/ -> org.chromium.chrome:id/menu_button
+[05:42:29] tap OK  /^New Incognito tab$/ -> org.chromium.chrome:id/title
+[05:42:33] captured 10_incognito_ntp (47 labelled nodes, fg=org.chromium.chrome)
+[05:42:37] tap OK  /tab_switcher_button/ -> org.chromium.chrome:id/tab_switcher_button
+[05:42:42] captured 10b_tab_switcher_incognito (38 labelled nodes, fg=org.chromium.chrome)
+[05:43:59] timings: {'cold_ms': [1963, 1822, 1714, 1765, 1815, 1816, 1741, 1886, 1786, 1803], 'warm_ms': [4635, 913, 1031, 858, 847, 860, 925, 961, 771, 907], 'activity': 'org.chromium.chrome/com.google.android.apps.chrome.IntentDispatcher', 'cold_ms_median': 1809.0, 'cold_ms_p95': 1963, 'warm_ms_median': 910.0, 'warm_ms_p95': 4635}
+[05:43:59] done
+ui_capture exit=0
+devtools sockets: chrome_devtools_remote stetho_com.google.android.apps.messaging_devtools_remote webview_devtools_remote_4822 ; using: chrome_devtools_remote
+chat_fixture exit=1

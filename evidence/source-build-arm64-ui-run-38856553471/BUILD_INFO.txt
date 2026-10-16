@@ -1,0 +1,50 @@
+tag=155.0.8059.80
+commit=43a195105613ac83c21d3f14de279f4a045c7da0
+cpu=arm64
+built_on=github ubuntu-24.04 standard runner (staged, stage 0)
+build_tools=37.0.0
+patch_hash=none build_key=80f714c523cb1b01
+--- patches
+--- args.gn
+target_os = "android"
+target_cpu = "arm64"
+is_debug = false
+is_official_build = false
+is_component_build = false
+symbol_level = 0
+blink_symbol_level = 0
+v8_symbol_level = 0
+dcheck_always_on = false
+use_siso = false
+use_remoteexec = false
+treat_warnings_as_errors = false
+android_static_analysis = "off"
+--- sha256
+a3a30881fa6d2a1e3a4fde98097309b9980f3b153bb3e8e0d6004b6d0cda98da
+--- bytes
+395857811
+--- clang
+llvmorg-24-init-7747-g62397f8b-27
+--- apksigner verify (rc=0)
+
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+V2 Signer: certificate DN: CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown
+V2 Signer: certificate SHA-256 digest: 32a2fc74d731105859e5a85df16d95f102d85b22099b8064c5d8915c61dad1e0
+V2 Signer: certificate SHA-1 digest: 33b28eafdf43dea4ff5dc3dbd9e5a523f67f6bb1
+V2 Signer: certificate MD5 digest: d2be3d3da026d504a7ec9f52a2de54a3
+V2 Signer: key algorithm: RSA
+V2 Signer: key size (bits): 2048
+--- aapt2 badging (rc=0)
+package: name='org.chromium.chrome' versionCode='805908004' versionName='155.0.8059.80' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+targetSdkVersion:'37'
+application-label:'Chromium'
+native-code: 'arm64-v8a'
+(V2 Signer public-key digests हटाए गए — public data, पर generic scanner के false positive; पूरा पाठ CI run 38841258069 के log में)

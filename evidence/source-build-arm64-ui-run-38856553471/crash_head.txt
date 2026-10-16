@@ -1,0 +1,40 @@
+--------- beginning of crash
+10-16 05:38:23.137  4202  4232 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-16 05:38:23.137  4202  4232 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-16 05:38:23.137  4202  4232 F DEBUG   : Revision: '0'
+10-16 05:38:23.137  4202  4232 F DEBUG   : ABI: 'x86_64'
+10-16 05:38:23.137  4202  4232 F DEBUG   : Timestamp: 2026-10-16 05:38:21.492958670+0000
+10-16 05:38:23.137  4202  4232 F DEBUG   : Process uptime: 2s
+10-16 05:38:23.137  4202  4232 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0
+10-16 05:38:23.137  4202  4232 F DEBUG   : pid: 4202, tid: 4232, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 <<<
+10-16 05:38:23.137  4202  4232 F DEBUG   : uid: 90000
+10-16 05:38:23.137  4202  4232 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-16 05:38:23.137  4202  4232 F DEBUG   :     rax 0000000000000000  rbx 000074c143603000  rcx 000074c13d734808  rdx 000000000000000b
+10-16 05:38:23.137  4202  4232 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000074be2c421110  r11 0000000000000246
+10-16 05:38:23.137  4202  4232 F DEBUG   :     r12 000074c143c130d8  r13 000000000074be7d  r14 00000000916df401  r15 000000000000106a
+10-16 05:38:23.137  4202  4232 F DEBUG   :     rdi 000000000000106a  rsi 0000000000001088
+10-16 05:38:23.137  4202  4232 F DEBUG   :     rbp 000074be2c4211b0  rsp 000074be2c421108  rip 000074c13d734808
+10-16 05:38:23.137  4202  4232 F DEBUG   : 6 total frames
+10-16 05:38:23.137  4202  4232 F DEBUG   : backtrace:
+10-16 05:38:23.137  4202  4232 F DEBUG   :       #00 pc 000000000008f808  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: fcb82240218d1473de1e3d2137c0be35)
+10-16 05:38:23.137  4202  4232 F DEBUG   :       #01 pc 00000000003556d5  /system/lib64/libndk_translation.so (berberis_HandleNoExec+229) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-16 05:38:23.137  4202  4232 F DEBUG   :       #02 pc 000000000035534c  /system/lib64/libndk_translation.so (berberis::ExecuteGuest(berberis::ThreadState*)+236) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-16 05:38:23.137  4202  4232 F DEBUG   :       #03 pc 0000000000355507  /system/lib64/libndk_translation.so (berberis::ExecuteGuestCall(berberis::ThreadState*)+119) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-16 05:38:23.137  4202  4232 F DEBUG   :       #04 pc 00000000003558a3  /system/lib64/libndk_translation.so (berberis::RunGuestCall(unsigned long, berberis::GuestArgumentBuffer*)+195) (BuildId: 2810e5b44895c4ea0b1ad6882ea73b73)
+10-16 05:38:23.137  4202  4232 F DEBUG   :       #05 pc 0000000000000818  /memfd:exec (deleted)
+10-16 05:38:27.748  4388  4437 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-16 05:38:27.748  4388  4437 F DEBUG   : Build fingerprint: 'google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys'
+10-16 05:38:27.748  4388  4437 F DEBUG   : Revision: '0'
+10-16 05:38:27.748  4388  4437 F DEBUG   : ABI: 'x86_64'
+10-16 05:38:27.748  4388  4437 F DEBUG   : Timestamp: 2026-10-16 05:38:27.045145764+0000
+10-16 05:38:27.748  4388  4437 F DEBUG   : Process uptime: 2s
+10-16 05:38:27.748  4388  4437 F DEBUG   : Cmdline: org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1
+10-16 05:38:27.748  4388  4437 F DEBUG   : pid: 4388, tid: 4437, name: ChildProcessMai  >>> org.chromium.chrome:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:1 <<<
+10-16 05:38:27.748  4388  4437 F DEBUG   : uid: 90001
+10-16 05:38:27.748  4388  4437 F DEBUG   : signal 11 (SIGSEGV), code 2 (SEGV_ACCERR), fault addr --------
+10-16 05:38:27.748  4388  4437 F DEBUG   :     rax 0000000000000000  rbx 000074c143603000  rcx 000074c13d734808  rdx 000000000000000b
+10-16 05:38:27.748  4388  4437 F DEBUG   :     r8  000000000000000b  r9  000000000000000b  r10 000074be2c421110  r11 0000000000000246
+10-16 05:38:27.748  4388  4437 F DEBUG   :     r12 000074c143c130d8  r13 000000000074be7d  r14 000000005be82501  r15 0000000000001124
+10-16 05:38:27.748  4388  4437 F DEBUG   :     rdi 0000000000001124  rsi 0000000000001155
+10-16 05:38:27.748  4388  4437 F DEBUG   :     rbp 000074be2c4211b0  rsp 000074be2c421108  rip 000074c13d734808
+10-16 05:38:27.748  4388  4437 F DEBUG   : 6 total frames
