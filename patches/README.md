@@ -45,3 +45,10 @@ open source project, ChromeOS/ChromiumOS, Chrome Web Store, Chromebook/cast/box,
 Google के कानूनी दस्तावेज़ों के नाम (ऐसे messages के translations भी नहीं छूते)।
 Self-check: हर xtb में translation coverage पहले = बाद, वरना build विफल। Tests: tests/test_strings_rebrand.py (असली grit)।
 सीमा: कुछ विभक्ति-प्रधान भाषाओं (hr, hu…) में "Swiftrau"/"Swiftraot" जैसे रूप — native review आवश्यक।
+
+## overlay: Swiftra product logo (b2)
+`components/browser_ui/styles/android/java/res_chromium/` — `drawable-*/fre_product_logo.png` (FRE, payments, custom tabs,
+HaTS, touch-to-fill, omnibox default action), `drawable-*/product_logo_name.png` (logo + "swiftra" wordmark, DejaVu Sans),
+`raw/signin_spin.json` (sign-in Lottie: Chromium 155 मूल जैसा frame/timing — पहले chevrons फिर गोला सिकुड़ता)।
+Generator: `python3 tools/brand/swiftra_logo.py patches/overlay` (deterministic)। Tests: `tests/test_brand_logo.py`।
+Lottie python-lottie 0.7.2 + cairosvg से render करके जाँचा (frame 0 = static logo, 2% pixels केवल किनारों पर भिन्न)।
