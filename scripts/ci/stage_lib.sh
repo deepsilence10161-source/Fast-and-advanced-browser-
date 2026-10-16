@@ -14,3 +14,12 @@ for line in sys.stdin:
 print(last or 0)') || n=0
   echo "${n:-0}"
 }
+
+# cert_digests <apksigner-verify-output-file> → stdout: अलग-अलग signer cert SHA-256 (lowercase, comma से जुड़े)
+# दोनों formats: पुराना "Signer #1 certificate SHA-256 digest: …" (build-tools ≤36) और
+# नया "V2 Signer: certificate SHA-256 digest: …" / "V3 Signer: …" (build-tools 37, Chromium 155 का)।
+# एक से ज़्यादा अलग digest = "a,b" (caller के अपेक्षित मान से कभी मेल नहीं खाएगा -> FAIL)।
+cert_digests() {
+  sed -nE 's/^(Signer #[0-9]+|V[0-9.]+ Signer( #[0-9]+)?):? certificate SHA-256 digest: *([0-9a-fA-F]{64}).*/\3/p' "$1" 2>/dev/null \
+    | tr 'A-F' 'a-f' | sort -u | paste -sd, - || true
+}

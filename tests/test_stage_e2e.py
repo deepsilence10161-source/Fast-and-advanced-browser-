@@ -85,8 +85,9 @@ if [ "$1" = sign ]; then shift
 fi
 [ "$1" = verify ] || exit 2
 f="${@: -1}"; c=$(sed -n 's/^SIGNED_BY=//p' "$f")
-echo "Verifies"; echo "Signer #1 certificate SHA-256 digest: ${c:-$(printf debug | sha256sum | cut -d' ' -f1)}"
-echo "Signer #1 public key SHA-256 digest: 00"
+# build-tools 37 (Chromium 155) का format: "V3 Signer: certificate SHA-256 digest: …"
+d=${c:-$(printf debug | sha256sum | cut -d' ' -f1)}; v=$([ -n "$c" ] && echo V3 || echo V2)
+echo "Verifies"; echo "$v Signer: certificate DN: CN=stub"; echo "$v Signer: certificate SHA-256 digest: $d"
 """
 BRAND_PATCH = "--- a/pkg.txt\n+++ b/pkg.txt\n@@ -1 +1 @@\n-PKG=org.chromium.chrome\n+PKG=org.example.fab\n"
 

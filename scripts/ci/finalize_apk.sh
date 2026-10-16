@@ -21,6 +21,8 @@ EVID="$OUTPUTS_DIR/stage-$STAGE.txt"; touch "$EVID"
 ev(){ echo "$*" | tee -a "$EVID"; }
 upload(){ local i; for i in 1 2 3 4; do gh release upload "$STATE" -R "$R" --clobber "$@" && return 0; log "upload retry $i"; sleep $((i*15)); done; return 1; }
 fail(){ echo "$*"; out done false; exit 1; }
+CI_DIR=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
+source "$CI_DIR/stage_lib.sh"            # cert_digests
 cd "$ROOT"
 
 APK="src/$OUTD/apks/ChromePublic.apk"; [ -f "$APK" ] || fail "APK नहीं मिला"
@@ -54,8 +56,8 @@ if [ -n "$EXP_CERT" ]; then
   rm -rf "$KSD"; trap - EXIT
   [ "$SRC_RC" = 0 ] || { grep -vi pass "$PK/sign.log" | tail -20 || true; fail "apksigner sign विफल (rc=$SRC_RC)"; }
   # upload से पहले: गलत key से signed APK कभी अंतिम नाम से न जाए (unsigned presign पहले से सुरक्षित है)
-  PRE=$("$BT/apksigner" verify --print-certs "$OUTPUTS_DIR/$NAME" 2>/dev/null | \
-        sed -n 's/^Signer #1 certificate SHA-256 digest: *\([0-9a-fA-F]*\).*/\1/p' | head -1 | tr 'A-F' 'a-f') || true
+  "$BT/apksigner" verify --print-certs -v "$OUTPUTS_DIR/$NAME" > "$PK/preverify.txt" 2>&1 || true
+  PRE=$(cert_digests "$PK/preverify.txt")
   if [ "$PRE" != "$EXP_CERT" ]; then rm -f "$OUTPUTS_DIR/$NAME"; fail "signer cert (${PRE:-?}) अपेक्षित release cert ($EXP_CERT) से अलग — upload नहीं किया"; fi
   SIGNING=release
 else
@@ -67,7 +69,7 @@ upload "$FINAL"                           # सबसे पहले: महँ
 set +e                                    # रिपोर्ट के कदम script को नहीं रोकेंगे; निर्णायक जाँचें नीचे स्पष्ट हैं
 "$BT/apksigner" verify --print-certs -v "$FINAL" > "$PK/apksigner.txt" 2>&1; SIGRC=$?
 "$BT/aapt2" dump badging "$FINAL" > "$PK/badging.txt" 2>&1; AAPTRC=$?
-CERT=$(sed -n 's/^Signer #1 certificate SHA-256 digest: *\([0-9a-fA-F]*\).*/\1/p' "$PK/apksigner.txt" | head -1 | tr 'A-F' 'a-f')
+CERT=$(cert_digests "$PK/apksigner.txt")
 {
   echo "tag=$TAG"; echo "commit=$COMMIT"; echo "cpu=$CPU"; echo "built_on=github ubuntu-24.04 standard runner (staged, stage $STAGE)"
   echo "build_tools=$(basename "$BT")"

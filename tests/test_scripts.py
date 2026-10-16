@@ -131,6 +131,43 @@ class TestStageLib(unittest.TestCase):
         self.assertEqual(self._count("/nonexistent/ninja"), (0, "R=0"))
 
 
+class TestCertDigests(unittest.TestCase):
+    """stage_lib.sh::cert_digests — apksigner के दोनों असली output formats (b1 run 38892991040 का bug:
+    build-tools 37 "V2 Signer: certificate …" format न पहचानने से release gate "?" पर FAIL)।"""
+    LIB = os.path.join(os.path.dirname(__file__), "..", "scripts", "ci", "stage_lib.sh")
+    A = "32a2fc74d731105859e5a85df16d95f102d85b22099b8064c5d8915c61dad1e0"
+    B = "029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06"
+    def _run(self, text):
+        import subprocess
+        f = os.path.join(tempfile.mkdtemp(), "v.txt"); open(f, "w").write(text)
+        r = subprocess.run(["bash", "-c", f'set -euo pipefail; source "{self.LIB}"; X=$(cert_digests "{f}"); echo "R=$X"'],
+                           capture_output=True, text=True)
+        return r.returncode, r.stdout.strip()
+    def test_build_tools_37_format_from_real_evidence(self):     # evidence/source-build-x64-ui-run-38865720986
+        t = ("Verifies\nVerified using v2 scheme (APK Signature Scheme v2): true\nNumber of signers: 1\n"
+             "V2 Signer: certificate DN: CN=Unknown\nV2 Signer: certificate SHA-256 digest: " + self.A + "\n"
+             "V2 Signer: certificate SHA-1 digest: 33b28eafdf43dea4ff5dc3dbd9e5a523f67f6bb1\n")
+        self.assertEqual(self._run(t), (0, "R=" + self.A))
+    def test_build_tools_36_format_from_real_local_run(self):   # स्थानीय apksigner 36, Swiftra keystore
+        t = "Verifies\nSigner #1 certificate DN: CN=Swiftra, O=Swiftra, C=IN\nSigner #1 certificate SHA-256 digest: " + self.B + "\n"
+        self.assertEqual(self._run(t), (0, "R=" + self.B))
+    def test_v2_and_v3_same_signer_dedup_and_uppercase(self):
+        t = f"V2 Signer: certificate SHA-256 digest: {self.B.upper()}\nV3 Signer: certificate SHA-256 digest: {self.B}\n"
+        self.assertEqual(self._run(t), (0, "R=" + self.B))
+    def test_two_different_signers_never_match_single_expected(self):
+        t = f"V3 Signer: certificate SHA-256 digest: {self.A}\nV3.1 Signer: certificate SHA-256 digest: {self.B}\n"
+        rc, out = self._run(t); self.assertEqual(rc, 0); self.assertNotIn(out, ("R=" + self.A, "R=" + self.B))
+    def test_no_match_or_missing_file_is_empty_not_abort(self):
+        self.assertEqual(self._run("ERROR: JAR signer CERT.RSA: ...\n"), (0, "R="))
+        import subprocess
+        r = subprocess.run(["bash", "-c", f'set -euo pipefail; source "{self.LIB}"; X=$(cert_digests /nonexistent); echo "R=$X"'],
+                           capture_output=True, text=True)
+        self.assertEqual((r.returncode, r.stdout.strip()), (0, "R="))
+    def test_public_key_digest_lines_are_ignored(self):
+        t = f"V2 Signer: public key SHA-256 digest: {self.A}\nV2 Signer: certificate SHA-256 digest: {self.B}\n"
+        self.assertEqual(self._run(t), (0, "R=" + self.B))
+
+
 class TestPatches(unittest.TestCase):
     """scripts/ci/patches.py: हर stage pristine src + पिछला out restore करता है, फिर patches लगाता है।
     ninja से असली multi-stage अनुकरण: वही patches -> कोई rebuild नहीं; patch बदला/हटाया -> ठीक प्रभावित
