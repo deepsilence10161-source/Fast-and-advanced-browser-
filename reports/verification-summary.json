@@ -237,7 +237,7 @@
    "id": "full-source-build",
    "layer": "build",
    "status": "NOT RUN / BLOCKED",
-   "detail": "official minimum 100 GB disk / 8 GB RAM; free runner insufficient"
+   "detail": "official minimum 100 GB disk / 8 GB RAM; free runner insufficient; superseded by staged build on free runners (see source-build-chrome_public_apk)"
   },
   {
    "id": "google-signin-sync",
@@ -278,7 +278,7 @@
    "layer": "L2",
    "platform": "github ubuntu-24.04 standard runner (staged)",
    "status": "FAIL",
-   "detail": "x64 compiled to completion in stage 1 (24053/24053, job 116601424088) but completion step crashed (set -e + grep on no-work-to-do), APK lost; fixed in b7a2f0d; re-run 38837246181 in progress",
+   "detail": "x64: compiled to completion in stage 1 (24053/24053, job 116601424088) but completion step crashed (bug #1: set -e + grep on no-work-to-do), APK lost; re-run 38837246181 (b7a2f0d) failed after restore (bug #2: relative stage_lib.sh path after cd). arm64: run 38750988168 s2 compiled to completion (8895/8895) then lost APK to bug #1. Both bugs reproduced by tests/test_stage_e2e.py negative controls; fixed in eb4e22f/6cb8de2. Re-dispatched from saved state: runs 38841255946, 38841258069 (6cb8de2) in progress.",
    "evidence": "pending"
   },
   {
@@ -288,6 +288,22 @@
    "status": "PASS (desktop/browser component)",
    "detail": "count_remaining: pending=2, no-work=0, missing ninja=0 under set -euo pipefail; old code reproduced rc=1",
    "evidence": "tests/test_scripts.py::TestStageLib"
+  },
+  {
+   "id": "stage-script-e2e",
+   "layer": "L1",
+   "platform": "desktop + github ubuntu (unit-tests run 38841054480)",
+   "status": "PASS (desktop/browser component)",
+   "detail": "real chromium_stage.sh with stubbed gh/sudo/zstd/gn/apksigner/aapt2 and real ninja: timeout stage, completion (APK/BUILD_INFO/DONE), already-done, branded variant from seed (2 edges, package gate), negative gate, patch removal, watchdog. Negative controls on 47ce94e and b7a2f0d reproduce both CI failures.",
+   "evidence": "tests/test_stage_e2e.py"
+  },
+  {
+   "id": "patch-mechanism",
+   "layer": "L1",
+   "platform": "desktop + github ubuntu",
+   "status": "PASS (desktop/browser component)",
+   "detail": "stable-epoch mtimes: same patches = 0 rebuild; changed/dropped patch rebuilds exactly affected outputs; naive patching negative control leaves stale output. Not yet run on real Chromium.",
+   "evidence": "tests/test_scripts.py::TestPatches"
   }
  ],
  "performance_emulator_only": {
