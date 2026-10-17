@@ -154,5 +154,31 @@ class C2cTruthAndNetwork(unittest.TestCase):
         self.assertIn("safebrowsing.google.com", E.SB_HOSTS)
 
 
+    def test_netlog_trace_requests_vs_mentions(self):
+        import sys, types
+        msgs = [{"id": 1, "result": {}},
+                {"method": "Tracing.dataCollected", "params": {"value": [
+                    {"name": "URL_REQUEST_START_JOB", "args": {"params": {"url": "https://www.google.com/complete/search?q=x", "method": "GET"}}},
+                    {"name": "URL_REQUEST_START_JOB", "args": {"params": {"url": "http://127.0.0.1:8001/a", "method": "GET"}}},
+                    {"name": "HOST_RESOLVER_MANAGER_REQUEST", "args": {"params": {"host": "example.com"}}},
+                    {"name": "HTTP_SERVER_PROPERTIES_INITIALIZATION", "args": {"params": {"s": ["https://www.youtube.com"]}}}]}},
+                {"method": "Tracing.tracingComplete", "params": {}}]
+
+        class WS:
+            def __init__(s): s.q = [json.dumps(m) for m in msgs]
+            def send(s, x): pass
+            def recv(s): return s.q.pop(0)
+            def settimeout(s, t): pass
+            def close(s): pass
+        fake = types.ModuleType("websocket"); fake.create_connection = lambda *a, **k: WS()
+        with mock.patch.dict(sys.modules, {"websocket": fake}), mock.patch.object(E, "browser_ws", lambda d: "ws://x"):
+            r = E.netlog_trace("http://x", lambda: None, settle=0)
+        self.assertTrue(r["ok"]); self.assertEqual(r["events"], 4)
+        self.assertEqual(r["google_requests"], {"GET https://www.google.com/complete/search": 1})   # query stripped
+        self.assertEqual(r["resolves"], {"example.com": 1})
+        self.assertIn("www.youtube.com", r["google_hosts"])          # mention only, not a request
+        self.assertEqual(r["sb_hosts"], [])
+
+
 if __name__ == "__main__":
     unittest.main()

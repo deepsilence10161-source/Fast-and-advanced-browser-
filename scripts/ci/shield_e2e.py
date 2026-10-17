@@ -471,6 +471,7 @@ def netlog_trace(devtools, actions, settle=8):
         ws.send(json.dumps({"id": 2, "method": "Tracing.end"}))
         events, done = 0, False
         hosts, urls = {}, set()
+        requests, resolves, google_events = {}, {}, {}
         ws.settimeout(60)
         while not done:
             m = json.loads(ws.recv())
@@ -478,14 +479,27 @@ def netlog_trace(devtools, actions, settle=8):
             if meth == "Tracing.dataCollected":
                 for ev in m["params"].get("value", []):
                     events += 1
-                    blob = json.dumps(ev.get("args", {}))
+                    args = ev.get("args", {}) or {}
+                    blob = json.dumps(args)
+                    name = str(ev.get("name", ""))
+                    params = args.get("params") if isinstance(args.get("params"), dict) else {}
+                    evh = set()
                     for a1, a2 in HOST_RX.findall(blob):
                         h = (a1 or a2).lower().rstrip(".")
                         if h:
                             hosts[h] = hosts.get(h, 0) + 1
+                            evh.add(h)
                     for u in re.findall(r'https?://[^"\s\\]+', blob):
                         if len(urls) < 400:
                             urls.add(u.split("?")[0][:160])
+                    # real network requests (URLRequest jobs) vs. mere mentions (socket pools, server properties...)
+                    if name == "URL_REQUEST_START_JOB" and isinstance(params.get("url"), str):
+                        k = f"{params.get('method', '?')} {params['url'].split('?')[0][:160]}"
+                        requests[k] = requests.get(k, 0) + 1
+                    if name.startswith("HOST_RESOLVER") and isinstance(params.get("host"), str):
+                        resolves[params["host"]] = resolves.get(params["host"], 0) + 1
+                    if any(is_google(h) for h in evh):
+                        google_events[name] = google_events.get(name, 0) + 1
             elif meth == "Tracing.tracingComplete":
                 done = True
         ws.close()
@@ -493,7 +507,11 @@ def netlog_trace(devtools, actions, settle=8):
         return {"ok": False, "error": f"{type(e).__name__}: {str(e)[:200]}"}
     google = {h: c for h, c in hosts.items() if is_google(h) and h not in USER_PAGE_HOSTS
               and not h.endswith("appspot.com")}
+    req_google = {k: c for k, c in requests.items()
+                  if is_google(re.sub(r"^\S+ \w+://([^/:]+).*$", r"\1", k)) and "testsafebrowsing.appspot.com" not in k}
     return {"ok": events > 0, "events": events, "seconds": round(time.time() - t0, 1), "hosts": hosts,
+            "requests": dict(sorted(requests.items())[:200]), "google_requests": req_google,
+            "resolves": resolves, "google_event_types": google_events,
             "google_hosts": google, "sb_hosts": sorted(h for h in hosts if h in SB_HOSTS),
             "google_urls": sorted(u for u in urls if is_google(re.sub(r"^\w+://([^/:]+).*$", r"\1", u))
                                   and "testsafebrowsing.appspot.com" not in u)[:60]}
@@ -587,7 +605,7 @@ def main():
         time.sleep(30)
     res["net_standard"] = netlog_trace(a.devtools, standard_actions)
     ns_ = res["net_standard"]
-    print("net standard:", {k: v for k, v in ns_.items() if k not in ("hosts", "google_urls")})
+    print("net standard:", {k: v for k, v in ns_.items() if k not in ("hosts", "google_urls", "requests", "resolves", "google_hosts")})
 
     # 3) Enhanced protection through the Settings UI, then the same kind of checks
     if not a.skip_esb:
@@ -618,7 +636,7 @@ def main():
                 ok = ok and rec["pass"]
                 res["cases"].append(rec)
             ne_ = res["net_enhanced"]
-            print("net enhanced:", {k: v for k, v in ne_.items() if k not in ("hosts", "google_urls")})
+            print("net enhanced:", {k: v for k, v in ne_.items() if k not in ("hosts", "google_urls", "requests", "resolves", "google_hosts")})
             rt = internal_text(a.devtools, "chrome://safe-browsing", ALL_TEXT_JS) or ""
             esb["rt_lookup_page"] = {"chars": len(rt),
                                      "mentions_public_canary": "swiftra_shield_canary" in rt,
@@ -655,6 +673,8 @@ def main():
         verdict = "inconclusive"
     res["net_audit"] = {"verdict": verdict, "positive_control": control,
                         "standard_google_hosts": sorted(ns_.get("google_hosts", {})),
+                        "standard_google_requests": ns_.get("google_requests"),
+                        "standard_requests_total": sum((ns_.get("requests") or {}).values()),
                         "enhanced_sb_hosts": ne_.get("sb_hosts")}
     print("net audit:", res["net_audit"])
     ok = ok and verdict != "sb_contact_in_standard"
