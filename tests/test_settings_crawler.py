@@ -39,3 +39,19 @@ class Crawler(unittest.TestCase):
             self.assertIsNone(re.search(uic.SUBPAGE_SKIP, t))
         self.assertRegex("Privacy and security", uic.SETTINGS_DEEP)
         self.assertIsNone(re.search(uic.SETTINGS_DEEP, "Search engine"))               # radio सूची
+
+
+class CurrentList(unittest.TestCase):
+    def test_last_recycler_wins(self):
+        """असली x64 dump (20_set_04): पुराने main list की rows subpage में न गिनी जाएँ।"""
+        xml = """<hierarchy><node class="F" package="p" bounds="[0,0][1080,2400]">
+<node resource-id="p:id/recycler_view" class="RecyclerView" package="p" bounds="[0,275][1080,2337]">
+<node text="Search engine" resource-id="android:id/title" class="T" package="p" bounds="[84,1008][996,1065]"/></node>
+<node resource-id="p:id/recycler_view" class="RecyclerView" package="p" bounds="[0,275][1080,2337]">
+<node text="Safe Browsing" resource-id="android:id/title" class="T" package="p" bounds="[84,1716][354,1773]"/></node>
+</node></hierarchy>"""
+        cls = [v for v in vars(uic).values() if isinstance(v, type) and hasattr(v, "nodes")][0]
+
+        class D:
+            nodes = staticmethod(cls.nodes)
+        self.assertEqual([n["text"] for n in uic.current_list_titles(D, xml, "p")], ["Safe Browsing"])

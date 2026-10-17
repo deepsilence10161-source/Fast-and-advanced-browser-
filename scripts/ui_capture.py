@@ -278,6 +278,31 @@ def on_page(d, title, xml=None):
     return any(n["text"] == title and n["bounds"][1] < 400 and n["id"] != "android:id/title" for n in d.nodes(xml))
 
 
+def current_list_titles(d, xml, pkg):
+    """back-stack के पुराने fragment का RecyclerView भी dump में रहता है; मौजूदा पन्ना = आख़िरी recycler_view।"""
+    try:
+        root = ET.fromstring(xml)
+    except ET.ParseError:
+        return []
+    lists = [n for n in root.iter("node") if n.get("resource-id", "") == f"{pkg}:id/recycler_view"]
+    if not lists:
+        return [x for x in d.nodes(xml) if x["id"] == "android:id/title"]
+    sub = ET.tostring(lists[-1], encoding="unicode")
+    return [x for x in d.nodes("<hierarchy>" + sub + "</hierarchy>") if x["id"] == "android:id/title"]
+
+
+def find_row(d, pkg, t, tries=4):
+    """row खोजें; न दिखे तो नीचे scroll करके (वापसी पर सूची ऊपर से शुरू होती है)।"""
+    for k in range(tries):
+        xml = d.dump()
+        hit = [n for n in current_list_titles(d, xml, pkg) if n["text"] == t and n["h"] > 0]
+        if hit:
+            return hit[0], d.nodes(xml)
+        if k < tries - 1:
+            shell("input swipe 540 1700 540 1000 400"); time.sleep(1.1)
+    return None, []
+
+
 def crawl_subpages(d, pkg, parent, pkey, deadline):
     """parent पन्ने की हर navigational row: tap -> capture -> BACK (parent पर)। लौट न पाए तो False।"""
     out, seen, idle, j = [], set(), 0, 0
@@ -285,7 +310,7 @@ def crawl_subpages(d, pkg, parent, pkey, deadline):
         xml = d.dump(); ns = d.nodes(xml)
         if not on_page(d, parent, xml):
             return out, False
-        rows = [x for x in ns if x["id"] == "android:id/title" and x["pkg"] == pkg and x["h"] >= 45
+        rows = [x for x in current_list_titles(d, xml, pkg) if x["pkg"] == pkg and x["h"] >= 45
                 and x["text"] and x["text"] not in seen]
         if not rows:
             idle += 1; shell("input swipe 540 1700 540 900 400"); time.sleep(1.3); continue
@@ -296,13 +321,12 @@ def crawl_subpages(d, pkg, parent, pkey, deadline):
             t = x["text"]; seen.add(t)
             if re.search(SUBPAGE_SKIP, t):
                 out.append({"title": t, "skipped": "rule"}); continue
-            cur_xml = d.dump(); cur_ns = d.nodes(cur_xml)
-            cur = [n for n in cur_ns if n["text"] == t and n["id"] == "android:id/title"]
-            if not cur:
+            row, cur_ns = find_row(d, pkg, t)
+            if row is None:
                 out.append({"title": t, "skipped": "not found"}); continue
-            if row_has_toggle(cur_ns, cur[0]) or not cur[0]["enabled"]:
+            if row_has_toggle(cur_ns, row) or not row["enabled"]:
                 out.append({"title": t, "skipped": "toggle/disabled"}); continue
-            d.tap_node(cur[0]); time.sleep(2.2); j += 1
+            d.tap_node(row); time.sleep(2.2); j += 1
             fg = d.foreground_pkg(); rec = {"title": t, "foreground": fg}
             nx = d.dump()
             if fg == pkg and not on_page(d, parent, nx):
