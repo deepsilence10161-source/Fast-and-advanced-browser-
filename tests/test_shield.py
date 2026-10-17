@@ -12,7 +12,17 @@ sys.path.insert(0, os.path.join(ROOT, "scripts", "shield"))
 import build_shield_db as B  # noqa: E402
 import sbcanon  # noqa: E402
 
-VEC = json.load(open(os.path.join(ROOT, "tests", "data", "sb_canon_vectors.json"), encoding="utf-8"))
+def _read(path, mode="r"):
+    with open(path, mode, **({} if "b" in mode else {"encoding": "utf-8"})) as f:
+        return f.read()
+
+
+def _write(path, data):
+    with open(path, "wb" if isinstance(data, bytes) else "w", **({} if isinstance(data, bytes) else {"encoding": "utf-8"})) as f:
+        f.write(data)
+
+
+VEC = json.loads(_read(os.path.join(ROOT, "tests", "data", "sb_canon_vectors.json")))
 EXTRA_URLS = [
     "http://a.b.c/1/2.html?param=1", "http://a.b.c.d.e.f.g/1.html", "http://1.2.3.4/1/", "http://a.b/saw-cgi/eBayISAPI.dll/",
     "https://WWW.Example.COM:443/A/./b/../c//d?x=1#frag", "http://0x7f.1/path", "http://017700000001/", "http://user:pw@evil.test/p",
@@ -129,10 +139,10 @@ class JavaTwin(unittest.TestCase):
                 h, p, q = sbcanon.canonicalize(url)
                 ex = sbcanon.expressions(url)
                 rows.append("\t".join([url, h, p, q, "|".join(ex), ",".join(str(sbcanon.expr_hash64(e)) for e in ex)]))
-            open(os.path.join(d, "v.tsv"), "w", encoding="utf-8").write("\n".join(rows) + "\n")
+            _write(os.path.join(d, "v.tsv"), "\n".join(rows) + "\n")
             blob, _ = B.build(B.SOURCES, {"popular.test"}, 1760000000, local=FEEDS)
             swz = B.encode_transport(blob)
-            open(os.path.join(d, "db.swz"), "wb").write(swz)
+            _write(os.path.join(d, "db.swz"), swz)
             key = os.path.join(d, "k.pem")
             subprocess.run(["openssl", "ecparam", "-name", "prime256v1", "-genkey", "-noout", "-out", key], check=True, capture_output=True)
             subprocess.run(["openssl", "dgst", "-sha256", "-sign", key, "-out", os.path.join(d, "db.sig"), os.path.join(d, "db.swz")], check=True)
@@ -143,7 +153,7 @@ class JavaTwin(unittest.TestCase):
                       ("https://testsafebrowsing.appspot.com/s/phishing.html", 2), ("https://testsafebrowsing.appspot.com/s/malware.html", 4),
                       ("http://127.0.0.1:8000/__swiftra_shield_canary__/phishing.html", 2), ("https://example.com/", 0),
                       ("https://evil-tenant.github.io/a", 2), ("https://github.io/", 0)]
-            open(os.path.join(d, "c.tsv"), "w").write("\n".join(f"{u}\t{t}" for u, t in checks) + "\n")
+            _write(os.path.join(d, "c.tsv"), "\n".join(f"{u}\t{t}" for u, t in checks) + "\n")
             src = [os.path.join(ROOT, "shield", "java", "org", "chromium", "components", "safe_browsing", "SwiftraShield.java"),
                    os.path.join(ROOT, "shield", "javatest", "ShieldParity.java"),
                    os.path.join(ROOT, "shield", "javatest", "org", "chromium", "build", "annotations", "NullMarked.java"),
@@ -169,11 +179,11 @@ class PatchSync(unittest.TestCase):
     PATCH = os.path.join(ROOT, "patches", "0006-swiftra-shield.patch")
 
     def test_in_series(self):
-        series = [l.strip() for l in open(os.path.join(ROOT, "patches", "series")) if l.strip() and not l.startswith("#")]
+        series = [l.strip() for l in _read(os.path.join(ROOT, "patches", "series")).splitlines() if l.strip() and not l.startswith("#")]
         self.assertIn("0006-swiftra-shield.patch", series)
 
     def test_new_files_match_sources(self):
-        txt = open(self.PATCH, encoding="utf-8").read()
+        txt = _read(self.PATCH)
         sections = txt.split("--- /dev/null\n")[1:]
         self.assertEqual(len(sections), 2)
         for sec in sections:
@@ -183,11 +193,11 @@ class PatchSync(unittest.TestCase):
             lines = body.split("\n")[1:]  # drop @@ line
             got = "\n".join(l[1:] for l in lines if l.startswith("+")) + "\n"
             name = os.path.basename(path)
-            src = open(os.path.join(ROOT, "shield", "java", "org", "chromium", "components", "safe_browsing", name), encoding="utf-8").read()
+            src = _read(os.path.join(ROOT, "shield", "java", "org", "chromium", "components", "safe_browsing", name))
             self.assertEqual(got, src, f"{name}: stale patch, run shield/make_patch.py")
 
     def test_bridge_hunk_is_non_branded_only(self):
-        txt = open(self.PATCH, encoding="utf-8").read()
+        txt = _read(self.PATCH)
         self.assertIn("+            if (sSafeBrowsingApiHandler == null && !BuildConfig.IS_CHROME_BRANDED) {", txt)
         self.assertIn("+                setSafeBrowsingApiHandler(new SwiftraShieldApiHandler());", txt)
         self.assertIn("+import org.chromium.build.BuildConfig;", txt)

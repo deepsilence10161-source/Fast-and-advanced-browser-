@@ -4,8 +4,9 @@
 Flow (all inside CI; no real malicious site is contacted):
   1. Local canary server (127.0.0.1:8001 via `adb reverse`) serves phishing/malware/safe pages whose
      body is a unique marker. The phishing/malware paths are canaries baked into the signed list.
-  2. Open the SAFE page -> first Safe Browsing check installs SwiftraShieldApiHandler, which downloads
-     and verifies the signed list. Wait for logcat "SwiftraShield ... list updated|loaded".
+  2. The handler is installed at browser startup (ProcessInitializationHandler -> initSafeBrowsingApi)
+     and downloads + verifies the signed list in the background. Readiness is measured by behaviour
+     (phishing canary blocked); logcat "SwiftraShield ... list updated|loaded" is recorded if present.
   3. Open each case in the browser; read the page through DevTools (title + innerText), fall back to a
      uiautomator dump. Classify: loaded (marker visible) / blocked_phishing / blocked_malware.
   4. Google's harmless test pages (testsafebrowsing.appspot.com, user permission 2026-10-17) and
