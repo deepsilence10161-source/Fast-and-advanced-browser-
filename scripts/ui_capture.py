@@ -241,6 +241,66 @@ def ensure_main(d, tries=4):
         return True
     return False
 
+SETTINGS_SKIP = r"^(Sign in|Turn on sync|Sign in to .*)$"   # login/account flow — PROJECT_RULES: बिना login
+
+
+def slug(t):
+    return re.sub(r"[^a-z0-9]+", "_", t.lower()).strip("_")[:28] or "x"
+
+
+def on_settings_main(d, xml=None):
+    xml = xml if xml is not None else d.dump()
+    main = r'text="(Search engine|Address bar|Privacy and security|Safety check|Default browser|Autofill and passwords|Tabs and tab groups|Homepage|Notifications|Appearance|Accessibility|Site settings|Languages|Downloads|Developer options|About Swiftra|About Chromium)" resource-id="android:id/title"'
+    return bool(re.search(r'text="Settings"', xml)) and len(re.findall(main, xml)) >= 2
+
+
+def crawl_settings(d, pkg, budget_s=420):
+    """Settings का हर top-level item: tap -> capture (scroll हो तो दूसरा capture) -> BACK। branding scan सब xml देखता है।"""
+    t0 = time.time(); pages = []; visited = set(); idle = 0; n = 0
+    while time.time() - t0 < budget_s and idle < 2:
+        xml = d.dump()
+        if not on_settings_main(d, xml):
+            d.log("settings crawl: main list पर नहीं — रुकते हैं"); break
+        titles = [x for x in d.nodes(xml) if x["id"] == "android:id/title" and x["pkg"] == pkg and x["h"] >= 30
+                  and x["bounds"][3] < 2250 and x["text"] not in visited]
+        if not titles:
+            idle += 1; shell("input swipe 540 1800 540 900 400"); time.sleep(1.5); continue
+        idle = 0
+        for x in titles:
+            if time.time() - t0 >= budget_s:
+                break
+            t = x["text"]; visited.add(t)
+            if re.search(SETTINGS_SKIP, t):
+                pages.append({"title": t, "skipped": "login"}); continue
+            # list scroll हो चुकी हो सकती है — title फिर से खोजें
+            cur = d.find("^" + re.escape(t) + "$", ("text",))
+            if not cur:
+                pages.append({"title": t, "skipped": "not found"}); continue
+            d.tap_node(cur); time.sleep(2.5); n += 1
+            fg = d.foreground_pkg()
+            rec = {"title": t, "foreground": fg}
+            if fg == pkg:
+                key = f"20_set_{n:02d}_{slug(t)}"
+                c = d.capture(key, f"settings → {t}"); rec["key"] = key
+                xs = open(os.path.join(d.out, key + ".xml")).read()
+                if 'scrollable="true"' in xs:
+                    shell("input swipe 540 1800 540 700 400"); time.sleep(1.5)
+                    d.capture(key + "_b", f"settings → {t} (scrolled)"); rec["scrolled"] = True
+            else:
+                rec["left_app"] = True; d.log(f"settings crawl: '{t}' ने app छोड़ा (fg={fg})")
+            pages.append(rec)
+            for _ in range(3):
+                d.back(1.8)
+                if on_settings_main(d):
+                    break
+            else:
+                d.log("settings crawl: main list पर वापसी नहीं — रुकते हैं")
+                return pages
+    d.log(f"settings crawl: {len([p for p in pages if p.get('key')])} पन्ने capture, {round(time.time()-t0)} s")
+    return pages
+
+
+
 def start_timings(pkg, activity, n_cold, n_warm, log):
     res = {"cold_ms": [], "warm_ms": [], "activity": activity}
     for i in range(n_cold):
@@ -407,6 +467,11 @@ def main():
                 if key == "11_settings":
                     shell("input swipe 540 1800 540 600 400"); time.sleep(1.5)
                     d.capture("11b_settings_scrolled", "settings scrolled")
+                    shell("input swipe 540 600 540 1800 400"); shell("input swipe 540 600 540 1800 400"); time.sleep(1.2)
+                    try:
+                        meta["settings_pages"] = crawl_settings(d, a.package)
+                    except Exception as e:   # crawler harness को न तोड़े
+                        meta["settings_pages"] = None; meta["settings_crawl_error"] = repr(e); d.log(f"settings crawl error: {e!r}")
                 d.back(2)
             else:
                 d.back()
