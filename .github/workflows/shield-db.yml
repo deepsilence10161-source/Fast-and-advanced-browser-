@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
       - name: Unit tests (canonicalization parity, builder guards, Java twin)
-        run: python3 -m pytest -q tests/test_shield.py
+        run: python3 -m unittest discover -s tests -p test_shield.py -v
       - name: Build list
         run: python3 scripts/shield/build_shield_db.py --out out
       - name: Sign + verify (private key only from secret, never printed)
