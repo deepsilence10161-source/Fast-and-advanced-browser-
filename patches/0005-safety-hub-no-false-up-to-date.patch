@@ -37,3 +37,21 @@
              return mPreference.getContext().getString(R.string.safety_hub_unavailable_summary);
          }
  
+@@ -198,6 +214,9 @@
+     }
+ 
+     private @Nullable String getSecondaryButtonText() {
++        // Swiftra: SafetyHubModuleDelegateImpl.openGooglePlayStore() is a no-op unless
++        // IS_CHROME_BRANDED, so "Go to Google Play" would be a dead button. Hide it.
++        if (!BuildConfig.IS_CHROME_BRANDED) return null;
+         if (mUpdateStatus == null) {
+             return mPreference.getContext().getString(R.string.safety_hub_go_to_google_play_button);
+         }
+@@ -216,6 +235,7 @@
+     }
+ 
+     private View.@Nullable OnClickListener getSecondaryButtonListener() {
++        if (!BuildConfig.IS_CHROME_BRANDED) return null;
+         if (mUpdateStatus == null) {
+             return v -> {
+                 mModuleDelegate.openGooglePlayStore(mPreference.getContext());

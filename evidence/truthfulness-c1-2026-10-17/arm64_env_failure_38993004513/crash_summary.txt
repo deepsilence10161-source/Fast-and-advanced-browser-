@@ -1,0 +1,13 @@
+10-17 02:09:14.086  9963  9963 F DEBUG   : pid: 845, tid: 1299, name: RenderThread  >>> com.android.launcher3 <<<
+10-17 02:09:14.086  9963  9963 F DEBUG   : Abort message: 'drawRenderNode called on a context with no surface!'
+10-17 02:09:14.364 10034 10034 F DEBUG   : pid: 9972, tid: 9990, name: RenderThread  >>> com.android.launcher3 <<<
+10-17 02:09:14.364 10034 10034 F DEBUG   : Abort message: 'Failed to load matching allocator for mapper version 2'
+10-17 02:09:14.629 10142 10142 F DEBUG   : pid: 10085, tid: 10110, name: RenderThread  >>> com.android.launcher3 <<<
+10-17 02:09:14.629 10142 10142 F DEBUG   : Abort message: 'Failed to load matching allocator for mapper version 2'
+10-17 02:09:14.899 10236 10236 F DEBUG   : pid: 9998, tid: 10040, name: RenderThread  >>> com.android.systemui <<<
+10-17 02:09:14.899 10236 10236 F DEBUG   : Abort message: 'Failed to load matching allocator for mapper version 2'
+10-17 02:09:15.024 10238 10238 F DEBUG   : pid: 10194, tid: 10218, name: RenderThread  >>> com.android.launcher3 <<<
+10-17 02:09:15.024 10238 10238 F DEBUG   : Abort message: 'Failed to load matching allocator for mapper version 2'
+10-17 02:09:15.268 10354 10354 F DEBUG   : pid: 10283, tid: 10309, name: RenderThread  >>> com.android.launcher3 <<<
+10-17 02:09:15.268 10354 10354 F DEBUG   : Abort message: 'Failed to load matching allocator for mapper version 2'
+91

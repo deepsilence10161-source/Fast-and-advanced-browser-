@@ -48,10 +48,11 @@ class Scan(unittest.TestCase):
         x = doc(node("Copyright 2026 Google LLC. All rights reserved.", rid="android:id/summary"),
                 node("Automatically sends usage statistics and crash reports to Google", rid="android:id/summary"),
                 node("Swiftra is up to date", rid="android:id/title"),
+                node("Go to Google Play", cls="android.widget.Button"),
                 node(cls="android.webkit.WebView", children=node("Chrome is up to date", cls="android.view.View")))
         bad, seen = bs.scan_claims(x, P)
         self.assertEqual(sorted(b["claim"] for b in bad),
-                         ["copyright_google_llc", "metrics_sends_to_google", "update_up_to_date"])
+                         ["copyright_google_llc", "dead_play_button", "metrics_sends_to_google", "update_up_to_date"])
         self.assertEqual(seen, set())
         good = doc(node("Copyright 2026 The Chromium Authors. All rights reserved."),
                    node("Can’t check Swiftra version"), node("Version 155.0.8059.80"),

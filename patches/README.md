@@ -90,7 +90,8 @@ Settings → Safety check (Safety Hub) "Swiftra is up to date" दिखात�
 Google internal build में (`OmahaService.createRequestGenerator()` → `ServiceLoaderUtil.maybeCreate`), Chromium में `null` →
 update check कभी नहीं चलता → `UpdateStatusProvider` `UpdateState.NONE` → "up to date"। अब `!IS_CHROME_BRANDED` में upstream की
 मौजूदा "unavailable" शाखा: शीर्षक "Can’t check Swiftra version", summary "Version <installed>" ("Try again later" भ्रामक होता)।
-पुराना SafetyCheck रास्ता पहले से ERROR ("can’t check for updates") दिखाता है — अपरिवर्तित।
+उसी card का "Go to Google Play" button भी छिपा: upstream `SafetyHubModuleDelegateImpl.openGooglePlayStore()` non-branded में no-op
+(dead button) — ae8c946 के arm64 screenshot में दिखा, अगले commit में ठीक। पुराना SafetyCheck रास्ता पहले से ERROR ("can’t check for updates") दिखाता है — अपरिवर्तित।
 
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर

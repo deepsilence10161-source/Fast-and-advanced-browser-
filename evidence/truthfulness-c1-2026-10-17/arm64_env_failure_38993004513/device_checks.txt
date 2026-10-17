@@ -1,0 +1,11 @@
+target=chromium_source_arm64 package=com.swiftra.app expected_label=Swiftra expect_nondebuggable=1 abi=arm64-v8a android=14
+PASS  01 package installed (com.swiftra.app)
+PASS  02 launcher entry — com.swiftra.app/com.google.android.apps.chrome.Main
+FAIL  03 launcher app drawer में "Swiftra" नहीं मिला — launcher=?
+PASS  04 non-debuggable — flags:flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ] | run-as: run-as: package not debuggable: com.swiftra.app
+PASS  05 same-key update (install -r)
+PASS  06 foreign-key update rejected — INSTALL_FAILED_UPDATE_INCOMPATIBLE; installed signer unchanged signatures:[567ab55c]
+FAIL  07 touch scroll — page not found: Remote end closed connection without response
+FAIL  08 crash/dead — pid=none crash_lines=88
+PASS  09 uninstall + reinstall
+DEVICE_CHECKS: 6 पास, 3 विफल

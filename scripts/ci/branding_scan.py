@@ -34,6 +34,8 @@ FALSE_CLAIMS = {
     "copyright_google_llc": re.compile(r"Copyright\s+\d{4}\s+Google\s+(LLC|Inc)", re.I),
     "metrics_sends_to_google": re.compile(r"sends usage statistics and crash reports to Google", re.I),
     "update_up_to_date": re.compile(r"\bis up to date\b", re.I),
+    # non-branded में openGooglePlayStore() no-op — dead button (0005 छिपाता है)
+    "dead_play_button": re.compile(r"^Go to Google Play$", re.I),
 }
 # अपेक्षित सही text (उपस्थिति का प्रमाण; न मिलना = वह पन्ना capture नहीं हुआ या fix नहीं पहुँचा)
 EXPECTED = {
