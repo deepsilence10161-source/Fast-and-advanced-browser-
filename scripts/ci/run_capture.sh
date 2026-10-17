@@ -32,7 +32,7 @@ echo "chat_fixture exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 kill $HTTP_PID 2>/dev/null
 # Swiftra Shield (patches/0006): local canaries + Google's harmless test pages -> interstitial
 if [ "$T" != chrome_ref ]; then
-  timeout 1020 python3 scripts/ci/shield_e2e.py --package "$PKG" --out "$OUT/shield" 2>&1 | tee "$OUT/shield_e2e.txt"
+  timeout 1500 python3 scripts/ci/shield_e2e.py --package "$PKG" --out "$OUT/shield" 2>&1 | tee "$OUT/shield_e2e.txt"
   echo "shield_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 fi
 timeout 60 adb logcat -d | grep -iE "chromium|chrome|FATAL|AndroidRuntime|ndk_translation|DEBUG" | tail -400 > "$OUT/logcat_tail.txt"

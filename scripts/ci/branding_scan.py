@@ -36,11 +36,18 @@ FALSE_CLAIMS = {
     "update_up_to_date": re.compile(r"\bis up to date\b", re.I),
     # non-branded में openGooglePlayStore() no-op — dead button (0005 छिपाता है)
     "dead_play_button": re.compile(r"^Go to Google Play$", re.I),
+    # c2c (0002 FACT_FIXES + 0008): Safe Browsing texts untrue for Swiftra
+    "sb_standard_data_to_google": re.compile(r"bits of page content are sent to Google Safe Browsing", re.I),
+    "sb_ai_powered": re.compile(r"AI-powered protection", re.I),
+    "sb_download_deep_scan": re.compile(r"In-depth scans for suspicious downloads", re.I),
+    "sb_signed_in_google_services": re.compile(r"signed in, protects you across Google services", re.I),
 }
 # अपेक्षित सही text (उपस्थिति का प्रमाण; न मिलना = वह पन्ना capture नहीं हुआ या fix नहीं पहुँचा)
 EXPECTED = {
     "copyright_chromium_authors": re.compile(r"Copyright\s+\d{4}\s+The Chromium Authors", re.I),
     "update_cant_check": re.compile(r"Can.t check \S+ version", re.I),
+    "sb_standard_local_summary": re.compile(r"Protects you from sites, downloads, and extensions that are known to be dangerous"),
+    "sb_enhanced_honest_summary": re.compile(r"Real-time, proactive protection by sending more information to Google Safe Browsing"),
 }
 
 

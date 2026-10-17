@@ -69,6 +69,10 @@ GRD = textwrap.dedent('''\
           <message name="IDS_LINK" desc="x">Open <ph name="BEGIN_LINK">&lt;link&gt;</ph>Chrome<ph name="END_LINK">&lt;/link&gt;</ph> help</message>
           <message name="IDS_LEGAL_INFORMATION_SUMMARY" desc="x" meaning="Android">Copyright <ph name="year">%1$d<ex>2014</ex></ph> Google LLC. All rights reserved.</message>
           <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="x">Copyright <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Chromium Authors. All rights reserved.</message>
+          <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY" desc="x">Protects against sites, downloads, and extensions that are known to be dangerous. If a page does something suspicious, URLs and bits of page content are sent to Google Safe Browsing.</message>
+          <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_SUBTITLE" desc="x">Protects you from sites, downloads, and extensions that are known to be dangerous</message>
+          <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY_UPDATED" desc="x">Real-time, AI-powered protection against dangerous sites, downloads, and extensions that's based on your browsing data getting sent to Google</message>
+          <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_SUBTITLE" desc="x">Real-time, proactive protection by sending more information to Google Safe Browsing</message>
           <if expr="is_android">
             <message name="IDS_QUIT" desc="x">Press to quit</message>
           </if>
@@ -86,6 +90,18 @@ GRD = textwrap.dedent('''\
 
 LEG_OLD = "Copyright YEAR Google LLC. All rights reserved."
 LEG_SRC = "Copyright YEAR The Chromium Authors. All rights reserved."
+SB_STD_OLD = ("Protects against sites, downloads, and extensions that are known to be dangerous. If a page does "
+              "something suspicious, URLs and bits of page content are sent to Google Safe Browsing.")
+SB_STD_NEW = "Protects you from sites, downloads, and extensions that are known to be dangerous"
+SB_ESB_OLD = ("Real-time, AI-powered protection against dangerous sites, downloads, and extensions that's based on "
+              "your browsing data getting sent to Google")
+SB_ESB_NEW = "Real-time, proactive protection by sending more information to Google Safe Browsing"
+SB_TR = {SB_STD_OLD: "पुराना मानक विवरण (Google को भेजता है)", SB_STD_NEW: "खतरनाक जानी-पहचानी साइटों से सुरक्षा",
+         SB_ESB_OLD: "पुराना AI विवरण", SB_ESB_NEW: "Google सुरक्षित ब्राउज़िंग को अधिक जानकारी भेजकर रीयल-टाइम सुरक्षा"}
+
+
+def sb_tr(ids):
+    return [f'<translation id="{ids[k]}">{v}</translation>' for k, v in SB_TR.items()]
 
 
 def xtb_name(rel):
@@ -121,7 +137,8 @@ class TransformWithRealGrit(unittest.TestCase):
                f'<translation id="{ids["About Chrome"]}">Chrome के बारे में</translation>',
                f'<translation id="{ids["Press to quit"]}">Chrome बंद करने के लिए दबाएं</translation>',
                f'<translation id="{ids["Restart Chrome"]}">Chrome रीस्टार्ट करें</translation>',
-               f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>', '</translationbundle>']
+               f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>'] + sb_tr(ids) + \
+              ['</translationbundle>']
         open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
         return ids
 
@@ -154,7 +171,8 @@ class TransformWithRealGrit(unittest.TestCase):
                f'<translation id="{ids["About Chrome"]}">Chrome के बारे में</translation>',
                f'<translation id="{ids["Press to quit"]}">Chrome बंद करने के लिए दबाएं</translation>',
                f'<translation id="{ids["Restart Chrome"]}">Chrome रीस्टार्ट करें</translation>',
-               f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>', '</translationbundle>']
+               f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>'] + sb_tr(ids) + \
+              ['</translationbundle>']
         open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
         return ids
 
@@ -182,7 +200,7 @@ class TransformWithRealGrit(unittest.TestCase):
                 f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>',
                 f'<translation id="{ids[LEG_OLD]}">कॉपीराइट <ph name="YEAR" /> Google LLC. सर्वाधिकार सुरक्षित.</translation>',
                 f'<translation id="{ids[LEG_SRC]}">कॉपीराइट <ph name="YEAR" /> Chrome लेखक. सर्वाधिकार सुरक्षित.</translation>',
-                '<translation id="111">दूसरी grd का Chrome</translation>', '</translationbundle>']
+                '<translation id="111">दूसरी grd का Chrome</translation>'] + sb_tr(ids) + ['</translationbundle>']
         open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
         return ids
 
@@ -257,6 +275,28 @@ class TransformWithRealGrit(unittest.TestCase):
         sx = open(os.path.join(self.src, os.path.dirname(fx["tr_from"][0]), "translations",
                                xtb_name(fx["tr_from"][0])), encoding="utf-8").read()
         self.assertIn("Chrome लेखक", sx)                                   # स्रोत grd का अपना अनुवाद नहीं छूता
+
+    def test_fact_fix_safe_browsing_summaries(self):
+        """Standard: Google-data वाक्य हटे; Enhanced: "AI-powered" हटे; अनुवाद desktop subtitle (स्रोत grd) से।"""
+        self._mk_all()
+        out = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        for name in ("IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY", "IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY_UPDATED"):
+            self.assertIn("[fact] " + name, out.stderr)
+        fx = rb.FACT_FIXES[1]
+        p = os.path.join(self.src, fx["grd"])
+        g = open(p, encoding="utf-8").read()
+        self.assertNotIn("bits of page content", g)
+        self.assertNotIn("AI-powered", g)
+        new = {nm: (i, t) for i, t, nm in rb.message_ids(self.src, p, names=True)}
+        self.assertEqual(new["IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY"][1], SB_STD_NEW)
+        self.assertEqual(new["IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY_UPDATED"][1], SB_ESB_NEW)
+        x = open(os.path.join(os.path.dirname(p), "translations", xtb_name(fx["grd"])), encoding="utf-8").read()
+        tr = dict(re.findall(r'<translation id="(\d+)">(.*?)</translation>', x))
+        self.assertEqual(tr[new["IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY"][0]], SB_TR[SB_STD_NEW])
+        self.assertEqual(tr[new["IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY_UPDATED"][0]], SB_TR[SB_ESB_NEW])
+        self.assertNotIn(SB_TR[SB_STD_OLD], x)
+        self.assertNotIn(SB_TR[SB_ESB_OLD], x)
 
     def test_fact_fix_missing_source_translation_fails(self):
         old = self._mk_all()

@@ -156,8 +156,10 @@ class JavaTwin(unittest.TestCase):
             _write(os.path.join(d, "c.tsv"), "\n".join(f"{u}\t{t}" for u, t in checks) + "\n")
             src = [os.path.join(ROOT, "shield", "java", "org", "chromium", "components", "safe_browsing", "SwiftraShield.java"),
                    os.path.join(ROOT, "shield", "javatest", "ShieldParity.java"),
-                   os.path.join(ROOT, "shield", "javatest", "org", "chromium", "build", "annotations", "NullMarked.java"),
-                   os.path.join(ROOT, "shield", "javatest", "org", "chromium", "build", "annotations", "Nullable.java")]
+                   # stubs of org.chromium.build.annotations; kept outside a "build/" path because workspace
+                   # snapshots drop directories named build (javac takes explicit files, path is irrelevant)
+                   os.path.join(ROOT, "shield", "javatest", "stubs", "NullMarked.java"),
+                   os.path.join(ROOT, "shield", "javatest", "stubs", "Nullable.java")]
             r = subprocess.run(["javac", "-Xlint:all", "-Werror", "-d", os.path.join(d, "cls")] + src, capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
             r = subprocess.run(["java", "-cp", os.path.join(d, "cls"), "ShieldParity", os.path.join(d, "v.tsv"), os.path.join(d, "db.swz"),

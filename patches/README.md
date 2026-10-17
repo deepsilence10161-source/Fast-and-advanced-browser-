@@ -102,6 +102,30 @@ update check कभी नहीं चलता → `UpdateStatusProvider` `Upd
 - दोनों BUILD.gn में `//build:branding_buildflags` dep।
 - साथ में (c2b): 0002 scope में `generated_resources.grd`; overlay `chrome/android/java/res/drawable/blue_google_shield.xml` (Google "G" की जगह ✓)। विवरण: `docs/swiftra-shield.md` § Enhanced protection।
 
+## 0008-swiftra-standard-local-and-esb-honest.patch + args.gn + 0002 (c2c — सत्यता + privacy)
+शोध (Chromium 155.0.8059.80 source):
+- `args.gn` में `is_official_build=false` + unbranded → `fieldtrial_testing_enabled=true` (components/variations/service/BUILD.gn) और
+  `ShouldUseFieldTrialTestingConfig()` default true → `testing/variations/fieldtrial_testing_config.json` के ~1128 प्रयोग हर
+  Swiftra पर चालू थे। इनमें `MaliciousApkDownloadCheck` (Standard में भी APK download ping → androidchromeprotect.pa.googleapis.com,
+  `X-Goog-Api-Key: dummytoken`), `SkipImageClassificationScoringForNonPageLoadTriggers`, `ClientSideDetectionCreditCardForm`,
+  `ProactivePasswordProtection`। Chromium का अपना testing/variations/README.md: non-Chrome browsers testing config बंद करें।
+  → `disable_fieldtrial_testing_config = true` (ungoogled-chromium/Thorium जैसा)।
+- `chrome_password_protection_service.cc` `IsPingingEnabled()`: Android पर saved-password reuse / OTP-field ping Standard में
+  भी `true` (Google को URL + page data)। non-branded में अब केवल `extended_reporting_enabled` (= Enhanced या "Help improve
+  security" opt-in, दोनों Google को भेजना स्पष्ट बताते हैं)।
+- CSD model: `prediction_model_fetcher_impl.cc` key= `google_apis::GetAPIKey()` — हमारे build में `dummytoken` → model नहीं
+  (E2E: "Downloaded models:" खाली) → CLASSIFIER_NOT_READY → CSD ping नहीं।
+- इसलिए Standard का दावा "If a page does something suspicious, URLs and bits of page content are sent to Google Safe Browsing"
+  Swiftra के लिए असत्य → 0002 FACT_FIXES: Chrome का desktop Standard subtitle ("Protects you from sites, downloads, and
+  extensions that are known to be dangerous", 81 पेशेवर अनुवाद generated_resources से)।
+- Enhanced "Real-time, AI-powered protection …": Swiftra में कोई AI model नहीं चलता (model fetch key-रहित) → Chrome का desktop
+  Enhanced subtitle "Real-time, proactive protection by sending more information to Google Safe Browsing" (81 अनुवाद)।
+- Enhanced details page (`EnhancedProtectionSettingsFragment`): non-branded में छिपे — bullet_two "In-depth scans for suspicious
+  downloads" (APK scan बंद/key-रहित), bullet_three "When you're signed in, protects you across Google services" (Google sign-in
+  उपलब्ध नहीं), learn_more ("how <app> keeps your data private" → Google Chrome help)। data disclosures bullet_six/seven बने रहते।
+- E2E (`shield_e2e.py`): chrome://version variations source ≠ field-trial-config; Safe Browsing page के दोनों summaries; Enhanced
+  details page; browser-process NetLog trace (CDP Tracing) — Standard window में Safe Browsing endpoint 0, Enhanced window positive control।
+
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।

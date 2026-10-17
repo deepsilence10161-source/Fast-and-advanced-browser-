@@ -49,14 +49,24 @@ class Scan(unittest.TestCase):
                 node("Automatically sends usage statistics and crash reports to Google", rid="android:id/summary"),
                 node("Swiftra is up to date", rid="android:id/title"),
                 node("Go to Google Play", cls="android.widget.Button"),
+                node("Protects against sites, downloads, and extensions that are known to be dangerous. If a page does "
+                     "something suspicious, URLs and bits of page content are sent to Google Safe Browsing.", rid=P + ":id/description"),
+                node("Real-time, AI-powered protection against dangerous sites, downloads, and extensions", rid=P + ":id/description"),
+                node("In-depth scans for suspicious downloads.", rid="android:id/summary"),
+                node("When you're signed in, protects you across Google services.", rid="android:id/summary"),
                 node(cls="android.webkit.WebView", children=node("Chrome is up to date", cls="android.view.View")))
         bad, seen = bs.scan_claims(x, P)
         self.assertEqual(sorted(b["claim"] for b in bad),
-                         ["copyright_google_llc", "dead_play_button", "metrics_sends_to_google", "update_up_to_date"])
+                         ["copyright_google_llc", "dead_play_button", "metrics_sends_to_google", "sb_ai_powered",
+                          "sb_download_deep_scan", "sb_signed_in_google_services", "sb_standard_data_to_google",
+                          "update_up_to_date"])
         self.assertEqual(seen, set())
         good = doc(node("Copyright 2026 The Chromium Authors. All rights reserved."),
                    node("Can’t check Swiftra version"), node("Version 155.0.8059.80"),
-                   node("Make searches and browsing better"), node("Google Terms of Service"))
+                   node("Make searches and browsing better"), node("Google Terms of Service"),
+                   node("Protects you from sites, downloads, and extensions that are known to be dangerous"),
+                   node("Real-time, proactive protection by sending more information to Google Safe Browsing"),
+                   node("Sends the URLs of sites you visit and a small sample of page content"))
         bad, seen = bs.scan_claims(good, P)
         self.assertEqual(bad, [])
         self.assertEqual(seen, set(bs.EXPECTED))

@@ -103,6 +103,25 @@ FACT_FIXES = [
          old="Google LLC", new="The Chromium Authors",
          tr_from=("chrome/app/chromium_strings.grd", "IDS_ABOUT_VERSION_COPYRIGHT"),
          tr_fix=[(re.compile(r"(?<![A-Za-z])Chrome(?![A-Za-z])"), "Chromium")]),
+    # Settings -> Safe Browsing -> Standard: Swiftra Standard is fully local (Swiftra Shield list; no
+    # Google API key, so no CSD model; PhishGuard pings gated by 0008; field-trial testing config off
+    # so no APK download pings). "URLs and bits of page content are sent to Google Safe Browsing" is
+    # false here -> Chrome's own desktop Standard subtitle (same claim minus the data sentence).
+    dict(grd="chrome/browser/ui/android/strings/android_chrome_strings.grd",
+         name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY",
+         old="Protects against sites, downloads, and extensions that are known to be dangerous. If a page "
+             "does something suspicious, URLs and bits of page content are sent to Google Safe Browsing.",
+         new="Protects you from sites, downloads, and extensions that are known to be dangerous",
+         tr_from=("chrome/app/generated_resources.grd", "IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_SUBTITLE")),
+    # Enhanced: Swiftra runs no AI model (no CSD/on-device model without an API key); what it does is
+    # real-time URL checks with Google + Shield. -> Chrome's own desktop Enhanced subtitle (no AI claim,
+    # same data disclosure).
+    dict(grd="chrome/browser/ui/android/strings/android_chrome_strings.grd",
+         name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY_UPDATED",
+         old="Real-time, AI-powered protection against dangerous sites, downloads, and extensions that's "
+             "based on your browsing data getting sent to Google",
+         new="Real-time, proactive protection by sending more information to Google Safe Browsing",
+         tr_from=("chrome/app/generated_resources.grd", "IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_SUBTITLE")),
 ]
 
 

@@ -127,5 +127,32 @@ class SettingsUi(unittest.TestCase):
                 self.assertEqual(r["set"], want, r)
 
 
+
+class C2cTruthAndNetwork(unittest.TestCase):
+    def test_sb_page_truth(self):
+        upstream = ["Enhanced protection", "Real-time, AI-powered protection against dangerous sites, downloads, and "
+                    "extensions that's based on your browsing data getting sent to Google", "Standard protection",
+                    "Protects against sites, downloads, and extensions that are known to be dangerous. If a page does "
+                    "something suspicious, URLs and bits of page content are sent to Google Safe Browsing."]
+        r = E.sb_page_truth(upstream)
+        self.assertFalse(r["pass"]); self.assertEqual(len(r["false_claims"]), 2); self.assertEqual(len(r["missing_expected"]), 2)
+        fixed = ["Enhanced protection", E.SB_PAGE_EXPECT[1], "Standard protection", E.SB_PAGE_EXPECT[0]]
+        self.assertTrue(E.sb_page_truth(fixed)["pass"])
+        self.assertFalse(E.sb_page_truth(None)["pass"])
+
+    def test_google_hosts(self):
+        for h in ("safebrowsing.google.com", "optimizationguide-pa.googleapis.com", "www.gstatic.com", "redirector.gvt1.com"):
+            self.assertTrue(E.is_google(h), h)
+        for h in ("example.com", "github.com", "notgoogle.com", "googleapis.com.evil.net", "release-assets.githubusercontent.com"):
+            self.assertFalse(E.is_google(h), h)
+
+    def test_host_regex_on_netlog_args(self):
+        blob = json.dumps({"params": {"url": "https://safebrowsing.google.com/safebrowsing/clientreport/realtime?x=1",
+                                      "host": "example.com", "other": "wss://a.b.c:443/x", "n": "http://127.0.0.1:8001/p"}})
+        hosts = {(a or b) for a, b in E.HOST_RX.findall(blob)}
+        self.assertEqual(hosts, {"safebrowsing.google.com", "example.com", "a.b.c", "127.0.0.1"})
+        self.assertIn("safebrowsing.google.com", E.SB_HOSTS)
+
+
 if __name__ == "__main__":
     unittest.main()

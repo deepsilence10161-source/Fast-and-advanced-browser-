@@ -1,2 +1,7 @@
 chrome_public_manifest_package = "com.swiftra.app"
 debuggable_apks = false
+# c2c: Chromium testing/variations/README.md: "Non-developer builds of Chromium (for example,
+# non-Chrome browsers ...) should disable the testing config". Without this an unbranded build
+# applies all ~1128 experimental studies by default (incl. MaliciousApkDownloadCheck = APK download
+# pings to Google in Standard protection, CSD skip-scoring pings). ungoogled-chromium/Thorium do the same.
+disable_fieldtrial_testing_config = true

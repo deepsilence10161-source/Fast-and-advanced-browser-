@@ -280,7 +280,7 @@ def set_safe_browsing(package, mode, out):
         f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
     page_text_ = [n["text"] for n in ns if n["text"]]
     back = to_browser(package)
-    return {"set": checked, "log": log, "page_text": page_text_[:60], "back_to_browser": back}
+    return {"set": checked, "log": log, "page_text": page_text_[:150], "back_to_browser": back}
 
 
 # ---------- chrome:// pages via DevTools (informational) ----------
@@ -339,6 +339,164 @@ def enable_debug_pages(devtools):
 
 
 CHROME_WORD = re.compile(r"\bChrome\b(?!\s*(?:Web Store|OS\b))")
+
+
+# ---------- c2c: Settings truthfulness (patches/0002 FACT_FIXES + 0008) ----------
+# Safe Browsing page: radio summaries (android_chrome_strings.grd, replaced by Chrome's desktop subtitles)
+SB_PAGE_EXPECT = ("Protects you from sites, downloads, and extensions that are known to be dangerous",
+                  "Real-time, proactive protection by sending more information to Google Safe Browsing")
+SB_PAGE_FALSE = ("bits of page content are sent to Google Safe Browsing", "AI-powered")
+# Enhanced protection details page (enhanced_protection_preferences.xml): undeliverable benefit claims hidden,
+# data disclosures (bullet_six, bullet_seven) kept
+ESB_DETAILS_FALSE = ("In-depth scans for suspicious downloads", "protects you across Google services",
+                     "keeps your data private")
+ESB_DETAILS_EXPECT = ("Sends the URLs of sites you visit", "this data is linked to your Google Account")
+
+
+def sb_page_truth(page_text):
+    t = " ".join(page_text or [])
+    found_false = [x for x in SB_PAGE_FALSE if x in t]
+    missing = [x for x in SB_PAGE_EXPECT if x not in t]
+    return {"false_claims": found_false, "missing_expected": missing, "pass": not found_false and not missing}
+
+
+def esb_details(package, out):
+    """menu -> Settings -> Privacy and security -> Safe Browsing -> (Enhanced) expand arrow -> details page."""
+    adb("shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", "https://example.com/", package, timeout=40)
+    time.sleep(4)
+    to_browser(package)
+    ns, _ = ui_nodes()
+    menu = [n for n in ns if n["id"].endswith(":id/menu_button")]
+    if not menu:
+        return {"pass": False, "log": ["menu_button not found"]}
+    tap(menu[0]); time.sleep(1.5)
+    log = []
+    for step in ("Settings", "Privacy and security", "Safe Browsing"):
+        n, _ = find_text(step, scrolls=3 if step == "Settings" else 5)
+        if not n:
+            return {"pass": False, "log": log + [f"not found: {step}"]}
+        tap(n); log.append(f"tap: {step}"); time.sleep(2.5)
+    ns, _ = ui_nodes()
+    title = [n for n in ns if n["text"] == "Enhanced protection"]
+    arrows = [n for n in ns if n["id"].endswith(":id/expand_arrow")]
+    if not title or not arrows:
+        return {"pass": False, "log": log + ["expand arrow not found"]}
+    arrow = min(arrows, key=lambda n: abs(n["cy"] - title[-1]["cy"]))
+    tap(arrow); log.append("tap: expand_arrow (Enhanced)"); time.sleep(3)
+    texts = []
+    for k in range(4):   # the page is longer than one screen
+        ns, xml = ui_nodes()
+        with open(os.path.join(out, f"esb_details_{k}.xml"), "w", encoding="utf-8") as f:
+            f.write(xml)
+        with open(os.path.join(out, f"esb_details_{k}.png"), "wb") as f:
+            f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+        texts += [n["text"] for n in ns if n["text"] and n["text"] not in texts]
+        adb("shell", "input", "swipe", "540", "1700", "540", "700", "400"); time.sleep(1.2)
+    t = " ".join(texts)
+    false_ = [x for x in ESB_DETAILS_FALSE if x in t]
+    missing = [x for x in ESB_DETAILS_EXPECT if x not in t]
+    back = to_browser(package)
+    return {"pass": not false_ and not missing, "false_claims": false_, "missing_expected": missing,
+            "texts": texts[:40], "log": log, "back_to_browser": back}
+
+
+# ---------- c2c: variations source (args.gn disable_fieldtrial_testing_config) ----------
+VERSION_JS = r"""(() => {
+  const q = s => document.querySelector(s);
+  const sec = q('#variations-source-section');
+  return JSON.stringify({
+    source: ((q('#variations-source') || {}).textContent || '').trim(),
+    source_hidden: sec ? sec.hidden : null,
+    variations_chars: ((q('#variations-list') || {}).textContent || '').trim().length,
+    cmd_chars: ((q('#variations-cmd') || {}).textContent || '').trim().length,
+    version: ((q('#version') || {}).textContent || '').trim().slice(0, 80)});
+})()"""
+
+
+def variations_state(devtools):
+    r = open_internal(devtools, "chrome://version/")
+    time.sleep(3)
+    raw = internal_text(devtools, "chrome://version", VERSION_JS)
+    try:
+        v = json.loads(raw) if raw else None
+    except ValueError:
+        v = None
+    if not isinstance(v, dict):
+        return {"open": r, "pass": False, "error": "chrome://version not readable", "raw": str(raw)[:200]}
+    v["open"] = r
+    v["pass"] = "field-trial-config" not in v.get("source", "")
+    return v
+
+
+# ---------- c2c: browser-process network audit (CDP Tracing, NetLog category) ----------
+# NetworkService installs net::TraceNetLogObserver; with the "disabled-by-default-netlog" category on, every
+# URL request / host resolution of the browser process (Safe Browsing pings included) becomes a trace event.
+GOOGLE_SUFFIXES = ("google.com", "googleapis.com", "gstatic.com", "gvt1.com", "gvt2.com", "googleusercontent.com",
+                   "google-analytics.com", "doubleclick.net", "googlesyndication.com", "ggpht.com", "youtube.com",
+                   "1e100.net", "googleadservices.com", "app-measurement.com", "android.com", "googlevideo.com")
+SB_HOSTS = ("safebrowsing.google.com", "sb-ssl.google.com", "safebrowsing.googleapis.com",
+            "androidchromeprotect.pa.googleapis.com", "sb.google.com")
+USER_PAGE_HOSTS = ("example.com", "testsafebrowsing.appspot.com", "127.0.0.1", "localhost")
+HOST_RX = re.compile(r'(?:https?|wss?)://([A-Za-z0-9.-]+)(?::\d+)?[/"?]|"host":\s*"([A-Za-z0-9.-]+)')
+
+
+def is_google(h):
+    return any(h == s or h.endswith("." + s) for s in GOOGLE_SUFFIXES)
+
+
+def netlog_trace(devtools, actions, settle=8):
+    """Run actions() while the browser records NetLog trace events; return {host: count, ...} + URL samples."""
+    import websocket
+    ws_url = browser_ws(devtools)
+    if not ws_url:
+        return {"ok": False, "error": "no browser websocket"}
+    try:
+        ws = websocket.create_connection(ws_url, timeout=30, suppress_origin=True, enable_multithread=True)
+        ws.send(json.dumps({"id": 1, "method": "Tracing.start", "params": {
+            "transferMode": "ReportEvents",
+            "traceConfig": {"recordMode": "recordContinuously",
+                            "includedCategories": ["disabled-by-default-netlog", "netlog"]}}}))
+        start_reply = None
+        for _ in range(50):
+            m = json.loads(ws.recv())
+            if m.get("id") == 1:
+                start_reply = m
+                break
+        if not start_reply or "error" in start_reply:
+            ws.close()
+            return {"ok": False, "error": "Tracing.start: " + json.dumps(start_reply)[:200]}
+        t0 = time.time()
+        actions()
+        time.sleep(settle)
+        ws.send(json.dumps({"id": 2, "method": "Tracing.end"}))
+        events, done = 0, False
+        hosts, urls = {}, set()
+        ws.settimeout(60)
+        while not done:
+            m = json.loads(ws.recv())
+            meth = m.get("method")
+            if meth == "Tracing.dataCollected":
+                for ev in m["params"].get("value", []):
+                    events += 1
+                    blob = json.dumps(ev.get("args", {}))
+                    for a1, a2 in HOST_RX.findall(blob):
+                        h = (a1 or a2).lower().rstrip(".")
+                        if h:
+                            hosts[h] = hosts.get(h, 0) + 1
+                    for u in re.findall(r'https?://[^"\s\\]+', blob):
+                        if len(urls) < 400:
+                            urls.add(u.split("?")[0][:160])
+            elif meth == "Tracing.tracingComplete":
+                done = True
+        ws.close()
+    except Exception as e:  # noqa: BLE001
+        return {"ok": False, "error": f"{type(e).__name__}: {str(e)[:200]}"}
+    google = {h: c for h, c in hosts.items() if is_google(h) and h not in USER_PAGE_HOSTS
+              and not h.endswith("appspot.com")}
+    return {"ok": events > 0, "events": events, "seconds": round(time.time() - t0, 1), "hosts": hosts,
+            "google_hosts": google, "sb_hosts": sorted(h for h in hosts if h in SB_HOSTS),
+            "google_urls": sorted(u for u in urls if is_google(re.sub(r"^\w+://([^/:]+).*$", r"\1", u))
+                                  and "testsafebrowsing.appspot.com" not in u)[:60]}
 
 
 def run_case(a, cid, url, expected, marker, native_ui_check=False):
@@ -416,21 +574,51 @@ def main():
         ok = ok and rec["pass"]
         res["cases"].append(rec)
 
+    # c2c: variations source must not be the field-trial testing config (args.gn)
+    res["variations"] = variations_state(a.devtools)
+    print("variations:", {k: v for k, v in res["variations"].items() if k != "raw"})
+    ok = ok and res["variations"]["pass"]
+
+    # c2c: Standard protection network audit (browser process, NetLog trace): local pages + example.com + idle
+    def standard_actions():
+        for u in (CASES[0][1], "https://example.com/", CASES[1][1]):
+            adb("shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", u, a.package, timeout=40)
+            time.sleep(6)
+        time.sleep(30)
+    res["net_standard"] = netlog_trace(a.devtools, standard_actions)
+    ns_ = res["net_standard"]
+    print("net standard:", {k: v for k, v in ns_.items() if k not in ("hosts", "google_urls")})
+
     # 3) Enhanced protection through the Settings UI, then the same kind of checks
     if not a.skip_esb:
         esb = set_safe_browsing(a.package, "Enhanced protection", a.out)
         print("enhanced protection:", {k: v for k, v in esb.items() if k != "page_text"})
         res["esb"] = esb
         ok = ok and esb["set"]
+        # c2c: Safe Browsing page summaries (both radios are on the page)
+        esb["sb_page_truth"] = sb_page_truth(esb.get("page_text"))
+        print("sb page truth:", esb["sb_page_truth"])
+        ok = ok and esb["sb_page_truth"]["pass"]
+        if esb["set"]:
+            res["esb_details"] = esb_details(a.package, a.out)
+            print("esb details:", {k: v for k, v in res["esb_details"].items() if k != "texts"})
+            ok = ok and res["esb_details"]["pass"]
         if esb["set"]:
             esb["debug_pages"] = enable_debug_pages(a.devtools)
             time.sleep(2)
             esb["rt_page_open"] = open_internal(a.devtools, "chrome://safe-browsing/#tab-rt-lookup")
             time.sleep(3)
-            for cid, url, expected in ESB_CASES:
-                rec = run_case(a, cid, url, expected, MARKERS.get(cid[4:], ""), native_ui_check=True)
+            esb_recs = []
+
+            def esb_actions():
+                for cid, url, expected in ESB_CASES:
+                    esb_recs.append(run_case(a, cid, url, expected, MARKERS.get(cid[4:], ""), native_ui_check=True))
+            res["net_enhanced"] = netlog_trace(a.devtools, esb_actions)
+            for rec in esb_recs:
                 ok = ok and rec["pass"]
                 res["cases"].append(rec)
+            ne_ = res["net_enhanced"]
+            print("net enhanced:", {k: v for k, v in ne_.items() if k not in ("hosts", "google_urls")})
             rt = internal_text(a.devtools, "chrome://safe-browsing", ALL_TEXT_JS) or ""
             esb["rt_lookup_page"] = {"chars": len(rt),
                                      "mentions_public_canary": "swiftra_shield_canary" in rt,
@@ -454,6 +642,22 @@ def main():
             print("components:", esb["components"])
         back = set_safe_browsing(a.package, "Standard protection", a.out)   # leave the device as found
         res["esb_restore_standard"] = {k: v for k, v in back.items() if k != "page_text"}
+
+    # c2c network verdict: Standard must not contact a Safe Browsing endpoint. The Enhanced window is the
+    # positive control (real-time lookups to Google must show up), so an empty Standard result is meaningful.
+    ns_, ne_ = res.get("net_standard", {}), res.get("net_enhanced", {})
+    control = bool(ne_.get("ok") and ne_.get("sb_hosts"))
+    if ns_.get("ok") and ns_.get("sb_hosts"):
+        verdict = "sb_contact_in_standard"
+    elif ns_.get("ok") and control:
+        verdict = "clean"
+    else:
+        verdict = "inconclusive"
+    res["net_audit"] = {"verdict": verdict, "positive_control": control,
+                        "standard_google_hosts": sorted(ns_.get("google_hosts", {})),
+                        "enhanced_sb_hosts": ne_.get("sb_hosts")}
+    print("net audit:", res["net_audit"])
+    ok = ok and verdict != "sb_contact_in_standard"
 
     res["pass"] = ok
     with open(os.path.join(a.out, "shield_e2e.json"), "w", encoding="utf-8") as f:
