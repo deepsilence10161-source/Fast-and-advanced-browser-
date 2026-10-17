@@ -1,0 +1,68 @@
+{
+ "package": "com.swiftra.app",
+ "cases": [
+  {
+   "id": "local_safe_control",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/safe.html",
+   "expected": "loaded",
+   "got": "loaded",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "SWIFTRA_CANARY_SAFE_LOADED\nSWIFTRA_CANARY_SAFE_LOADED"
+  },
+  {
+   "id": "local_phishing_canary",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/phishing.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Chrome strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protection to get "
+  },
+  {
+   "id": "local_malware_canary",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/malware.html",
+   "expected": "blocked_malware",
+   "got": "blocked_malware",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might install harmful software that steals or deletes things like your passwords, photos, messages, or credit card numbers. Chrome strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protect"
+  },
+  {
+   "id": "google_test_phishing",
+   "url": "https://testsafebrowsing.appspot.com/s/phishing.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Chrome strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protection to get "
+  },
+  {
+   "id": "google_test_malware",
+   "url": "https://testsafebrowsing.appspot.com/s/malware.html",
+   "expected": "blocked_malware",
+   "got": "blocked_malware",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might install harmful software that steals or deletes things like your passwords, photos, messages, or credit card numbers. Chrome strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protect"
+  },
+  {
+   "id": "example_com",
+   "url": "https://example.com/",
+   "expected": "loaded",
+   "got": "loaded",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Example Domain\nThis domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n\nهذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمرا"
+  }
+ ],
+ "list": {
+  "ready": true,
+  "how": "updated",
+  "entries": 908341,
+  "seconds": 1.3,
+  "log": "--------- beginning of main\n10-17 06:35:08.259  3319  3348 I cr_SwiftraShield: list updated: 908341 entries, created 1792214560\n10-17 07:01:02.085 18179 18201 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:14.679 18430 18451 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:17.282 18498 18517 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:19.818 18566 18586 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:22.277 18635 18663 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:24.781 18703 18722 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:27.441 18778 18799 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:29.785 18849 18871 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:32.229 18918 18949 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:34.601 18992 19013 I cr_SwiftraShield: list loaded: 908341 entries\n10-17 07:01:37.038 19057 19079 I cr_SwiftraShield: list loaded: 908341 entries\n"
+ },
+ "blocking_ready_after_s": 6.2,
+ "pass": true
+}

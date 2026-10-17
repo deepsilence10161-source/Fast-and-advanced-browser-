@@ -114,6 +114,30 @@ Download के बाद local `sha256sum -c SHA256SUMS.txt` = 7/7 OK।
 
 पहले के `build_chromium_baseline.sh --preflight-only` (exit 3) का अर्थ अब केवल इतना है कि वह local guard 100 GB से कम disk पर मना करता है। Standard runner पर cleanup के बाद 111 GB मिलते हैं (मापा गया)। "Source build असंभव" वाला पुराना निष्कर्ष वापस लिया गया (RESEARCH_REPORT §3b)।
 
+### 2.7 Swiftra Shield: on-device Safe Browsing (c2, 17-10-2026)
+APKs (commit 9617ac5, patch 0006): x64 `5fe4be348a8603f87efaeae116a26b7039091e1050957a0de336d3fc4c823345`, arm64 `0c643f9121f2bc64e56bf3f225494d5c6f368dbae86347be6b3407e8153480b8` (builds 39006048509 / 39006052864; signer `029de0fa…fe06`)।
+पिछले (c1b) APKs: x64 `ce52a4bf…a155`, arm64 `827485c0…660f`।
+
+| जाँच | परिणाम | प्रकार / प्रमाण |
+|---|---|---|
+| Canonicalization (Python ↔ Java) 37 vectors + 14 URLs | PASS | desktop component, `tests/test_shield.py` |
+| Chromium errorprone + NullAway (JSpecify) @155 flags, दोनों Java files | 0 चेतावनी (negative control ने चेतावनी पकड़ी) | static; Chromium custom plugin नहीं चला |
+| `shield-db.yml` run 39006024815: build → sign → self-verify → publish | PASS, 908,341 entries, 5,686,256 B | CI |
+| Public URL से बिना login download + embedded key से verify | Verified OK, sha `1284e47e…` | static/signature |
+| Published list पर 72 lookups (28 लोकप्रिय भारतीय/वैश्विक sites SAFE, 4 canaries, 40 random असली phishing URLs) | 72/72 | desktop component |
+| Device पर list download + verify + decode | `list updated: 908341 entries` (दोनों) | PASS (Android emulator / Redroid) |
+| Interstitial E2E, 6 cases (local safe, local phishing, local malware, Google test phishing/malware, example.com) | x64 run 39010302985: 6/6; arm64 run 39010304091: 6/6; block 6.1–6.2 s में तैयार | PASS (Android emulator), PASS (Redroid arm64), DOM text via DevTools |
+| Regression: device checks 9/9, crash 0, ANR 0, false_claims 0 | PASS | दोनों |
+| Cold/warm median start | x64 827.5/597 ms; arm64 704/248 ms (c1b: 1238/1050.5, 720.5/246.5) | emulator, प्रतिनिधि नहीं |
+
+विफलताएँ और सीमाएँ:
+- पहला shield-db run 39005982060 FAIL: runner पर pytest नहीं था (unittest में बदला)।
+- पहला E2E 39007913283 / 39007914486: Shield FAIL (harness bug)। DevTools WebSocket 403 (Origin) के कारण हर case "unknown" आया। Screenshots में फिर भी interstitials दिखे। Fix 5ea03cf (`suppress_origin`)।
+- Redroid (arm64) screenshots एक frame पीछे रहते हैं (guest GPU), इसलिए वहाँ फ़ैसला DOM text से होता है। x64 के screenshots सभी 6 सही हैं।
+- नई crawl coverage (Autofill subpages) में 8 branding leaks मिले ("Chromium can autofill…", "…in Chrome")। ये Shield से नहीं हैं; इन्हें c2b में ठीक करना है।
+- Interstitial पर "Chrome strongly recommends…" और "Turn on enhanced protection to get Chrome's highest level of security" दिखते हैं। यह branding और सच्चाई दोनों का मुद्दा है (c2b)।
+- Evidence: `evidence/shield-c2-2026-10-17/`।
+
 ## 3. विफलताओं का इतिहास (ईमानदार क्रम; कुछ भी पहली बार में पास नहीं हुआ)
 | # | Run | क्या हुआ | कारण | सुधार |
 |---|---|---|---|---|
