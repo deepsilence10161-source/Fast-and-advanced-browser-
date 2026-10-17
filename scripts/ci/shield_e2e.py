@@ -312,11 +312,30 @@ def open_internal(devtools, url):
     return "no reply"
 
 
-def internal_text(devtools, url_prefix):
+def internal_text(devtools, url_prefix, expression=None):
     for t in targets(devtools):
         if t.get("type") == "page" and t.get("url", "").startswith(url_prefix):
-            return page_text(devtools, t["url"])
+            return page_text(devtools, t["url"], expression)
     return None
+
+
+# components/webui/chrome_urls/resources/app.ts @155: <chrome-urls-app>, cr-button "Enable internal debugging pages"
+ENABLE_DEBUG_PAGES_JS = r"""(() => {
+  const app = document.querySelector('chrome-urls-app');
+  const b = app && app.shadowRoot && app.shadowRoot.querySelector('cr-button');
+  if (!b) return 'no button';
+  const label = b.textContent.trim();
+  if (/^Enable/.test(label)) { b.click(); return 'clicked: ' + label; }
+  return 'already: ' + label;
+})()"""
+ALL_TEXT_JS = "document.body ? document.body.textContent : ''"
+
+
+def enable_debug_pages(devtools):
+    """chrome://safe-browsing etc. are gated by the 'internal debugging pages' pref (CI emulator only)."""
+    r = open_internal(devtools, "chrome://chrome-urls/")
+    time.sleep(3)
+    return f"{r}; " + str(internal_text(devtools, "chrome://chrome-urls", ENABLE_DEBUG_PAGES_JS))
 
 
 CHROME_WORD = re.compile(r"\bChrome\b(?!\s*(?:Web Store|OS\b))")
@@ -404,21 +423,34 @@ def main():
         res["esb"] = esb
         ok = ok and esb["set"]
         if esb["set"]:
+            esb["debug_pages"] = enable_debug_pages(a.devtools)
+            time.sleep(2)
             esb["rt_page_open"] = open_internal(a.devtools, "chrome://safe-browsing/#tab-rt-lookup")
             time.sleep(3)
             for cid, url, expected in ESB_CASES:
                 rec = run_case(a, cid, url, expected, MARKERS.get(cid[4:], ""), native_ui_check=True)
                 ok = ok and rec["pass"]
                 res["cases"].append(rec)
-            rt = internal_text(a.devtools, "chrome://safe-browsing") or ""
+            rt = internal_text(a.devtools, "chrome://safe-browsing", ALL_TEXT_JS) or ""
             esb["rt_lookup_page"] = {"chars": len(rt),
                                      "mentions_public_canary": "swiftra_shield_canary" in rt,
-                                     "mentions_unwanted": "unwanted.html" in rt, "head": rt[:1500]}
+                                     "mentions_unwanted": "unwanted.html" in rt, "head": rt[:1500],
+                                     "rt_context": [rt[max(0, m.start() - 200):m.end() + 300]
+                                                    for m in re.finditer(r"swiftra_shield_canary|unwanted\.html", rt)][:4]}
             esb["components_open"] = open_internal(a.devtools, "chrome://components/")
             time.sleep(3)
             comp = internal_text(a.devtools, "chrome://components") or ""
             esb["components"] = [l.strip() for l in comp.splitlines() if re.search(r"(?i)safe|allowlist|real.?time", l)][:20]
-            print("rt lookup page:", {k: v for k, v in esb["rt_lookup_page"].items() if k != "head"})
+            # Standard-protection claim "if a page does something suspicious, URLs and page content are sent to
+            # Google Safe Browsing" depends on the client-side phishing model (optimization guide) being present
+            esb["optguide_open"] = open_internal(a.devtools, "chrome://optimization-guide-internals/")
+            time.sleep(4)
+            og = internal_text(a.devtools, "chrome://optimization-guide-internals", ALL_TEXT_JS) or ""
+            esb["optimization_guide"] = {"chars": len(og), "head": og[:800], "model_lines": sorted(set(
+                l.strip()[:200] for l in og.splitlines() if re.search(r"(?i)phish|client.?side|CLIENT_SIDE|model", l)))[:30]}
+            print("debug pages:", esb["debug_pages"])
+            print("optimization guide:", esb["optimization_guide"]["chars"], esb["optimization_guide"]["model_lines"][:8])
+            print("rt lookup page:", {k: v for k, v in esb["rt_lookup_page"].items() if k not in ("head", "rt_context")})
             print("components:", esb["components"])
         back = set_safe_browsing(a.package, "Standard protection", a.out)   # leave the device as found
         res["esb_restore_standard"] = {k: v for k, v in back.items() if k != "page_text"}
