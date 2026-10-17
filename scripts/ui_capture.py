@@ -63,6 +63,7 @@ class Device:
                 "pkg": n.get("package", ""), "clickable": n.get("clickable") == "true",
                 "enabled": n.get("enabled") == "true", "focused": n.get("focused") == "true",
                 "selected": n.get("selected") == "true", "checked": n.get("checked") == "true",
+                "checkable": n.get("checkable") == "true",
                 "bounds": b, "w": b[2] - b[0], "h": b[3] - b[1],
             })
         return out
@@ -254,9 +255,83 @@ def on_settings_main(d, xml=None):
     return bool(re.search(r'text="Settings"', xml)) and len(re.findall(main, xml)) >= 2
 
 
-def crawl_settings(d, pkg, budget_s=420):
+# level-2: इन top-level पन्नों के भीतर के पन्ने भी (सत्यता/branding scan हेतु)। Search engine/Address bar/Homepage = radio सूचियाँ (छोड़ें)
+SETTINGS_DEEP = r"^(Privacy and security|Autofill and passwords|Site settings|Languages|Accessibility|Google services|Appearance|Tabs and tab groups|Downloads|About Swiftra)$"
+# भीतर छोड़ें: login, बाहरी कानूनी पन्ने (browser tab खोलते हैं), Safety check (rows expand होती हैं)
+SUBPAGE_SKIP = r"^(Sign in.*|Turn on sync|Terms of Service|Privacy [Nn]otice|Google Privacy Policy|Safety check|Help|Send feedback)$"
+
+
+def row_has_toggle(nodes, t):
+    """title वाली row में switch/checkbox/radio हो तो tap = setting बदलना — ऐसी rows नहीं छूते।"""
+    y0, y1 = t["bounds"][1] - 70, t["bounds"][3] + 90
+    for n in nodes:
+        if n is t or not n["checkable"]:
+            continue
+        cy = (n["bounds"][1] + n["bounds"][3]) / 2
+        if y0 <= cy <= y1:
+            return True
+    return False
+
+
+def on_page(d, title, xml=None):
+    xml = xml if xml is not None else d.dump()
+    return any(n["text"] == title and n["bounds"][1] < 400 and n["id"] != "android:id/title" for n in d.nodes(xml))
+
+
+def crawl_subpages(d, pkg, parent, pkey, deadline):
+    """parent पन्ने की हर navigational row: tap -> capture -> BACK (parent पर)। लौट न पाए तो False।"""
+    out, seen, idle, j = [], set(), 0, 0
+    while time.time() < deadline and idle < 2:
+        xml = d.dump(); ns = d.nodes(xml)
+        if not on_page(d, parent, xml):
+            return out, False
+        rows = [x for x in ns if x["id"] == "android:id/title" and x["pkg"] == pkg and x["h"] >= 45
+                and x["text"] and x["text"] not in seen]
+        if not rows:
+            idle += 1; shell("input swipe 540 1700 540 900 400"); time.sleep(1.3); continue
+        idle = 0
+        for x in rows:
+            if time.time() >= deadline:
+                break
+            t = x["text"]; seen.add(t)
+            if re.search(SUBPAGE_SKIP, t):
+                out.append({"title": t, "skipped": "rule"}); continue
+            cur_xml = d.dump(); cur_ns = d.nodes(cur_xml)
+            cur = [n for n in cur_ns if n["text"] == t and n["id"] == "android:id/title"]
+            if not cur:
+                out.append({"title": t, "skipped": "not found"}); continue
+            if row_has_toggle(cur_ns, cur[0]) or not cur[0]["enabled"]:
+                out.append({"title": t, "skipped": "toggle/disabled"}); continue
+            d.tap_node(cur[0]); time.sleep(2.2); j += 1
+            fg = d.foreground_pkg(); rec = {"title": t, "foreground": fg}
+            nx = d.dump()
+            if fg == pkg and not on_page(d, parent, nx):
+                key = f"{pkey}__{j:02d}_{slug(t)}"
+                d.capture(key, f"settings → {parent} → {t}"); rec["key"] = key
+                if 'scrollable="true"' in nx:
+                    shell("input swipe 540 1700 540 700 400"); time.sleep(1.2)
+                    d.capture(key + "_b", f"settings → {parent} → {t} (scrolled)")
+            elif fg != pkg:
+                rec["left_app"] = True
+            else:
+                rec["no_navigation"] = True       # dialog/expand नहीं — parent ही दिखा
+            out.append(rec)
+            if fg == pkg and on_page(d, parent, nx):
+                continue
+            for _ in range(3):
+                d.back(1.6)
+                if on_page(d, parent):
+                    break
+            else:
+                d.log(f"settings deep crawl: '{parent}' पर वापसी नहीं ('{t}' के बाद)")
+                return out, False
+    return out, True
+
+
+def crawl_settings(d, pkg, budget_s=420, deep_budget_s=0):
     """Settings का हर top-level item: tap -> capture (scroll हो तो दूसरा capture) -> BACK। branding scan सब xml देखता है।"""
     t0 = time.time(); pages = []; visited = set(); idle = 0; n = 0
+    deep_deadline = t0 + budget_s + deep_budget_s; budget_s += deep_budget_s
     while time.time() - t0 < budget_s and idle < 2:
         xml = d.dump()
         if not on_settings_main(d, xml):
@@ -286,10 +361,19 @@ def crawl_settings(d, pkg, budget_s=420):
                 if 'scrollable="true"' in xs:
                     shell("input swipe 540 1800 540 700 400"); time.sleep(1.5)
                     d.capture(key + "_b", f"settings → {t} (scrolled)"); rec["scrolled"] = True
+                if deep_budget_s and re.search(SETTINGS_DEEP, t) and time.time() < deep_deadline:
+                    if rec.get("scrolled"):          # भीतर की सूची ऊपर से
+                        shell("input swipe 540 700 540 1800 400"); shell("input swipe 540 700 540 1800 400"); time.sleep(1.2)
+                    try:
+                        sub, ok = crawl_subpages(d, pkg, t, key, min(deep_deadline, time.time() + 240))
+                    except Exception as e:
+                        sub, ok = [{"error": repr(e)}], False
+                    rec["subpages"] = sub
+                    d.log(f"settings deep crawl: {t}: {len([x for x in sub if x.get('key')])} पन्ने")
             else:
                 rec["left_app"] = True; d.log(f"settings crawl: '{t}' ने app छोड़ा (fg={fg})")
             pages.append(rec)
-            for _ in range(3):
+            for _ in range(5):
                 d.back(1.8)
                 if on_settings_main(d):
                     break
@@ -469,7 +553,7 @@ def main():
                     d.capture("11b_settings_scrolled", "settings scrolled")
                     shell("input swipe 540 600 540 1800 400"); shell("input swipe 540 600 540 1800 400"); time.sleep(1.2)
                     try:
-                        meta["settings_pages"] = crawl_settings(d, a.package)
+                        meta["settings_pages"] = crawl_settings(d, a.package, deep_budget_s=720)
                     except Exception as e:   # crawler harness को न तोड़े
                         meta["settings_pages"] = None; meta["settings_crawl_error"] = repr(e); d.log(f"settings crawl error: {e!r}")
                 d.back(2)

@@ -5,8 +5,8 @@ T=$1; OUT=out/$T; mkdir -p "$OUT"; timeout 120 adb wait-for-device; timeout 30 a
 # source build (branding patch के बाद package बदल सकता है): package BUILD_INFO के aapt2 badging से
 ART_PKG=$(sed -n "s/^package: name='\([^']*\)'.*/\1/p" "$OUT/BUILD_INFO.txt" 2>/dev/null | head -1); ART_PKG=${ART_PKG:-org.chromium.chrome}
 case "$T" in
-  chrome_ref) timeout 1500 python3 scripts/ui_capture.py --package com.android.chrome --label "$T" --out "$OUT" ;;
-  chromium_*) timeout 1500 python3 scripts/ui_capture.py --package "$ART_PKG" --label "$T" --out "$OUT" --apk "$(find dl -name ChromePublic.apk | head -1)" ;;
+  chrome_ref) timeout 2400 python3 scripts/ui_capture.py --package com.android.chrome --label "$T" --out "$OUT" ;;
+  chromium_*) timeout 2400 python3 scripts/ui_capture.py --package "$ART_PKG" --label "$T" --out "$OUT" --apk "$(find dl -name ChromePublic.apk | head -1)" ;;
 esac
 echo "ui_capture exit=$?" | tee -a "$OUT/journey.log"
 # synthetic long-chat fixture in the SAME browser on the emulator (not real Arena)
