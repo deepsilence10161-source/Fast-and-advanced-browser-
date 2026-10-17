@@ -138,6 +138,32 @@ APKs (commit 9617ac5, patch 0006): x64 `5fe4be348a8603f87efaeae116a26b7039091e10
 - Interstitial पर "Chrome strongly recommends…" और "Turn on enhanced protection to get Chrome's highest level of security" दिखते हैं। यह branding और सच्चाई दोनों का मुद्दा है (c2b)।
 - Evidence: `evidence/shield-c2-2026-10-17/`।
 
+### 2.8 सच्चा interstitial + Enhanced protection (c2b, 17-10-2026)
+APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46de6fa0437056f7dcf3b5ecc7230e23b8e6`, arm64 `f861a40204cdba3f92863e57c74c1c70ff152abcf6b7312eab489f65ebc81e68` (builds 39025744172 / 39025748557)।
+
+| जाँच | परिणाम | प्रकार / प्रमाण |
+|---|---|---|
+| 0002 transform: components_strings + security_interstitials/autofill/autofill_payments grdp + generated_resources.grd (केवल grd) | 91 + 101 IDs; translation coverage-guard PASS; हिंदी जाँची | desktop component (असली grit + 81 xtb) |
+| 0007 patch pristine @155 पर fuzz 0 | PASS | static |
+| 0007 C++ compile | Chromium build PASS (दोनों ABI) | build |
+| Unit suite | 83 passed (CI unit gate भी success) | desktop component |
+| Google RT endpoint बिना key (`tools/sb_rt_probe.py`) | phishing/unwanted DANGEROUS, canary SAFE | desktop, live network |
+| Standard: 8 cases (6 पुराने + public canary + unwanted) | x64 8/8, arm64 8/8; unwanted **खुलता है** (UwS सूची नहीं) | PASS (Android emulator / Redroid arm64), DOM text |
+| Enhanced (Settings UI से): 5 cases | x64 5/5, arm64 5/5; unwanted → harmful interstitial (Google RT सक्रिय) | वही |
+| हर blocked page की honesty check | 0 समस्याएँ (दोनों) | DOM via DevTools |
+| Native UI में "Chrome" (Enhanced banner) | round 1 में leak (visual) → fix → round 2: 0 | uiautomator + screenshot |
+| leaks / false_claims / crash / ANR / device checks | 0 / 0 / 0 / 0 / 9/9 (दोनों) | regression |
+| Cold/warm median | x64 1270/976 ms (c2: 827.5/597); arm64 711/254 ms (c2: 704/248) | emulator, प्रतिनिधि नहीं; x64 धीमापन जाँचना बाकी |
+
+विफलताएँ और सीमाएँ:
+- Round 1 (4935b29; runs 39022805609 / 39023099504) के tests PASS हुए, फिर भी screenshot में Enhanced banner "You have Chrome’s strongest security…" और Google "G" icon दिखा। automated check native UI नहीं देखता था। Fix a58f8ec; harness में native-UI check जोड़ा गया।
+- 0007 का real-time fallback (Google SAFE → Shield) device पर नहीं चला। async mode में local DB checker ने block किया। यह हिस्सा static only है।
+- Enhanced में Shield verdicts भी Google को `WARNING_SHOWN` report के रूप में जाते हैं। यह Enhanced की सूचना के भीतर है, पर privacy के लिहाज़ से दर्ज है।
+- Standard का विवरण ("…URLs and bits of page content are sent to Google Safe Browsing") सच है या नहीं, यह खुला है। optimization guide में कोई model नहीं दिखा।
+- "Learn more about this warning" link अब भी Google Chrome help page पर जाता है (मौजूदा स्थिति, विश्लेषण बाकी)।
+- G1: Google का internal Safe Browsing endpoint इस्तेमाल करना Google की शर्तों का कानूनी प्रश्न है (BLOCKED)।
+- Evidence: `evidence/shield-c2b-2026-10-17/`।
+
 ## 3. विफलताओं का इतिहास (ईमानदार क्रम; कुछ भी पहली बार में पास नहीं हुआ)
 | # | Run | क्या हुआ | कारण | सुधार |
 |---|---|---|---|---|

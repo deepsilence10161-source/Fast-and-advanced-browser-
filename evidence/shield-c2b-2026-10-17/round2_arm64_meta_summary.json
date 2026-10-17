@@ -1,0 +1,41 @@
+{
+ "branding_leak_values": [],
+ "false_claims": 0,
+ "anr_dialogs": 0,
+ "crash_buffer_lines": 0,
+ "timings": {
+  "cold_ms": [
+   677,
+   716,
+   715,
+   670,
+   691,
+   701,
+   722,
+   707,
+   730,
+   722
+  ],
+  "warm_ms": [
+   337,
+   254,
+   253,
+   253,
+   254,
+   254,
+   255,
+   255,
+   255,
+   254
+  ],
+  "activity": "com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher",
+  "landing_activities": [
+   "com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity"
+  ],
+  "cold_ms_median": 711.0,
+  "cold_ms_p95": 730,
+  "warm_ms_median": 254.0,
+  "warm_ms_p95": 337,
+  "comparable": true
+ }
+}

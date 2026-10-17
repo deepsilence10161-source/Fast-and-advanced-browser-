@@ -1,0 +1,319 @@
+{
+ "package": "com.swiftra.app",
+ "cases": [
+  {
+   "id": "local_safe_control",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/safe.html",
+   "expected": "loaded",
+   "got": "loaded",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "SWIFTRA_CANARY_SAFE_LOADED\nSWIFTRA_CANARY_SAFE_LOADED"
+  },
+  {
+   "id": "local_phishing_canary",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/phishing.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protection to get",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   }
+  },
+  {
+   "id": "local_malware_canary",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/malware.html",
+   "expected": "blocked_malware",
+   "got": "blocked_malware",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might install harmful software that steals or deletes things like your passwords, photos, messages, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protec",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Even sites that are normally safe are sometimes compromised by attackers. Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   }
+  },
+  {
+   "id": "google_test_phishing",
+   "url": "https://testsafebrowsing.appspot.com/s/phishing.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protection to get",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   }
+  },
+  {
+   "id": "google_test_malware",
+   "url": "https://testsafebrowsing.appspot.com/s/malware.html",
+   "expected": "blocked_malware",
+   "got": "blocked_malware",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might install harmful software that steals or deletes things like your passwords, photos, messages, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protec",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Even sites that are normally safe are sometimes compromised by attackers. Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   }
+  },
+  {
+   "id": "example_com",
+   "url": "https://example.com/",
+   "expected": "loaded",
+   "got": "loaded",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Example Domain\nThis domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n\nهذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمرا"
+  },
+  {
+   "id": "public_shield_canary",
+   "url": "https://testsafebrowsing.appspot.com/s/swiftra_shield_canary.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nTurn on enhanced protection to get",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   }
+  },
+  {
+   "id": "google_test_unwanted",
+   "url": "https://testsafebrowsing.appspot.com/s/unwanted.html",
+   "expected": "loaded",
+   "got": "loaded",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "\nUnwanted Software Page Example."
+  },
+  {
+   "id": "esb_local_phishing_canary",
+   "url": "http://127.0.0.1:8001/__swiftra_shield_canary__/phishing.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nBack to safety\nDetails",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   },
+   "native_ui_chrome_hits": []
+  },
+  {
+   "id": "esb_public_shield_canary",
+   "url": "https://testsafebrowsing.appspot.com/s/swiftra_shield_canary.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nBack to safety\nDetails",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   },
+   "native_ui_chrome_hits": []
+  },
+  {
+   "id": "esb_google_test_phishing",
+   "url": "https://testsafebrowsing.appspot.com/s/phishing.html",
+   "expected": "blocked_phishing",
+   "got": "blocked_phishing",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing software or revealing things like your passwords, phone, or credit card numbers. Swiftra strongly recommends going back to safety. Learn more about this warning\n\nBack to safety\nDetails",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   },
+   "native_ui_chrome_hits": []
+  },
+  {
+   "id": "esb_google_test_unwanted",
+   "url": "https://testsafebrowsing.appspot.com/s/unwanted.html",
+   "expected": "blocked_harmful",
+   "got": "blocked_harmful",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Security error\nDangerous site\n\nAttackers on the site you tried visiting might trick you into installing harmful software that affects the way you browse — for example, by changing your homepage or showing you extra ads on sites you visit. Swiftra strongly recommends going back to safety to avoid har",
+   "honesty": {
+    "chrome_word": false,
+    "swiftra_word": true,
+    "google_safe_browsing": false,
+    "diagnostic_link": false,
+    "report_error_link": false,
+    "google_sb_urls": false,
+    "final_paragraph": "Even sites that are normally safe are sometimes compromised by attackers. Only visit this unsafe site if you're sure you understand the risks.",
+    "esb_message": "Turn on enhanced protection to get Swiftra's highest level of security",
+    "problems": [],
+    "pass": true
+   },
+   "native_ui_chrome_hits": []
+  },
+  {
+   "id": "esb_example_com",
+   "url": "https://example.com/",
+   "expected": "loaded",
+   "got": "loaded",
+   "pass": true,
+   "source": "devtools",
+   "text_head": "Example Domain\nThis domain is for use in documentation examples without needing permission. This is not a service; avoid relying on it for testing and monitoring purposes.\n\nهذا النطاق مُخصص للاستخدام في أمثلة التوثيق دون الحاجة إلى إذن. هذه ليست خدمة، يُرجى تجنب الاعتماد عليها لأغراض الاختبار والمرا",
+   "native_ui_chrome_hits": []
+  }
+ ],
+ "list": {
+  "ready": true,
+  "how": "updated",
+  "entries": 908352,
+  "seconds": 2.3,
+  "log": "--------- beginning of main\n10-17 11:05:40.580  2940  2969 I cr_SwiftraShield: list updated: 908352 entries, created 1792234773\n10-17 11:32:29.479 17853 17875 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:32:42.770 18107 18129 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:32:45.834 18175 18197 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:32:49.306 18240 18263 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:32:52.018 18307 18328 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:32:55.076 18382 18409 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:32:58.096 18450 18477 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:33:01.030 18523 18554 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:33:04.120 18600 18622 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:33:07.015 18665 18687 I cr_SwiftraShield: list loaded: 908352 entries\n10-17 11:33:09.992 18733 18760 I cr_SwiftraShield: list loaded: 908352 entries\n"
+ },
+ "blocking_ready_after_s": 6.1,
+ "esb": {
+  "set": true,
+  "log": [
+   "tap: Settings",
+   "tap: Privacy and security",
+   "tap: Safe Browsing",
+   "tap: Enhanced protection"
+  ],
+  "page_text": [
+   "Safe Browsing",
+   "You and Google",
+   "Sign in",
+   "Get your bookmarks, passwords and more on all your devices",
+   "Google services",
+   "Basics",
+   "Search engine",
+   "Google",
+   "Address bar",
+   "Top",
+   "Privacy and security",
+   "Safety check",
+   "Default browser",
+   "Autofill and passwords",
+   "Advanced",
+   "Tabs and tab groups",
+   "Homepage",
+   "On",
+   "Enhanced protection",
+   "Real-time, AI-powered protection against dangerous sites, downloads, and extensions that's based on your browsing data getting sent to Google",
+   "Standard protection",
+   "Protects against sites, downloads, and extensions that are known to be dangerous. If a page does something suspicious, URLs and bits of page content are sent to Google Safe Browsing.",
+   "No protection (not recommended)",
+   "Does not protect you against dangerous websites, downloads, and extensions. Your Safe Browsing settings in other Google products won't be affected."
+  ],
+  "back_to_browser": true,
+  "debug_pages": "ok; clicked: Enable internal debugging pages",
+  "rt_page_open": "ok",
+  "rt_lookup_page": {
+   "chars": 17229,
+   "mentions_public_canary": true,
+   "mentions_unwanted": true,
+   "head": "\n    \n      Safe Browsing\n    \n    \n      Preferences\n      Client Safe Browsing Report Requests\n      Client Phishing Requests\n      Password Protection\n      URT Lookup\n      Referrer Chain\n      Log Messages\n      Reporting Events\n\n      Download Protection\n      Deep Scans\n\n      \n        Experiments\n        \n          \n      \n        Enabled: \n        AutoRevokeSuspiciousNotification\n      \n    \n      \n        Disabled: \n        BundledSecuritySettings\n      \n    \n      \n        Enabled: \n        BundledSecuritySettingsAskBeforeHttp\n      \n    \n      \n        Disabled: \n        ClientSideDetectionClipboardCopyApi\n      \n    \n      \n        Disabled: \n        ClientSideDetectionEnabledIos\n      \n    \n      \n        Disabled: \n        ClientSideDetectionForcedLlamaRedirectChainKillswitch\n      \n    \n      \n        Enabled: \n        ClientSideDetectionImageEmbeddingMatch\n      \n    \n      \n        Disabled: \n        ClientSideDetectionKillswitch\n      \n    \n      \n        Enabled: \n        ClientSideDetectionLocalResourceCheckFix\n      \n    \n      \n        Disabled: \n        ClientSideDetectionRedirectChainKillswitch\n      \n    \n      \n        Enabled: \n        CreateNotificationsAcceptedClientSafeBrowsingReports\n      \n    \n      \n        Disabled: \n        SafeBrowsingDelayedWarnings\n      \n    \n      \n        Enabled: \n        DlpRegionalizedEndpoints\n      \n    \n      \n        Enabled: \n        EnhancedFieldsForSecOps\n      \n    \n      \n        Disabled: \n        Enhanc",
+   "rt_context": [
+    "ientSafeBrowsingReportRequest) sent\n        \n          {   \"client_properties\": {      \"is_async_check\": false,      \"url_api_type\": \"ANDROID_SAFEBROWSING\"   },   \"page_url\": \"http://127.0.0.1:8001/__swiftra_shield_canary__/phishing.html\",   \"population\": {      \"finch_active_groups\": [ \"SafeBrowsingLocalListsUseSBv5.Enabled\" ],      \"is_history_sync_enabled\": false,      \"is_incognito\": false,      \"is_mbb_enabled\": false,      \"is_signed_in\": false,      \"is_under_advanced_protection\": false,      \"number_of_loade",
+    "e_management_status\": \"UNAVAILABLE\",      \"user_agent\": \"Chrome/155.0.8059.80/Android\",      \"user_population\": \"ENHANCED_PROTECTION\"   },   \"type\": \"WARNING_SHOWN\",   \"url\": \"http://127.0.0.1:8001/__swiftra_shield_canary__/phishing.html\",   \"url_request_destination\": \"DOCUMENT\",   \"warning_shown_info\": {      \"warning_type\": \"PHISHING_INTERSTITIAL\"   },   \"warning_shown_timestamp_msec\": \"1792236946374\"}{   \"client_properties\": {      \"is_async_check\": false,      \"url_api_type\": \"ANDROID_SAFEBROWSING\"   },   \"page_",
+    "_shown_timestamp_msec\": \"1792236946374\"}{   \"client_properties\": {      \"is_async_check\": false,      \"url_api_type\": \"ANDROID_SAFEBROWSING\"   },   \"page_url\": \"https://testsafebrowsing.appspot.com/s/swiftra_shield_canary.html\",   \"population\": {      \"finch_active_groups\": [ \"SafeBrowsingLocalListsUseSBv5.Enabled\" ],      \"is_history_sync_enabled\": false,      \"is_incognito\": false,      \"is_mbb_enabled\": false,      \"is_signed_in\": false,      \"is_under_advanced_protection\": false,      \"number_of_loaded_profiles\"",
+    "atus\": \"UNAVAILABLE\",      \"user_agent\": \"Chrome/155.0.8059.80/Android\",      \"user_population\": \"ENHANCED_PROTECTION\"   },   \"type\": \"WARNING_SHOWN\",   \"url\": \"https://testsafebrowsing.appspot.com/s/swiftra_shield_canary.html\",   \"url_request_destination\": \"DOCUMENT\",   \"warning_shown_info\": {      \"warning_type\": \"PHISHING_INTERSTITIAL\"   },   \"warning_shown_timestamp_msec\": \"1792236953915\"}{   \"client_properties\": {      \"is_async_check\": false,      \"url_api_type\": \"ANDROID_SAFEBROWSING\"   },   \"page_url\": \"http"
+   ]
+  },
+  "components_open": "ok",
+  "components": [
+   "Actor Safety Lists - Version: 9.8200.9609",
+   "Real Time Url Checks Allowlist - Version: 151.0.7900.0",
+   "Safety Tips - Version: 3092"
+  ],
+  "optguide_open": "ok",
+  "optimization_guide": {
+   "chars": 1462,
+   "head": "\n\n    Optimization Guide Internals - Debug Logs\n    \n      Enable the optimization guide debug flags to record debug messages from the browser startup.\n    \n\n    \n      Event Logs\n      Models\n      Client Ids\n      MQLS Logs\n\n      \n        \n          \n            \n              Event Logs\n              Dump\n              Include: \n              Exclude: \n              \n            \n            \n              \n                \n                  Time\n                  Log source\n                  Source Location\n                  Log Message\n                \n              \n              \n            \n          \n        \n      \n\n      \n        \n          \n            Models\n            Downloaded models:\n            \n              \n                \n                  Optimization target\n    ",
+   "model_lines": [
+    "Downloaded models:",
+    "Models"
+   ]
+  }
+ },
+ "esb_restore_standard": {
+  "set": true,
+  "log": [
+   "tap: Settings",
+   "tap: Privacy and security",
+   "tap: Safe Browsing",
+   "tap: Standard protection"
+  ],
+  "back_to_browser": true
+ },
+ "pass": true
+}
