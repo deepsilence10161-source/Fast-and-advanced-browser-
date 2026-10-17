@@ -1,7 +1,7 @@
 #!/bin/bash
 # emulator-runner के अंदर एक line में चलाने हेतु wrapper
 set -u
-T=$1; OUT=out/$T; mkdir -p "$OUT"; timeout 120 adb wait-for-device; timeout 30 adb logcat -c
+T=$1; OUT=out/$T; mkdir -p "$OUT"; timeout 120 adb wait-for-device; timeout 20 adb logcat -G 16M >/dev/null 2>&1; timeout 30 adb logcat -c
 # source build (branding patch के बाद package बदल सकता है): package BUILD_INFO के aapt2 badging से
 ART_PKG=$(sed -n "s/^package: name='\([^']*\)'.*/\1/p" "$OUT/BUILD_INFO.txt" 2>/dev/null | head -1); ART_PKG=${ART_PKG:-org.chromium.chrome}
 case "$T" in
@@ -30,5 +30,10 @@ timeout 20 adb forward tcp:9222 "localabstract:${SOCK:-chrome_devtools_remote}"
 timeout 200 python3 scripts/ci/run_chat_fixture.py --platform "$PLAT:$T" --out "$OUT/chat_fixture" --timeout 180 2>&1 | tee "$OUT/chat_fixture.txt"
 echo "chat_fixture exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 kill $HTTP_PID 2>/dev/null
+# Swiftra Shield (patches/0006): local canaries + Google's harmless test pages -> interstitial
+if [ "$T" != chrome_ref ]; then
+  timeout 600 python3 scripts/ci/shield_e2e.py --package "$PKG" --out "$OUT/shield" 2>&1 | tee "$OUT/shield_e2e.txt"
+  echo "shield_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+fi
 timeout 60 adb logcat -d | grep -iE "chromium|chrome|FATAL|AndroidRuntime|ndk_translation|DEBUG" | tail -400 > "$OUT/logcat_tail.txt"
 exit 0
