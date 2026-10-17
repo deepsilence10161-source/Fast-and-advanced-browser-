@@ -12,6 +12,7 @@
    - Token का एकमात्र स्थान `~/.secrets/gh_token` है (700/600)। इसे कभी `cat`/`echo` से print न करें, URL या argv में न डालें। जाँच के लिए: `tools/secret-guard/audit.sh`।
    - `test-e2e.sh` केवल साफ़ working tree पर चलाएँ (वह `reset --hard` करता है)।
 8. **निजता:** UI capture केवल `about:blank`, `example.com` और `example.org` पर, बिना login के। उपयोगकर्ता के निजी chat का text कभी capture न करें। Arena परीक्षण केवल उपयोगकर्ता के अपने device और account पर, उसकी उपस्थिति में।
+   - **अपवाद (उपयोगकर्ता की "Full permission", 2026-10-17):** Safe Browsing / Swiftra Shield जाँच के लिए emulator पर Google का हानिरहित test page `testsafebrowsing.appspot.com` खोला जा सकता है। साथ में केवल CI के अंदर `adb reverse` से चलने वाला local canary page (कोई असली हानिकारक site नहीं)।
 9. **लागत:** केवल public repo के मुफ़्त standard runners। Larger runner या cloud VM उपयोगकर्ता की स्पष्ट लागत-स्वीकृति के बाद ही।
 10. **Branding:** Google trademarks (नाम/logo) का वितरण लिखित अधिकार के बिना नहीं होगा। UI और व्यवहार की parity की आवश्यकता फिर भी जस की तस है; यह वितरण से पहले का एक legal gate है।
 11. **Repository:** काम केवल `deepsilence10161-source/Fast-and-advanced-browser-` में होगा (उपयोगकर्ता का निर्देश, 15-10-2026)।

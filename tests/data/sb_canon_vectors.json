@@ -1,0 +1,227 @@
+{
+ "source": "chromium/src components/safe_browsing/core/browser/db/sb_protocol_manager_util_unittest.cc @155.0.8059.80 (BSD-3-Clause, The Chromium Authors)",
+ "cases": [
+  {
+   "url": "http://host/%25%32%35",
+   "host": "host",
+   "path": "/%25",
+   "query": ""
+  },
+  {
+   "url": "http://host/%25%32%35%25%32%35",
+   "host": "host",
+   "path": "/%25%25",
+   "query": ""
+  },
+  {
+   "url": "http://host/%2525252525252525",
+   "host": "host",
+   "path": "/%25",
+   "query": ""
+  },
+  {
+   "url": "http://host/asdf%25%32%35asd",
+   "host": "host",
+   "path": "/asdf%25asd",
+   "query": ""
+  },
+  {
+   "url": "http://host/%%%25%32%35asd%%",
+   "host": "host",
+   "path": "/%25%25%25asd%25%25",
+   "query": ""
+  },
+  {
+   "url": "http://host/%%%25%32%35asd%%",
+   "host": "host",
+   "path": "/%25%25%25asd%25%25",
+   "query": ""
+  },
+  {
+   "url": "http://www.google.com/",
+   "host": "www.google.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://%31%36%38%2e%31%38%38%2e%39%39%2e%32%36/%2E%73%65%63%75%72%65/%77%77%77%2E%65%62%61%79%2E%63%6F%6D/",
+   "host": "168.188.99.26",
+   "path": "/.secure/www.ebay.com/",
+   "query": ""
+  },
+  {
+   "url": "http://195.127.0.11/uploads/%20%20%20%20/.verify/.eBaysecure=updateuserdataxplimnbqmn-xplmvalidateinfoswqpcmlx=hgplmcx/",
+   "host": "195.127.0.11",
+   "path": "/uploads/%20%20%20%20/.verify/.eBaysecure=updateuserdataxplimnbqmn-xplmvalidateinfoswqpcmlx=hgplmcx/",
+   "query": ""
+  },
+  {
+   "url": "http://host.com/%257Ea%2521b%2540c%2523d%2524e%25f%255E00%252611%252A22%252833%252944_55%252B",
+   "host": "host.com",
+   "path": "/~a!b@c%23d$e%25f^00&11*22(33)44_55+",
+   "query": ""
+  },
+  {
+   "url": "http://3279880203/blah",
+   "host": "195.127.0.11",
+   "path": "/blah",
+   "query": ""
+  },
+  {
+   "url": "http://www.google.com/blah/..",
+   "host": "www.google.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://www.google.com/blah#fraq",
+   "host": "www.google.com",
+   "path": "/blah",
+   "query": ""
+  },
+  {
+   "url": "http://www.GOOgle.com/",
+   "host": "www.google.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://www.google.com.../",
+   "host": "www.google.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://www.google.com/q?",
+   "host": "www.google.com",
+   "path": "/q",
+   "query": ""
+  },
+  {
+   "url": "http://www.google.com/q?r?",
+   "host": "www.google.com",
+   "path": "/q",
+   "query": "r?"
+  },
+  {
+   "url": "http://www.google.com/q?r?s",
+   "host": "www.google.com",
+   "path": "/q",
+   "query": "r?s"
+  },
+  {
+   "url": "http://evil.com/foo#bar#baz",
+   "host": "evil.com",
+   "path": "/foo",
+   "query": ""
+  },
+  {
+   "url": "http://evil.com/foo;",
+   "host": "evil.com",
+   "path": "/foo;",
+   "query": ""
+  },
+  {
+   "url": "http://evil.com/foo?bar;",
+   "host": "evil.com",
+   "path": "/foo",
+   "query": "bar;"
+  },
+  {
+   "url": "http://notrailingslash.com",
+   "host": "notrailingslash.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://www.gotaport.com:1234/",
+   "host": "www.gotaport.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "  http://www.google.com/  ",
+   "host": "www.google.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http:// leadingspace.com/",
+   "host": "%20leadingspace.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://%20leadingspace.com/",
+   "host": "%20leadingspace.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "https://www.securesite.com/",
+   "host": "www.securesite.com",
+   "path": "/",
+   "query": ""
+  },
+  {
+   "url": "http://host.com/ab%23cd",
+   "host": "host.com",
+   "path": "/ab%23cd",
+   "query": ""
+  },
+  {
+   "url": "http://host%7d.com//twoslashes?more//slashes",
+   "host": "host}.com",
+   "path": "/twoslashes",
+   "query": "more//slashes"
+  },
+  {
+   "url": "http://host.com/abc?val=xyz#anything",
+   "host": "host.com",
+   "path": "/abc",
+   "query": "val=xyz"
+  },
+  {
+   "url": "http://abc:def@host.com/xyz",
+   "host": "host.com",
+   "path": "/xyz",
+   "query": ""
+  },
+  {
+   "url": "http://host%7d.com/abc/%2e%2e%2fdef",
+   "host": "host}.com",
+   "path": "/def",
+   "query": ""
+  },
+  {
+   "url": "http://.......host...com.....//abc/////def%2F%2F%2Fxyz",
+   "host": "host.com",
+   "path": "/abc/def/xyz",
+   "query": ""
+  },
+  {
+   "url": "ftp://host.com/foo?bar",
+   "host": "host.com",
+   "path": "/foo",
+   "query": "bar"
+  },
+  {
+   "url": "data:text/html;charset=utf-8,%0D%0A",
+   "host": "",
+   "path": "",
+   "query": ""
+  },
+  {
+   "url": "javascript:alert()",
+   "host": "",
+   "path": "",
+   "query": ""
+  },
+  {
+   "url": "mailto:abc@example.com",
+   "host": "",
+   "path": "",
+   "query": ""
+  }
+ ]
+}

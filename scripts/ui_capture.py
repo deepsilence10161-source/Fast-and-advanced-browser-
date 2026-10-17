@@ -355,7 +355,8 @@ def crawl_subpages(d, pkg, parent, pkey, deadline):
 def crawl_settings(d, pkg, budget_s=420, deep_budget_s=0):
     """Settings का हर top-level item: tap -> capture (scroll हो तो दूसरा capture) -> BACK। branding scan सब xml देखता है।"""
     t0 = time.time(); pages = []; visited = set(); idle = 0; n = 0
-    deep_deadline = t0 + budget_s + deep_budget_s; budget_s += deep_budget_s
+    # level-1 पन्नों (About आदि) के लिए reserve: deep crawl इसे कभी न खाए
+    deep_deadline = t0 + budget_s + deep_budget_s; budget_s += deep_budget_s + (240 if deep_budget_s else 0)
     while time.time() - t0 < budget_s and idle < 2:
         xml = d.dump()
         if not on_settings_main(d, xml):
@@ -389,7 +390,7 @@ def crawl_settings(d, pkg, budget_s=420, deep_budget_s=0):
                     if rec.get("scrolled"):          # भीतर की सूची ऊपर से
                         shell("input swipe 540 700 540 1800 400"); shell("input swipe 540 700 540 1800 400"); time.sleep(1.2)
                     try:
-                        sub, ok = crawl_subpages(d, pkg, t, key, min(deep_deadline, time.time() + 240))
+                        sub, ok = crawl_subpages(d, pkg, t, key, min(deep_deadline, time.time() + 300))
                     except Exception as e:
                         sub, ok = [{"error": repr(e)}], False
                     rec["subpages"] = sub
@@ -577,7 +578,7 @@ def main():
                     d.capture("11b_settings_scrolled", "settings scrolled")
                     shell("input swipe 540 600 540 1800 400"); shell("input swipe 540 600 540 1800 400"); time.sleep(1.2)
                     try:
-                        meta["settings_pages"] = crawl_settings(d, a.package, deep_budget_s=720)
+                        meta["settings_pages"] = crawl_settings(d, a.package, deep_budget_s=840)
                     except Exception as e:   # crawler harness को न तोड़े
                         meta["settings_pages"] = None; meta["settings_crawl_error"] = repr(e); d.log(f"settings crawl error: {e!r}")
                 d.back(2)

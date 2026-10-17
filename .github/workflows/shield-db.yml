@@ -1,0 +1,57 @@
+name: Swiftra Shield list (build, sign, publish)
+# On-device Safe Browsing replacement for non-branded builds (patches/0006-swiftra-shield.patch).
+# Only redistributable feeds (docs/swiftra-shield.md). The browser verifies the ECDSA P-256 signature
+# with the public key compiled into SwiftraShieldApiHandler before using any list.
+on:
+  schedule:
+    - cron: "23 */6 * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: shield-db
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Unit tests (canonicalization parity, builder guards, Java twin)
+        run: python3 -m pytest -q tests/test_shield.py
+      - name: Build list
+        run: python3 scripts/shield/build_shield_db.py --out out
+      - name: Sign + verify (private key only from secret, never printed)
+        env:
+          SWIFTRA_SHIELD_KEY: ${{ secrets.SWIFTRA_SHIELD_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          K="$RUNNER_TEMP/k.pem"
+          printf '%s' "$SWIFTRA_SHIELD_KEY" | base64 -d > "$K"
+          openssl dgst -sha256 -sign "$K" -out out/shield.swz.sig out/shield.swz
+          openssl ec -in "$K" -pubout -outform DER 2>/dev/null | base64 -w0 > "$RUNNER_TEMP/pub.b64"
+          rm -f "$K"
+          # the key used must match the one compiled into the browser
+          EMBED=$(grep -o 'MFkw[A-Za-z0-9+/=]*' shield/java/org/chromium/components/safe_browsing/SwiftraShieldApiHandler.java | head -1)
+          [ "$EMBED" = "$(cat "$RUNNER_TEMP/pub.b64")" ] || { echo "signing key != embedded public key"; exit 1; }
+          openssl ec -pubin -inform DER -in <(base64 -d "$RUNNER_TEMP/pub.b64") -out "$RUNNER_TEMP/pub.pem" 2>/dev/null
+          openssl dgst -sha256 -verify "$RUNNER_TEMP/pub.pem" -signature out/shield.swz.sig out/shield.swz
+          ls -l out
+      - name: Publish (prerelease "shield-db", public download, never "latest")
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          R="${{ github.repository }}"
+          if ! gh release view shield-db -R "$R" >/dev/null 2>&1; then
+            gh release create shield-db -R "$R" --prerelease --latest=false --target "${GITHUB_SHA}" \
+              -t "Swiftra Shield list (auto-updated)" \
+              -n "Signed on-device threat list for Swiftra Shield. Built by .github/workflows/shield-db.yml from redistributable feeds; see docs/swiftra-shield.md and manifest.json."
+          fi
+          # A client that races these uploads sees a list/signature mismatch, rejects it, retries in 1 h (fail-safe).
+          for f in out/shield.swz out/shield.swz.sig out/manifest.json; do
+            for i in 1 2 3 4; do gh release upload shield-db -R "$R" --clobber "$f" && break; sleep $((i*10)); done
+          done
+          gh release view shield-db -R "$R" --json assets -q '.assets[] | "\(.name) \(.size) \(.digest)"'
