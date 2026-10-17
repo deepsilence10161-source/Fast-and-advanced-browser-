@@ -93,6 +93,14 @@ update check कभी नहीं चलता → `UpdateStatusProvider` `Upd
 उसी card का "Go to Google Play" button भी छिपा: upstream `SafetyHubModuleDelegateImpl.openGooglePlayStore()` non-branded में no-op
 (dead button) — ae8c946 के arm64 screenshot में दिखा, अगले commit में ठीक। पुराना SafetyCheck रास्ता पहले से ERROR ("can’t check for updates") दिखाता है — अपरिवर्तित।
 
+## 0006-swiftra-shield.patch (c2)
+`python3 shield/make_patch.py` से बनता है (हाथ से edit नहीं)। विवरण: `docs/swiftra-shield.md`।
+
+## 0007-swiftra-shield-honest-interstitial.patch (c2b — सत्यता + सुरक्षा)
+- `safe_browsing_loud_error_ui.cc`: non-branded में explanation paragraph ("Google Safe Browsing recently found …" + transparencyreport/report-error links) खाली। finalParagraph (risk + proceed link) अपरिवर्तित।
+- `url_realtime_mechanism.cc`: non-branded में ताज़ा SAFE real-time verdict पर भी hash DB (Swiftra Shield) जाँचा जाता है। पहले Enhanced protection Shield-listed URL को non-async रास्ते में छोड़ देता।
+- दोनों BUILD.gn में `//build:branding_buildflags` dep। विवरण: `docs/swiftra-shield.md` § Enhanced protection।
+
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।

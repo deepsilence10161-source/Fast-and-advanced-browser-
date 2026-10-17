@@ -25,7 +25,11 @@ GRDS = [
     "ui/android/java/strings/android_ui_strings.grd",          # menu button: "Customize and control Google Chrome"
     # बड़ी साझा grd — केवल सूचीबद्ध grdp के messages (incognito NTP "Chromium won't save", sad tab "Restart Chromium");
     # translations में नाम-बदलाव भी केवल उन्हीं messages का जिनका English बदला
-    ("components/components_strings.grd", ["components/new_or_sad_tab_strings.grdp"]),
+    # c2b: Safe Browsing interstitial ("Chrome strongly recommends…") और Autofill settings/payments (crawl में मिले leaks)
+    ("components/components_strings.grd", ["components/new_or_sad_tab_strings.grdp",
+                                           "components/security_interstitials_strings.grdp",
+                                           "components/autofill_strings.grdp",
+                                           "components/autofill_payments_strings.grdp"]),
 ]
 PROTECT = re.compile(
     r"Chromium(?:\s+(?:open[\s-]?source|project|Authors))|The Chromium Authors|Chromium\s*OS\b|ChromiumOS|"

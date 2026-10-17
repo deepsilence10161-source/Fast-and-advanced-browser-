@@ -49,6 +49,11 @@ CANARIES = [
     ("testsafebrowsing.appspot.com/s/malware.html", MALWARE),
     ("127.0.0.1/__swiftra_shield_canary__/phishing.html", PHISH),
     ("127.0.0.1/__swiftra_shield_canary__/malware.html", MALWARE),
+    # c2b: a public-host canary Google's real-time service rates SAFE (tools/sb_rt_probe.py,
+    # 2026-10-17) and that is not a private IP, so Enhanced protection really performs the URL
+    # real-time lookup for it -> proves Shield still blocks when Google says SAFE (patches/0007).
+    # The path does not exist on the host (404), nothing harmful is served.
+    ("testsafebrowsing.appspot.com/s/swiftra_shield_canary.html", PHISH),
 ]
 
 # FIRST_PARTY: every subdomain is operated by the owner -> never block a whole host under it

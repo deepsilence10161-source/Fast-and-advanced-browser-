@@ -63,8 +63,25 @@
 - यह Google की पूरी सूची के बराबर नहीं है।
   - फ़ायदा: phishing feed हर घंटे अपडेट होता है।
   - कमी: malware coverage कम है। Licence-clean malware URL स्रोत की खोज जारी है।
-- Enhanced mode के real-time verdict (Google server) non-branded build में नहीं चलते।
-- सुरक्षा के दावे और UI text को इसी वास्तविकता के अनुसार ठीक करना अलग काम है (c2b)।
+- Unwanted-software (UwS) की कोई सूची Shield में नहीं है। Standard protection में Google का `/s/unwanted.html` test page खुलता है (E2E में यही अपेक्षा दर्ज है)।
+
+## Enhanced protection (c2b, patches/0007)
+- **मापा गया तथ्य (2026-10-17, `tools/sb_rt_probe.py`):** Enhanced protection जिस URL real-time endpoint (`safebrowsing.google.com/safebrowsing/clientreport/realtime`, `UrlRealTimeMechanism`) को पूछता है, वह बिना key या login के भी उत्तर देता है।
+  - `testsafebrowsing …/s/phishing.html` → SOCIAL_ENGINEERING / DANGEROUS
+  - `…/s/unwanted.html` → UNWANTED_SOFTWARE / DANGEROUS
+  - `…/s/swiftra_shield_canary.html` → SAFE
+  - इसलिए Swiftra में Enhanced protection = Shield + Google real-time। Settings में Google को URL भेजे जाने की upstream सूचना सच है।
+- **Defect (स्रोत @155):** `UrlRealTimeMechanism::OnLookupResponse` ताज़ा SAFE verdict पर hash DB (= Shield) नहीं देखता।
+  - Async navigation check में अलग sync checker Shield देखता है।
+  - पर non-async रास्ते (prefetch, async tracker न हो) में Google को अज्ञात और Shield में सूचीबद्ध URL Enhanced में खुल जाता, जबकि Standard में block होता।
+  - **Fix:** non-branded build में हर SAFE verdict पर भी Shield देखा जाता है। नियम: कोई भी एक स्रोत खतरा बताए तो block। लागत: एक local lookup।
+- **Interstitial की सत्यता:**
+  - upstream explanation paragraph कहता है "Google Safe Browsing recently found …" और Google transparency report / error-report links देता है।
+  - Shield verdict पर यह झूठ होता। non-branded build में यह paragraph खाली है।
+  - Details में upstream का अनूदित risk paragraph और proceed link बने रहते हैं, इसलिए हर भाषा में पेशेवर अनुवाद सुरक्षित रहता है।
+  - "Chrome strongly recommends…" अब "Swiftra …" है: patches/0002 scope में `security_interstitials_strings.grdp`।
+- **कानूनी जोखिम (G1):** Google के internal Safe Browsing endpoint का fork में उपयोग Google की शर्तों के अधीन है। यह legal gate में दर्ज है।
+- **E2E:** Settings UI से Enhanced चालू करके जाँच होती है। Public canary block होना चाहिए, `unwanted.html` block होना चाहिए, example.com खुलना चाहिए। `chrome://safe-browsing` के RT pings और `chrome://components` informational रूप में दर्ज होते हैं।
 
 ## सत्यापन
 - `tests/test_shield.py`:

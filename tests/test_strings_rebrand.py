@@ -103,10 +103,17 @@ class TransformWithRealGrit(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.src)
 
-    def _mk_scoped(self, rel, part):
-        """scoped entry: grd में अपना message (scope बाहर) + <part> (scope भीतर)।"""
+    def _mk_scoped(self, rel, parts):
+        """scoped entry: grd में अपना message (scope बाहर) + <part>s (scope भीतर; पहला part test messages, बाकी खाली)।"""
+        part = parts[0]
         d = os.path.join(self.src, os.path.dirname(rel)); os.makedirs(os.path.join(d, "translations"), exist_ok=True)
         prel = os.path.relpath(os.path.join(self.src, part), d)
+        extra = ""
+        for x in parts[1:]:
+            os.makedirs(os.path.dirname(os.path.join(self.src, x)), exist_ok=True)
+            with open(os.path.join(self.src, x), "w", encoding="utf-8") as f:
+                f.write('<?xml version="1.0" encoding="utf-8"?>\n<grit-part>\n</grit-part>\n')
+            extra += f'\n          <part file="{os.path.relpath(os.path.join(self.src, x), d)}" />'
         g = GRD.replace('<message name="IDS_PLAIN" desc="x">Settings</message>',
                         '<message name="IDS_OUT" desc="x">Open Chrome Settings</message>\n'
                         f'          <part file="{prel}" />')
@@ -114,7 +121,7 @@ class TransformWithRealGrit(unittest.TestCase):
         body = body.replace('<message name="IDS_PLAIN" desc="x">Settings</message>', "")
         g = g.split("<messages fallback_to_english=\"true\">")[0] + '<messages fallback_to_english="true">\n' + \
             '          <message name="IDS_OUT" desc="x">Open Chrome Settings</message>\n' + \
-            f'          <part file="{prel}" />\n        </messages>' + g.split("</messages>")[1]
+            f'          <part file="{prel}" />{extra}\n        </messages>' + g.split("</messages>")[1]
         os.makedirs(os.path.dirname(os.path.join(self.src, part)), exist_ok=True)
         open(os.path.join(self.src, part), "w", encoding="utf-8").write(
             '<?xml version="1.0" encoding="utf-8"?>\n<grit-part>' + body + '</grit-part>\n')
@@ -135,7 +142,7 @@ class TransformWithRealGrit(unittest.TestCase):
             if isinstance(e, str):
                 out[e] = self._mk(e)
             else:
-                out[e[0]] = self._mk_scoped(e[0], e[1][0])
+                out[e[0]] = self._mk_scoped(e[0], e[1])
         return out
 
     def _mk(self, rel):
