@@ -67,6 +67,8 @@ GRD = textwrap.dedent('''\
           <message name="IDS_STORE" desc="x">Visit Chrome Web Store</message>
           <message name="IDS_PLAIN" desc="x">Settings</message>
           <message name="IDS_LINK" desc="x">Open <ph name="BEGIN_LINK">&lt;link&gt;</ph>Chrome<ph name="END_LINK">&lt;/link&gt;</ph> help</message>
+          <message name="IDS_LEGAL_INFORMATION_SUMMARY" desc="x" meaning="Android">Copyright <ph name="year">%1$d<ex>2014</ex></ph> Google LLC. All rights reserved.</message>
+          <message name="IDS_ABOUT_VERSION_COPYRIGHT" desc="x">Copyright <ph name="YEAR">{0,date,y}<ex>2016</ex></ph> The Chromium Authors. All rights reserved.</message>
           <if expr="is_android">
             <message name="IDS_QUIT" desc="x">Press to quit</message>
           </if>
@@ -80,6 +82,10 @@ GRD = textwrap.dedent('''\
       </release>
     </grit>
 ''')
+
+
+LEG_OLD = "Copyright YEAR Google LLC. All rights reserved."
+LEG_SRC = "Copyright YEAR The Chromium Authors. All rights reserved."
 
 
 def xtb_name(rel):
@@ -145,6 +151,8 @@ class TransformWithRealGrit(unittest.TestCase):
                 f'<translation id="{ids["Press to quit"]}">Chrome बंद करने के लिए दबाएं</translation>',
                 f'<translation id="{ids["Restart Chrome"]}">Chrome रीस्टार्ट करें</translation>',
                 f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>',
+                f'<translation id="{ids[LEG_OLD]}">कॉपीराइट <ph name="YEAR" /> Google LLC. सर्वाधिकार सुरक्षित.</translation>',
+                f'<translation id="{ids[LEG_SRC]}">कॉपीराइट <ph name="YEAR" /> Chrome लेखक. सर्वाधिकार सुरक्षित.</translation>',
                 '<translation id="111">दूसरी grd का Chrome</translation>', '</translationbundle>']
         open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
         return ids
@@ -193,6 +201,48 @@ class TransformWithRealGrit(unittest.TestCase):
             ids_in_x = re.findall(r'<translation id="(\d+)">', x)
             self.assertEqual(len(ids_in_x), len(set(ids_in_x)))                          # merge के बाद कोई duplicate ID नहीं
             self.assertEqual(tr[new["Restart Swiftra"]], "Swiftra रीस्टार्ट करें")
+
+    def test_fact_fix_copyright(self):
+        """About -> Legal: "Google LLC" दावा हटे; अनुवाद स्रोत message से (tr_fix सहित); स्रोत grd का अनुवाद अछूता।"""
+        old = self._mk_all()
+        out = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertIn("[fact] IDS_LEGAL_INFORMATION_SUMMARY", out.stderr)
+        fx = rb.FACT_FIXES[0]
+        p = os.path.join(self.src, fx["grd"])
+        g = open(p, encoding="utf-8").read()
+        self.assertIn("</ph> The Chromium Authors. All rights reserved.</message>", g)
+        self.assertNotIn("Google LLC", g)
+        new = {nm: i for i, _, nm in rb.message_ids(self.src, p, names=True)}
+        x = open(os.path.join(os.path.dirname(p), "translations", xtb_name(fx["grd"])), encoding="utf-8").read()
+        tr = dict(re.findall(r'<translation id="(\d+)">(.*?)</translation>', x))
+        # स्रोत-अनुवाद "Chrome लेखक" (upstream fr-CA जैसी भूल) -> tr_fix -> "Chromium लेखक"; branding ("Swiftra") नहीं
+        self.assertEqual(tr[new["IDS_LEGAL_INFORMATION_SUMMARY"]], 'कॉपीराइट <ph name="YEAR" /> Chromium लेखक. सर्वाधिकार सुरक्षित.')
+        self.assertNotIn(old[fx["grd"]][LEG_OLD], tr)
+        self.assertNotIn("Google LLC", x)
+        sx = open(os.path.join(self.src, os.path.dirname(fx["tr_from"][0]), "translations",
+                               xtb_name(fx["tr_from"][0])), encoding="utf-8").read()
+        self.assertIn("Chrome लेखक", sx)                                   # स्रोत grd का अपना अनुवाद नहीं छूता
+
+    def test_fact_fix_missing_source_translation_fails(self):
+        old = self._mk_all()
+        fx = rb.FACT_FIXES[0]
+        sxp = os.path.join(self.src, os.path.dirname(fx["tr_from"][0]), "translations", xtb_name(fx["tr_from"][0]))
+        sx = open(sxp, encoding="utf-8").read()
+        sx = re.sub(r'<translation id="%s">.*?</translation>\n' % old[fx["tr_from"][0]][LEG_SRC], "", sx)
+        open(sxp, "w", encoding="utf-8").write(sx)
+        out = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("स्रोत-अनुवाद नहीं", out.stderr)
+
+    def test_fact_fix_target_must_exist_once(self):
+        self._mk_all()
+        p = os.path.join(self.src, rb.FACT_FIXES[0]["grd"])
+        g = open(p, encoding="utf-8").read().replace("IDS_LEGAL_INFORMATION_SUMMARY", "IDS_RENAMED")
+        open(p, "w", encoding="utf-8").write(g)
+        out = subprocess.run([sys.executable, SCRIPT, self.src], capture_output=True, text=True)
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("0 बार मिला", out.stderr)
 
     def test_deterministic(self):
         self._mk_all()

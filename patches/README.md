@@ -67,3 +67,31 @@ FRE footer की "To help improve the app, Swiftra sends usage and crash data t
 Chromium 155 `components/metrics/metrics_service_accessor.cc` — non-Google-branded build में metrics reporting पूरी तरह बंद।
 `FullscreenSigninMediator` में `!BuildConfig.IS_CHROME_BRANDED` होने पर footer केवल ToS पंक्ति (upstream का policy-disabled रास्ता)।
 बाकी (legal gate G1): ToS link अभी Google Terms of Service पर जाता है — Swiftra की अपनी ToS/Privacy चाहिए।
+
+## 0002 FACT_FIXES: About → Legal information copyright (c1 — सत्यता)
+`IDS_LEGAL_INFORMATION_SUMMARY` (android_chrome_strings.grd) upstream में "Copyright %1$d Google LLC. All rights reserved." —
+Swiftra Google LLC का उत्पाद नहीं, अतः असत्य। अब "Copyright %1$d The Chromium Authors. All rights reserved." — वही wording जो
+Chromium (non-Google) desktop About दिखाता है (`chromium_strings.grd` `IDS_ABOUT_VERSION_COPYRIGHT` की `not _google_chrome` शाखा)
+और जो Chromium BSD license notice है। 81/81 भाषाओं के अनुवाद उसी desktop message के पेशेवर अनुवाद से (regex-अनुवाद नहीं);
+xtb का मेल file-suffix से (lang "iw"/"he")। upstream fr-CA स्रोत में "Les auteurs de Chrome" भूल → `tr_fix` से "Chromium"।
+किसी भाषा का स्रोत-अनुवाद न मिले या message ठीक 1 बार न मिले तो build रुकता है। अंतिम legal wording: G1 review।
+
+## 0004-google-services-no-false-metrics-toggle.patch (c1 — सत्यता)
+Settings → Google services का switch "Help improve Swiftra's features and performance — Automatically sends usage statistics and
+crash reports to Google" ON दिखता था, पर इस build में: (1) UMA पूरी तरह बंद (`metrics_service_accessor.cc`, non-official);
+(2) crash dumps का upload URL `null` (`MinidumpUploader.sCrashUrlString` = केवल `IS_CHROME_BRANDED` में clients2.google.com) —
+upload "Crash upload URL is not configured" पर बिना network के रुकता है। यानी दावा असत्य और switch निष्क्रिय।
+`!BuildConfig.IS_CHROME_BRANDED` में switch छिपा (upstream का `shouldUseMetricsChoiceRestructure` वाला रास्ता) + settings search से हटाया।
+नहीं छुआ: "Make searches and browsing better" (url-keyed consent — omnibox zero-suggest इसी consent पर पेज URL default search
+engine को भेज सकता है, अतः दावा असत्य सिद्ध नहीं; default OFF) और "Improve search suggestions" (असली)।
+
+## 0005-safety-hub-no-false-up-to-date.patch (c1 — सत्यता)
+Settings → Safety check (Safety Hub) "Swiftra is up to date" दिखाता था बिना कोई जाँच किए: Omaha `RequestGenerator` केवल
+Google internal build में (`OmahaService.createRequestGenerator()` → `ServiceLoaderUtil.maybeCreate`), Chromium में `null` →
+update check कभी नहीं चलता → `UpdateStatusProvider` `UpdateState.NONE` → "up to date"। अब `!IS_CHROME_BRANDED` में upstream की
+मौजूदा "unavailable" शाखा: शीर्षक "Can’t check Swiftra version", summary "Version <installed>" ("Try again later" भ्रामक होता)।
+पुराना SafetyCheck रास्ता पहले से ERROR ("can’t check for updates") दिखाता है — अपरिवर्तित।
+
+## सत्यता scan (harness)
+`scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
+meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।

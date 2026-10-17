@@ -28,8 +28,22 @@ ATTR = re.compile(r'(\w[\w-]*)="([^"]*)"')
 WEB_CLASSES = ("android.webkit.WebView",)
 
 
-def scan_xml(xml, pkg):
-    leaks = []
+# सत्यता (truth) scan: Swiftra (non-Google-branded) build के लिए upstream के वे दावे जो असत्य हैं और जिनमें "Chrome" शब्द
+# नहीं — branding scan इन्हें नहीं पकड़ता। patches: 0002 FACT_FIXES (copyright), 0004 (metrics toggle), 0005 (update check)।
+FALSE_CLAIMS = {
+    "copyright_google_llc": re.compile(r"Copyright\s+\d{4}\s+Google\s+(LLC|Inc)", re.I),
+    "metrics_sends_to_google": re.compile(r"sends usage statistics and crash reports to Google", re.I),
+    "update_up_to_date": re.compile(r"\bis up to date\b", re.I),
+}
+# अपेक्षित सही text (उपस्थिति का प्रमाण; न मिलना = वह पन्ना capture नहीं हुआ या fix नहीं पहुँचा)
+EXPECTED = {
+    "copyright_chromium_authors": re.compile(r"Copyright\s+\d{4}\s+The Chromium Authors", re.I),
+    "update_cant_check": re.compile(r"Can.t check \S+ version", re.I),
+}
+
+
+def app_texts(xml, pkg):
+    """इस app के (web content नहीं) हर node का (field, value, attrs)।"""
     # WebView/web-content subtree छोड़ें: renderer nodes का resource-id खाली और class android.view.View होता है,
     # इसलिए पहचान के लिए package + web-content ancestor का stack रखें
     depth_web = []
@@ -49,10 +63,27 @@ def scan_xml(xml, pkg):
             continue
         for f in ("text", "content-desc"):
             v = html.unescape(a.get(f, ""))
-            rest = ALLOWED.sub("", v)
-            if BRAND.search(rest):
-                leaks.append({"field": f, "value": v, "id": a.get("resource-id", ""), "class": a.get("class", "")})
+            if v:
+                yield f, v, a
+
+
+def scan_xml(xml, pkg):
+    leaks = []
+    for f, v, a in app_texts(xml, pkg):
+        if BRAND.search(ALLOWED.sub("", v)):
+            leaks.append({"field": f, "value": v, "id": a.get("resource-id", ""), "class": a.get("class", "")})
     return leaks
+
+
+def scan_claims(xml, pkg):
+    """(असत्य दावे [{claim, value, id}], मिले अपेक्षित-text keys set)"""
+    bad, seen = [], set()
+    for f, v, a in app_texts(xml, pkg):
+        for k, rx in FALSE_CLAIMS.items():
+            if rx.search(v):
+                bad.append({"claim": k, "field": f, "value": v, "id": a.get("resource-id", "")})
+        seen |= {k for k, rx in EXPECTED.items() if rx.search(v)}
+    return bad, seen
 
 
 def main():

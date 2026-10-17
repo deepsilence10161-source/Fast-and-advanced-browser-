@@ -85,12 +85,26 @@ def brand_markup(body, tr=False):
     return "".join(out)
 
 
+# तथ्य-सुधार (branding से अलग): upstream का वह text जो Swiftra के लिए असत्य दावा है और जिसमें "Chrome" शब्द नहीं
+# (scanner पकड़ नहीं सकता)। अंग्रेज़ी में ठीक एक बार old->new; translations उसी src के एक दूसरे message से लिए जाते हैं
+# जिसका अंग्रेज़ी text पहले से वही है (पेशेवर अनुवाद) — regex-अनुवाद नहीं। किसी भाषा का स्रोत-अनुवाद न मिले तो build रुके।
+#  * About -> Legal information: "Copyright YEAR Google LLC" — Swiftra Google LLC का नहीं; Chromium (non-Google) desktop
+#    About इसी जगह "Copyright YEAR The Chromium Authors. All rights reserved." दिखाता है (BSD license notice भी यही)।
+#    fr-CA के upstream स्रोत-अनुवाद में "Les auteurs de Chrome" (upstream भूल) -> tr_fix से "Chromium"।
+FACT_FIXES = [
+    dict(grd="chrome/browser/ui/android/strings/android_chrome_strings.grd", name="IDS_LEGAL_INFORMATION_SUMMARY",
+         old="Google LLC", new="The Chromium Authors",
+         tr_from=("chrome/app/chromium_strings.grd", "IDS_ABOUT_VERSION_COPYRIGHT"),
+         tr_fix=[(re.compile(r"(?<![A-Za-z])Chrome(?![A-Za-z])"), "Chromium")]),
+]
+
+
 MSG_RX = re.compile(r"(<message\b[^>]*>)(.*?)(</message>)", re.S)
 TR_RX = re.compile(r'(<translation\s+id=")(\d+)(">)(.*?)(</translation>)', re.S)
 
 
-def message_ids(src, grd_path):
-    """grit से (preorder क्रम में) हर message का translation ID।"""
+def message_ids(src, grd_path, names=False):
+    """grit से (preorder क्रम में) हर message का translation ID (names=True: (ID, text, message name))।"""
     sys.path.insert(0, os.path.join(src, "tools", "grit"))
     from grit import grd_reader
     from grit.node import message as M
@@ -101,6 +115,7 @@ def message_ids(src, grd_path):
         def get(self, k, d=None): return dict.get(self, k, False)
     res = grd_reader.Parse(grd_path, defines=AnyDef(), target_platform="android", skip_validation_checks=True)
     return [(n.GetCliques()[0].GetId(), n.GetCliques()[0].GetMessage().GetPresentableContent())
+            + ((n.attrs["name"],) if names else ())
             for n in res.Preorder() if isinstance(n, M.MessageNode)]
 
 
@@ -191,6 +206,61 @@ def process(src, rel, log, scope=None):
     return touched
 
 
+def fact_fix(src, fx, log):
+    """FACT_FIXES की एक प्रविष्टि लागू करें; बदली फ़ाइलें लौटाता है।"""
+    rel = fx["grd"]; base = os.path.dirname(rel); path = os.path.join(src, rel)
+    orig = open(path, encoding="utf-8").read()
+    files = [rel] + [os.path.normpath(os.path.join(base, f)) for f in re.findall(r'<part\s+file="([^"]+)"', orig)]
+    hits = []
+    for f in files:
+        t = open(os.path.join(src, f), encoding="utf-8").read()
+        for m in MSG_RX.finditer(t):
+            if re.search(r'\bname="%s"' % re.escape(fx["name"]), m.group(1)):
+                hits.append((f, t, m))
+    if len(hits) != 1:
+        raise SystemExit(f"[fact] {rel}: {fx['name']} {len(hits)} बार मिला (ठीक 1 चाहिए)")
+    f, t, m = hits[0]
+    if m.group(2).count(fx["old"]) != 1:
+        raise SystemExit(f"[fact] {fx['name']}: अंग्रेज़ी में '{fx['old']}' ठीक एक बार नहीं")
+    before = {nm: i for i, _, nm in message_ids(src, path, names=True)}
+    nt = t[:m.start(2)] + m.group(2).replace(fx["old"], fx["new"]) + t[m.end(2):]
+    open(os.path.join(src, f), "w", encoding="utf-8").write(nt)
+    after = message_ids(src, path, names=True)
+    old_id = before[fx["name"]]
+    new_id, new_txt = next((i, txt) for i, txt, nm in after if nm == fx["name"])
+    # स्रोत message: tr_from grd में उसी नाम का वह message (कई <if> शाखाएँ) जिसका text नए text जैसा
+    sgrd, sname = fx["tr_from"]
+    src_ids = [i for i, txt, nm in message_ids(src, os.path.join(src, sgrd), names=True) if nm == sname and txt == new_txt]
+    if len(src_ids) != 1:
+        raise SystemExit(f"[fact] {fx['name']}: स्रोत {sgrd}:{sname} में '{new_txt}' {len(src_ids)} बार")
+    sid = src_ids[0]
+    # भाषा का मेल xtb file-suffix से (lang attribute grd-दर-grd अलग हो सकता है: "iw" बनाम "he")
+    sfx = lambda x: re.search(r"_([A-Za-z0-9-]+)\.xtb$", x).group(1)
+    slangs = {sfx(x): os.path.normpath(os.path.join(os.path.dirname(sgrd), x)) for x in re.findall(
+        r'<file\s+path="([^"]+\.xtb)"', open(os.path.join(src, sgrd), encoding="utf-8").read())}
+    touched, n_tr, n_fix = [f], 0, 0
+    for x in re.findall(r'<file\s+path="([^"]+\.xtb)"', orig):
+        lang = sfx(x)
+        xrel = os.path.normpath(os.path.join(base, x)); xp = os.path.join(src, xrel)
+        xs = open(xp, encoding="utf-8").read()
+        if not re.search(r'<translation\s+id="%s">' % old_id, xs):
+            continue                                    # इस भाषा में पहले भी अनुवाद नहीं था
+        ss = open(os.path.join(src, slangs[lang]), encoding="utf-8").read() if lang in slangs else ""
+        sm = re.search(r'<translation\s+id="%s">(.*?)</translation>' % sid, ss, re.S)
+        if not sm:
+            raise SystemExit(f"[fact] {fx['name']}: '{lang}' का स्रोत-अनुवाद नहीं ({slangs.get(lang)})")
+        body = sm.group(1)
+        for rx, rep in fx.get("tr_fix", []):
+            nb = rx.sub(rep, body); n_fix += nb != body; body = nb
+        nxs, k = re.subn(r'(<translation\s+id=")%s(">).*?(</translation>)' % old_id,
+                         lambda mm: mm.group(1) + new_id + mm.group(2) + body + mm.group(3), xs, flags=re.S)
+        assert k == 1, (xrel, k)
+        open(xp, "w", encoding="utf-8").write(nxs); touched.append(xrel); n_tr += 1
+    log(f"[fact] {fx['name']}: '{fx['old']}' -> '{fx['new']}', ID {old_id} -> {new_id}, {n_tr} translations "
+        f"{sgrd}:{sname} से, {n_fix} पर tr_fix")
+    return touched
+
+
 def brand_text_check(groups):
     """ph के बाहर बचा "Chrome/Chromium" (केवल सुरक्षित वाक्यांश होने चाहिए) — रिपोर्ट हेतु।"""
     body = groups[1]
@@ -213,9 +283,13 @@ def main():
     for rel, _ in entries:
         if not os.path.isfile(os.path.join(src, rel)):
             log(f"[strings] grd नहीं मिला: {rel}"); return 1
+    touched = []
+    for fx in FACT_FIXES:                 # branding से पहले: स्रोत-अनुवाद pristine हों
+        touched += fact_fix(src, fx, log)
     for rel, scope in entries:
-        for t in process(src, rel, log, scope):
-            print("TOUCHED " + t)
+        touched += process(src, rel, log, scope)
+    for t in dict.fromkeys(touched):
+        print("TOUCHED " + t)
     return 0
 
 

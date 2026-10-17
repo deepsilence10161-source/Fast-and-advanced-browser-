@@ -1,0 +1,39 @@
+--- a/chrome/browser/safety_hub/android/java/src/org/chromium/chrome/browser/safety_hub/SafetyHubUpdateCheckModuleMediator.java
++++ b/chrome/browser/safety_hub/android/java/src/org/chromium/chrome/browser/safety_hub/SafetyHubUpdateCheckModuleMediator.java
+@@ -9,6 +9,7 @@
+ import android.view.View;
+ 
+ import org.chromium.base.ApkInfo;
++import org.chromium.build.BuildConfig;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.chrome.browser.omaha.UpdateStatusProvider;
+@@ -115,6 +116,11 @@
+     }
+ 
+     public UpdateStatusProvider.@Nullable UpdateStatus getUpdateStatus() {
++        // Swiftra: non-Google-branded builds have no Omaha RequestGenerator
++        // (OmahaService.createRequestGenerator() -> ServiceLoaderUtil, internal only), so no update
++        // check ever runs and UpdateState.NONE would falsely read "<app> is up to date". Report the
++        // existing "can't check version" (unavailable) state instead.
++        if (!BuildConfig.IS_CHROME_BRANDED) return null;
+         return mSafetyHubFetchService.getUpdateStatus();
+     }
+ 
+@@ -137,6 +143,16 @@
+ 
+     private @Nullable String getSummary() {
+         if (mUpdateStatus == null) {
++            // Swiftra: "Try again later" would be misleading (retrying never helps without an
++            // update channel); show the installed version instead.
++            String installedVersion = ApkInfo.getPackageVersionName();
++            if (!BuildConfig.IS_CHROME_BRANDED
++                    && installedVersion != null
++                    && !installedVersion.isEmpty()) {
++                return mPreference
++                        .getContext()
++                        .getString(R.string.safety_hub_version_summary, installedVersion);
++            }
+             return mPreference.getContext().getString(R.string.safety_hub_unavailable_summary);
+         }
+ 

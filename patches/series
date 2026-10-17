@@ -4,3 +4,5 @@
 0001-swiftra-app-name.patch
 0002-swiftra-strings.py
 0003-fre-no-false-uma-claim.patch
+0004-google-services-no-false-metrics-toggle.patch
+0005-safety-hub-no-false-up-to-date.patch

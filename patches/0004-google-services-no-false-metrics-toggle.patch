@@ -1,0 +1,35 @@
+--- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/GoogleServicesSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/GoogleServicesSettings.java
+@@ -21,6 +21,7 @@
+ import org.chromium.base.supplier.ObservableSuppliers;
+ import org.chromium.base.supplier.OneshotSupplier;
+ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
++import org.chromium.build.BuildConfig;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.chrome.R;
+@@ -133,7 +134,12 @@
+         mUsageAndCrashReporting.setOnPreferenceChangeListener(this);
+         mUsageAndCrashReporting.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
+         // TODO(b/483043192): Add UI for new Metrics Consent settings.
+-        if (mPrivacyPrefManager.shouldUseMetricsChoiceRestructure()) {
++        // Swiftra: hidden in non-Google-branded builds. UMA is disabled completely there
++        // (components/metrics/metrics_service_accessor.cc) and crash dumps have no upload URL
++        // (MinidumpUploader: null unless IS_CHROME_BRANDED), so "sends usage statistics and crash
++        // reports to Google" would be a false claim and the switch would do nothing.
++        if (mPrivacyPrefManager.shouldUseMetricsChoiceRestructure()
++                || !BuildConfig.IS_CHROME_BRANDED) {
+             mUsageAndCrashReporting.setVisible(false);
+         }
+ 
+@@ -375,6 +381,10 @@
+                     if (!shouldShowUsageStatsReporting(UserPrefs.get(profile))) {
+                         indexData.removeEntry(getUniqueId(PREF_USAGE_STATS_REPORTING));
+                     }
++                    // Swiftra: keep settings search consistent with the hidden switch above.
++                    if (!BuildConfig.IS_CHROME_BRANDED) {
++                        indexData.removeEntry(getUniqueId(PREF_USAGE_AND_CRASH_REPORTING));
++                    }
+                 }
+             };
+ }

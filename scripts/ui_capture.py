@@ -261,8 +261,8 @@ def crawl_settings(d, pkg, budget_s=420):
         xml = d.dump()
         if not on_settings_main(d, xml):
             d.log("settings crawl: main list पर नहीं — रुकते हैं"); break
-        titles = [x for x in d.nodes(xml) if x["id"] == "android:id/title" and x["pkg"] == pkg and x["h"] >= 30
-                  and x["bounds"][3] < 2250 and x["text"] not in visited]
+        titles = [x for x in d.nodes(xml) if x["id"] == "android:id/title" and x["pkg"] == pkg and x["h"] >= 45
+                  and x["text"] not in visited]   # पूरी (57px) या लगभग पूरी दिखती row; नीचे की आख़िरी row भी (About)
         if not titles:
             idle += 1; shell("input swipe 540 1800 540 900 400"); time.sleep(1.5); continue
         idle = 0
@@ -533,6 +533,24 @@ def main():
         log(f"branding scan: {meta['branding_leaks']} leaks")
     except Exception as e:  # जाँच harness को न तोड़े
         meta["branding_leaks"] = None; meta["branding_scan_error"] = repr(e)
+    # सत्यता scan (Chrome शब्द-रहित असत्य दावे: Google LLC copyright, metrics toggle, "is up to date")
+    try:
+        bad, seen = {}, set()
+        for f in sorted(os.listdir(a.out)):
+            if f.endswith(".xml"):
+                l, s_ = branding_scan.scan_claims(open(os.path.join(a.out, f), encoding="utf-8", errors="replace").read(), a.package)
+                seen |= s_
+                if l:
+                    bad[f] = l
+        meta["false_claims"] = sum(len(v) for v in bad.values())
+        meta["false_claim_values"] = sorted({x["claim"] + ": " + x["value"] for v in bad.values() for x in v})
+        meta["expected_texts_found"] = sorted(seen)
+        json.dump({"false_claims": meta["false_claims"], "by_screen": bad, "expected_found": sorted(seen),
+                   "expected_all": sorted(branding_scan.EXPECTED)}, open(os.path.join(a.out, "truth_scan.json"), "w"),
+                  ensure_ascii=False, indent=1)
+        log(f"truth scan: {meta['false_claims']} false claims, expected found {sorted(seen)}")
+    except Exception as e:
+        meta["false_claims"] = None; meta["truth_scan_error"] = repr(e)
     json.dump(meta, open(os.path.join(a.out, "meta.json"), "w"), indent=2)
     log("done")
 

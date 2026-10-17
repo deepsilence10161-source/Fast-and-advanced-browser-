@@ -43,6 +43,23 @@ class Scan(unittest.TestCase):
         l = bs.scan_xml(x, P)
         self.assertEqual([i["value"] for i in l], ["Chrome after webview", "open in chromium"])   # WebView के बाद का sibling फिर गिना जाए
 
+    def test_truth_claims_from_real_settings_capture(self):
+        """1f2788f crawl (38989202816) में मिले तीनों असत्य दावे पकड़े जाएँ; सही text 'expected' में गिने।"""
+        x = doc(node("Copyright 2026 Google LLC. All rights reserved.", rid="android:id/summary"),
+                node("Automatically sends usage statistics and crash reports to Google", rid="android:id/summary"),
+                node("Swiftra is up to date", rid="android:id/title"),
+                node(cls="android.webkit.WebView", children=node("Chrome is up to date", cls="android.view.View")))
+        bad, seen = bs.scan_claims(x, P)
+        self.assertEqual(sorted(b["claim"] for b in bad),
+                         ["copyright_google_llc", "metrics_sends_to_google", "update_up_to_date"])
+        self.assertEqual(seen, set())
+        good = doc(node("Copyright 2026 The Chromium Authors. All rights reserved."),
+                   node("Can’t check Swiftra version"), node("Version 155.0.8059.80"),
+                   node("Make searches and browsing better"), node("Google Terms of Service"))
+        bad, seen = bs.scan_claims(good, P)
+        self.assertEqual(bad, [])
+        self.assertEqual(seen, set(bs.EXPECTED))
+
     def test_cli_exit_codes(self):
         with tempfile.TemporaryDirectory() as t:
             r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "ci", "branding_scan.py"), t], capture_output=True)
