@@ -164,6 +164,13 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - G1: Google का internal Safe Browsing endpoint इस्तेमाल करना Google की शर्तों का कानूनी प्रश्न है (BLOCKED)।
 - Evidence: `evidence/shield-c2b-2026-10-17/`।
 
+### 2.9 Settings की सच्चाई + variations + NetLog audit (c2c, 17-10-2026)
+- Patch: 0008 standard-local-and-esb-honest (PhishGuard Standard में बंद, ESB विवरण के झूठे bullets छिपे), 0002 FACT_FIXES (Standard/ESB summary), `disable_fieldtrial_testing_config = true` (Chromium `testing/variations/README.md` की सलाह)।
+- E2E (`scripts/ci/shield_e2e.py`): Standard 8/8, Enhanced 5/5, SB page truth, ESB details truth, chrome://version variations source, NetLog trace (Standard window + Enhanced positive control)।
+- परिणाम: x64 emulator (39053115486, 39055927613) और arm64 Redroid (39053116960, 39055928718) दोनों पर SHIELD_E2E PASS। Standard में Google URL requests 0, SB hosts 0; Enhanced में `safebrowsing.google.com/safebrowsing/clientreport/{realtime,malware}` दिखते हैं।
+- सीमा: trace startup के बाद शुरू; connection-level preconnect events बाकी; असली फ़ोन NOT RUN।
+- प्रमाण: `evidence/c2c-2026-10-17/`।
+
 ## 3. विफलताओं का इतिहास (ईमानदार क्रम; कुछ भी पहली बार में पास नहीं हुआ)
 | # | Run | क्या हुआ | कारण | सुधार |
 |---|---|---|---|---|

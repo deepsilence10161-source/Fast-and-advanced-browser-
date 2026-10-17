@@ -1,0 +1,37 @@
+127.0.0.1 - - [17/Oct/2026 18:25:54] "GET /__swiftra_shield_canary__/safe.html HTTP/1.1" 200 -
+127.0.0.1 - - [17/Oct/2026 18:25:55] code 404, message File not found
+127.0.0.1 - - [17/Oct/2026 18:25:55] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [17/Oct/2026 18:25:56] "GET /__swiftra_shield_canary__/phishing.html HTTP/1.1" 200 -
+127.0.0.1 - - [17/Oct/2026 18:26:02] "GET /__swiftra_shield_canary__/safe.html HTTP/1.1" 304 -
+127.0.0.1 - - [17/Oct/2026 18:26:07] "GET /__swiftra_shield_canary__/phishing.html HTTP/1.1" 304 -
+127.0.0.1 - - [17/Oct/2026 18:26:13] "GET /__swiftra_shield_canary__/malware.html HTTP/1.1" 200 -
+127.0.0.1 - - [17/Oct/2026 18:26:48] "GET /__swiftra_shield_canary__/safe.html HTTP/1.1" 304 -
+127.0.0.1 - - [17/Oct/2026 18:27:00] "GET /__swiftra_shield_canary__/phishing.html HTTP/1.1" 304 -
+127.0.0.1 - - [17/Oct/2026 18:29:56] "GET /__swiftra_shield_canary__/phishing.html HTTP/1.1" 304 -
+list: {'ready': True, 'how': 'updated', 'entries': 908357, 'seconds': 2.0}
+blocking ready after s: 6.1
+local_safe_control: expected=loaded got=loaded (devtools) honesty=- native_chrome=- PASS
+local_phishing_canary: expected=blocked_phishing got=blocked_phishing (devtools) honesty=[] native_chrome=- PASS
+local_malware_canary: expected=blocked_malware got=blocked_malware (devtools) honesty=[] native_chrome=- PASS
+google_test_phishing: expected=blocked_phishing got=blocked_phishing (devtools) honesty=[] native_chrome=- PASS
+google_test_malware: expected=blocked_malware got=blocked_malware (devtools) honesty=[] native_chrome=- PASS
+example_com: expected=loaded got=loaded (devtools) honesty=- native_chrome=- PASS
+public_shield_canary: expected=blocked_phishing got=blocked_phishing (devtools) honesty=[] native_chrome=- PASS
+google_test_unwanted: expected=loaded got=loaded (devtools) honesty=- native_chrome=- PASS
+variations: {'source': 'default seed', 'source_hidden': False, 'variations_chars': 747, 'cmd_chars': 63, 'version': '155.0.8059.80\n              (Developer Build)\n              unknown\n            ', 'open': 'ok', 'pass': True}
+net standard: {'ok': True, 'events': 798, 'seconds': 61.3, 'google_requests': {}, 'google_event_types': {'HTTP_STREAM_JOB_CONTROLLER': 5, 'QUIC_SESSION_POOL_USE_EXISTING_SESSION': 5, 'HTTP_SERVER_PROPERTIES_UPDATE_PREFS': 1}, 'sb_hosts': []}
+enhanced protection: {'set': True, 'log': ['tap: Settings', 'tap: Privacy and security', 'tap: Safe Browsing', 'tap: Enhanced protection'], 'back_to_browser': True}
+sb page truth: {'false_claims': [], 'missing_expected': [], 'pass': True}
+esb details: {'pass': True, 'false_claims': [], 'missing_expected': [], 'log': ['tap: Settings', 'tap: Privacy and security', 'tap: Safe Browsing', 'tap: expand_arrow (Enhanced)'], 'back_to_browser': True}
+esb_local_phishing_canary: expected=blocked_phishing got=blocked_phishing (devtools) honesty=[] native_chrome=[] PASS
+esb_public_shield_canary: expected=blocked_phishing got=blocked_phishing (devtools) honesty=[] native_chrome=[] PASS
+esb_google_test_phishing: expected=blocked_phishing got=blocked_phishing (devtools) honesty=[] native_chrome=[] PASS
+esb_google_test_unwanted: expected=blocked_harmful got=blocked_harmful (devtools) honesty=[] native_chrome=[] PASS
+esb_example_com: expected=loaded got=loaded (devtools) honesty=- native_chrome=[] PASS
+net enhanced: {'ok': True, 'events': 2719, 'seconds': 50.1, 'google_requests': {'POST https://safebrowsing.google.com/safebrowsing/clientreport/malware': 4, 'POST https://safebrowsing.google.com/safebrowsing/clientreport/realtime': 3}, 'google_event_types': {'CORS_REQUEST': 7, 'REQUEST_ALIVE': 7, 'TRANSPORT_SECURITY_STATE_SHOULD_UPGRADE_TO_SSL': 7, 'URL_REQUEST_START_JOB': 7, 'HTTP_STREAM_JOB_CONTROLLER': 16, 'HTTP_STREAM_JOB': 14, 'QUIC_SESSION_POOL_JOB': 2, 'QUIC_SESSION_POOL_CANNOT_POOL_WITH_EXISTING_SESSIONS': 5, 'QUIC_SESSION': 2, 'QUIC_SESSION_POOL_USE_EXISTING_SESSION': 14, 'CERT_VERIFIER_JOB': 1, 'CERT_VERIFY_PROC': 1, 'QUIC_ACCEPT_CH_FRAME_RECEIVED': 2, 'HTTP_SERVER_PROPERTIES_UPDATE_PREFS': 1, 'QUIC_SESSION_ORIGIN_FRAME_RECEIVED': 1}, 'sb_hosts': ['safebrowsing.google.com']}
+debug pages: ok; clicked: Enable internal debugging pages
+optimization guide: 1462 ['Downloaded models:', 'Models']
+rt lookup page: {'chars': 15497, 'mentions_public_canary': True, 'mentions_unwanted': True}
+components: ['Actor Safety Lists - Version: 9.8200.9609', 'Real Time Url Checks Allowlist - Version: 151.0.7900.0', 'Safety Tips - Version: 3092']
+net audit: {'verdict': 'clean', 'positive_control': True, 'standard_google_hosts': ['accounts.google.com', 'content-autofill.googleapis.com', 't0.gstatic.com', 'www.google.com', 'www.gstatic.com', 'www.youtube.com'], 'standard_google_requests': {}, 'standard_requests_total': 4, 'enhanced_sb_hosts': ['safebrowsing.google.com']}
+SHIELD_E2E PASS
