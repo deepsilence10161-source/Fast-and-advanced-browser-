@@ -319,7 +319,10 @@ def internal_text(devtools, url_prefix):
     return None
 
 
-def run_case(a, cid, url, expected, marker):
+CHROME_WORD = re.compile(r"\bChrome\b(?!\s*(?:Web Store|OS\b))")
+
+
+def run_case(a, cid, url, expected, marker, native_ui_check=False):
     adb("shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", url, a.package, timeout=40)
     got, text, src = "unknown", "", ""
     for _ in range(8):  # up to ~24 s for network pages
@@ -342,8 +345,17 @@ def run_case(a, cid, url, expected, marker):
         rec["honesty"] = h
         if h is None or not h["pass"]:
             rec["pass"] = passed = False
+    if native_ui_check:
+        # native Android UI (message banners, e.g. "Enhanced protection is on") is invisible to DevTools
+        ui = ui_text()
+        hits = sorted(set(m.group(0) for m in re.finditer(r"[^\n]{0,60}\bChrome\b[^\n]{0,60}", ui)
+                          if CHROME_WORD.search(m.group(0))))
+        rec["native_ui_chrome_hits"] = hits
+        if hits:
+            rec["pass"] = passed = False
     hp = rec.get("honesty") or {}
     print(f"{cid}: expected={expected} got={got} ({src}) honesty={hp.get('problems', '-')} "
+          f"native_chrome={rec.get('native_ui_chrome_hits', '-')} "
           f"{'PASS' if passed else 'FAIL'}")
     return rec
 
@@ -395,7 +407,7 @@ def main():
             esb["rt_page_open"] = open_internal(a.devtools, "chrome://safe-browsing/#tab-rt-lookup")
             time.sleep(3)
             for cid, url, expected in ESB_CASES:
-                rec = run_case(a, cid, url, expected, MARKERS.get(cid[4:], ""))
+                rec = run_case(a, cid, url, expected, MARKERS.get(cid[4:], ""), native_ui_check=True)
                 ok = ok and rec["pass"]
                 res["cases"].append(rec)
             rt = internal_text(a.devtools, "chrome://safe-browsing") or ""

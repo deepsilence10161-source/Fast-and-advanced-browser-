@@ -80,6 +80,10 @@
   - Shield verdict पर यह झूठ होता। non-branded build में यह paragraph खाली है।
   - Details में upstream का अनूदित risk paragraph और proceed link बने रहते हैं, इसलिए हर भाषा में पेशेवर अनुवाद सुरक्षित रहता है।
   - "Chrome strongly recommends…" अब "Swiftra …" है: patches/0002 scope में `security_interstitials_strings.grdp`।
+- **Enhanced चालू होने का message:** "You have Chrome’s strongest security…" (`IDS_TAILORED_SECURITY_CONSENTED_ENABLE_MESSAGE_DESCRIPTION`, `generated_resources.grd`) और Google "G" वाला shield icon (`blue_google_shield.xml`) E2E 39022805609 के screenshot में पकड़े गए।
+  - fix: 0002 scope में `generated_resources.grd` (केवल grd के अपने messages);
+  - fix: overlay में उसी नाम का नीला shield, "G" की जगह सफ़ेद ✓;
+  - E2E अब Enhanced cases में native UI (uiautomator) में "Chrome" शब्द भी जाँचता है।
 - **कानूनी जोखिम (G1):** Google के internal Safe Browsing endpoint का fork में उपयोग Google की शर्तों के अधीन है। यह legal gate में दर्ज है।
 - **E2E:** Settings UI से Enhanced चालू करके जाँच होती है। Public canary block होना चाहिए, `unwanted.html` block होना चाहिए, example.com खुलना चाहिए। `chrome://safe-browsing` के RT pings और `chrome://components` informational रूप में दर्ज होते हैं।
 

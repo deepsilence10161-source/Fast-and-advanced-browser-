@@ -317,7 +317,14 @@ class TestPatches(unittest.TestCase):
               for d in size for n in ("fre_product_logo", "product_logo_name")}
         b2 |= {"components/browser_ui/styles/android/java/res_chromium/raw/signin_spin.json",
                "components/ntp_tiles/resources/default_popular_sites.json"}
-        ov = [r for r in ov if r not in b2]
+        # c2b: Enhanced-protection message icon — upstream white Google "G" in the shield -> neutral check mark
+        shield = "chrome/android/java/res/drawable/blue_google_shield.xml"
+        if shield in ov:
+            import xml.dom.minidom as M; d = M.parse(os.path.join(pd, "overlay", shield))
+            self.assertEqual(d.documentElement.getAttribute("android:viewportWidth"), "24")
+            self.assertEqual(len(d.getElementsByTagName("path")), 2)          # outline + check, no "G" glyph
+            self.assertEqual(len(d.getElementsByTagName("clip-path")), 0)
+        ov = [r for r in ov if r not in b2 and r != shield]
         for rel in ov:
             self.assertTrue(rel.startswith(base), rel)
             leaf = rel[len(base):]

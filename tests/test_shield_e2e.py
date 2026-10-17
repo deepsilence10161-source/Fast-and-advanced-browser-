@@ -42,6 +42,15 @@ class Classify(unittest.TestCase):
         self.assertIn("swiftra_shield_canary", std["public_shield_canary"][1])
 
 
+class NativeUi(unittest.TestCase):
+    def test_chrome_word(self):
+        """Enhanced-protection message banner (native UI) must not name Chrome (E2E 39022805609 screenshot)."""
+        self.assertTrue(E.CHROME_WORD.search("You have Chrome\u2019s strongest security against harmful websites"))
+        self.assertFalse(E.CHROME_WORD.search("You have Swiftra\u2019s strongest security against harmful websites"))
+        self.assertFalse(E.CHROME_WORD.search("Chrome Web Store"))
+        self.assertFalse(E.CHROME_WORD.search("Chromium"))
+
+
 class Honesty(unittest.TestCase):
     def run_h(self, d):
         with mock.patch.object(E, "page_text", return_value=json.dumps(d)):

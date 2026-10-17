@@ -30,6 +30,9 @@ GRDS = [
                                            "components/security_interstitials_strings.grdp",
                                            "components/autofill_strings.grdp",
                                            "components/autofill_payments_strings.grdp"]),
+    # c2b: केवल grd के अपने messages (desktop WebUI वाले grdp parts नहीं) — Android C++ UI इन्हें दिखाता है, जैसे Enhanced
+    # protection चालू होने का message "You have Chrome's strongest security…" (IDS_TAILORED_SECURITY_*; E2E screenshot)
+    ("chrome/app/generated_resources.grd", ["chrome/app/generated_resources.grd"]),
 ]
 PROTECT = re.compile(
     r"Chromium(?:\s+(?:open[\s-]?source|project|Authors))|The Chromium Authors|Chromium\s*OS\b|ChromiumOS|"

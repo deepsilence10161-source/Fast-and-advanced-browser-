@@ -103,6 +103,28 @@ class TransformWithRealGrit(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.src)
 
+    def _mk_self_scoped(self, rel):
+        """scope = केवल grd खुद: grd के अपने messages scope भीतर, उसका <part> (IDS_OUT) scope बाहर।"""
+        d = os.path.join(self.src, os.path.dirname(rel)); os.makedirs(os.path.join(d, "translations"), exist_ok=True)
+        part = os.path.splitext(rel)[0] + "_out_of_scope.grdp"
+        prel = os.path.relpath(os.path.join(self.src, part), d)
+        g = GRD.replace('<message name="IDS_PLAIN" desc="x">Settings</message>',
+                        '<message name="IDS_PLAIN" desc="x">Settings</message>\n'
+                        f'          <part file="{prel}" />')
+        with open(os.path.join(self.src, part), "w", encoding="utf-8") as f:
+            f.write('<?xml version="1.0" encoding="utf-8"?>\n<grit-part>\n'
+                    '  <message name="IDS_OUT" desc="x">Open Chrome Settings</message>\n</grit-part>\n')
+        p = os.path.join(self.src, rel); open(p, "w", encoding="utf-8").write(g.replace("t_hi.xtb", xtb_name(rel)))
+        ids = {txt: i for i, txt in rb.message_ids(self.src, p)}
+        xtb = ['<?xml version="1.0" ?>', '<!DOCTYPE translationbundle>', '<translationbundle lang="hi">',
+               f'<translation id="{ids["Open Chrome Settings"]}">Chrome सेटिंग खोलें</translation>',
+               f'<translation id="{ids["About Chrome"]}">Chrome के बारे में</translation>',
+               f'<translation id="{ids["Press to quit"]}">Chrome बंद करने के लिए दबाएं</translation>',
+               f'<translation id="{ids["Restart Chrome"]}">Chrome रीस्टार्ट करें</translation>',
+               f'<translation id="{ids["Restart Chromium"]}">Chromium रीस्टार्ट करें</translation>', '</translationbundle>']
+        open(os.path.join(d, "translations", xtb_name(rel)), "w", encoding="utf-8").write("\n".join(xtb) + "\n")
+        return ids
+
     def _mk_scoped(self, rel, parts):
         """scoped entry: grd में अपना message (scope बाहर) + <part>s (scope भीतर; पहला part test messages, बाकी खाली)।"""
         part = parts[0]
@@ -142,7 +164,7 @@ class TransformWithRealGrit(unittest.TestCase):
             if isinstance(e, str):
                 out[e] = self._mk(e)
             else:
-                out[e[0]] = self._mk_scoped(e[0], e[1])
+                out[e[0]] = self._mk_self_scoped(e[0]) if list(e[1]) == [e[0]] else self._mk_scoped(e[0], e[1])
         return out
 
     def _mk(self, rel):
@@ -176,8 +198,13 @@ class TransformWithRealGrit(unittest.TestCase):
             if isinstance(e, str):
                 continue
             g, part = e[0], e[1][0]
-            self.assertIn(part, touched); self.assertNotIn(g, touched)
-            self.assertIn("Open Chrome Settings", open(os.path.join(self.src, g), encoding="utf-8").read())
+            if part == g:   # self-scoped: grd बदला, उसका <part> अछूता
+                out_part = os.path.splitext(g)[0] + "_out_of_scope.grdp"
+                self.assertIn(g, touched); self.assertNotIn(out_part, touched)
+                self.assertIn("Open Chrome Settings", open(os.path.join(self.src, out_part), encoding="utf-8").read())
+            else:
+                self.assertIn(part, touched); self.assertNotIn(g, touched)
+                self.assertIn("Open Chrome Settings", open(os.path.join(self.src, g), encoding="utf-8").read())
             pt = open(os.path.join(self.src, part), encoding="utf-8").read()
             self.assertIn(">About Swiftra</message>", pt); self.assertIn("Restart Swiftra", pt)
             new = {txt: i for i, txt in rb.message_ids(self.src, os.path.join(self.src, g))}
