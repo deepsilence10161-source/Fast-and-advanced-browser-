@@ -1,0 +1,11 @@
+android-emulator:chromium_source_x64: 10/10 passed; UA=Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36
+ok   T1 long history renders all messages {"n": 300, "nodes": 300, "firstRenderMs": 1229.6, "scrollHeight": 43817}
+ok   T2 4 updates at 1 s, appended in place, stays at bottom {"text": "Streaming part1 part2 part3", "gapBottom": 0}
+ok   T3 draft, focus and selection preserved {"active": "composer", "value": "draft: my unsent question", "sel": [7, 9]}
+ok   T4 reading position stable (|drift| <= 1 px) while content above grows and below appends {"drift": -0.11, "scrollTopBefore": 22056.380859375, "scrollTopAfter": 22190.857421875}
+ok   T5 duplicate events ignored {"size": 306, "duplicates": 4}
+ok   T6 gap detected, resync from cursor, no duplicate, correct order {"resyncs": [310], "order": ["g1", "g2"]}
+ok   T7 background queue then single catch-up {"hiddenNodes": 0, "rendersDuringCatchup": 1}
+ok   T8 reconnect resume: all missed delivered exactly once {"delivered": 4}
+ok   T9 no page reload {"loads": "1", "navType": "navigate"}
+ok   T10 content-visibility:auto on every message node {"nodes": 315, "supported": true}

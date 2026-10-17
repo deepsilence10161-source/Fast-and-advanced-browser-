@@ -432,6 +432,14 @@
    "status": "PASS (Android emulator)",
    "detail": "App-UI branding leaks on ~24 captured screens: 38/36 (b1) -> 0/0. Strings transform (6 grds incl. scoped components_strings, ID remap, 81 locales, 0 translation loss), Swiftra product-logo/Lottie overlay, NTP popular-sites fallback, FRE footer no false UMA claim (0003). device checks 9/9, chat 10/10, 0 crashes. Not covered: uncaptured screens, remaining grds; inflected-language forms need native review; legal gate G1 (Google ToS link, own ToS/Privacy needed).",
    "evidence": "evidence/b2-branding-2026-10-16/ ; builds 38935765027, 38931729325 ; E2E 38938906018, 38938909743"
+  },
+  {
+   "id": "c1-settings-truthfulness",
+   "layer": "L3",
+   "platform": "x64 Android emulator API 36 + arm64 Redroid 14 (not a real phone)",
+   "status": "PASS (Android emulator)",
+   "detail": "Settings crawler + truth scan: false claims x64 4 / arm64 6 -> 0/0. About copyright Google LLC -> The Chromium Authors (FACT_FIXES, 81 locales from Chromium desktop IDS_ABOUT_VERSION_COPYRIGHT); hidden no-op metrics/crash switch (0004: UMA disabled, crash upload URL null in non-branded); Safety Hub unverified 'up to date' -> 'Can't check Swiftra version' + installed version, dead 'Go to Google Play' button hidden (0005). device checks 9/9, chat 10/10, 0 crashes. One arm64 run (38993004513) failed 6/9 from a Redroid system-wide graphics collapse (first abort in launcher3); rerun 38994313725 and final 38996590010 9/9. Not covered: legal review of copyright wording (G1).",
+   "evidence": "evidence/truthfulness-c1-2026-10-17/ ; builds 38995292721, 38995294189 ; E2E 38996588758, 38996590010 ; APK sha256 x64 ce52a4bf...a155, arm64 827485c0...660f"
   }
  ],
  "performance_emulator_only": {
@@ -507,6 +515,24 @@
     "landing": "ChromeTabbedActivity",
     "scroll_fps": 15.0,
     "note": "Redroid container, software GPU"
+   },
+   "38996588758/chromium_source_x64_c1": {
+    "cold_ms_median": 1238.0,
+    "cold_ms_p95": 1368,
+    "warm_ms_median": 1050.5,
+    "warm_ms_p95": 1815,
+    "pss_kb": null,
+    "anr_dialogs": 0,
+    "version": "155.0.8059.80"
+   },
+   "38996590010/chromium_source_arm64_c1_redroid": {
+    "cold_ms_median": 720.5,
+    "cold_ms_p95": 768,
+    "warm_ms_median": 246.5,
+    "warm_ms_p95": 251,
+    "pss_kb": null,
+    "anr_dialogs": 0,
+    "version": "155.0.8059.80"
    }
   }
  }

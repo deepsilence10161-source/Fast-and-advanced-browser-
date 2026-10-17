@@ -1,0 +1,12 @@
+{
+ "false_claims": 0,
+ "by_screen": {},
+ "expected_found": [
+  "copyright_chromium_authors",
+  "update_cant_check"
+ ],
+ "expected_all": [
+  "copyright_chromium_authors",
+  "update_cant_check"
+ ]
+}

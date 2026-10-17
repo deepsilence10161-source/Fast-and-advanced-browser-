@@ -1,0 +1,11 @@
+target=chromium_source_arm64 package=com.swiftra.app expected_label=Swiftra expect_nondebuggable=1 abi=arm64-v8a android=14
+PASS  01 package installed (com.swiftra.app)
+PASS  02 launcher entry — com.swiftra.app/com.google.android.apps.chrome.Main
+PASS  03 launcher app drawer में "Swiftra" — launcher="com.android.launcher3", screenshot launcher_drawer.png
+PASS  04 non-debuggable — flags:flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ] | run-as: run-as: package not debuggable: com.swiftra.app
+PASS  05 same-key update (install -r)
+PASS  06 foreign-key update rejected — INSTALL_FAILED_UPDATE_INCOMPATIBLE; installed signer unchanged signatures:[567ab55c]
+PASS  07 touch scroll measured (software GPU, संख्या प्रतिनिधि नहीं) — {"scroll_events": 120, "max_scroll_y_css_px": 5763.4287109375, "screen": "1080x2400"} {"frames": 120, "duration_s": 7.93, "fps": 15.0, "p50_ms": 66.7, "p90_ms": 66.7, "p99_ms": 66.8, "max_ms": 66.8, "vsync_ms": 17.17, "janky_frames": 119, "janky_pct": 100.0}
+PASS  08 alive, crash buffer clean — pid=11167
+PASS  09 uninstall + reinstall
+DEVICE_CHECKS: 9 पास, 0 विफल

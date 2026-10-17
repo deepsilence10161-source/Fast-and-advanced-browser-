@@ -1,0 +1,91 @@
+[02:53:38] install: Success
+[02:53:39] meta: {'label': 'chromium_source_arm64', 'package': 'com.swiftra.app', 'versionName': '155.0.8059.80', 'versionCode': '805908004', 'primaryCpuAbi': 'arm64-v8a', 'android_release': '14', 'sdk': '34', 'model': 'redroid14_arm64_only', 'abilist': 'arm64-v8a', 'native_bridge': '0', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': 'null', 'navigation_mode': '0', 'webview': 'Current WebView package (name, version): (com.android.webview, 125.0.6422.113)'}
+[02:53:49] captured 01_first_run (14 labelled nodes, fg=com.swiftra.app)
+[02:53:54] captured 01_first_run_1 (14 labelled nodes, fg=com.swiftra.app)
+[02:53:59] system dialog: Set Swiftra as your default browser app? -> CANCEL
+[02:54:06] captured 01_first_run_2 (8 labelled nodes, fg=com.swiftra.app)
+[02:54:11] browser UI ready: True
+[02:54:18] captured 02_ntp (80 labelled nodes, fg=com.swiftra.app)
+[02:54:22] tap OK  /:id/(search_box_text|url_bar)$/ -> com.swiftra.app:id/search_box_text
+[02:54:25] captured 03_omnibox_focused (81 labelled nodes, fg=com.swiftra.app)
+[02:54:32] captured 04_omnibox_suggestions (78 labelled nodes, fg=com.swiftra.app)
+[02:54:49] captured 05_page_loaded (39 labelled nodes, fg=com.swiftra.app)
+[02:54:52] tap MISS /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/
+[02:54:56] tap MISS /(View site information|site information|Connection is secure)/
+[02:55:00] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[02:55:04] tap OK  /^(Site controls|Site settings|Page info)$/ -> com.swiftra.app:id/menu_item_text
+[02:55:06] page-info via app menu 'Site controls': True
+[02:55:09] captured 06_page_info (13 labelled nodes, fg=com.swiftra.app)
+[02:55:19] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[02:55:22] captured 07_app_menu (59 labelled nodes, fg=com.swiftra.app)
+[02:55:32] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[02:55:36] tap OK  /^New tab$/ -> com.swiftra.app:id/menu_item_text
+[02:55:39] captured 08_second_tab_ntp (99 labelled nodes, fg=com.swiftra.app)
+[02:55:41] promo sheet dismissed: Now you can customize your homepage -> No thanks
+[02:55:47] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[02:55:55] captured 09_tab_switcher (44 labelled nodes, fg=com.swiftra.app)
+[02:56:00] tab switcher: opened, tabs=2, BACK returns to tab: True
+[02:56:03] captured 09b_after_back_from_switcher (83 labelled nodes, fg=com.swiftra.app)
+[02:56:11] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[02:56:17] tap OK  /^Settings$/ -> com.swiftra.app:id/menu_item_text
+[02:56:23] captured 11_settings (32 labelled nodes, fg=com.swiftra.app)
+[02:56:28] captured 11b_settings_scrolled (30 labelled nodes, fg=com.swiftra.app)
+[02:56:40] captured 20_set_01_google_services (49 labelled nodes, fg=com.swiftra.app)
+[02:56:45] captured 20_set_01_google_services_b (49 labelled nodes, fg=com.swiftra.app)
+[02:56:57] captured 20_set_02_search_engine (61 labelled nodes, fg=com.swiftra.app)
+[02:57:02] captured 20_set_02_search_engine_b (61 labelled nodes, fg=com.swiftra.app)
+[02:57:14] captured 20_set_03_address_bar (46 labelled nodes, fg=com.swiftra.app)
+[02:57:19] captured 20_set_03_address_bar_b (46 labelled nodes, fg=com.swiftra.app)
+[02:57:31] captured 20_set_04_privacy_and_security (57 labelled nodes, fg=com.swiftra.app)
+[02:57:36] captured 20_set_04_privacy_and_security_b (59 labelled nodes, fg=com.swiftra.app)
+[02:57:48] captured 20_set_05_safety_check (64 labelled nodes, fg=com.swiftra.app)
+[02:57:53] captured 20_set_05_safety_check_b (64 labelled nodes, fg=com.swiftra.app)
+[02:58:01] settings crawl: 'Default browser' ने app छोड़ा (fg=com.android.permissioncontroller)
+[02:58:13] captured 20_set_07_autofill_and_passwords (61 labelled nodes, fg=com.swiftra.app)
+[02:58:18] captured 20_set_07_autofill_and_passwords_b (61 labelled nodes, fg=com.swiftra.app)
+[02:58:30] captured 20_set_08_tabs_and_tab_groups (40 labelled nodes, fg=com.swiftra.app)
+[02:58:35] captured 20_set_08_tabs_and_tab_groups_b (40 labelled nodes, fg=com.swiftra.app)
+[02:58:53] captured 20_set_09_homepage (45 labelled nodes, fg=com.swiftra.app)
+[02:58:58] captured 20_set_09_homepage_b (45 labelled nodes, fg=com.swiftra.app)
+[02:59:07] settings crawl: 'Notifications' ने app छोड़ा (fg=com.android.settings)
+[02:59:18] captured 20_set_11_appearance (36 labelled nodes, fg=com.swiftra.app)
+[02:59:23] captured 20_set_11_appearance_b (36 labelled nodes, fg=com.swiftra.app)
+[02:59:35] captured 20_set_12_accessibility (61 labelled nodes, fg=com.swiftra.app)
+[02:59:40] captured 20_set_12_accessibility_b (64 labelled nodes, fg=com.swiftra.app)
+[02:59:58] captured 20_set_13_site_settings (68 labelled nodes, fg=com.swiftra.app)
+[03:00:03] captured 20_set_13_site_settings_b (71 labelled nodes, fg=com.swiftra.app)
+[03:00:15] captured 20_set_14_languages (55 labelled nodes, fg=com.swiftra.app)
+[03:00:20] captured 20_set_14_languages_b (55 labelled nodes, fg=com.swiftra.app)
+[03:00:32] captured 20_set_15_downloads (41 labelled nodes, fg=com.swiftra.app)
+[03:00:37] captured 20_set_15_downloads_b (41 labelled nodes, fg=com.swiftra.app)
+[03:00:49] captured 20_set_16_developer_options (33 labelled nodes, fg=com.swiftra.app)
+[03:00:54] captured 20_set_16_developer_options_b (33 labelled nodes, fg=com.swiftra.app)
+[03:01:06] captured 20_set_17_about_swiftra (37 labelled nodes, fg=com.swiftra.app)
+[03:01:11] captured 20_set_17_about_swiftra_b (37 labelled nodes, fg=com.swiftra.app)
+[03:01:23] settings crawl: 15 पन्ने capture, 293 s
+[03:01:33] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[03:01:39] tap OK  /^History$/ -> com.swiftra.app:id/menu_item_text
+[03:01:45] captured 12_history (19 labelled nodes, fg=com.swiftra.app)
+[03:01:55] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[03:02:01] tap OK  /^Bookmarks$/ -> com.swiftra.app:id/menu_item_text
+[03:02:06] captured 13_bookmarks (30 labelled nodes, fg=com.swiftra.app)
+[03:02:16] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[03:02:22] tap OK  /^Downloads$/ -> com.swiftra.app:id/menu_item_text
+[03:02:27] captured 14_downloads (16 labelled nodes, fg=com.swiftra.app)
+[03:02:46] captured 15_dark_page (39 labelled nodes, fg=com.swiftra.app)
+[03:02:50] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[03:02:53] captured 15b_dark_menu (59 labelled nodes, fg=com.swiftra.app)
+[03:03:05] captured 16_landscape (36 labelled nodes, fg=com.swiftra.app)
+[03:03:05] landscape screenshot 2400x1080 rotated=True
+[03:03:12] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[03:03:16] tap OK  /^New Incognito tab$/ -> com.swiftra.app:id/title
+[03:03:19] captured 10_incognito_ntp (46 labelled nodes, fg=com.swiftra.app)
+[03:03:23] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[03:03:29] captured 10b_tab_switcher_incognito (38 labelled nodes, fg=com.swiftra.app)
+[03:04:24] timings: {'cold_ms': [722, 702, 691, 698, 719, 633, 756, 764, 748, 768], 'warm_ms': [241, 251, 246, 250, 245, 248, 251, 247, 244, 245], 'activity': 'com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher', 'landing_activities': ['com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity'], 'cold_ms_median': 720.5, 'cold_ms_p95': 768, 'warm_ms_median': 246.5, 'warm_ms_p95': 251, 'comparable': True}
+[03:04:24] branding scan: 0 leaks
+[03:04:24] truth scan: 0 false claims, expected found ['copyright_chromium_authors', 'update_cant_check']
+[03:04:24] done
+ui_capture exit=0
+devtools sockets: chrome_devtools_remote ; using: chrome_devtools_remote
+chat_fixture exit=0
