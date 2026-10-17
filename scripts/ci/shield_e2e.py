@@ -44,7 +44,7 @@ MARKERS = {
     "local_safe_control": "SWIFTRA_CANARY_SAFE_LOADED",
     "local_phishing_canary": "SWIFTRA_CANARY_PHISHING_LOADED",
     "local_malware_canary": "SWIFTRA_CANARY_MALWARE_LOADED",
-    "example_com": "Example Domain",
+    "example_com": ("Example Domain", "documentation examples"),
     # Google's test pages render a short body; if they load, the heading is absent.
     "google_test_phishing": "",
     "google_test_malware": "",
@@ -90,7 +90,7 @@ def page_text(devtools, url):
     for t in targets(devtools):
         if t.get("type") == "page" and t.get("url", "").rstrip("/") == url.rstrip("/") and t.get("webSocketDebuggerUrl"):
             try:
-                ws = websocket.create_connection(t["webSocketDebuggerUrl"], timeout=10)
+                ws = websocket.create_connection(t["webSocketDebuggerUrl"], timeout=10, suppress_origin=True)
                 ws.send(json.dumps({"id": 1, "method": "Runtime.evaluate", "params": {
                     "expression": "document.title + '\\n' + (document.body ? document.body.innerText : '')", "returnByValue": True}}))
                 for _ in range(20):
@@ -100,7 +100,8 @@ def page_text(devtools, url):
                         return m.get("result", {}).get("result", {}).get("value", "") or ""
                 ws.close()
             except Exception as e:  # noqa: BLE001
-                return f"<devtools error {e}>"
+                print(f"devtools error ({url}): {str(e)[:160]}")
+                return None
     return None
 
 
@@ -117,7 +118,8 @@ def classify(text, marker):
         return "blocked_malware"
     if HEADING in text:
         return "blocked_other"
-    if marker and marker in text:
+    markers = marker if isinstance(marker, tuple) else ((marker,) if marker else ())
+    if any(m in text for m in markers):
         return "loaded"
     return "loaded" if not marker and text.strip() else "unknown"
 
@@ -176,6 +178,7 @@ def main():
             got = classify(text or "", MARKERS[cid])
             if got != "unknown" and (got == expected or got.startswith("blocked")):
                 break
+        time.sleep(2)  # let the compositor present the final frame (Redroid can show a stale one)
         with open(os.path.join(a.out, f"{cid}.png"), "wb") as f:
             f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
         passed = got == expected
