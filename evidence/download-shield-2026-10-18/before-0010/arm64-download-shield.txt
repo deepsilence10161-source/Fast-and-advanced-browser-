@@ -1,0 +1,4 @@
+download shield: {'case': 'canary', 'expected': 'blocked_dialog', 'verdict': 'downloaded', 'pass': False, 'dialog': False, 'files': ['swiftra-canary-1792333742878.zip'], 'served': ['/__swiftra_shield_canary__/download/swiftra-canary.zip'], 'taps': []}
+download shield: {'case': 'redirect', 'expected': 'blocked_dialog', 'verdict': 'downloaded', 'pass': False, 'dialog': False, 'files': ['swiftra-redirect-1792333769336.zip'], 'served': ['/__swiftra_shield_canary__/download/redirect.zip', '/__swiftra_shield_canary__/download/swiftra-canary.zip'], 'taps': []}
+download shield: {'case': 'clean', 'expected': 'downloaded', 'verdict': 'downloaded', 'pass': True, 'dialog': False, 'files': ['swiftra-clean-1792333795808.zip'], 'served': ['/__swiftra_shield_canary__/download/clean.zip'], 'taps': []}
+DOWNLOAD_SHIELD_E2E FAIL canary=downloaded redirect=downloaded clean=downloaded

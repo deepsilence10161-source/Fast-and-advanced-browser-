@@ -1,0 +1,234 @@
+{
+ "package": "com.swiftra.app",
+ "rules": "MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772",
+ "modes": {
+  "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock",
+  "swiftra": ""
+ },
+ "lat_ms": 60,
+ "ad_lat_ms": 150,
+ "page_rate": 256000,
+ "dl_size": 25165824,
+ "dl_rate": 1048576,
+ "cycles": [
+  {
+   "chromium_defaults": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772 --ignore-certificate-errors --disable-field-trial-config --disable-features=SwiftraAdBlock --flag-switches-begin --flag-switches-end --use-mobile-use"
+    },
+    "loads": [
+     {
+      "open": "no browser websocket",
+      "page": null,
+      "server": {
+       "requests": 0,
+       "bytes": 0,
+       "ad_requests": 0,
+       "ad_bytes": 0,
+       "server_span_ms": null
+      },
+      "closed_tabs": 0
+     },
+     {
+      "open": "no browser websocket",
+      "page": null,
+      "server": {
+       "requests": 0,
+       "bytes": 0,
+       "ad_requests": 0,
+       "ad_bytes": 0,
+       "server_span_ms": null
+      },
+      "closed_tabs": 0
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 2376,
+       "dcl": 1242,
+       "ttfb": 141,
+       "fcp": 1120,
+       "lcp": 1152,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 2346
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.71,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a190 media_rw 25165824 2026-10-18 14:46 swiftra-speed-d0c.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "bench": {
+     "open": "ok",
+     "seconds": 4.3,
+     "result": {
+      "runs": 5,
+      "ms": {
+       "objects": 9.7,
+       "json": 58.9,
+       "regex": 14.4,
+       "strings": 3.4,
+       "numeric": 6.1,
+       "sort": 59.8,
+       "mapset": 81.3,
+       "hashing": 19.8,
+       "parse": 16.5,
+       "dom": 98
+      },
+      "total": 367.9,
+      "sink": 935.9912872314453
+     },
+     "closed_tabs": 1
+    }
+   },
+   "swiftra": {
+    "restart": {
+     "flags_applied": false,
+     "cmdline": ""
+    },
+    "loads": []
+   }
+  },
+  {
+   "chromium_defaults": {
+    "restart": {
+     "flags_applied": false,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772 --ignore-certificate-errors --flag-switches-begin --flag-switches-end --use-mobile-user-agent --top-controls-show-threshold=0.5 --top-controls-hide-t"
+    },
+    "loads": []
+   },
+   "swiftra": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772 --ignore-certificate-errors --flag-switches-begin --flag-switches-end --use-mobile-user-agent --top-controls-show-threshold=0.5 --top-controls-hide-t"
+    },
+    "loads": [
+     {
+      "open": "no browser websocket",
+      "page": null,
+      "server": {
+       "requests": 0,
+       "bytes": 0,
+       "ad_requests": 0,
+       "ad_bytes": 0,
+       "server_span_ms": null
+      },
+      "closed_tabs": 0
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1951,
+       "dcl": 935,
+       "ttfb": 147,
+       "fcp": 832,
+       "lcp": 896,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1915
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 2209,
+       "dcl": 1075,
+       "ttfb": 121,
+       "fcp": 960,
+       "lcp": 960,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 2154
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.15,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a190 media_rw 25165824 2026-10-18 14:52 swiftra-speed-d1s.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "bench": {
+     "open": "ok",
+     "seconds": 4.1,
+     "result": {
+      "runs": 5,
+      "ms": {
+       "objects": 9.7,
+       "json": 56.8,
+       "regex": 14.4,
+       "strings": 3.4,
+       "numeric": 5.8,
+       "sort": 59.1,
+       "mapset": 79.7,
+       "hashing": 19.6,
+       "parse": 16.4,
+       "dom": 101.7
+      },
+      "total": 366.6,
+      "sink": 935.9912872314453
+     },
+     "closed_tabs": 1
+    }
+   }
+  }
+ ],
+ "summary": null
+}
