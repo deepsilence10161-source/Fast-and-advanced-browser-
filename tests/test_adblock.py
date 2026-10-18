@@ -94,3 +94,19 @@ def test_ad_verdict():
     assert h[A.AD_HOSTS[0]] == 1 and h[A.AD_TOP + "/first.js"] == 1 and h[A.AD_CONTROL] == 1
     assert A.ad_hits(1)[A.AD_HOSTS[0]] == 0
     A.HITS[:] = []
+
+
+def test_credits_verdict():
+    assert A.credits_verdict(None) == "no_page"
+    assert A.credits_verdict({"len": 300, "sample": True}) == "sample_page"
+    # measured: Chrome for Testing 156 chrome://credits = 494 entries, BoringSSL present, no Swiftra entry
+    assert A.credits_verdict({"len": 12593, "sample": False, "adblock": False, "boringssl": True,
+                              "entries": 494}) == "incomplete"
+    assert A.credits_verdict({"len": 12900, "sample": False, "adblock": True, "boringssl": True,
+                              "entries": 495}) == "complete"
+
+
+def test_attribution_files_and_args():
+    script = open(os.path.join(ROOT, "patches", "0013-swiftra-adblock-ruleset.py")).read()
+    assert "CC BY-SA 3.0" in script and "CC BY 3.0" in script and "third_party/swiftra_adblock" in script
+    assert "generate_about_credits = true" in open(os.path.join(ROOT, "patches", "args.gn")).read()

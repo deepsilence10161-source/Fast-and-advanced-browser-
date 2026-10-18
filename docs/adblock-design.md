@@ -60,7 +60,19 @@ All references are to the @155 source.
 | AdAway default hosts | CC BY 3.0 (file header) | credit |
 | Excluded | DuckDuckGo TDS (CC BY-NC-SA), uBlock filters (GPLv3 only), Peter Lowe (unclear) | - |
 
-Pending: in-app attribution (an about/credits entry), which is NOT DONE yet.
+**In-app attribution and licence notices.**
+- Finding: non-official builds ship `components/resources/sample_credits.html` ("This is sample credits page")
+  instead of the real third-party notices, because `components/resources/BUILD.gn` sets
+  `generate_about_credits = is_official_build`. Every Swiftra APK so far therefore lacked the Chromium
+  third-party licence notices.
+- Fix:
+  - `patches/args.gn` sets `generate_about_credits = true`.
+  - 0013 adds `third_party/swiftra_adblock/{README.chromium,LICENSE}`.
+  - `tools/licenses/licenses.py credits` scans every `third_party/*` directory, and parsing errors are
+    non-fatal there.
+- The README passed the depot_tools `metadata` parser with no validation messages.
+- Device check: `CREDITS_E2E` in `advanced_e2e.py`. PASS requires the generated page with at least 100 entries,
+  BoringSSL, and the Swiftra list entry. The JS was checked on Chrome for Testing 156 (494 entries).
 
 ## Verification
 1. **Unit tests** (`tests/test_adblock.py`) cover:

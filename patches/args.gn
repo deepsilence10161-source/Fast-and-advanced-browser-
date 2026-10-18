@@ -5,3 +5,7 @@ debuggable_apks = false
 # applies all ~1128 experimental studies by default (incl. MaliciousApkDownloadCheck = APK download
 # pings to Google in Standard protection, CSD skip-scoring pings). ungoogled-chromium/Thorium do the same.
 disable_fieldtrial_testing_config = true
+# 0012/0013 (2026-10-18): non-official builds otherwise ship components/resources/sample_credits.html instead of the
+# real third-party notices (components/resources/BUILD.gn: generate_about_credits = is_official_build). Swiftra must
+# carry the Chromium third-party licence notices and the ad-block list attribution (chrome://credits).
+generate_about_credits = true

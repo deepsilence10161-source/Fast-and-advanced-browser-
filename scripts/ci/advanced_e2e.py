@@ -275,6 +275,23 @@ def ad_verdict(hits, page):
     return "no_blocker" if all(n > 0 for n in ad) else "partial"
 
 
+CREDITS_JS = ("(() => {const t = document.body ? document.body.innerText : ''; return {len: t.length, "
+              "sample: t.includes('This is sample credits page'), adblock: t.includes('Swiftra Ad & Tracker Blocker'), "
+              "boringssl: /BoringSSL/i.test(t), entries: document.querySelectorAll('.product').length}})()")
+
+
+def credits_verdict(c):
+    """chrome://credits must be the generated notices page (patches/args.gn generate_about_credits) with the
+    ad-block list attribution; non-official builds otherwise ship components/resources/sample_credits.html."""
+    if not c or not c.get("len"):
+        return "no_page"
+    if c.get("sample"):
+        return "sample_page"
+    if c.get("boringssl") and c.get("adblock") and c.get("entries", 0) >= 100:
+        return "complete"
+    return "incomplete"
+
+
 def hfm_verdict(r, http_hits=None, dialog=""):
     """interstitial = warning page rendered; blocked_no_http = error page and the plain-HTTP page was never fetched
     (same security outcome; desktop headless renders the HFM interstitial as an empty chrome-error page)."""
@@ -394,6 +411,11 @@ def main():
                     break
                 time.sleep(10)
             res["ad_verdict"] = res["ad_attempts"][-1]["verdict"]
+            # 5. licence notices + list attribution (chrome://credits)
+            res["credits_open"] = open_internal(DEVTOOLS, "chrome://credits/")
+            time.sleep(4)
+            res["credits"] = internal_text(DEVTOOLS, "chrome://credits", CREDITS_JS)
+            res["credits_verdict"] = credits_verdict(res["credits"])
             subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'adblock.png')}'", shell=True, timeout=30)
             res["server_hits"] = HITS[:60]
             ok = res["hfm"] in ("warning_dialog", "interstitial", "blocked_no_http") and res["tpc"] == "third_party_blocked"
@@ -409,6 +431,9 @@ def main():
     fpv = res.get("fp_verdict")
     print("FINGERPRINT_E2E", {"shielded": "PASS", None: "NOT_RUN", "no_result": "NOT_RUN"}.get(fpv, "FAIL"),
           f"verdict={fpv} reasons={res.get('fp_reasons')}")
+    crv = res.get("credits_verdict")
+    print("CREDITS_E2E", {"complete": "PASS", None: "NOT_RUN", "no_page": "NOT_RUN"}.get(crv, "FAIL"),
+          f"verdict={crv} info={res.get('credits')}")
     adv = res.get("ad_verdict")
     print("ADBLOCK_E2E", {"blocked": "PASS", None: "NOT_RUN", "no_result": "NOT_RUN"}.get(adv, "FAIL"),
           f"verdict={adv} attempts={len(res.get('ad_attempts', []))}")
