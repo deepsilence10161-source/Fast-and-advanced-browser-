@@ -13,12 +13,15 @@ on:
       redroid_image:
         description: "redroid image (multi-arch)"
         default: "redroid/redroid:14.0.0_64only-latest"
+      ab_baseline_release:
+        description: "optional: release tag with a baseline APK; then A/B (new,base,new,base) bench + cold start on this device"
+        default: ""
 permissions:
   contents: write   # draft state release पढ़ना (drafts केवल write-access को दिखते हैं)
 jobs:
   e2e:
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 120
+    timeout-minutes: 170
     env:
       T: chromium_source_arm64
       # adb server local port 5555 को "emulator-5554" के रूप में भी खोज लेता है — वही device दो नाम
@@ -67,6 +70,16 @@ jobs:
         run: pip install -q websocket-client pillow h2
       - name: UI journey + long-chat fixture
         run: bash scripts/ci/run_capture.sh "$T"
+      - name: A/B same device (new vs baseline APK, alternated; scripts/ci/ab_bench.py)
+        if: ${{ inputs.ab_baseline_release != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "${{ inputs.ab_baseline_release }}" -R "$GITHUB_REPOSITORY" -p "*.apk" -O dl/base.apk
+          sha256sum dl/ChromePublic.apk dl/base.apk
+          PKG=$(sed -n "s/^package: name='\([^']*\)'.*/\1/p" out/$T/BUILD_INFO.txt | head -1)
+          timeout 2400 python3 scripts/ci/ab_bench.py --package "${PKG:-com.swiftra.app}" --new dl/ChromePublic.apk \
+            --base dl/base.apk --base-label "${{ inputs.ab_baseline_release }}" --out out/$T/ab 2>&1 | tee out/$T/ab_bench.txt || true
       - name: Device checks (launcher, non-debuggable, same-key update, foreign-key rejected, scroll jank, reinstall)
         run: bash scripts/ci/device_checks.sh "$T" dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
       - name: Crash/exit diagnostics (launch probe, ApplicationExitInfo, tombstones, full logcat)

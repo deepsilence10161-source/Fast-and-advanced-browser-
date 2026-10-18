@@ -199,6 +199,13 @@ Group reasons:
 * **memory**: Memory: PartitionAlloc reclaim/tuning, memory-pressure handling (fewer tab reloads on low-RAM phones)
 
 ## arm64 PGO + orderfile (2026-10-18; build pending, device measurement NOT RUN)
+- Baseline kept: the 0011 arm64 APK (no PGO, no orderfile; build 39127525981, sha256
+  `8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd`) is copied to the draft release
+  `apk-b1-0011-arm64` before the PGO build replaces the state release asset.
+- Method: `arm64-device-e2e.yml` input `ab_baseline_release=apk-b1-0011-arm64` runs `scripts/ci/ab_bench.py`. That
+  installs new and baseline alternately (new, base, new, base) on the same Redroid, checks the sha256 of the installed
+  base.apk each round, and measures cold start, bench.js and page load. Prints `AB_BENCH` with base/new ratios.
+  The x64 build gets no PGO change and stays the control.
 - **What:** arm64 builds (all variants except the a1 baseline) are compiled with `chrome_pgo_phase = 2` and linked with
   `chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"` (`scripts/ci/chromium_stage.sh`).
 - **Source of the profile (gitiles @155):** `tools/update_pgo_profiles.py` `_get_profile_path`: for target
