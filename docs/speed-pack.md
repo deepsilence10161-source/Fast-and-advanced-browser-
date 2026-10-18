@@ -92,6 +92,12 @@ a real Chrome run.
   template calls it, and profgen is not in the checkout (`third_party/android_build_tools`). R8 still accepts
   `--art-profile` (`proguard.py`). `third_party/androidx:androidx_profileinstaller_profileinstaller_java` (1.5.0) is in
   the tree, visibility-restricted, and not used by Chrome.
+- profgen source: AOSP `platform/tools/base/profgen` (+ `profgen-cli`), Apache-2.0. It is not published as its own
+  Maven artifact. The library classes (`com/android/tools/profgen/*`, 99 entries) are inside
+  `com.android.tools.build:gradle:9.4.1` (checked 2026-10-18). A small driver plus kotlin-stdlib could produce
+  baseline.prof/.profm at build time. It is a build tool only; nothing of it ships in the APK.
+- Profile input: `art_startup.py` dumps the JIT profile ART collected (`pm dump-profiles --dump-classes-and-methods`,
+  `jit_profile.txt.gz`, this APK's R8 names). For a new build, map it with that build's R8 mapping or collect it again.
 - Gate: `scripts/ci/art_startup.py` measures cold start in the install, speed-profile and speed states on the
   device. Wiring a profile in (HRF profile from the startup trace -> R8 `--art-profile` -> profgen -> assets/dexopt +
   ProfileInstaller) is done only if that gap is clearly larger than the noise.
