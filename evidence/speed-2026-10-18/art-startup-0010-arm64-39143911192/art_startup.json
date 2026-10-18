@@ -1,0 +1,63 @@
+{
+ "package": "com.swiftra.app",
+ "runs": 5,
+ "states": {
+  "install": {
+   "compile_cmd": "--reset",
+   "compile_out": "Success",
+   "compile_s": 0.5,
+   "status": [
+    "verify"
+   ],
+   "total_ms": [
+    1077,
+    1040,
+    1036,
+    1037,
+    972
+   ],
+   "median_ms": 1037
+  },
+  "profile": {
+   "compile_cmd": "-m speed-profile -f",
+   "compile_out": "Success",
+   "compile_s": 1.1,
+   "status": [
+    "speed-profile"
+   ],
+   "total_ms": [
+    975,
+    942,
+    948,
+    948,
+    938
+   ],
+   "median_ms": 948
+  },
+  "speed": {
+   "compile_cmd": "-m speed -f",
+   "compile_out": "Success",
+   "compile_s": 4.4,
+   "status": [
+    "speed"
+   ],
+   "total_ms": [
+    1008,
+    1002,
+    1005,
+    1003,
+    1006
+   ],
+   "median_ms": 1005
+  }
+ },
+ "component": "com.swiftra.app/com.google.android.apps.chrome.Main",
+ "tabs_closed": {
+  "closed": 2,
+  "pages": 2
+ },
+ "gain_vs_install_pct": {
+  "profile": 8.6,
+  "speed": 3.1
+ }
+}

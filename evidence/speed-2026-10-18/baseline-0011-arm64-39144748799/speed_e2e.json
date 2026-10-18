@@ -1,0 +1,744 @@
+{
+ "package": "com.swiftra.app",
+ "rules": "MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772,MAP h2dl.example.com 127.0.0.1:8773",
+ "modes": {
+  "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnections",
+  "swiftra": ""
+ },
+ "lat_ms": 60,
+ "ad_lat_ms": 150,
+ "page_rate": 256000,
+ "dl_size": 25165824,
+ "dl_rate": 1048576,
+ "cycles": [
+  {
+   "chromium_defaults": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772,MAP h2dl.example.com 127.0.0.1:8773 --ignore-certificate-errors --disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnection",
+     "pid": "22918",
+     "tries": [
+      {
+       "attempt": 0,
+       "old_pid": "",
+       "pid": "22918",
+       "ready": true,
+       "seconds": 5.2,
+       "ok": true
+      }
+     ]
+    },
+    "loads": [
+     {
+      "open": "no browser websocket",
+      "page": null,
+      "reopened": true,
+      "server": {
+       "requests": 0,
+       "bytes": 0,
+       "ad_requests": 0,
+       "ad_bytes": 0,
+       "server_span_ms": null
+      },
+      "closed_tabs": 0
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1394,
+       "dcl": 523,
+       "ttfb": 84,
+       "fcp": 396,
+       "lcp": 460,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1373
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1526,
+       "dcl": 642,
+       "ttfb": 77,
+       "fcp": 604,
+       "lcp": 672,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1514
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.1,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:02 swiftra-speed-d0c.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "download_h2": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "connections": 1,
+      "alpn": [
+       "h2"
+      ],
+      "streams_per_conn": {
+       "1": 3
+      },
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 24.05
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:03 swiftra-h2-h0c.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "bench": {
+     "open": "ok",
+     "seconds": 4.1,
+     "result": {
+      "runs": 5,
+      "ms": {
+       "objects": 10.7,
+       "json": 48.9,
+       "regex": 13.5,
+       "strings": 2.8,
+       "numeric": 4.4,
+       "sort": 57.2,
+       "mapset": 115.2,
+       "hashing": 12.1,
+       "parse": 15.7,
+       "dom": 118.2
+      },
+      "total": 398.7,
+      "sink": 935.9912872314453
+     },
+     "closed_tabs": 1
+    }
+   },
+   "swiftra": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772,MAP h2dl.example.com 127.0.0.1:8773 --ignore-certificate-errors --flag-switches-begin --flag-switches-end --use-mobile-user-agent --top-controls-show",
+     "pid": "23369",
+     "tries": [
+      {
+       "attempt": 0,
+       "old_pid": "22918",
+       "pid": "",
+       "ready": false,
+       "seconds": 63.1,
+       "ok": false
+      },
+      {
+       "attempt": 1,
+       "old_pid": "",
+       "pid": "23369",
+       "ready": true,
+       "seconds": 3.7,
+       "ok": true
+      }
+     ]
+    },
+    "loads": [
+     {
+      "open": "ok",
+      "page": {
+       "load": 1502,
+       "dcl": 632,
+       "ttfb": 77,
+       "fcp": 564,
+       "lcp": 628,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1491
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1409,
+       "dcl": 538,
+       "ttfb": 72,
+       "fcp": 472,
+       "lcp": 536,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1398
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1426,
+       "dcl": 556,
+       "ttfb": 72,
+       "fcp": 488,
+       "lcp": 552,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1416
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.12,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:06 swiftra-speed-d0s.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "download_h2": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "connections": 1,
+      "alpn": [
+       "h2"
+      ],
+      "streams_per_conn": {
+       "2": 3
+      },
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 24.05
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:06 swiftra-h2-h0s.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "bench": {
+     "open": "ok",
+     "seconds": 4.1,
+     "result": {
+      "runs": 5,
+      "ms": {
+       "objects": 10.9,
+       "json": 52.4,
+       "regex": 13,
+       "strings": 2.8,
+       "numeric": 4.3,
+       "sort": 57.5,
+       "mapset": 115.2,
+       "hashing": 12.1,
+       "parse": 15.5,
+       "dom": 117.9
+      },
+      "total": 401.6,
+      "sink": 935.9912872314453
+     },
+     "closed_tabs": 1
+    }
+   }
+  },
+  {
+   "chromium_defaults": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772,MAP h2dl.example.com 127.0.0.1:8773 --ignore-certificate-errors --disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnection",
+     "pid": "24034",
+     "tries": [
+      {
+       "attempt": 0,
+       "old_pid": "23369",
+       "pid": "",
+       "ready": false,
+       "seconds": 63.1,
+       "ok": false
+      },
+      {
+       "attempt": 1,
+       "old_pid": "23870",
+       "pid": "",
+       "ready": false,
+       "seconds": 73.1,
+       "ok": false
+      },
+      {
+       "attempt": 2,
+       "old_pid": "",
+       "pid": "24034",
+       "ready": true,
+       "seconds": 3.7,
+       "ok": true
+      }
+     ]
+    },
+    "loads": [
+     {
+      "open": "ok",
+      "page": {
+       "load": 1502,
+       "dcl": 632,
+       "ttfb": 74,
+       "fcp": 612,
+       "lcp": 676,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1490
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1435,
+       "dcl": 561,
+       "ttfb": 81,
+       "fcp": 540,
+       "lcp": 608,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1422
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1461,
+       "dcl": 583,
+       "ttfb": 74,
+       "fcp": 528,
+       "lcp": 592,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1452
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.1,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:11 swiftra-speed-d1c.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "download_h2": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "connections": 1,
+      "alpn": [
+       "h2"
+      ],
+      "streams_per_conn": {
+       "3": 3
+      },
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 24.05
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:12 swiftra-h2-h1c.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "bench": {
+     "open": "ok",
+     "seconds": 4.0,
+     "result": {
+      "runs": 5,
+      "ms": {
+       "objects": 10.5,
+       "json": 48.5,
+       "regex": 13,
+       "strings": 2.8,
+       "numeric": 4.7,
+       "sort": 56.7,
+       "mapset": 110.8,
+       "hashing": 12,
+       "parse": 15,
+       "dom": 116.4
+      },
+      "total": 390.4,
+      "sink": 935.9912872314453
+     },
+     "closed_tabs": 1
+    }
+   },
+   "swiftra": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772,MAP h2dl.example.com 127.0.0.1:8773 --ignore-certificate-errors --flag-switches-begin --flag-switches-end --use-mobile-user-agent --top-controls-show",
+     "pid": "24623",
+     "tries": [
+      {
+       "attempt": 0,
+       "old_pid": "24034",
+       "pid": "",
+       "ready": false,
+       "seconds": 63.0,
+       "ok": false
+      },
+      {
+       "attempt": 1,
+       "old_pid": "",
+       "pid": "24623",
+       "ready": true,
+       "seconds": 3.7,
+       "ok": true
+      }
+     ]
+    },
+    "loads": [
+     {
+      "open": "ok",
+      "page": {
+       "load": 1455,
+       "dcl": 572,
+       "ttfb": 110,
+       "fcp": 540,
+       "lcp": 608,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1443
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1498,
+       "dcl": 621,
+       "ttfb": 74,
+       "fcp": 568,
+       "lcp": 636,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1488
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1421,
+       "dcl": 551,
+       "ttfb": 88,
+       "fcp": 480,
+       "lcp": 544,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "reopened": false,
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1409
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.15,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:15 swiftra-speed-d1s.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "download_h2": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "connections": 1,
+      "alpn": [
+       "h2"
+      ],
+      "streams_per_conn": {
+       "5": 3
+      },
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 24.05
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 17:15 swiftra-h2-h1s.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    },
+    "bench": {
+     "open": "ok",
+     "seconds": 4.0,
+     "result": {
+      "runs": 5,
+      "ms": {
+       "objects": 10.6,
+       "json": 48.3,
+       "regex": 13.1,
+       "strings": 2.8,
+       "numeric": 4.5,
+       "sort": 56.2,
+       "mapset": 110.8,
+       "hashing": 12,
+       "parse": 14.9,
+       "dom": 115.8
+      },
+      "total": 389,
+      "sink": 935.9912872314453
+     },
+     "closed_tabs": 1
+    }
+   }
+  }
+ ],
+ "all_flags_applied": true,
+ "summary": {
+  "chromium_defaults": {
+   "loads_ok": 5,
+   "loads_total": 6,
+   "load_ms": 1461,
+   "lcp_ms": 608,
+   "fcp_ms": 540,
+   "dcl_ms": 583,
+   "requests": 47.0,
+   "kib": 887.1,
+   "ad_requests": 15.0,
+   "download_s": 9.1,
+   "download_conns": 3.0,
+   "downloads_complete": 2,
+   "downloads": 2,
+   "h2_download_s": 24.1,
+   "h2_connections": 1.0,
+   "h2_streams": 3.0,
+   "h2_alpn": [
+    "h2"
+   ],
+   "h2_complete": 2,
+   "h2_downloads": 2,
+   "bench_ms": 394.5,
+   "bench_runs": 2,
+   "bench_parts": {
+    "objects": 10.6,
+    "json": 48.7,
+    "regex": 13.2,
+    "strings": 2.8,
+    "numeric": 4.6,
+    "sort": 57.0,
+    "mapset": 113.0,
+    "hashing": 12.1,
+    "parse": 15.3,
+    "dom": 117.3
+   }
+  },
+  "swiftra": {
+   "loads_ok": 6,
+   "loads_total": 6,
+   "load_ms": 1440.5,
+   "lcp_ms": 580.0,
+   "fcp_ms": 514.0,
+   "dcl_ms": 564.0,
+   "requests": 47.0,
+   "kib": 887.1,
+   "ad_requests": 15.0,
+   "download_s": 9.1,
+   "download_conns": 3.0,
+   "downloads_complete": 2,
+   "downloads": 2,
+   "h2_download_s": 24.1,
+   "h2_connections": 1.0,
+   "h2_streams": 3.0,
+   "h2_alpn": [
+    "h2"
+   ],
+   "h2_complete": 2,
+   "h2_downloads": 2,
+   "bench_ms": 395.3,
+   "bench_runs": 2,
+   "bench_parts": {
+    "objects": 10.8,
+    "json": 50.3,
+    "regex": 13.1,
+    "strings": 2.8,
+    "numeric": 4.4,
+    "sort": 56.9,
+    "mapset": 113.0,
+    "hashing": 12.1,
+    "parse": 15.2,
+    "dom": 116.8
+   }
+  },
+  "speedup": {
+   "load": 1.01,
+   "lcp": 1.05,
+   "download": 1.0,
+   "download_h2": 1.0,
+   "bytes": 1.0,
+   "bench": 1.0
+  }
+ }
+}
