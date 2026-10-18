@@ -21,5 +21,7 @@
 0016-swiftra-speedpack.py
 # 0015: Swiftra Download Shield (download URL + redirect chain checked against the Shield list; docs/swiftra-shield.md)
 0015-swiftra-download-shield.patch
+# 0017: Swiftra Turbo Download (Android: one connection per parallel slice, also on HTTP/2 and QUIC; docs/speed-pack.md)
+0017-swiftra-turbo-download.patch
 # 0014: search engine choice for every user (Java only; docs/search-choice-design.md). Enabled after the 0012 build:
 # 0014-swiftra-search-choice.patch

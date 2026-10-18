@@ -44,6 +44,24 @@ Desktop component check (evidence/speed-2026-10-18/desktop-harness-cft156.json; 
 24 MiB at 1 MiB/s per connection): defaults (3 connections) **8.08 s**, Swiftra values (5) **4.87 s** (1.66x), single
 connection would be 24 s. File complete in both.
 
+## Turbo Download: one connection per slice on HTTP/2 and QUIC (patch 0017; build and device run pending)
+- Gap (above): on H2/QUIC the slices share one connection. 0017 gives every slice request its own `net::SocketTag`
+  on Android (own uid, a traffic-accounting label; feature `SwiftraSliceConnections`, default on). The tag is part of
+  the HTTP/1.1 pool group, `SpdySessionKey` and `QuicSessionKey`, so each slice opens its own connection. Path checked
+  @155: `ParallelDownloadJob::CreateRequest` -> `DownloadUrlParameters` -> `CreateResourceRequest` ->
+  `ResourceRequest::socket_tag` -> `url_loader_util.cc` `set_socket_tag`. Tagged requests never enter the
+  HappyEyeballsV3 pool, whose `HttpStreamKey` CHECKs for an empty tag.
+- Load on the server is the same as Chromium's HTTP/1.1 behaviour (same number of connections), and only for
+  downloads that Chromium already splits (strong validator, ranges, size).
+- Device measurement: `scripts/ci/h2_dl_server.py`, an HTTP/2-only TLS server (ALPN h2) that paces each connection to
+  1 MiB/s, shared by its streams. It records the connection id of every stream. `speed_e2e.py` downloads the same
+  24 MiB file from it in both modes (`chromium_defaults` adds `--disable-features=SwiftraSliceConnections`) and
+  reports `h2_download_s` and `h2_conns`. Local check of the server with curl (2026-10-18): 4 ranges on 1 connection
+  3.99 s, on 4 connections 1.00 s (4 MiB), bytes identical.
+- Expected on the device: defaults about 24 s on 1 connection; Swiftra 5 connections. This is a model of a
+  per-connection limit, so the device number must be reported with that condition. On a link that is already full
+  with one connection there is no gain. `SocketTag` is a no-op off Android, so there is no desktop proof.
+
 ## Excluded (examples, reason)
 PreconnectFromKeyedService (periodic pings to the search engine), IncreaseHttp3Usage (google.com QUIC hints),
 PreconnectCreateNewTab, OptimizationGuide*/OptGuide* (Google hint fetches), DsePreload*/ZeroSuggest*/Omnibox*/AIM*/Glic*

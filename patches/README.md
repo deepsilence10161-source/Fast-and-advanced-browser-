@@ -246,3 +246,18 @@ meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता �
   (Android पर content check केवल `kMaliciousApkDownloadCheck` के साथ, ताकि safe URL `NOT_DANGEROUS` रहे)।
 - सूचीबद्ध URL → `DANGEROUS_URL` → "File might be harmful" dialog। कोई नया network request नहीं।
 - Device E2E: `shield_e2e.py` की `DOWNLOAD_SHIELD_E2E` पंक्ति (canary / redirect / clean)। विवरण: `docs/swiftra-shield.md`।
+
+## 0017-swiftra-turbo-download.patch (2026-10-18 — Swiftra Turbo Download)
+- Gap @155: parallel download HTTP/2 और QUIC पर भी चालू है (`kUseParallelRequestsForHTTP2/QUIC` default ENABLED), पर सभी
+  slices **एक ही connection** पर streams बनते हैं (`SpdySessionKey`/`QuicSessionKey` एक जैसे)। Per-connection सीमा
+  (server limit, या lossy/high-RTT mobile link पर एक flow की congestion-control सीमा) पूरे download को रोक देती है।
+- बदलाव (Android, feature `SwiftraSliceConnections`, default चालू): हर parallel slice को अलग `net::SocketTag`
+  (`UNSET_UID` = अपना uid, कोई permission नहीं; केवल traffic-accounting label)। Tag HTTP/1.1 socket-pool group, HTTP/2
+  session key और QUIC session key का हिस्सा है, इसलिए हर slice अपना connection लेता है। पहला request default tag पर।
+- Files: `download_features.{h,cc}` (feature), `download_url_parameters.h` (`socket_tag`), `download_utils.cc`
+  (`CreateResourceRequest` → `ResourceRequest::socket_tag`), `parallel_download_job.cc` (`CreateRequest` में tag)।
+- सुरक्षा जाँच @155: `HttpStreamKey` में `CHECK(socket_tag_ == SocketTag())` है, पर tag वाला request HappyEyeballsV3
+  stream pool में जाता ही नहीं (`http_stream_factory_job_controller.cc`: `request_info_.socket_tag == SocketTag()` शर्त),
+  और HEv3 @155 default बंद है। Server पर भार Chromium के HTTP/1.1 व्यवहार जितना (उतने ही connections)।
+- Device E2E: `speed_e2e.py` का HTTP/2-only server (`scripts/ci/h2_dl_server.py`, 1 MiB/s प्रति connection):
+  `h2_download_s` और `h2_conns` (chromium_defaults में feature बंद)। Desktop पर `SocketTag` no-op है, इसलिए प्रमाण केवल device।

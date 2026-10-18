@@ -45,12 +45,14 @@ from shield_e2e import adb, browser_ws, open_internal, page_text, screenshot, ta
 from startup_netlog import CMDLINE_FILE, CMDLINE_JS, resolve_launcher  # noqa: E402
 
 PORT = 8772
+H2PORT = 8773                       # HTTP/2-only download server (scripts/ci/h2_dl_server.py, patch 0017)
 SITE, CDN, DL = "speed.example.com", "cdn.example.net", "dl.example.com"
+H2DL = "h2dl.example.com"
 ADS = ("ib.adnxs.com", "www.google-analytics.com", "sb.scorecardresearch.com")   # real list entries (0012 E2E)
 HOSTS = (SITE, CDN, DL) + ADS
-RULES = ",".join(f"MAP {h} 127.0.0.1:{PORT}" for h in HOSTS)
+RULES = ",".join([f"MAP {h} 127.0.0.1:{PORT}" for h in HOSTS] + [f"MAP {H2DL} 127.0.0.1:{H2PORT}"])
 MODES = {
-    "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock",
+    "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnections",
     "swiftra": "",
 }
 LAT_MS, ADLAT_MS = 60, 150          # per-response latency (first byte), site/CDN vs ad servers
@@ -241,7 +243,7 @@ def start_server(tmp):
     key, crt = os.path.join(tmp, "k.pem"), os.path.join(tmp, "c.pem")
     subprocess.run(["openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "2", "-keyout", key,
                     "-out", crt, "-subj", f"/CN={SITE}", "-addext",
-                    "subjectAltName=" + ",".join(f"DNS:{h}" for h in HOSTS)],
+                    "subjectAltName=" + ",".join(f"DNS:{h}" for h in HOSTS + (H2DL,))],
                    check=True, capture_output=True, timeout=60)
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     srv.daemon_threads = True
@@ -250,6 +252,13 @@ def start_server(tmp):
     ctx.load_cert_chain(crt, key)
     srv.socket = ctx.wrap_socket(srv.socket, server_side=True)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
+    global H2
+    try:
+        from h2_dl_server import H2DownloadServer
+        H2 = H2DownloadServer(H2PORT, crt, key, DL_DATA, DL_RATE).start()
+    except Exception as e:  # noqa: BLE001 - the HTTP/1.1 measurements still run
+        print("h2 download server not started:", e)
+        H2 = None
     return srv
 
 
@@ -458,10 +467,13 @@ def run_bench(rid):
     return out
 
 
-def device_file(rid):
+H2 = None
+
+
+def device_file(rid, prefix="swiftra-speed"):
     ls = adb("shell", "ls", "-l", "/sdcard/Download/", timeout=20)
     for ln in ls.splitlines():
-        if f"swiftra-speed-{rid}" in ln:
+        if f"{prefix}-{rid}" in ln:
             m = re.search(r"\s(\d+)\s+\d{4}-\d\d-\d\d", ln)
             return {"line": ln.strip()[:160], "size": int(m.group(1)) if m else None}
     return None
@@ -481,6 +493,24 @@ def run_download(rid):
     time.sleep(3)
     rec = {"open": r, "dialog_taps": taps, "server": download_stats(rid), "device_file": device_file(rid)}
     rec["closed_tabs"] = close_targets(DL)
+    return rec
+
+
+def run_download_h2(rid):
+    """Same 24 MiB file from the HTTP/2-only server (1 MiB/s per connection): how many connections do the slices use?"""
+    if not H2:
+        return {"server": {"requests": 0, "error": "h2 server not running"}}
+    r = open_internal(DEVTOOLS, f"https://{H2DL}/f/{rid}.zip")
+    taps = tap_dialog_buttons(8)
+    t0, st = time.time(), H2.stats(rid)
+    while time.time() - t0 < 75:
+        st = H2.stats(rid)
+        if st.get("complete") and st.get("all_closed"):
+            break
+        time.sleep(1)
+    time.sleep(3)
+    rec = {"open": r, "dialog_taps": taps, "server": H2.stats(rid), "device_file": device_file(rid, "swiftra-h2")}
+    rec["closed_tabs"] = close_targets(H2DL)
     return rec
 
 
@@ -504,6 +534,12 @@ def summarize(res):
                    "download_s": med([d.get("seconds") for d in dls if d.get("complete")]),
                    "download_conns": med([d.get("requests") for d in dls if d.get("complete")]),
                    "downloads_complete": sum(1 for d in dls if d.get("complete")), "downloads": len(dls)}
+        h2s = [c[mode]["download_h2"]["server"] for c in res["cycles"] if c[mode].get("download_h2")]
+        s[mode].update({"h2_download_s": med([d.get("seconds") for d in h2s if d.get("complete")]),
+                        "h2_connections": med([d.get("connections") for d in h2s if d.get("complete")]),
+                        "h2_streams": med([d.get("requests") for d in h2s if d.get("complete")]),
+                        "h2_alpn": sorted({a for d in h2s for a in d.get("alpn", [])}),
+                        "h2_complete": sum(1 for d in h2s if d.get("complete")), "h2_downloads": len(h2s)})
         benches = [c[mode]["bench"]["result"] for c in res["cycles"] if (c[mode].get("bench") or {}).get("result")]
         s[mode]["bench_ms"] = med([b["total"] for b in benches])
         s[mode]["bench_runs"] = len(benches)
@@ -513,7 +549,9 @@ def summarize(res):
     def ratio(x, y):
         return round(x / y, 2) if x and y else None
     s["speedup"] = {"load": ratio(a["load_ms"], b["load_ms"]), "lcp": ratio(a["lcp_ms"], b["lcp_ms"]),
-                    "download": ratio(a["download_s"], b["download_s"]), "bytes": ratio(a["kib"], b["kib"]),
+                    "download": ratio(a["download_s"], b["download_s"]),
+                    "download_h2": ratio(a.get("h2_download_s"), b.get("h2_download_s")),
+                    "bytes": ratio(a["kib"], b["kib"]),
                     "bench": ratio(a.get("bench_ms"), b.get("bench_ms"))}
     return s
 
@@ -539,6 +577,7 @@ def main():
     try:
         adb("shell", "am", "set-debug-app", "--persistent", pkg)
         adb("reverse", f"tcp:{PORT}", f"tcp:{PORT}")
+        adb("reverse", f"tcp:{H2PORT}", f"tcp:{H2PORT}")
         for c in range(a.cycles):
             cyc = {}
             for mode in MODES:
@@ -552,6 +591,7 @@ def main():
                             rec["loads"].append(load_page(f"c{c}{mode[0]}{i}", shot))
                         rec["download"] = run_download(f"d{c}{mode[0]}")
                         screenshot(os.path.join(a.out, f"download_{mode}_{c}.png"))
+                        rec["download_h2"] = run_download_h2(f"h{c}{mode[0]}")
                         rec["bench"] = run_bench(f"b{c}{mode[0]}")
                 except Exception as e:  # noqa: BLE001 - keep every other measurement
                     rec["error"] = f"{type(e).__name__}: {e}"[:400]
@@ -559,6 +599,7 @@ def main():
                 print(f"cycle {c} {mode}:", json.dumps({"flags": st["flags_applied"],
                       "loads": [x.get("page") for x in rec["loads"]],
                       "download": (rec.get("download") or {}).get("server"),
+                      "download_h2": (rec.get("download_h2") or {}).get("server"),
                       "bench": (rec.get("bench") or {}).get("result")})[:1400], flush=True)
             res["cycles"].append(cyc)
             json.dump(res, open(os.path.join(a.out, "speed_e2e.json"), "w"), indent=1, ensure_ascii=False)
@@ -580,6 +621,8 @@ def main():
     print(f"SPEED_E2E {'MEASURED' if res['all_flags_applied'] else 'PARTIAL'} load_ms {d['load_ms']}->{w['load_ms']} lcp_ms {d['lcp_ms']}->{w['lcp_ms']} "
           f"kib {d['kib']}->{w['kib']} requests {d['requests']}->{w['requests']} "
           f"download_s {d['download_s']}->{w['download_s']} conns {d['download_conns']}->{w['download_conns']} "
+          f"h2_download_s {d.get('h2_download_s')}->{w.get('h2_download_s')} "
+          f"h2_conns {d.get('h2_connections')}->{w.get('h2_connections')} "
           f"bench_ms {d.get('bench_ms')}->{w.get('bench_ms')} "
           f"speedup {s['speedup']}")
     return 0

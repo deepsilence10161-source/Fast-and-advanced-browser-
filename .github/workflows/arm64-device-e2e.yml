@@ -64,7 +64,7 @@ jobs:
       - name: Throwaway-key re-signed copy (negative update test)
         run: bash scripts/ci/make_foreign_apk.sh dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
       - name: Harness deps
-        run: pip install -q websocket-client pillow
+        run: pip install -q websocket-client pillow h2
       - name: UI journey + long-chat fixture
         run: bash scripts/ci/run_capture.sh "$T"
       - name: Device checks (launcher, non-debuggable, same-key update, foreign-key rejected, scroll jank, reinstall)
