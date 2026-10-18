@@ -1,0 +1,4 @@
+art startup install: status=['verify'] compile 1.5 s, TotalTime [1070, 2304, 2435, 2234, 2083] median 2234
+art startup profile: status=['speed-profile'] compile 1.5 s, TotalTime [2370, 2107, 2281, 2266, 2167] median 2266
+art startup speed: status=['speed'] compile 8.2 s, TotalTime [2402, 2323, 2070, 2247, 2325] median 2323
+ART_STARTUP MEASURED medians_ms={'install': 2234, 'profile': 2266, 'speed': 2323} gain_vs_install_pct={'profile': -1.4, 'speed': -4.0} status_changed=True

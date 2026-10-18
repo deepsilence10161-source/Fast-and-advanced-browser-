@@ -1,0 +1,294 @@
+{
+ "package": "com.swiftra.app",
+ "rules": "MAP httponly.example.com 127.0.0.1:8770,MAP top.example.com 127.0.0.1:8771,MAP cookie3p.example.org 127.0.0.1:8771,MAP fp-a.example.com 127.0.0.1:8771,MAP fp-b.example.net 127.0.0.1:8771,MAP news.example.com 127.0.0.1:8771,MAP static.example.org 127.0.0.1:8771,MAP ib.adnxs.com 127.0.0.1:8771,MAP www.google-analytics.com 127.0.0.1:8771,MAP sb.scorecardresearch.com 127.0.0.1:8771",
+ "version_open": "ok",
+ "flags_applied": true,
+ "command_line": " _ --host-resolver-rules=MAP httponly.example.com 127.0.0.1:8770,MAP top.example.com 127.0.0.1:8771,MAP cookie3p.example.org 127.0.0.1:8771,MAP fp-a.example.com 127.0.0.1:8771,MAP fp-b.example.net 127.0.0.1:8771,MAP news.example.com 127.0.0.1:8771,MAP static.example.org 127.0.0.1:8771,MAP ib.adnxs.com 127.0.0.1:8771,MAP www.google-analytics.com 127.0.0.1:8771,MAP sb.scorecardresearch.com 127.0.0.1:8771 --ignore-certificate-errors --flag-switches-begin --flag-switches-end --use-mobile-user-agent ",
+ "hfm_open": "ok",
+ "hfm_page": {
+  "title": "",
+  "href": "chrome-error://chromewebdata/",
+  "text": "",
+  "ids": [],
+  "target_url": "http://httponly.example.com/"
+ },
+ "hfm_http_hits": 0,
+ "hfm_dialog_text": "support a secure connection",
+ "hfm": "warning_dialog",
+ "tpc_open": "ok",
+ "tpc_page": {
+  "title": "3PC:done",
+  "r": "{\"fp\":\"fp=1\",\"frame\":[\"\",\"\"]}",
+  "fp": "fp=1",
+  "target_url": "https://top.example.com/top.html"
+ },
+ "tpc": "third_party_blocked",
+ "fp_open_fp-a.example.com": "ok",
+ "fp_open_fp-b.example.net": "ok",
+ "fp": {
+  "fp-a.example.com": {
+   "me": {
+    "canvas": {
+     "dev": 226,
+     "max": 1,
+     "hash": "bd512fac3551a6b2",
+     "reread_same": true,
+     "strip_same": true,
+     "subrect_same": true,
+     "url_same": true,
+     "url_hash": "75eccda08a803c70"
+    },
+    "webgl": {
+     "available": true,
+     "dev": 129,
+     "max": 1,
+     "hash": "8b60381c45af4932",
+     "reread_same": true
+    },
+    "audio": {
+     "sum": "172.67380781197426"
+    }
+   },
+   "frame": "bd512fac3551a6b2"
+  },
+  "fp-b.example.net": {
+   "me": {
+    "canvas": {
+     "dev": 248,
+     "max": 1,
+     "hash": "117f8c21204a8422",
+     "reread_same": true,
+     "strip_same": true,
+     "subrect_same": true,
+     "url_same": true,
+     "url_hash": "4fecdc1f2a639c22"
+    },
+    "webgl": {
+     "available": true,
+     "dev": 133,
+     "max": 1,
+     "hash": "33d3a244839bef1d",
+     "reread_same": true
+    },
+    "audio": {
+     "sum": "172.66978841124364"
+    }
+   },
+   "frame": "117f8c21204a8422"
+  }
+ },
+ "fp_verdict": "shielded",
+ "fp_reasons": [],
+ "ad_attempts": [
+  {
+   "attempt": 0,
+   "verdict": "no_blocker",
+   "hits": {
+    "ib.adnxs.com": 2,
+    "www.google-analytics.com": 1,
+    "sb.scorecardresearch.com": 1,
+    "news.example.com/first.js": 1,
+    "static.example.org": 1
+   },
+   "page": "{\"first_party\":\"loaded\",\"control_third_party\":\"loaded\",\"adnxs_script\":\"loaded\",\"ga_script\":\"loaded\",\"scorecard_script\":\"loaded\",\"adnxs_pixel\":\"loaded\"}"
+  },
+  {
+   "attempt": 1,
+   "verdict": "no_blocker",
+   "hits": {
+    "ib.adnxs.com": 2,
+    "www.google-analytics.com": 1,
+    "sb.scorecardresearch.com": 1,
+    "news.example.com/first.js": 1,
+    "static.example.org": 1
+   },
+   "page": "{\"first_party\":\"loaded\",\"control_third_party\":\"loaded\",\"adnxs_script\":\"loaded\",\"ga_script\":\"loaded\",\"adnxs_pixel\":\"loaded\",\"scorecard_script\":\"loaded\"}"
+  },
+  {
+   "attempt": 2,
+   "verdict": "no_blocker",
+   "hits": {
+    "ib.adnxs.com": 2,
+    "www.google-analytics.com": 1,
+    "sb.scorecardresearch.com": 1,
+    "news.example.com/first.js": 1,
+    "static.example.org": 1
+   },
+   "page": "{\"first_party\":\"loaded\",\"control_third_party\":\"loaded\",\"adnxs_script\":\"loaded\",\"ga_script\":\"loaded\",\"adnxs_pixel\":\"loaded\",\"scorecard_script\":\"loaded\"}"
+  }
+ ],
+ "ad_open": "ok",
+ "ad_verdict": "no_blocker",
+ "credits_open": "ok",
+ "credits": {
+  "len": 165,
+  "sample": true,
+  "adblock": false,
+  "boringssl": false,
+  "entries": 0
+ },
+ "credits_verdict": "sample_page",
+ "server_hits": [
+  [
+   8771,
+   "top.example.com",
+   "/top.html"
+  ],
+  [
+   8771,
+   "cookie3p.example.org",
+   "/frame?1"
+  ],
+  [
+   8771,
+   "top.example.com",
+   "/favicon.ico"
+  ],
+  [
+   8771,
+   "cookie3p.example.org",
+   "/frame?2"
+  ],
+  [
+   8771,
+   "fp-a.example.com",
+   "/fp.html"
+  ],
+  [
+   8771,
+   "cookie3p.example.org",
+   "/fpframe"
+  ],
+  [
+   8771,
+   "fp-a.example.com",
+   "/favicon.ico"
+  ],
+  [
+   8771,
+   "fp-b.example.net",
+   "/fp.html"
+  ],
+  [
+   8771,
+   "fp-b.example.net",
+   "/favicon.ico"
+  ],
+  [
+   8771,
+   "cookie3p.example.org",
+   "/fpframe"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/ads.html?a=0"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/first.js?t=1792342960608"
+  ],
+  [
+   8771,
+   "static.example.org",
+   "/lib.js?t=1792342960610"
+  ],
+  [
+   8771,
+   "ib.adnxs.com",
+   "/ast.js?t=1792342960610"
+  ],
+  [
+   8771,
+   "www.google-analytics.com",
+   "/analytics.js?t=1792342960610"
+  ],
+  [
+   8771,
+   "sb.scorecardresearch.com",
+   "/beacon.js?t=1792342960610"
+  ],
+  [
+   8771,
+   "ib.adnxs.com",
+   "/px.gif?t=1792342960610"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/favicon.ico"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/ads.html?a=1"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/first.js?t=1792342974508"
+  ],
+  [
+   8771,
+   "static.example.org",
+   "/lib.js?t=1792342974542"
+  ],
+  [
+   8771,
+   "ib.adnxs.com",
+   "/ast.js?t=1792342974542"
+  ],
+  [
+   8771,
+   "www.google-analytics.com",
+   "/analytics.js?t=1792342974557"
+  ],
+  [
+   8771,
+   "sb.scorecardresearch.com",
+   "/beacon.js?t=1792342974557"
+  ],
+  [
+   8771,
+   "ib.adnxs.com",
+   "/px.gif?t=1792342974557"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/ads.html?a=2"
+  ],
+  [
+   8771,
+   "news.example.com",
+   "/first.js?t=1792342988184"
+  ],
+  [
+   8771,
+   "static.example.org",
+   "/lib.js?t=1792342988190"
+  ],
+  [
+   8771,
+   "ib.adnxs.com",
+   "/ast.js?t=1792342988190"
+  ],
+  [
+   8771,
+   "www.google-analytics.com",
+   "/analytics.js?t=1792342988195"
+  ],
+  [
+   8771,
+   "ib.adnxs.com",
+   "/px.gif?t=1792342988195"
+  ],
+  [
+   8771,
+   "sb.scorecardresearch.com",
+   "/beacon.js?t=1792342988195"
+  ]
+ ],
+ "verdict": "pass"
+}
