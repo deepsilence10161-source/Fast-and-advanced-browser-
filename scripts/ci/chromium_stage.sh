@@ -50,6 +50,20 @@ EOF
 )
 EXTRA=$(python3 "$CI_DIR/patches.py" args "$PDIR")
 if [ -n "$EXTRA" ]; then ARGS=$(printf '%s\n%s' "$ARGS" "$EXTRA"); fi
+# Swiftra speed (2026-10-18): arm64 gets the compiler optimisation official Chrome arm64 gets -- PGO with the
+# profile that tools/update_pgo_profiles.py @155 uses for target android-arm64
+# (chrome/android/orderfiles/arm64/pgo_profile.arm64.profdata, "generated at the same commit as the orderfile")
+# plus that orderfile (lld --symbol-ordering-file: startup code packed together, fewer page faults).
+# Both come from the public CIPD package chromium/chrome/android/orderfiles/arm64 that gclient sync already
+# fetches (DEPS: checkout_android and non_git_source). Upstream only wires them for official/internal builds
+# (compiler.gni: chrome_orderfile_path needs enable_chrome_android_internal), so they are set explicitly here.
+# Not for a1 (the unmodified baseline) and not for x64 (no android-x64 profile; x64 stays the control).
+PGO_ARM64=0
+if [ "$CPU" = arm64 ] && [[ "$STATE" != *-a1 ]]; then
+  PGO_ARM64=1
+  ARGS=$(printf '%s\n%s\n%s' "$ARGS" 'chrome_pgo_phase = 2' \
+    'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"')
+fi
 PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")
 # release signing: patches/signing_cert_sha256.txt (public, अपेक्षित cert SHA-256) हो तो ज़रूरी (finalize_apk.sh)
 EXP_CERT=""
@@ -179,6 +193,14 @@ python3 "$CI_DIR/patches.py" apply src "$PDIR" "$PREVP" "$PK/patches.json"
 PATCH_CHANGED=$(python3 -c "import json;print(int(json.load(open('$PK/patches.json'))['changed']))")
 cp "$PK/patches.json" "$OUTPUTS_DIR/patches.json"
 ev "patch_changed=$PATCH_CHANGED"
+# ---------- 2c0. arm64 PGO/orderfile inputs must be present (never a silent non-PGO build) ----------
+if [ "$PGO_ARM64" = 1 ]; then
+  for f in src/chrome/android/orderfiles/arm64/pgo_profile.arm64.profdata src/chrome/android/orderfiles/arm64/orderfile.arm64.out; do
+    [ -s "$f" ] || { echo "PGO input missing: $f (CIPD chromium/chrome/android/orderfiles/arm64)"; exit 1; }
+    ev "pgo_input $(basename "$f") bytes=$(stat -c %s "$f") sha256=$(sha256sum "$f" | cut -c1-16)"
+  done
+  ev "pgo_version $(cat src/chrome/build/android-arm64.orderfile.txt 2>/dev/null)"
+fi
 # ---------- 2c. args.gn (बदले हों तो लिखें; gn gen हर बार — सस्ता और idempotent) ----------
 ARGS_CHANGED=0
 if [ ! -f "src/$OUTD/args.gn" ] || ! diff -q <(printf '%s\n' "$ARGS") "src/$OUTD/args.gn" >/dev/null; then

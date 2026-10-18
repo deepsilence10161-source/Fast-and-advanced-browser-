@@ -135,3 +135,16 @@ def test_speed_e2e_helpers():
     assert "SwiftraAdBlock" in s.MODES["chromium_defaults"]
     for h in s.HOSTS:
         assert h.endswith((".example.com", ".example.net")) or h in s.ADS
+
+
+def test_arm64_pgo_and_orderfile_are_wired_and_guarded():
+    """arm64 (not a1, not x64): Chrome's android-arm64 PGO profile + orderfile, and a hard stop if they are missing."""
+    s = open(os.path.join(ROOT, "scripts", "ci", "chromium_stage.sh"), encoding="utf-8").read()
+    assert 'if [ "$CPU" = arm64 ] && [[ "$STATE" != *-a1 ]]; then' in s
+    assert "'chrome_pgo_phase = 2'" in s
+    assert '\'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"\'' in s
+    guard = s.index("PGO input missing")
+    assert s.index("pgo_profile.arm64.profdata", s.index("2c0.")) < guard < s.index("# ---------- 2c. args.gn")
+    # the base heredoc stays untouched (official build stays off; privacy relies on it)
+    base = s.split("ARGS=$(cat <<EOF\n", 1)[1].split("\nEOF\n", 1)[0]
+    assert "is_official_build = false" in base and "chrome_pgo_phase" not in base

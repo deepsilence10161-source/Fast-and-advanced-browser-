@@ -154,3 +154,25 @@ Group reasons:
 * **cpu_gpu**: CPU/GPU hot paths: ASCII UTF fast path, fewer Mojo clones, GPU cache limits / persistent shader metadata
 * **v8**: JavaScript engine (V8) tuning: Sparkplug+, homomorphic inline caches, heap sizing
 * **memory**: Memory: PartitionAlloc reclaim/tuning, memory-pressure handling (fewer tab reloads on low-RAM phones)
+
+## arm64 PGO + orderfile (2026-10-18; build pending, device measurement NOT RUN)
+- **What:** arm64 builds (all variants except the a1 baseline) are compiled with `chrome_pgo_phase = 2` and linked with
+  `chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"` (`scripts/ci/chromium_stage.sh`).
+- **Source of the profile (gitiles @155):** `tools/update_pgo_profiles.py` `_get_profile_path`: for target
+  `android-arm64` official Chrome uses `chrome/android/orderfiles/arm64/pgo_profile.arm64.profdata`, "the PGO profile
+  that is generated at the same commit as the orderfile" (crbug.com/372686816). It ships in the public CIPD package
+  `chromium/chrome/android/orderfiles/arm64` (version `ow77FKiXziccanhdbAino-fPWdR4jHXcA1SJT58Q8cEC` pinned by
+  `chrome/build/android-arm64.orderfile.txt`), which `gclient sync` already fetches (DEPS condition
+  `checkout_android and non_git_source`). Package contents: `orderfile.arm64.out` (10.4 MB, 86,228 symbols) and
+  `pgo_profile.arm64.profdata` (242.5 MB).
+- **Why it was missing:** `pgo.gni` turns PGO on only for official builds, and `compiler.gni` picks the orderfile only
+  when `enable_chrome_android_internal`. Swiftra stays non-official (privacy), so both are set explicitly.
+- **What GN adds with it:** `-fprofile-use`, `-mllvm -pgo-cold-func-opt=minsize` (cold code smaller),
+  `-enable-ext-tsp-block-placement=1`, `--call-graph-profile-sort`, and lld `--symbol-ordering-file`.
+  `enable_separate_renderer_binary` is false @155, so no separate renderer profile is needed.
+- **Guard:** the stage script stops with "PGO input missing" if either file is absent, and records their size, hash
+  prefix and package version in the stage evidence. It never silently builds without PGO.
+- **x64** has no android-x64 profile (GN would ask for `android-arm32`), so x64 stays unoptimised. It is the
+  emulator target, and the non-PGO control.
+- **Status:** this is parity with official Chrome arm64 (Chrome is built the same way), not a lead over it. The gain
+  must be measured on arm64 against the non-PGO 0011 APK before any number is claimed.
