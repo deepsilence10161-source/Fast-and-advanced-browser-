@@ -167,11 +167,13 @@ row(C, "Third-party cookies",
     "site टूटने पर 'इस site के लिए अनुमति' flow का E2E; storage partitioning audit")
 row(C, "Ad / tracker blocking",
     "केवल intrusive-ads filter (Better Ads)",
-    "वही engine; filter सूची component updater से आती है या नहीं — NOT RUN",
-    "NOT RUN",
-    "NOT RUN", "अनिर्णीत",
-    "जाँचा नहीं",
-    "built-in blocker, licence-साफ़ सूची (EasyList GPLv3/CC BY-SA पर कानूनी gate)")
+    "patches 0012/0013: Swiftra Ad & Tracker Blocker (subresource_filter सभी sites पर, bundled ruleset "
+    "swiftra.bbc65e3afc380c8e; EasyList/EasyPrivacy GPLv3/CC BY-SA + AdAway CC BY 3.0); APK अभी बना नहीं",
+    "desktop component (Chromium 156 का असली matcher, tools/adblock/desktop_sanity.py): load 2 में 3 ad/tracker hosts "
+    "पर 0 server hits, controls loaded (evidence/adblock-2026-10-18); device E2E (ADBLOCK_E2E) NOT RUN",
+    "PASS (desktop component); device NOT RUN", "अनिर्णीत",
+    "device पर अभी साबित नहीं; desktop matcher पर सूची काम करती है",
+    "0012/0013 वाला APK build + ADBLOCK_E2E (x64 + arm64)")
 
 # ---------- D. Google सेवाएँ और features ----------
 D = "D. सेवाएँ / features"
@@ -299,8 +301,9 @@ row(E, "Branding / trademark",
     "बाकी Google strings हटाना/कानूनी अनुमति")
 row(E, "Copyright / licence",
     "Google का अपना",
-    "Chromium BSD notice रखा; Shield डेटा MIT + CC0; non-commercial सूचियाँ बाहर",
-    "static",
+    "Chromium BSD notice रखा; Shield डेटा MIT + CC0; non-commercial सूचियाँ बाहर; ad-block सूचियों के licence "
+    "notices (ff35d89)। ff35d89 से पहले के APKs में credits page अधूरा था (sample_credits.html)",
+    "static (ff35d89); नए APK में credits page की जाँच NOT RUN",
     "PASS (static)", "लागू नहीं",
     "कानूनी पालन",
     "हर नए स्रोत पर licence gate")
@@ -363,9 +366,11 @@ row(G, "असली Arena पर लंबी chat",
 # ---------- v3: नई पंक्तियाँ (18-10-2026 का अतिरिक्त शोध) ----------
 row(B, "Fingerprinting से सुरक्षा",
     "built-in सुरक्षा नहीं: Incognito Script Blocking \"Do not launch\"; canvas-readback block केवल Canary flag",
-    "नहीं (वही engine)",
-    "S13; static",
-    "कमी (दोनों)", "बराबर",
+    "patch 0011 (SwiftraFingerprintShield: canvas, WebGL readPixels, OfflineAudioContext पर site-आधारित noise) लिखा; "
+    "build चल रहा",
+    "before-run (0010 APK, emulator x64 + arm64): FINGERPRINT_E2E FAIL no_shield (दो sites पर एक ही canvas/WebGL hash) — "
+    "harness सही पकड़ता है; 0011 का after-run NOT RUN; S13",
+    "कमी (दोनों); 0011 NOT RUN", "बराबर",
     "दोनों में नहीं",
     "canvas/WebGL/audio readback सुरक्षा default चालू — सीधे Chrome से आगे")
 row(B, "Spam notification चेतावनी (on-device ML)",
@@ -384,8 +389,9 @@ row(B, "Screen-share में password/payment छिपाना (Android 15+)
     "Android 15 emulator पर screen-share E2E")
 row(C, "Default search engine",
     "Google (EU में choice screen)",
-    "Chromium default (Google); पहली बार कोई चुनाव screen नहीं",
-    "emulator (omnibox)",
+    "Chromium default (Google); पहली बार कोई चुनाव screen नहीं। patch 0014 (हर user को चुनाव, क्रम shuffle, "
+    "कोई पहले से चुना नहीं) लिखा, series में अभी बंद",
+    "emulator (omnibox); 0014: static tests, device NOT RUN",
     "PASS", "बराबर",
     "एक जैसा default",
     "पहली बार search engine चुनाव (privacy engines सहित) — Chrome से आगे")
@@ -431,6 +437,24 @@ row(D, "दूसरे password manager से autofill",
     "NOT RUN", "बराबर",
     "एक ही code — Swiftra users के लिए Google PM का विकल्प",
     "Bitwarden-जैसे app के साथ E2E")
+
+row(B, "Download की सुरक्षा (<a download>, JS downloads, redirect chain)",
+    "Safe Browsing download check (ClientDownloadRequest Google को; Android पर MaliciousApkDownloadCheck Finch से)",
+    "patch 0015 (Swiftra Download Shield): download URL और पूरी redirect chain local Shield सूची से; खतरा → "
+    "\"File might be harmful\" dialog; Google को कोई ping नहीं। APK अभी बना नहीं",
+    "static: 6 tests (patch साफ़ @155 पर apply, fake-device E2E logic); Shield DB canary; device E2E "
+    "(DOWNLOAD_SHIELD_E2E: canary / redirect / clean) NOT RUN",
+    "static only", "अनिर्णीत",
+    "बिना device E2E के दावा नहीं",
+    "0015 वाला APK build + DOWNLOAD_SHIELD_E2E")
+row(F, "बड़ी file download की गति",
+    "Chromium parallel download (default 3 connections, Finch पर निर्भर)",
+    "patch 0016 Speed Pack: 5 connections, 512 KiB slices (SwiftraParallelDownloading); APK अभी बना नहीं",
+    "desktop component (Chrome for Testing 156, 24 MiB, 1 MiB/s प्रति connection): 3 connections 8.06-8.08 s बनाम "
+    "5 connections 4.87-4.89 s = 1.65x तेज़ (evidence/speed-2026-10-18); device (speed_e2e.py) NOT RUN",
+    "मापा (desktop component); device NOT RUN", "अनिर्णीत",
+    "server हर connection को सीमित करे तो लाभ; असली Chrome Android पर तुलना नहीं हुई",
+    "0016 वाला APK + speed_e2e (chromium_defaults बनाम swiftra) + असली फ़ोन")
 
 META = {
  "Engine version": ("उच्च", "पुराने security छेद खुले रहते हैं", "कम"),
@@ -481,6 +505,8 @@ META = {
  "Fingerprinting से सुरक्षा": ("उच्च", "cookies के बिना tracking", "मध्यम"),
  "Spam notification चेतावनी (on-device ML)": ("मध्यम", "notification scam", "मध्यम"),
  "Screen-share में password/payment छिपाना (Android 15+)": ("मध्यम", "screen-share scam", "कम"),
+ "Download की सुरक्षा (<a download>, JS downloads, redirect chain)": ("उच्च", "malware file से बचाव", "मध्यम"),
+ "बड़ी file download की गति": ("मध्यम", "बड़ी files जल्दी", "कम"),
  "Default search engine": ("मध्यम", "खोज की निजता", "कम"),
  "Listen to this page (पढ़कर सुनाना)": ("मध्यम", "सुनकर पढ़ना, accessibility", "मध्यम"),
  "PWA / web app install (WebAPK)": ("मध्यम", "web apps को app की तरह चलाना", "ज़्यादा"),
