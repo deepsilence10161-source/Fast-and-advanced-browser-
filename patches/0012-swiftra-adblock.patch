@@ -85,6 +85,25 @@
              ->IsMessagesEnabledForEmbedder()) {
        subresource_filter::AdsBlockedMessageDelegate::CreateForWebContents(
            GetWebContents());
+--- a/components/subresource_filter/content/browser/ruleset_service.cc
++++ b/components/subresource_filter/content/browser/ruleset_service.cc
+@@ -198,9 +198,15 @@
+            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
+ 
+   // Runner for tasks that do not influence user experience.
++  // Swiftra: with the built-in ad blocker the indexing does influence it (no
++  // blocking until the bundled ruleset is indexed on first run), so it must not
++  // wait behind best-effort work.
+   scoped_refptr<base::SequencedTaskRunner> background_task_runner(
+       base::ThreadPool::CreateSequencedTaskRunner(
+-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
++          {base::MayBlock(),
++           base::FeatureList::IsEnabled(kSwiftraAdBlock)
++               ? base::TaskPriority::USER_VISIBLE
++               : base::TaskPriority::BEST_EFFORT,
+            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN}));
+ 
+   base::FilePath indexed_ruleset_base_dir =
 --- a/components/subresource_filter/core/browser/subresource_filter_features.cc
 +++ b/components/subresource_filter/core/browser/subresource_filter_features.cc
 @@ -132,7 +132,10 @@

@@ -39,7 +39,9 @@ All references are to the @155 source.
     activated sites. It is cleared with site data.
 - **Known gap: the first page after install is unfiltered.** The ruleset is published only after background
   indexing. The desktop check shows the first load unfiltered and the next load blocked. Faster first activation is
-  a possible improvement (for example, indexing at first run before the first navigation), but it is not done yet.
+  a possible improvement. Mitigation in 0012: with `kSwiftraAdBlock`, `RulesetService::Create` runs indexing at
+  `USER_VISIBLE` instead of `BEST_EFFORT` priority, so it is not starved by best-effort work during startup. The
+  device E2E records how many attempts were needed.
 
 ## Ruleset build (`tools/adblock/convert.py`, Python, no host tool needed)
 - The output format is `unindexed_ruleset.cc`: `varint32 size + FilteringRules` chunks of 1000 rules.
