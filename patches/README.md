@@ -137,13 +137,15 @@ action नहीं): `discover-pa.googleapis.com/v1:queryInteractiveFeed` ×2, 
   (`doodle_impression_android`, logging) नहीं भेजा जाता।
 - ListAccounts (Google cookies के साथ POST, NetLog traffic annotation hash 35565745 = `gaia_auth_list_accounts`): तीन जगह
   `GetAccountsInCookieJar()` (cache stale हो तो fetch) की जगह `GetCachedAccountsInCookieJar()` (fetch नहीं, @155 public API):
-  `sync_session_durations_metrics_recorder.cc` constructor और `account_investigator.cc` `TryPeriodicReport` (दोनों केवल metrics,
-  Swiftra upload नहीं करता) तथा `chrome_autocomplete_provider_client.cc` `IsAuthenticated()` (omnibox खुलने पर केवल Drive
-  document suggestions की पात्रता के लिए; Swiftra में Google sign-in संभव नहीं)। पहले build (केवल पहले दो) के बाद arm64 पर
-  1 ListAccounts बचा था: gate ने पकड़ा (run 39088675385), तब तीसरी जगह मिली।
+  `sync_session_durations_metrics_recorder.cc` constructor, `account_investigator.cc` `TryPeriodicReport` (दोनों केवल metrics) और
+  `chrome_autocomplete_provider_client.cc` `IsAuthenticated()` (केवल Drive document suggestions की पात्रता)। यह code-स्तर पर
+  सत्यापित है; मापन में इनका अलग असर सिद्ध नहीं हुआ।
+  बचा हुआ 1 ListAccounts (दोनों arch, cold start पर `async/folae` से 1–16 ms पहले) AI Mode का है: `AimEligibilityService`
+  stale cookie jar पर eligibility request छोड़ देता है (`drop_request_if_cookies_stale=true`, `kAimServerEligibilityEnabled`
+  default on) → AI Mode button इसी पर निर्भर; जानबूझकर रखा। Gate: folae से 2 s के भीतर न हो तो FAIL।
 - `autofill_crowdsourcing_manager.cc` `IsEnabled()`: API key (या `--autofill-api-key`/`--autofill-server-url`) के बिना
   content-autofill.googleapis.com को form signatures नहीं (server हर बार reject करता, फिर भी 5 बार तक भेजा जाता)।
-जानबूझकर रखा: doodle image (`ddljson`), AI Mode eligibility (`folae`, AI Mode button काम करता है), omnibox suggestions/preconnect
+जानबूझकर रखा: doodle image (`ddljson`), AI Mode eligibility (`folae` + उसका 1 ListAccounts), omnibox suggestions/preconnect
 ("Autocomplete searches and URLs" setting से नियंत्रित), component updater (CRLSet आदि सुरक्षा data)।
 संदर्भ (code नहीं लिया): Bare browser (BSD-3) docs/patches.md 0006/0093/0193/0194 में यही call sites दर्ज हैं।
 E2E gate: `quiet_violations()` — startup NetLog या Standard NetLog window (अब address form page सहित) में इनमें से कोई request = FAIL।

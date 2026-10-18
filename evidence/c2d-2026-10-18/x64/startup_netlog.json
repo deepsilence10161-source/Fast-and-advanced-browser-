@@ -1,0 +1,109 @@
+{
+ "package": "com.swiftra.app",
+ "scenario": "close all tabs -> cold start -> 25 s idle -> New Tab Page -> idle (no test pages)",
+ "launcher": "com.swiftra.app/com.google.android.apps.chrome.Main",
+ "tabs_closed": {
+  "closed": 40,
+  "pages": 40
+ },
+ "adb_enabled_setting": "1",
+ "ntp_open": "ok",
+ "version_open": "ok",
+ "flags_applied": true,
+ "command_line": " _ --log-net-log=/data/user/0/com.swiftra.app/cache/swiftra_startup_netlog.jsonl --net-log-file-format=ndjson --net-log-duration=75 --flag-switches-begin --flag-switches-end --use-mobile-user-agent --top-controls-show-threshold=0.5 --top-controls-hide-threshold=0.5 --use-mobile-user-agent --enable-viewport --enable-desktop-android-scrollbars --validate-input-event-stream --enable-longpress-drag-se",
+ "read_via": "exec-out su 0",
+ "events": 2455,
+ "event_type_table": true,
+ "requests": {
+  "GET https://www.google.com/async/ddljson": 2,
+  "GET https://www.google.com/async/folae": 2,
+  "GET https://www.google.com/complete/search": 1,
+  "POST https://accounts.google.com/ListAccounts": 1,
+  "POST https://update.googleapis.com/service/update2/json": 1
+ },
+ "google_requests": {
+  "POST https://accounts.google.com/ListAccounts": 1,
+  "GET https://www.google.com/async/folae": 2,
+  "GET https://www.google.com/async/ddljson": 2,
+  "GET https://www.google.com/complete/search": 1,
+  "POST https://update.googleapis.com/service/update2/json": 1
+ },
+ "non_google_requests": {},
+ "resolves": {
+  "www.google.com": 18,
+  "accounts.google.com": 3,
+  "update.googleapis.com": 3
+ },
+ "google_resolves": [
+  "accounts.google.com",
+  "update.googleapis.com",
+  "www.google.com"
+ ],
+ "connect_hosts": {
+  "accounts.google.com": 10,
+  "csp.withgoogle.com": 1,
+  "encrypted-tbn0.gstatic.com": 2,
+  "encrypted-tbn1.gstatic.com": 2,
+  "encrypted-tbn2.gstatic.com": 2,
+  "encrypted-tbn3.gstatic.com": 2,
+  "fonts.gstatic.com": 2,
+  "google.com": 2,
+  "m.google.com": 2,
+  "play.google.com": 2,
+  "update.googleapis.com": 8,
+  "www.google.com": 57,
+  "www.gstatic.com": 2,
+  "www.youtube.com": 2
+ },
+ "google_connect_hosts": [
+  "accounts.google.com",
+  "encrypted-tbn0.gstatic.com",
+  "encrypted-tbn1.gstatic.com",
+  "encrypted-tbn2.gstatic.com",
+  "encrypted-tbn3.gstatic.com",
+  "fonts.gstatic.com",
+  "google.com",
+  "m.google.com",
+  "play.google.com",
+  "update.googleapis.com",
+  "www.google.com",
+  "www.gstatic.com",
+  "www.youtube.com"
+ ],
+ "preconnect_hosts": {
+  "www.google.com": 12
+ },
+ "google_event_types": {
+  "HOST_RESOLVER_MANAGER_REQUEST": 20,
+  "HOST_RESOLVER_MANAGER_JOB": 4,
+  "HTTP_STREAM_JOB_CONTROLLER": 19,
+  "QUIC_SESSION_POOL_JOB": 5,
+  "QUIC_SESSION_POOL_CANNOT_POOL_WITH_EXISTING_SESSIONS": 9,
+  "TRANSPORT_SECURITY_STATE_SHOULD_UPGRADE_TO_SSL": 7,
+  "HTTP_STREAM_JOB": 14,
+  "QUIC_SESSION": 3,
+  "CERT_VERIFIER_JOB": 6,
+  "TCP_CLIENT_SOCKET_POOL_REQUESTED_SOCKET": 3,
+  "SOCKET_POOL_CONNECT_JOB_CREATED": 4,
+  "CERT_VERIFY_PROC": 6,
+  "QUIC_SESSION_POOL_CAN_POOL_BUT_DIFFERENT_IP": 1,
+  "QUIC_SESSION_ORIGIN_FRAME_RECEIVED": 2,
+  "QUIC_SESSION_POOL_USE_EXISTING_SESSION": 13,
+  "HTTP2_SESSION": 1,
+  "HTTP2_SESSION_RECV_ACCEPT_CH": 1
+ },
+ "remote_ips": [
+  "142.250.73.142:443",
+  "142.251.156.119:443",
+  "74.125.142.84:443",
+  "[2001:4860:4827:7700::]:443",
+  "[2607:f8b0:400a:800::200e]:443",
+  "[2607:f8b0:400e:c1e::54]:443"
+ ],
+ "sb_hosts": [],
+ "unpaired_list_accounts": [],
+ "captured": true,
+ "bytes": 752802,
+ "quiet_violations": [],
+ "verdict": "clean"
+}

@@ -1,0 +1,1352 @@
+{
+  "label": "chromium_source_x64",
+  "package": "com.swiftra.app",
+  "versionName": "155.0.8059.80",
+  "versionCode": "805908008",
+  "primaryCpuAbi": "x86_64",
+  "android_release": "16",
+  "sdk": "36",
+  "model": "sdk_gphone64_x86_64",
+  "abilist": "x86_64,arm64-v8a",
+  "native_bridge": "libndk_translation.so",
+  "locale": "",
+  "wm_size": "Physical size: 1080x2400",
+  "wm_density": "Physical density: 420",
+  "font_scale": "1.0",
+  "navigation_mode": "2",
+  "webview": "Current WebView package (name, version): (com.google.android.webview, 133.0.6943.137)",
+  "first_run_steps": 2,
+  "reached_browser_ui": true,
+  "system_dialogs": [],
+  "pss_kb_after_example": 147748,
+  "tab_switcher_opened": true,
+  "tab_switcher_tabs": 2,
+  "tab_switcher_back_returns_to_tab": true,
+  "settings_pages": [
+    {
+      "title": "Sign in",
+      "skipped": "login"
+    },
+    {
+      "title": "Google services",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_01_google_services",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Allow Swiftra sign-in",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Make searches and browsing better",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Improve search suggestions",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Touch to Search",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_01_google_services__01_touch_to_search"
+        }
+      ]
+    },
+    {
+      "title": "Search engine",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_02_search_engine",
+      "scrolled": true
+    },
+    {
+      "title": "Address bar",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_03_address_bar",
+      "scrolled": true
+    },
+    {
+      "title": "Privacy and security",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_04_privacy_and_security",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Delete browsing data",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__01_delete_browsing_data"
+        },
+        {
+          "title": "Privacy Guide",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__02_privacy_guide"
+        },
+        {
+          "title": "Third-party cookies",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__03_third_party_cookies"
+        },
+        {
+          "title": "Send a \u201cDo Not Track\u201d request",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__04_send_a_do_not_track_request"
+        },
+        {
+          "title": "Preload pages",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__05_preload_pages"
+        },
+        {
+          "title": "Lock Incognito tabs when you leave Swiftra",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Safe Browsing",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__06_safe_browsing"
+        },
+        {
+          "title": "Warn you if a password was compromised in a data breach",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Always use secure connections",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__07_always_use_secure_connection"
+        },
+        {
+          "title": "Use secure DNS",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__08_use_secure_dns"
+        },
+        {
+          "title": "JavaScript optimization & security",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_04_privacy_and_security__09_javascript_optimization_secu"
+        },
+        {
+          "title": "Access payment methods",
+          "skipped": "toggle/disabled"
+        }
+      ]
+    },
+    {
+      "title": "Safety check",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_05_safety_check",
+      "scrolled": true
+    },
+    {
+      "title": "Default browser",
+      "foreground": "com.google.android.permissioncontroller",
+      "left_app": true
+    },
+    {
+      "title": "Google Password Manager",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_07_google_password_manager"
+    },
+    {
+      "title": "Payment methods",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_08_payment_methods",
+      "scrolled": true
+    },
+    {
+      "title": "Addresses and more",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_09_addresses_and_more",
+      "scrolled": true
+    },
+    {
+      "title": "Autofill settings",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_10_autofill_settings",
+      "scrolled": true
+    },
+    {
+      "title": "Tabs and tab groups",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_11_tabs_and_tab_groups",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Move to inactive section",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_11_tabs_and_tab_groups__01_move_to_inactive_section"
+        },
+        {
+          "title": "Automatically open tab groups from other devices",
+          "skipped": "toggle/disabled"
+        }
+      ]
+    },
+    {
+      "title": "Homepage",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_12_homepage",
+      "scrolled": true
+    },
+    {
+      "title": "Notifications",
+      "foreground": "com.android.settings",
+      "left_app": true
+    },
+    {
+      "title": "Appearance",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_14_appearance",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Theme",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_14_appearance__01_theme"
+        },
+        {
+          "title": "Toolbar shortcut",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_14_appearance__02_toolbar_shortcut"
+        }
+      ]
+    },
+    {
+      "title": "Accessibility",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_15_accessibility",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Saved zoom for sites",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_15_accessibility__01_saved_zoom_for_sites"
+        },
+        {
+          "title": "Show zoom option in main menu",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Force enable zoom",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Simplified view for web pages",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Jump-start Omnibox",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Navigate pages with a text cursor when a keyboard is attached",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Captions",
+          "foreground": "com.android.settings",
+          "left_app": true
+        },
+        {
+          "title": "Swipe between pages using a touchpad",
+          "skipped": "toggle/disabled"
+        }
+      ]
+    },
+    {
+      "title": "Site settings",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_16_site_settings",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "All sites",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__01_all_sites"
+        },
+        {
+          "title": "Location",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__02_location"
+        },
+        {
+          "title": "Camera",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__03_camera"
+        },
+        {
+          "title": "Microphone",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__04_microphone"
+        },
+        {
+          "title": "Notifications",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__05_notifications"
+        },
+        {
+          "title": "Embedded content",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__06_embedded_content"
+        },
+        {
+          "title": "Motion sensors",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__07_motion_sensors"
+        },
+        {
+          "title": "NFC devices",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__08_nfc_devices"
+        },
+        {
+          "title": "USB",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__09_usb"
+        },
+        {
+          "title": "Serial port",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__10_serial_port"
+        },
+        {
+          "title": "File editing",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__11_file_editing"
+        },
+        {
+          "title": "Clipboard",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__12_clipboard"
+        },
+        {
+          "title": "Virtual reality",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__13_virtual_reality"
+        },
+        {
+          "title": "Augmented reality",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__14_augmented_reality"
+        },
+        {
+          "title": "Your device use",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_16_site_settings__15_your_device_use"
+        }
+      ]
+    },
+    {
+      "title": "Languages",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_17_languages",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Current device language",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_17_languages__01_current_device_language"
+        },
+        {
+          "title": "Offer to send pages in other languages to Google Translate",
+          "skipped": "toggle/disabled"
+        },
+        {
+          "title": "Translate into this language",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_17_languages__02_translate_into_this_language"
+        },
+        {
+          "title": "Automatically translate these languages",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_17_languages__03_automatically_translate_thes"
+        },
+        {
+          "title": "Don\u2019t offer to translate these languages",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_17_languages__04_don_t_offer_to_translate_the"
+        }
+      ]
+    },
+    {
+      "title": "Downloads",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_18_downloads",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Download location",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_18_downloads__01_download_location"
+        }
+      ]
+    },
+    {
+      "title": "Developer options",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_19_developer_options",
+      "scrolled": true
+    },
+    {
+      "title": "About Swiftra",
+      "foreground": "com.swiftra.app",
+      "key": "20_set_20_about_swiftra",
+      "scrolled": true,
+      "subpages": [
+        {
+          "title": "Application version",
+          "foreground": "com.swiftra.app",
+          "no_navigation": true
+        },
+        {
+          "title": "Operating system",
+          "foreground": "com.swiftra.app",
+          "no_navigation": true
+        },
+        {
+          "title": "Legal information",
+          "foreground": "com.swiftra.app",
+          "key": "20_set_20_about_swiftra__03_legal_information"
+        }
+      ]
+    }
+  ],
+  "landscape_png_size": [
+    2400,
+    1080
+  ],
+  "landscape_rotated": true,
+  "start_activity": "com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher",
+  "timings": {
+    "cold_ms": [
+      1132,
+      1256,
+      1194,
+      1143,
+      1034,
+      1104,
+      1221,
+      1114,
+      1171,
+      1254
+    ],
+    "warm_ms": [
+      783,
+      757,
+      840,
+      760,
+      728,
+      1048,
+      740,
+      861,
+      822,
+      772
+    ],
+    "activity": "com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher",
+    "landing_activities": [
+      "com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity"
+    ],
+    "cold_ms_median": 1157.0,
+    "cold_ms_p95": 1256,
+    "warm_ms_median": 777.5,
+    "warm_ms_p95": 1048,
+    "comparable": true
+  },
+  "steps": [
+    {
+      "key": "01_first_run",
+      "note": "first launch after pm clear",
+      "foreground": "com.swiftra.app",
+      "node_count": 24,
+      "png_bytes": 114922
+    },
+    {
+      "key": "01_first_run_1",
+      "note": "before tapping 'Stay signed out'",
+      "foreground": "com.swiftra.app",
+      "node_count": 24,
+      "png_bytes": 114922
+    },
+    {
+      "key": "01_first_run_2",
+      "note": "before tapping 'No thanks'",
+      "foreground": "com.swiftra.app",
+      "node_count": 12,
+      "png_bytes": 199883
+    },
+    {
+      "key": "02_ntp",
+      "note": "new tab page / start surface",
+      "foreground": "com.swiftra.app",
+      "node_count": 77,
+      "png_bytes": 236377
+    },
+    {
+      "key": "03_omnibox_focused",
+      "note": "omnibox focused, keyboard expected",
+      "foreground": "com.swiftra.app",
+      "node_count": 96,
+      "png_bytes": 168283
+    },
+    {
+      "key": "04_omnibox_suggestions",
+      "note": "typed 'example.com'",
+      "foreground": "com.swiftra.app",
+      "node_count": 90,
+      "png_bytes": 139821
+    },
+    {
+      "key": "05_page_loaded",
+      "note": "https://example.com loaded",
+      "foreground": "com.swiftra.app",
+      "node_count": 40,
+      "png_bytes": 338513
+    },
+    {
+      "key": "06_page_info",
+      "note": "page info / connection security sheet",
+      "foreground": "com.swiftra.app",
+      "node_count": 25,
+      "png_bytes": 304400
+    },
+    {
+      "key": "07_app_menu",
+      "note": "overflow/app menu on a web page",
+      "foreground": "com.swiftra.app",
+      "node_count": 69,
+      "png_bytes": 265485
+    },
+    {
+      "key": "08_second_tab_ntp",
+      "note": "second tab opened from menu",
+      "foreground": "com.swiftra.app",
+      "node_count": 99,
+      "png_bytes": 324160
+    },
+    {
+      "key": "09_tab_switcher",
+      "note": "tab switcher grid, 2 tabs",
+      "foreground": "com.swiftra.app",
+      "node_count": 56,
+      "png_bytes": 248650
+    },
+    {
+      "key": "09b_after_back_from_switcher",
+      "note": "BACK from tab switcher -> current tab",
+      "foreground": "com.swiftra.app",
+      "node_count": 79,
+      "png_bytes": 236787
+    },
+    {
+      "key": "11_settings",
+      "note": "menu \u2192 Settings",
+      "foreground": "com.swiftra.app",
+      "node_count": 62,
+      "png_bytes": 153421
+    },
+    {
+      "key": "11b_settings_scrolled",
+      "note": "settings scrolled",
+      "foreground": "com.swiftra.app",
+      "node_count": 64,
+      "png_bytes": 138297
+    },
+    {
+      "key": "20_set_01_google_services",
+      "note": "settings \u2192 Google services",
+      "foreground": "com.swiftra.app",
+      "node_count": 89,
+      "png_bytes": 133966
+    },
+    {
+      "key": "20_set_01_google_services_b",
+      "note": "settings \u2192 Google services (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 89,
+      "png_bytes": 133966
+    },
+    {
+      "key": "20_set_01_google_services__01_touch_to_search",
+      "note": "settings \u2192 Google services \u2192 Touch to Search",
+      "foreground": "com.swiftra.app",
+      "node_count": 83,
+      "png_bytes": 106051
+    },
+    {
+      "key": "20_set_01_google_services__01_touch_to_search_b",
+      "note": "settings \u2192 Google services \u2192 Touch to Search (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 83,
+      "png_bytes": 106051
+    },
+    {
+      "key": "20_set_02_search_engine",
+      "note": "settings \u2192 Search engine",
+      "foreground": "com.swiftra.app",
+      "node_count": 105,
+      "png_bytes": 137425
+    },
+    {
+      "key": "20_set_02_search_engine_b",
+      "note": "settings \u2192 Search engine (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 105,
+      "png_bytes": 137439
+    },
+    {
+      "key": "20_set_03_address_bar",
+      "note": "settings \u2192 Address bar",
+      "foreground": "com.swiftra.app",
+      "node_count": 85,
+      "png_bytes": 66957
+    },
+    {
+      "key": "20_set_03_address_bar_b",
+      "note": "settings \u2192 Address bar (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 85,
+      "png_bytes": 66963
+    },
+    {
+      "key": "20_set_04_privacy_and_security",
+      "note": "settings \u2192 Privacy and security",
+      "foreground": "com.swiftra.app",
+      "node_count": 111,
+      "png_bytes": 229501
+    },
+    {
+      "key": "20_set_04_privacy_and_security_b",
+      "note": "settings \u2192 Privacy and security (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 112,
+      "png_bytes": 287637
+    },
+    {
+      "key": "20_set_04_privacy_and_security__01_delete_browsing_data",
+      "note": "settings \u2192 Privacy and security \u2192 Delete browsing data",
+      "foreground": "com.swiftra.app",
+      "node_count": 131,
+      "png_bytes": 172731
+    },
+    {
+      "key": "20_set_04_privacy_and_security__01_delete_browsing_data_b",
+      "note": "settings \u2192 Privacy and security \u2192 Delete browsing data (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 131,
+      "png_bytes": 172731
+    },
+    {
+      "key": "20_set_04_privacy_and_security__02_privacy_guide",
+      "note": "settings \u2192 Privacy and security \u2192 Privacy Guide",
+      "foreground": "com.swiftra.app",
+      "node_count": 28,
+      "png_bytes": 109412
+    },
+    {
+      "key": "20_set_04_privacy_and_security__02_privacy_guide_b",
+      "note": "settings \u2192 Privacy and security \u2192 Privacy Guide (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 28,
+      "png_bytes": 109412
+    },
+    {
+      "key": "20_set_04_privacy_and_security__03_third_party_cookies",
+      "note": "settings \u2192 Privacy and security \u2192 Third-party cookies",
+      "foreground": "com.swiftra.app",
+      "node_count": 99,
+      "png_bytes": 133877
+    },
+    {
+      "key": "20_set_04_privacy_and_security__03_third_party_cookies_b",
+      "note": "settings \u2192 Privacy and security \u2192 Third-party cookies (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 99,
+      "png_bytes": 134267
+    },
+    {
+      "key": "20_set_04_privacy_and_security__04_send_a_do_not_track_request",
+      "note": "settings \u2192 Privacy and security \u2192 Send a \u201cDo Not Track\u201d request",
+      "foreground": "com.swiftra.app",
+      "node_count": 77,
+      "png_bytes": 173423
+    },
+    {
+      "key": "20_set_04_privacy_and_security__04_send_a_do_not_track_request_b",
+      "note": "settings \u2192 Privacy and security \u2192 Send a \u201cDo Not Track\u201d request (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 77,
+      "png_bytes": 173423
+    },
+    {
+      "key": "20_set_04_privacy_and_security__05_preload_pages",
+      "note": "settings \u2192 Privacy and security \u2192 Preload pages",
+      "foreground": "com.swiftra.app",
+      "node_count": 95,
+      "png_bytes": 174325
+    },
+    {
+      "key": "20_set_04_privacy_and_security__05_preload_pages_b",
+      "note": "settings \u2192 Privacy and security \u2192 Preload pages (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 95,
+      "png_bytes": 174337
+    },
+    {
+      "key": "20_set_04_privacy_and_security__06_safe_browsing",
+      "note": "settings \u2192 Privacy and security \u2192 Safe Browsing",
+      "foreground": "com.swiftra.app",
+      "node_count": 92,
+      "png_bytes": 168916
+    },
+    {
+      "key": "20_set_04_privacy_and_security__06_safe_browsing_b",
+      "note": "settings \u2192 Privacy and security \u2192 Safe Browsing (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 92,
+      "png_bytes": 168916
+    },
+    {
+      "key": "20_set_04_privacy_and_security__07_always_use_secure_connection",
+      "note": "settings \u2192 Privacy and security \u2192 Always use secure connections",
+      "foreground": "com.swiftra.app",
+      "node_count": 86,
+      "png_bytes": 122360
+    },
+    {
+      "key": "20_set_04_privacy_and_security__07_always_use_secure_connection_b",
+      "note": "settings \u2192 Privacy and security \u2192 Always use secure connections (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 86,
+      "png_bytes": 122300
+    },
+    {
+      "key": "20_set_04_privacy_and_security__08_use_secure_dns",
+      "note": "settings \u2192 Privacy and security \u2192 Use secure DNS",
+      "foreground": "com.swiftra.app",
+      "node_count": 86,
+      "png_bytes": 101225
+    },
+    {
+      "key": "20_set_04_privacy_and_security__08_use_secure_dns_b",
+      "note": "settings \u2192 Privacy and security \u2192 Use secure DNS (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 86,
+      "png_bytes": 101225
+    },
+    {
+      "key": "20_set_04_privacy_and_security__09_javascript_optimization_secu",
+      "note": "settings \u2192 Privacy and security \u2192 JavaScript optimization & security",
+      "foreground": "com.swiftra.app",
+      "node_count": 91,
+      "png_bytes": 129079
+    },
+    {
+      "key": "20_set_04_privacy_and_security__09_javascript_optimization_secu_b",
+      "note": "settings \u2192 Privacy and security \u2192 JavaScript optimization & security (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 91,
+      "png_bytes": 129079
+    },
+    {
+      "key": "20_set_05_safety_check",
+      "note": "settings \u2192 Safety check",
+      "foreground": "com.swiftra.app",
+      "node_count": 118,
+      "png_bytes": 192492
+    },
+    {
+      "key": "20_set_05_safety_check_b",
+      "note": "settings \u2192 Safety check (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 118,
+      "png_bytes": 192499
+    },
+    {
+      "key": "20_set_07_google_password_manager",
+      "note": "settings \u2192 Google Password Manager",
+      "foreground": "com.swiftra.app",
+      "node_count": 13,
+      "png_bytes": 170103
+    },
+    {
+      "key": "20_set_08_payment_methods",
+      "note": "settings \u2192 Payment methods",
+      "foreground": "com.swiftra.app",
+      "node_count": 103,
+      "png_bytes": 206640
+    },
+    {
+      "key": "20_set_08_payment_methods_b",
+      "note": "settings \u2192 Payment methods (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 103,
+      "png_bytes": 206640
+    },
+    {
+      "key": "20_set_09_addresses_and_more",
+      "note": "settings \u2192 Addresses and more",
+      "foreground": "com.swiftra.app",
+      "node_count": 89,
+      "png_bytes": 112215
+    },
+    {
+      "key": "20_set_09_addresses_and_more_b",
+      "note": "settings \u2192 Addresses and more (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 89,
+      "png_bytes": 112215
+    },
+    {
+      "key": "20_set_10_autofill_settings",
+      "note": "settings \u2192 Autofill settings",
+      "foreground": "com.swiftra.app",
+      "node_count": 105,
+      "png_bytes": 248230
+    },
+    {
+      "key": "20_set_10_autofill_settings_b",
+      "note": "settings \u2192 Autofill settings (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 105,
+      "png_bytes": 248230
+    },
+    {
+      "key": "20_set_11_tabs_and_tab_groups",
+      "note": "settings \u2192 Tabs and tab groups",
+      "foreground": "com.swiftra.app",
+      "node_count": 79,
+      "png_bytes": 79894
+    },
+    {
+      "key": "20_set_11_tabs_and_tab_groups_b",
+      "note": "settings \u2192 Tabs and tab groups (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 79,
+      "png_bytes": 79894
+    },
+    {
+      "key": "20_set_11_tabs_and_tab_groups__01_move_to_inactive_section",
+      "note": "settings \u2192 Tabs and tab groups \u2192 Move to inactive section",
+      "foreground": "com.swiftra.app",
+      "node_count": 103,
+      "png_bytes": 166753
+    },
+    {
+      "key": "20_set_11_tabs_and_tab_groups__01_move_to_inactive_section_b",
+      "note": "settings \u2192 Tabs and tab groups \u2192 Move to inactive section (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 103,
+      "png_bytes": 166753
+    },
+    {
+      "key": "20_set_12_homepage",
+      "note": "settings \u2192 Homepage",
+      "foreground": "com.swiftra.app",
+      "node_count": 84,
+      "png_bytes": 66255
+    },
+    {
+      "key": "20_set_12_homepage_b",
+      "note": "settings \u2192 Homepage (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 84,
+      "png_bytes": 66255
+    },
+    {
+      "key": "20_set_14_appearance",
+      "note": "settings \u2192 Appearance",
+      "foreground": "com.swiftra.app",
+      "node_count": 77,
+      "png_bytes": 45453
+    },
+    {
+      "key": "20_set_14_appearance_b",
+      "note": "settings \u2192 Appearance (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 77,
+      "png_bytes": 45453
+    },
+    {
+      "key": "20_set_14_appearance__01_theme",
+      "note": "settings \u2192 Appearance \u2192 Theme",
+      "foreground": "com.swiftra.app",
+      "node_count": 85,
+      "png_bytes": 64793
+    },
+    {
+      "key": "20_set_14_appearance__01_theme_b",
+      "note": "settings \u2192 Appearance \u2192 Theme (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 85,
+      "png_bytes": 64793
+    },
+    {
+      "key": "20_set_14_appearance__02_toolbar_shortcut",
+      "note": "settings \u2192 Appearance \u2192 Toolbar shortcut",
+      "foreground": "com.swiftra.app",
+      "node_count": 117,
+      "png_bytes": 150364
+    },
+    {
+      "key": "20_set_14_appearance__02_toolbar_shortcut_b",
+      "note": "settings \u2192 Appearance \u2192 Toolbar shortcut (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 117,
+      "png_bytes": 150364
+    },
+    {
+      "key": "20_set_15_accessibility",
+      "note": "settings \u2192 Accessibility",
+      "foreground": "com.swiftra.app",
+      "node_count": 112,
+      "png_bytes": 248603
+    },
+    {
+      "key": "20_set_15_accessibility_b",
+      "note": "settings \u2192 Accessibility (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 118,
+      "png_bytes": 306351
+    },
+    {
+      "key": "20_set_15_accessibility__01_saved_zoom_for_sites",
+      "note": "settings \u2192 Accessibility \u2192 Saved zoom for sites",
+      "foreground": "com.swiftra.app",
+      "node_count": 71,
+      "png_bytes": 52702
+    },
+    {
+      "key": "20_set_15_accessibility__01_saved_zoom_for_sites_b",
+      "note": "settings \u2192 Accessibility \u2192 Saved zoom for sites (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 71,
+      "png_bytes": 52702
+    },
+    {
+      "key": "20_set_16_site_settings",
+      "note": "settings \u2192 Site settings",
+      "foreground": "com.swiftra.app",
+      "node_count": 135,
+      "png_bytes": 136521
+    },
+    {
+      "key": "20_set_16_site_settings_b",
+      "note": "settings \u2192 Site settings (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 141,
+      "png_bytes": 161588
+    },
+    {
+      "key": "20_set_16_site_settings__01_all_sites",
+      "note": "settings \u2192 Site settings \u2192 All sites",
+      "foreground": "com.swiftra.app",
+      "node_count": 83,
+      "png_bytes": 54876
+    },
+    {
+      "key": "20_set_16_site_settings__01_all_sites_b",
+      "note": "settings \u2192 Site settings \u2192 All sites (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 83,
+      "png_bytes": 54876
+    },
+    {
+      "key": "20_set_16_site_settings__02_location",
+      "note": "settings \u2192 Site settings \u2192 Location",
+      "foreground": "com.swiftra.app",
+      "node_count": 105,
+      "png_bytes": 166162
+    },
+    {
+      "key": "20_set_16_site_settings__02_location_b",
+      "note": "settings \u2192 Site settings \u2192 Location (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 105,
+      "png_bytes": 166162
+    },
+    {
+      "key": "20_set_16_site_settings__03_camera",
+      "note": "settings \u2192 Site settings \u2192 Camera",
+      "foreground": "com.swiftra.app",
+      "node_count": 91,
+      "png_bytes": 104044
+    },
+    {
+      "key": "20_set_16_site_settings__03_camera_b",
+      "note": "settings \u2192 Site settings \u2192 Camera (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 91,
+      "png_bytes": 104044
+    },
+    {
+      "key": "20_set_16_site_settings__04_microphone",
+      "note": "settings \u2192 Site settings \u2192 Microphone",
+      "foreground": "com.swiftra.app",
+      "node_count": 91,
+      "png_bytes": 115836
+    },
+    {
+      "key": "20_set_16_site_settings__04_microphone_b",
+      "note": "settings \u2192 Site settings \u2192 Microphone (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 91,
+      "png_bytes": 115836
+    },
+    {
+      "key": "20_set_16_site_settings__05_notifications",
+      "note": "settings \u2192 Site settings \u2192 Notifications",
+      "foreground": "com.swiftra.app",
+      "node_count": 102,
+      "png_bytes": 145316
+    },
+    {
+      "key": "20_set_16_site_settings__05_notifications_b",
+      "note": "settings \u2192 Site settings \u2192 Notifications (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 102,
+      "png_bytes": 145316
+    },
+    {
+      "key": "20_set_16_site_settings__06_embedded_content",
+      "note": "settings \u2192 Site settings \u2192 Embedded content",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 149329
+    },
+    {
+      "key": "20_set_16_site_settings__06_embedded_content_b",
+      "note": "settings \u2192 Site settings \u2192 Embedded content (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 149858
+    },
+    {
+      "key": "20_set_16_site_settings__07_motion_sensors",
+      "note": "settings \u2192 Site settings \u2192 Motion sensors",
+      "foreground": "com.swiftra.app",
+      "node_count": 88,
+      "png_bytes": 107071
+    },
+    {
+      "key": "20_set_16_site_settings__07_motion_sensors_b",
+      "note": "settings \u2192 Site settings \u2192 Motion sensors (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 88,
+      "png_bytes": 107071
+    },
+    {
+      "key": "20_set_16_site_settings__08_nfc_devices",
+      "note": "settings \u2192 Site settings \u2192 NFC devices",
+      "foreground": "com.swiftra.app",
+      "node_count": 90,
+      "png_bytes": 99168
+    },
+    {
+      "key": "20_set_16_site_settings__08_nfc_devices_b",
+      "note": "settings \u2192 Site settings \u2192 NFC devices (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 90,
+      "png_bytes": 99168
+    },
+    {
+      "key": "20_set_16_site_settings__09_usb",
+      "note": "settings \u2192 Site settings \u2192 USB",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 97803
+    },
+    {
+      "key": "20_set_16_site_settings__09_usb_b",
+      "note": "settings \u2192 Site settings \u2192 USB (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 97999
+    },
+    {
+      "key": "20_set_16_site_settings__10_serial_port",
+      "note": "settings \u2192 Site settings \u2192 Serial port",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 94846
+    },
+    {
+      "key": "20_set_16_site_settings__10_serial_port_b",
+      "note": "settings \u2192 Site settings \u2192 Serial port (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 94846
+    },
+    {
+      "key": "20_set_16_site_settings__11_file_editing",
+      "note": "settings \u2192 Site settings \u2192 File editing",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 103871
+    },
+    {
+      "key": "20_set_16_site_settings__11_file_editing_b",
+      "note": "settings \u2192 Site settings \u2192 File editing (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 103871
+    },
+    {
+      "key": "20_set_16_site_settings__12_clipboard",
+      "note": "settings \u2192 Site settings \u2192 Clipboard",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 107536
+    },
+    {
+      "key": "20_set_16_site_settings__12_clipboard_b",
+      "note": "settings \u2192 Site settings \u2192 Clipboard (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 106693
+    },
+    {
+      "key": "20_set_16_site_settings__13_virtual_reality",
+      "note": "settings \u2192 Site settings \u2192 Virtual reality",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 100073
+    },
+    {
+      "key": "20_set_16_site_settings__13_virtual_reality_b",
+      "note": "settings \u2192 Site settings \u2192 Virtual reality (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 100073
+    },
+    {
+      "key": "20_set_16_site_settings__14_augmented_reality",
+      "note": "settings \u2192 Site settings \u2192 Augmented reality",
+      "foreground": "com.swiftra.app",
+      "node_count": 90,
+      "png_bytes": 129773
+    },
+    {
+      "key": "20_set_16_site_settings__14_augmented_reality_b",
+      "note": "settings \u2192 Site settings \u2192 Augmented reality (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 90,
+      "png_bytes": 129773
+    },
+    {
+      "key": "20_set_16_site_settings__15_your_device_use",
+      "note": "settings \u2192 Site settings \u2192 Your device use",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 115958
+    },
+    {
+      "key": "20_set_16_site_settings__15_your_device_use_b",
+      "note": "settings \u2192 Site settings \u2192 Your device use (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 87,
+      "png_bytes": 115958
+    },
+    {
+      "key": "20_set_17_languages",
+      "note": "settings \u2192 Languages",
+      "foreground": "com.swiftra.app",
+      "node_count": 109,
+      "png_bytes": 157378
+    },
+    {
+      "key": "20_set_17_languages_b",
+      "note": "settings \u2192 Languages (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 108,
+      "png_bytes": 154165
+    },
+    {
+      "key": "20_set_17_languages__01_current_device_language",
+      "note": "settings \u2192 Languages \u2192 Current device language",
+      "foreground": "com.swiftra.app",
+      "node_count": 117,
+      "png_bytes": 119245
+    },
+    {
+      "key": "20_set_17_languages__01_current_device_language_b",
+      "note": "settings \u2192 Languages \u2192 Current device language (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 122,
+      "png_bytes": 142783
+    },
+    {
+      "key": "20_set_17_languages__02_translate_into_this_language",
+      "note": "settings \u2192 Languages \u2192 Translate into this language",
+      "foreground": "com.swiftra.app",
+      "node_count": 116,
+      "png_bytes": 105456
+    },
+    {
+      "key": "20_set_17_languages__02_translate_into_this_language_b",
+      "note": "settings \u2192 Languages \u2192 Translate into this language (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 120,
+      "png_bytes": 119768
+    },
+    {
+      "key": "20_set_17_languages__03_automatically_translate_thes",
+      "note": "settings \u2192 Languages \u2192 Automatically translate these languages",
+      "foreground": "com.swiftra.app",
+      "node_count": 70,
+      "png_bytes": 39514
+    },
+    {
+      "key": "20_set_17_languages__03_automatically_translate_thes_b",
+      "note": "settings \u2192 Languages \u2192 Automatically translate these languages (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 70,
+      "png_bytes": 39514
+    },
+    {
+      "key": "20_set_17_languages__04_don_t_offer_to_translate_the",
+      "note": "settings \u2192 Languages \u2192 Don\u2019t offer to translate these languages",
+      "foreground": "com.swiftra.app",
+      "node_count": 75,
+      "png_bytes": 42820
+    },
+    {
+      "key": "20_set_17_languages__04_don_t_offer_to_translate_the_b",
+      "note": "settings \u2192 Languages \u2192 Don\u2019t offer to translate these languages (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 75,
+      "png_bytes": 42820
+    },
+    {
+      "key": "20_set_18_downloads",
+      "note": "settings \u2192 Downloads",
+      "foreground": "com.swiftra.app",
+      "node_count": 73,
+      "png_bytes": 60433
+    },
+    {
+      "key": "20_set_18_downloads_b",
+      "note": "settings \u2192 Downloads (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 73,
+      "png_bytes": 60433
+    },
+    {
+      "key": "20_set_18_downloads__01_download_location",
+      "note": "settings \u2192 Downloads \u2192 Download location",
+      "foreground": "com.swiftra.app",
+      "node_count": 19,
+      "png_bytes": 91704
+    },
+    {
+      "key": "20_set_19_developer_options",
+      "note": "settings \u2192 Developer options",
+      "foreground": "com.swiftra.app",
+      "node_count": 75,
+      "png_bytes": 68649
+    },
+    {
+      "key": "20_set_19_developer_options_b",
+      "note": "settings \u2192 Developer options (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 75,
+      "png_bytes": 69126
+    },
+    {
+      "key": "20_set_20_about_swiftra",
+      "note": "settings \u2192 About Swiftra",
+      "foreground": "com.swiftra.app",
+      "node_count": 81,
+      "png_bytes": 101616
+    },
+    {
+      "key": "20_set_20_about_swiftra_b",
+      "note": "settings \u2192 About Swiftra (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 81,
+      "png_bytes": 101616
+    },
+    {
+      "key": "20_set_20_about_swiftra__03_legal_information",
+      "note": "settings \u2192 About Swiftra \u2192 Legal information",
+      "foreground": "com.swiftra.app",
+      "node_count": 81,
+      "png_bytes": 73486
+    },
+    {
+      "key": "20_set_20_about_swiftra__03_legal_information_b",
+      "note": "settings \u2192 About Swiftra \u2192 Legal information (scrolled)",
+      "foreground": "com.swiftra.app",
+      "node_count": 81,
+      "png_bytes": 73486
+    },
+    {
+      "key": "12_history",
+      "note": "menu \u2192 History",
+      "foreground": "com.swiftra.app",
+      "node_count": 32,
+      "png_bytes": 80507
+    },
+    {
+      "key": "13_bookmarks",
+      "note": "menu \u2192 Bookmarks",
+      "foreground": "com.swiftra.app",
+      "node_count": 53,
+      "png_bytes": 89500
+    },
+    {
+      "key": "14_downloads",
+      "note": "menu \u2192 Downloads",
+      "foreground": "com.swiftra.app",
+      "node_count": 28,
+      "png_bytes": 69200
+    },
+    {
+      "key": "15_dark_page",
+      "note": "system dark theme, example.org",
+      "foreground": "com.swiftra.app",
+      "node_count": 40,
+      "png_bytes": 314180
+    },
+    {
+      "key": "15b_dark_menu",
+      "note": "dark theme app menu",
+      "foreground": "com.swiftra.app",
+      "node_count": 69,
+      "png_bytes": 253617
+    },
+    {
+      "key": "16_landscape",
+      "note": "landscape orientation",
+      "foreground": "com.swiftra.app",
+      "node_count": 40,
+      "png_bytes": 166813
+    },
+    {
+      "key": "10_incognito_ntp",
+      "note": "incognito new tab page",
+      "foreground": "com.swiftra.app",
+      "node_count": 41,
+      "png_bytes": 18481
+    },
+    {
+      "key": "10b_tab_switcher_incognito",
+      "note": "tab switcher incognito pane",
+      "foreground": "com.swiftra.app",
+      "node_count": 50,
+      "png_bytes": 18481
+    }
+  ],
+  "anr_dialogs": 0,
+  "crash_buffer_lines": 0,
+  "promo_sheets": [
+    "Now you can customize your homepage"
+  ],
+  "branding_leaks": 0,
+  "branding_leak_values": [],
+  "false_claims": 0,
+  "false_claim_values": [],
+  "expected_texts_found": [
+    "copyright_chromium_authors",
+    "sb_enhanced_honest_summary",
+    "sb_standard_local_summary",
+    "update_cant_check"
+  ]
+}

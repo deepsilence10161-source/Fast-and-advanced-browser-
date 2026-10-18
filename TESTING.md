@@ -171,6 +171,15 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - सीमा: trace startup के बाद शुरू; connection-level preconnect events बाकी; असली फ़ोन NOT RUN।
 - प्रमाण: `evidence/c2c-2026-10-17/`।
 
+### 2.10 Cold start network audit + 0009 quiet start (c2d, 18-10-2026)
+- तरीका: `scripts/ci/startup_netlog.py` — debug-app command line से Chromium NetLog process start से (APK अपरिवर्तित); सब tabs बंद → cold
+  start → NTP → idle। Gate: Safe Browsing संपर्क, या 0009 द्वारा हटाए गए requests (`quiet_violations`), या AI Mode `folae` के बिना
+  ListAccounts = FAIL। Negative control: 0009 से पहले के data पर gate FAIL (ddllog, discover-pa)।
+- परिणाम: x64 emulator 39094623643 और arm64 Redroid 39094624570 — SHIELD_E2E PASS, STARTUP_NETLOG PASS, cases 13/13, device 9/9,
+  झूठे दावे 0, leaks 0, crash 0, ANR 0। NTP screenshot: "Can't refresh Discover" गया, doodle/AI Mode/tiles बने रहे।
+- सीमा: metrics recorders वाले ListAccounts बदलाव केवल code-स्तर पर सत्यापित; असली फ़ोन NOT RUN।
+- प्रमाण: `evidence/c2d-2026-10-18/`।
+
 ## 3. विफलताओं का इतिहास (ईमानदार क्रम; कुछ भी पहली बार में पास नहीं हुआ)
 | # | Run | क्या हुआ | कारण | सुधार |
 |---|---|---|---|---|
