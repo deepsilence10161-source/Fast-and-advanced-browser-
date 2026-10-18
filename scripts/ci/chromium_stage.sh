@@ -207,7 +207,12 @@ if [ ! -f "src/$OUTD/args.gn" ] || ! diff -q <(printf '%s\n' "$ARGS") "src/$OUTD
   if [ -f "src/$OUTD/args.gn" ]; then ARGS_CHANGED=1; log "args.gn बदले:"; diff "src/$OUTD/args.gn" <(printf '%s\n' "$ARGS") || true; fi
   mkdir -p "src/$OUTD"; printf '%s\n' "$ARGS" > "src/$OUTD/args.gn"
 fi
-(cd src && buildtools/linux64/gn gen "$OUTD") | tail -2
+# full gn output on failure (2026-10-18, run 39133494814: `| tail -2` showed only the "which caused the file to be
+# included" context line, not the error itself)
+if ! (cd src && buildtools/linux64/gn gen "$OUTD") > "$PK/gn_gen.log" 2>&1; then
+  echo "gn gen FAILED -- full output:"; tail -80 "$PK/gn_gen.log"; exit 1
+fi
+tail -2 "$PK/gn_gen.log"
 ev "args_changed=$ARGS_CHANGED"
 
 NINJA=src/third_party/ninja/ninja; [ -x "$NINJA" ] || NINJA=ninja
