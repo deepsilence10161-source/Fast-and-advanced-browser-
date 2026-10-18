@@ -1,3 +1,17 @@
+--- a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
++++ b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
+@@ -558,7 +558,10 @@
+ bool ChromeAutocompleteProviderClient::IsAuthenticated() const {
+   const auto* identity_manager =
+       IdentityManagerFactory::GetForProfile(profile_);
+-  return identity_manager && !identity_manager->GetAccountsInCookieJar()
++  // Swiftra: cached list only. GetAccountsInCookieJar() fetched
++  // accounts.google.com/ListAccounts (with the user's Google cookies) when the
++  // omnibox opened, only to decide whether Drive document suggestions apply.
++  return identity_manager && !identity_manager->GetCachedAccountsInCookieJar()
+                                   .GetPotentiallyInvalidSignedInAccounts()
+                                   .empty();
+ }
 --- a/chrome/browser/ui/android/logo/logo_bridge.cc
 +++ b/chrome/browser/ui/android/logo/logo_bridge.cc
 @@ -186,54 +186,8 @@
@@ -115,60 +129,36 @@
  }
 --- a/components/signin/core/browser/account_investigator.cc
 +++ b/components/signin/core/browser/account_investigator.cc
-@@ -130,8 +130,10 @@
-   // Handling periodic after on change means that if both report, there had to
-   // be a change, which means we will report a stable age of 0. This also
-   // guarantees that on a fresh install we always have a cookie changed pref.
--  if (periodic_pending_) {
--    TryPeriodicReport();
-+  if (periodic_pending_ && !WaitingForExtendedInfo(identity_manager_)) {
-+    // Swiftra: use the list that just arrived instead of TryPeriodicReport(),
-+    // which no longer reads (and so fetches) the cookie jar.
-+    DoPeriodicReport(signed_in_accounts, signed_out_accounts);
-   }
- 
-   previously_authenticated_ = currently_authenticated;
-@@ -214,16 +216,11 @@
+@@ -214,8 +214,11 @@
  }
  
  void AccountInvestigator::TryPeriodicReport() {
--  auto accounts_in_cookie_jar_info =
++  // Swiftra: metrics only (never uploaded by this build). Read the cached list
++  // so this does not fetch accounts.google.com/ListAccounts; if it is stale the
++  // report stays pending until the list arrives for another reason.
+   auto accounts_in_cookie_jar_info =
 -      identity_manager_->GetAccountsInCookieJar();
--  if (accounts_in_cookie_jar_info.AreAccountsFresh() &&
--      !WaitingForExtendedInfo(identity_manager_)) {
--    DoPeriodicReport(
--        accounts_in_cookie_jar_info.GetPotentiallyInvalidSignedInAccounts(),
--        accounts_in_cookie_jar_info.GetSignedOutAccounts());
--  } else {
--    periodic_pending_ = true;
--  }
-+  // Swiftra: the periodic report is metrics only (never uploaded by this
-+  // build); reading the cookie jar here fetched accounts.google.com/ListAccounts
-+  // at startup. Leave the report pending: it is sent if the list arrives for
-+  // another reason (OnAccountsInCookieUpdated), without causing a fetch.
-+  periodic_pending_ = true;
- }
- 
- void AccountInvestigator::DoPeriodicReport(
++      identity_manager_->GetCachedAccountsInCookieJar();
+   if (accounts_in_cookie_jar_info.AreAccountsFresh() &&
+       !WaitingForExtendedInfo(identity_manager_)) {
+     DoPeriodicReport(
 --- a/components/sync/service/sync_session_durations_metrics_recorder.cc
 +++ b/components/sync/service/sync_session_durations_metrics_recorder.cc
-@@ -69,14 +69,11 @@
+@@ -69,10 +69,14 @@
    signin_status_ = DetermineBrowserSigninStatus();
    sync_status_ = DetermineSyncStatus();
  
 -  // Check if we already know the signed in cookies. This will trigger a fetch
 -  // if we don't have them yet.
--  signin::AccountsInCookieJarInfo accounts_in_cookie_jar_info =
++  // Check if we already know the signed in cookies.
++  // Swiftra: read the cached list only. GetAccountsInCookieJar() fetches
++  // accounts.google.com/ListAccounts (with the user's Google cookies) whenever
++  // the cache is stale, i.e. on every cold start, only for session-duration
++  // metrics that this build never uploads. OnAccountsInCookieUpdated() still
++  // runs whenever another feature fetches the list.
+   signin::AccountsInCookieJarInfo accounts_in_cookie_jar_info =
 -      identity_manager_->GetAccountsInCookieJar();
--  if (accounts_in_cookie_jar_info.AreAccountsFresh()) {
--    OnAccountsInCookieUpdated(accounts_in_cookie_jar_info,
--                              GoogleServiceAuthError::AuthErrorNone());
--  }
-+  // Swiftra: do not ask for the Google cookie jar here. GetAccountsInCookieJar()
-+  // fetches accounts.google.com/ListAccounts when the cache is stale, i.e. on
-+  // every cold start, only for session-duration metrics that this build never
-+  // uploads. OnAccountsInCookieUpdated() still runs whenever another feature
-+  // fetches the list.
- 
-   DVLOG(1) << "Ready to track Session.TotalDuration metrics";
- }
++      identity_manager_->GetCachedAccountsInCookieJar();
+   if (accounts_in_cookie_jar_info.AreAccountsFresh()) {
+     OnAccountsInCookieUpdated(accounts_in_cookie_jar_info,
+                               GoogleServiceAuthError::AuthErrorNone());

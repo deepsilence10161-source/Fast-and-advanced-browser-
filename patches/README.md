@@ -135,10 +135,12 @@ action नहीं): `discover-pa.googleapis.com/v1:queryInteractiveFeed` ×2, 
   policy/pref से अब भी चालू हो सकता है। BUILD.gn में `//google_apis` dep।
 - `chrome/browser/ui/android/logo/logo_bridge.cc` `RecordImpression()`: doodle दिखता रहता है; केवल impression ping
   (`doodle_impression_android`, logging) नहीं भेजा जाता।
-- `components/sync/service/sync_session_durations_metrics_recorder.cc` (constructor) और
-  `components/signin/core/browser/account_investigator.cc` (`TryPeriodicReport`): दोनों केवल metrics के लिए Google cookie jar
-  पढ़ते थे, जो हर cold start पर ListAccounts fetch करता था; Swiftra metrics upload ही नहीं करता। list किसी और कारण से आए तो
-  report उसी से बनती है (fetch नहीं)।
+- ListAccounts (Google cookies के साथ POST, NetLog traffic annotation hash 35565745 = `gaia_auth_list_accounts`): तीन जगह
+  `GetAccountsInCookieJar()` (cache stale हो तो fetch) की जगह `GetCachedAccountsInCookieJar()` (fetch नहीं, @155 public API):
+  `sync_session_durations_metrics_recorder.cc` constructor और `account_investigator.cc` `TryPeriodicReport` (दोनों केवल metrics,
+  Swiftra upload नहीं करता) तथा `chrome_autocomplete_provider_client.cc` `IsAuthenticated()` (omnibox खुलने पर केवल Drive
+  document suggestions की पात्रता के लिए; Swiftra में Google sign-in संभव नहीं)। पहले build (केवल पहले दो) के बाद arm64 पर
+  1 ListAccounts बचा था: gate ने पकड़ा (run 39088675385), तब तीसरी जगह मिली।
 - `autofill_crowdsourcing_manager.cc` `IsEnabled()`: API key (या `--autofill-api-key`/`--autofill-server-url`) के बिना
   content-autofill.googleapis.com को form signatures नहीं (server हर बार reject करता, फिर भी 5 बार तक भेजा जाता)।
 जानबूझकर रखा: doodle image (`ddljson`), AI Mode eligibility (`folae`, AI Mode button काम करता है), omnibox suggestions/preconnect
