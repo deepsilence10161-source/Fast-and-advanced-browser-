@@ -145,6 +145,9 @@ def test_arm64_pgo_and_orderfile_are_wired_and_guarded():
     assert '\'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"\'' in s
     # the orderfile needs lld; @155 non-official builds default to mold (use_lld false -> gn assert)
     assert "'use_mold = false'" in s
+    # V8 builtins PGO profile is fetched + verified in the PGO block (before args.gn / ninja)
+    pgo_block = s[s.index("2c0."):s.index("# ---------- 2c. args.gn")]
+    assert 'v8_builtins_pgo.py" src' in pgo_block and "exit 1" in pgo_block
     # no standalone-WebView PGO toolchain (patch 0018; the arg route left webview_toolchain undefined in
     # system_webview_apk_tmpl.gni, run 39148004780)
     assert "chrome_pgo_phase_default_toolchain" not in s
@@ -293,3 +296,33 @@ def test_speed_e2e_failed_loads_do_not_count_as_byte_savings():
     cyc = {m: {"loads": [ok, bad, bad]} for m in se.MODES}
     s = se.summarize({"cycles": [cyc]})
     assert s["swiftra"]["kib"] == 900 and s["swiftra"]["requests"] == 47 and s["swiftra"]["loads_ok"] == 1
+
+
+def test_v8_builtins_pgo_checks(tmp_path, monkeypatch):
+    """md5 mismatch and a meta.json for another V8 revision both stop the build (never a mismatched profile)."""
+    sys.path.insert(0, os.path.join(ROOT, "scripts", "ci"))
+    import base64, hashlib
+    import v8_builtins_pgo as v
+    src = tmp_path / "src"
+    (src / "v8" / "include").mkdir(parents=True)
+    (src / "v8" / "include" / "v8-version.h").write_text(
+        "#define V8_MAJOR_VERSION 15\n#define V8_MINOR_VERSION 5\n#define V8_BUILD_NUMBER 35\n#define V8_PATCH_LEVEL 23\n")
+    rev = "d89479ac5446a374c55a35be19b5a23437558d99"
+    (src / "DEPS").write_text(f"vars = {{\n  'v8_revision': '{rev}',\n}}\n")
+    assert v.v8_version(str(src)) == "15.5.35.23" and v.deps_v8_revision(str(src)) == rev
+    files = {"meta.json": json.dumps({"revision": rev, "version": "15.5.35.23", "profile": ["x64"]}).encode(),
+             "x64.profile": b"profile-bytes"}
+    md5 = lambda b: base64.b64encode(hashlib.md5(b).digest()).decode()
+    pre = "by-version/15.5.35.23/"
+    monkeypatch.setattr(v, "listing", lambda prefix: [(pre + n, len(b), md5(b)) for n, b in files.items()])
+    monkeypatch.setattr(v, "get", lambda url, timeout=120: files[url.rsplit("/", 1)[1]])
+    assert v.main(str(src)) == 0
+    prof = src / "v8" / "tools" / "builtins-pgo" / "profiles" / "x64.profile"
+    assert prof.read_bytes() == b"profile-bytes" and int(prof.stat().st_mtime) == v.FIXED_MTIME
+    files["meta.json"] = json.dumps({"revision": "0" * 40, "version": "15.5.35.23"}).encode()
+    with pytest.raises(SystemExit):
+        v.main(str(src))
+    monkeypatch.setattr(v, "listing", lambda prefix: [(pre + "x64.profile", 13, "AAAA")])
+    prof.unlink()
+    with pytest.raises(SystemExit):
+        v.main(str(src))

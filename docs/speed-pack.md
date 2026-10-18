@@ -217,6 +217,15 @@ Group reasons:
   `system_webview_apk_tmpl.gni` still used the undefined `webview_toolchain`), so patch 0018 sets both
   `use_webview_pgo_profile*` flags in android_webview/variables.gni to false: WebView stays in the default toolchain
   exactly as without PGO. Swiftra ships no WebView; x64 and non-PGO builds already had both flags false.
+  With that, `gn gen` passed (39149165491: 63757 targets) and ninja stopped at a missing
+  `v8/tools/builtins-pgo/profiles/x64.profile`: with PGO, V8's mksnapshot also uses the **V8 builtins PGO profile**
+  (as official Chrome does; the x64 profile is the one V8 applies to arm64). Chromium fetches it only with
+  `checkout_pgo_profiles`, which Swiftra keeps off. `scripts/ci/v8_builtins_pgo.py` now fetches it from the same
+  public bucket (`gs://chromium-v8-builtins-pgo/by-version/15.5.35.23/`, anonymous GCS API), checks every md5, and
+  requires meta.json's revision to equal DEPS `v8_revision` (d89479ac, exact match). mksnapshot runs with
+  `--abort-on-bad-builtin-profile-data`; patch 0000's three V8 fixes change only the JS-level
+  `JSCreateGeneratorObject` operator (TurboFan/Maglev lowering), not CSA/Torque builtins, so the hashes should match.
+  If they do not, the build fails loudly instead of using a wrong profile.
 - Baseline kept: the 0011 arm64 APK (no PGO, no orderfile; build 39127525981, sha256
   `8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd`) is copied to the draft release
   `apk-b1-0011-arm64` before the PGO build replaces the state release asset.

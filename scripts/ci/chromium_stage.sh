@@ -205,6 +205,10 @@ if [ "$PGO_ARM64" = 1 ]; then
     ev "pgo_input $(basename "$f") bytes=$(stat -c %s "$f") sha256=$(sha256sum "$f" | cut -c1-16)"
   done
   ev "pgo_version $(cat src/chrome/build/android-arm64.orderfile.txt 2>/dev/null)"
+  # V8 builtins PGO profile (mksnapshot --turbo-profiling-input; run 39149165491: x64.profile missing). Same public
+  # bucket as v8/tools/builtins-pgo/download_profiles.py, md5 + meta.json revision == DEPS v8_revision checked.
+  python3 "$CI_DIR/v8_builtins_pgo.py" src > "$PK/v8_pgo.log" 2>&1 || { cat "$PK/v8_pgo.log"; echo "V8 builtins PGO profile fetch FAILED"; exit 1; }
+  while read -r l; do ev "$l"; done < <(grep -E "^v8_builtins_pgo (OK|x64)" "$PK/v8_pgo.log")
 fi
 # ---------- 2c. args.gn (बदले हों तो लिखें; gn gen हर बार — सस्ता और idempotent) ----------
 ARGS_CHANGED=0
