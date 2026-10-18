@@ -41,7 +41,7 @@ import zlib
 import struct
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from shield_e2e import adb, open_internal, page_text, targets  # noqa: E402
+from shield_e2e import adb, browser_ws, open_internal, page_text, targets  # noqa: E402
 from startup_netlog import CMDLINE_FILE, CMDLINE_JS, resolve_launcher  # noqa: E402
 
 PORT = 8772
@@ -336,7 +336,27 @@ def restart(pkg, comp, mode, socket):
     return {"flags_applied": False, "cmdline": ""}
 
 
-def load_page(rid):
+def close_targets(substr):
+    """Target.closeTarget for every page whose URL contains |substr| (keeps the tab strip small between loads)."""
+    import websocket
+    ids = [t["id"] for t in targets(DEVTOOLS) if t.get("type") == "page" and substr in t.get("url", "")]
+    ws_url = browser_ws(DEVTOOLS)
+    if not ids or not ws_url:
+        return 0
+    try:
+        ws = websocket.create_connection(ws_url, timeout=10, suppress_origin=True)
+        for n, tid in enumerate(ids, 1):
+            ws.send(json.dumps({"id": n, "method": "Target.closeTarget", "params": {"targetId": tid}}))
+            for _ in range(20):
+                if json.loads(ws.recv()).get("id") == n:
+                    break
+        ws.close()
+    except Exception:  # noqa: BLE001
+        pass
+    return len(ids)
+
+
+def load_page(rid, shot=None):
     url = f"https://{SITE}/news.html?r={rid}"
     r = open_internal(DEVTOOLS, url)
     t0, val = time.time(), None
@@ -350,12 +370,15 @@ def load_page(rid):
             break
         time.sleep(1)
     time.sleep(1)
+    if shot:
+        subprocess.run(f"adb exec-out screencap -p > '{shot}'", shell=True, timeout=30)
     out = {"open": r, "page": None}
     try:
         out["page"] = json.loads(val["r"]) if val else None
     except ValueError:
         pass
     out["server"] = page_stats(rid)
+    out["closed_tabs"] = close_targets(f"r={rid}")
     return out
 
 
@@ -380,7 +403,9 @@ def run_download(rid):
             break
         time.sleep(1)
     time.sleep(3)
-    return {"open": r, "dialog_taps": taps, "server": download_stats(rid), "device_file": device_file(rid)}
+    rec = {"open": r, "dialog_taps": taps, "server": download_stats(rid), "device_file": device_file(rid)}
+    rec["closed_tabs"] = close_targets(DL)
+    return rec
 
 
 def med(xs):
@@ -441,9 +466,8 @@ def main():
                 if st["flags_applied"]:
                     load_page(f"w{c}{mode[0]}")    # warm-up (renderer, TLS session, ruleset), not counted
                     for i in range(a.loads):
-                        rec["loads"].append(load_page(f"c{c}{mode[0]}{i}"))
-                    subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, f'page_{mode}_{c}.png')}'",
-                                   shell=True, timeout=30)
+                        shot = os.path.join(a.out, f"page_{mode}_{c}.png") if i == a.loads - 1 else None
+                        rec["loads"].append(load_page(f"c{c}{mode[0]}{i}", shot))
                     rec["download"] = run_download(f"d{c}{mode[0]}")
                     subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, f'download_{mode}_{c}.png')}'",
                                    shell=True, timeout=30)
