@@ -179,6 +179,24 @@ Google ने Android पर 155.0.8059.84 जारी किया (security f
   3PC default → allowed, CDP restriction → blocked।
 - Fingerprinting protection: @155 में कोई तैयार flag नहीं (press में बताया canvas-readback flag इस tree में नहीं) → अगले चरण में अपना implementation।
 
+## 0011-swiftra-fingerprint-shield.patch (2026-10-18 — Fingerprint Shield, Chrome में नहीं)
+नई file `third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.{h,cc}` (core/frame/build.gni में जोड़ी) +
+5 call sites। Feature `SwiftraFingerprintShield` (ENABLED_BY_DEFAULT; `--disable-features=SwiftraFingerprintShield` से बंद)।
+- Key = hash(renderer-session random salt, **top-level** site का scheme + registrable domain)। Top-level इसलिए कि एक ही
+  tracker iframe दो अलग sites पर अलग fingerprint पाए। Worker: `top_level_frame_security_origin()`।
+- Pixels (8-bit RGBA/BGRA, केवल alpha=255): लगभग 1/16 pixels के एक colour channel का सबसे निचला bit, pixel की position और
+  उसके बाकी bits के hash से तय → अदृश्य (अधिकतम ±1), एक site पर स्थिर, sub-rect पढ़ने पर भी समान, और idempotent
+  (getImageData → putImageData → getImageData से हटाया नहीं जा सकता; मूल LSB वापस नहीं मिलता)।
+- जगहें: `BaseRenderingContext2D::getImageDataInternal` (readPixels के बाद), `HTMLCanvasElement::ToDataURLInternal` और
+  `toBlob`, `OffscreenCanvas::convertToBlob` (snapshot की noised RGBA copy), `WebGLRenderingContextBase::ReadPixelsHelper`
+  (RGBA/UNSIGNED_BYTE, PACK_ALIGNMENT rows; helper हर write `buffer_size` के भीतर जाँचता है),
+  `OfflineAudioContext::FireCompletionEvent` (per-site gain < 2^-16 + per-sample jitter 2^-18, लगभग -100 dB)।
+- सीमाएँ (अगला चरण): float16 ImageData/canvas, realtime AnalyserNode, WebGL PIXEL_PACK_BUFFER reads, WebGL renderer string,
+  fonts/hardwareConcurrency।
+- Logic test (sandbox, g++): `tools/fingerprint/noise_logic_test.cc` — changed 215/6000 px, max diff 1, semi-transparent 0,
+  अलग key → अलग, idempotent 0, sub-rect 0, capacity guard; audio max relative 7.8e-6।
+- Licence: अपना code (BSD-style header); Brave "farbling" का केवल विचार सार्वजनिक है, code नहीं लिया।
+
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।

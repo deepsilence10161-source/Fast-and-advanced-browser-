@@ -1,0 +1,435 @@
+--- a/third_party/blink/renderer/core/frame/build.gni
++++ b/third_party/blink/renderer/core/frame/build.gni
+@@ -205,6 +205,8 @@
+   "settings_string_converter.h",
+   "smart_clip.cc",
+   "smart_clip.h",
++  "swiftra_fingerprint_shield.cc",
++  "swiftra_fingerprint_shield.h",
+   "test_report_body.cc",
+   "test_report_body.h",
+   "use_counter_impl.cc",
+--- a/third_party/blink/renderer/core/offscreencanvas/offscreen_canvas.cc
++++ b/third_party/blink/renderer/core/offscreencanvas/offscreen_canvas.cc
+@@ -30,6 +30,7 @@
+ #include "third_party/blink/renderer/core/fileapi/blob.h"
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+ #include "third_party/blink/renderer/core/frame/local_frame.h"
++#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"
+ #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
+ #include "third_party/blink/renderer/core/html/canvas/canvas_async_blob_creator.h"
+ #include "third_party/blink/renderer/core/html/canvas/canvas_context_creation_attributes_core.h"
+@@ -564,6 +565,10 @@
+ 
+   base::TimeTicks start_time = base::TimeTicks::Now();
+   scoped_refptr<StaticBitmapImage> image_bitmap = context_->GetImage();
++  // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
++  image_bitmap = SwiftraNoisedSnapshot(
++      SwiftraFingerprintKey(ExecutionContext::From(script_state)),
++      std::move(image_bitmap));
+   if (image_bitmap) {
+     auto* resolver = MakeGarbageCollected<ScriptPromiseResolver<Blob>>(
+         script_state, exception_state.GetContext());
+--- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
++++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
+@@ -70,6 +70,7 @@
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+ #include "third_party/blink/renderer/core/frame/local_frame.h"
+ #include "third_party/blink/renderer/core/frame/local_frame_client.h"
++#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"
+ #include "third_party/blink/renderer/core/frame/local_frame_view.h"
+ #include "third_party/blink/renderer/core/frame/settings.h"
+ #include "third_party/blink/renderer/core/frame/web_feature.h"
+@@ -1421,6 +1422,9 @@
+       ImageEncoderUtils::ToEncodingMimeType(mime_type);
+ 
+   scoped_refptr<StaticBitmapImage> image_bitmap = Snapshot(source_buffer);
++  // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
++  image_bitmap = SwiftraNoisedSnapshot(
++      SwiftraFingerprintKey(GetExecutionContext()), std::move(image_bitmap));
+   if (image_bitmap) {
+     std::unique_ptr<ImageDataBuffer> data_buffer =
+         ImageDataBuffer::Create(image_bitmap);
+@@ -1525,6 +1529,9 @@
+ 
+   CanvasAsyncBlobCreator* async_creator = nullptr;
+   scoped_refptr<StaticBitmapImage> image_bitmap = Snapshot(kBackBuffer);
++  // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
++  image_bitmap = SwiftraNoisedSnapshot(
++      SwiftraFingerprintKey(GetExecutionContext()), std::move(image_bitmap));
+   if (image_bitmap) {
+     auto* options = ImageEncodeOptions::Create();
+     options->setType(ImageEncoderUtils::MimeTypeName(encoding_mime_type));
+--- a/third_party/blink/renderer/modules/webaudio/offline_audio_context.cc
++++ b/third_party/blink/renderer/modules/webaudio/offline_audio_context.cc
+@@ -35,6 +35,7 @@
+ #include "third_party/blink/renderer/core/dom/dom_exception.h"
+ #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
++#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"
+ #include "third_party/blink/renderer/modules/webaudio/audio_listener.h"
+ #include "third_party/blink/renderer/modules/webaudio/deferred_task_handler.h"
+ #include "third_party/blink/renderer/modules/webaudio/offline_audio_completion_event.h"
+@@ -437,6 +438,16 @@
+       return;
+     }
+ 
++    // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
++    if (const uint64_t key = SwiftraFingerprintKey(GetExecutionContext())) {
++      for (unsigned channel = 0; channel < rendered_buffer->numberOfChannels();
++           ++channel) {
++        base::span<float> samples =
++            rendered_buffer->getChannelData(channel)->AsSpan();
++        SwiftraNoiseAudio(key, samples.data(), samples.size(), channel);
++      }
++    }
++
+     // Call the offline rendering completion event listener and resolve the
+     // promise too.
+     DispatchEvent(*OfflineAudioCompletionEvent::Create(rendered_buffer));
+--- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
++++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
+@@ -77,6 +77,7 @@
+ #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+ #include "third_party/blink/renderer/core/frame/local_frame.h"
++#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"
+ #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+ #include "third_party/blink/renderer/core/frame/settings.h"
+ #include "third_party/blink/renderer/core/frame/web_feature.h"
+@@ -5372,6 +5373,20 @@
+     }
+     ContextGL()->ReadPixels(x, y, width, height, format, type, data);
+   }
++  // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h):
++  // 8-bit RGBA reads into client memory. Rows are padded to PACK_ALIGNMENT;
++  // the helper re-checks that every write stays inside `buffer_size`.
++  if (format == GL_RGBA && type == GL_UNSIGNED_BYTE && !buffer.has_value() &&
++      width > 0 && height > 0) {
++    const size_t alignment =
++        pack_alignment_ > 0 ? static_cast<size_t>(pack_alignment_) : 1;
++    const size_t row_bytes =
++        (static_cast<size_t>(width) * 4 + alignment - 1) / alignment *
++        alignment;
++    SwiftraNoiseRGBA8(SwiftraFingerprintKey(Host()->GetTopExecutionContext()),
++                      data, buffer_size.ValueOrDie(), width, height, row_bytes,
++                      x, y, /*bgra=*/false);
++  }
+ }
+ 
+ void WebGLRenderingContextBase::RenderbufferStorageImpl(
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
+@@ -47,6 +47,7 @@
+ #include "third_party/blink/renderer/core/dom/element.h"
+ #include "third_party/blink/renderer/core/dom/events/event.h"
+ #include "third_party/blink/renderer/core/dom/node.h"
++#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"
+ #include "third_party/blink/renderer/core/frame/web_feature.h"
+ #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
+ #include "third_party/blink/renderer/core/html/canvas/canvas_font_cache.h"
+@@ -515,6 +516,10 @@
+       SkIRect bounds =
+           snapshot->PaintImageForCurrentFrame().GetSkImageInfo().bounds();
+       DCHECK(!bounds.intersect(SkIRect::MakeXYWH(sx, sy, sw, sh)));
++    } else {
++      // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
++      SwiftraNoisePixmap(SwiftraFingerprintKey(GetTopExecutionContext()),
++                         image_data_pixmap, sx, sy);
+     }
+   }
+ 
+--- /dev/null
++++ b/third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h
+@@ -0,0 +1,70 @@
++// Copyright 2026 The Swiftra Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#ifndef THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_SWIFTRA_FINGERPRINT_SHIELD_H_
++#define THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_SWIFTRA_FINGERPRINT_SHIELD_H_
++
++#include <cstddef>
++#include <cstdint>
++
++#include "base/feature_list.h"
++#include "base/memory/scoped_refptr.h"
++#include "third_party/blink/renderer/core/core_export.h"
++
++class SkPixmap;
++
++namespace blink {
++
++class ExecutionContext;
++class StaticBitmapImage;
++
++// Swiftra fingerprint shield: canvas / WebGL / OfflineAudio readbacks get a
++// tiny, invisible perturbation that is
++//  * different for every top-level site and every browser session, so the
++//    same device does not produce the same fingerprint on two sites;
++//  * stable within a site and session, so repeated reads agree;
++//  * idempotent for pixels (only the lowest bit of one colour channel of
++//    about 1 in 16 opaque pixels is set from a hash of the pixel's position
++//    and its other bits), so read -> putImageData -> read cannot strip it.
++// Disable with --disable-features=SwiftraFingerprintShield.
++CORE_EXPORT BASE_DECLARE_FEATURE(kSwiftraFingerprintShield);
++
++// Per (session, top-level site) key; 0 when the shield is off.
++CORE_EXPORT uint64_t SwiftraFingerprintKey(ExecutionContext* context);
++
++// 8-bit RGBA/BGRA pixels; (x0, y0) = position of the first pixel in the
++// source surface. Writes stay within `capacity` bytes.
++CORE_EXPORT void SwiftraNoiseRGBA8(uint64_t key,
++                                   uint8_t* data,
++                                   size_t capacity,
++                                   int width,
++                                   int height,
++                                   size_t row_bytes,
++                                   int x0,
++                                   int y0,
++                                   bool bgra);
++
++// Same, for an 8-bit RGBA/BGRA pixmap (other colour types are left alone).
++CORE_EXPORT void SwiftraNoisePixmap(uint64_t key,
++                                    const SkPixmap& pixmap,
++                                    int x0,
++                                    int y0);
++
++// Returns a perturbed unpremultiplied RGBA copy of an 8-bit `image` (for
++// toDataURL / toBlob / convertToBlob), or `image` itself when key is 0 or the
++// format is not 8-bit.
++CORE_EXPORT scoped_refptr<StaticBitmapImage> SwiftraNoisedSnapshot(
++    uint64_t key,
++    scoped_refptr<StaticBitmapImage> image);
++
++// Rendered audio samples: per-site gain offset below 2^-16 plus per-sample
++// jitter below 2^-18 (inaudible).
++CORE_EXPORT void SwiftraNoiseAudio(uint64_t key,
++                                   float* samples,
++                                   size_t count,
++                                   uint32_t channel);
++
++}  // namespace blink
++
++#endif  // THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_SWIFTRA_FINGERPRINT_SHIELD_H_
+--- /dev/null
++++ b/third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.cc
+@@ -0,0 +1,218 @@
++// Copyright 2026 The Swiftra Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#if defined(UNSAFE_BUFFERS_BUILD)
++// Raw pixel / sample loops below are bounds-checked by hand.
++#pragma allow_unsafe_buffers
++#endif
++
++#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"
++
++#include <utility>
++
++#include "base/feature_list.h"
++#include "base/numerics/checked_math.h"
++#include "base/rand_util.h"
++#include "cc/paint/paint_image.h"
++#include "third_party/blink/renderer/core/execution_context/execution_context.h"
++#include "third_party/blink/renderer/core/execution_context/security_context.h"
++#include "third_party/blink/renderer/core/frame/frame.h"
++#include "third_party/blink/renderer/core/frame/local_dom_window.h"
++#include "third_party/blink/renderer/core/frame/local_frame.h"
++#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
++#include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
++#include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
++#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
++#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
++#include "third_party/skia/include/core/SkBitmap.h"
++#include "third_party/skia/include/core/SkImage.h"
++#include "third_party/skia/include/core/SkImageInfo.h"
++#include "third_party/skia/include/core/SkPixmap.h"
++
++namespace blink {
++
++BASE_FEATURE(kSwiftraFingerprintShield, base::FEATURE_ENABLED_BY_DEFAULT);
++
++namespace {
++
++constexpr uint64_t kFnvOffset = 0xcbf29ce484222325ull;
++constexpr uint64_t kFnvPrime = 0x100000001b3ull;
++
++uint64_t Mix(uint64_t z) {
++  z += 0x9e3779b97f4a7c15ull;
++  z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ull;
++  z = (z ^ (z >> 27)) * 0x94d049bb133111ebull;
++  return z ^ (z >> 31);
++}
++
++uint64_t HashString(uint64_t h, const String& s) {
++  for (wtf_size_t i = 0; i < s.length(); ++i) {
++    h ^= static_cast<uint64_t>(s[i]);
++    h *= kFnvPrime;
++  }
++  h ^= 0xff;
++  h *= kFnvPrime;
++  return h;
++}
++
++// One random value per renderer process: the noise changes every session.
++uint64_t SessionSalt() {
++  static const uint64_t salt = base::RandUint64();
++  return salt;
++}
++
++const SecurityOrigin* TopLevelOrigin(ExecutionContext* context) {
++  if (auto* window = DynamicTo<LocalDOMWindow>(context)) {
++    if (LocalFrame* frame = window->GetFrame()) {
++      if (Frame* top = frame->Top()) {
++        if (const SecurityContext* security = top->GetSecurityContext()) {
++          if (const SecurityOrigin* origin = security->GetSecurityOrigin()) {
++            return origin;
++          }
++        }
++      }
++    }
++    return window->GetSecurityOrigin();
++  }
++  if (auto* worker = DynamicTo<WorkerGlobalScope>(context)) {
++    if (const SecurityOrigin* origin =
++            worker->top_level_frame_security_origin()) {
++      return origin;
++    }
++  }
++  return context->GetSecurityOrigin();
++}
++
++}  // namespace
++
++uint64_t SwiftraFingerprintKey(ExecutionContext* context) {
++  if (!context || !base::FeatureList::IsEnabled(kSwiftraFingerprintShield)) {
++    return 0;
++  }
++  uint64_t h = kFnvOffset;
++  const SecurityOrigin* origin = TopLevelOrigin(context);
++  if (!origin || origin->IsOpaque()) {
++    h = HashString(h, String("opaque"));
++  } else {
++    String site = origin->RegistrableDomain();
++    if (site.empty()) {
++      site = origin->Host();
++    }
++    h = HashString(HashString(h, origin->Protocol()), site);
++  }
++  return Mix(SessionSalt() ^ h) | 1;
++}
++
++void SwiftraNoiseRGBA8(uint64_t key,
++                       uint8_t* data,
++                       size_t capacity,
++                       int width,
++                       int height,
++                       size_t row_bytes,
++                       int x0,
++                       int y0,
++                       bool bgra) {
++  if (!key || !data || width <= 0 || height <= 0) {
++    return;
++  }
++  base::CheckedNumeric<size_t> needed = static_cast<size_t>(height - 1);
++  needed *= row_bytes;
++  needed += static_cast<size_t>(width) * 4;
++  if (!needed.IsValid() || needed.ValueOrDie() > capacity ||
++      row_bytes < static_cast<size_t>(width) * 4) {
++    return;
++  }
++  const int r = bgra ? 2 : 0;
++  const int b = bgra ? 0 : 2;
++  for (int y = 0; y < height; ++y) {
++    uint8_t* row = data + static_cast<size_t>(y) * row_bytes;
++    for (int x = 0; x < width; ++x) {
++      uint8_t* p = row + static_cast<size_t>(x) * 4;
++      if (p[3] != 255) {
++        continue;  // transparent / anti-aliased edges stay exact
++      }
++      const uint64_t color = static_cast<uint64_t>(p[r] & 0xfe) |
++                             (static_cast<uint64_t>(p[1] & 0xfe) << 8) |
++                             (static_cast<uint64_t>(p[b] & 0xfe) << 16);
++      const uint64_t pos =
++          (static_cast<uint64_t>(static_cast<uint32_t>(x0 + x)) << 32) |
++          static_cast<uint32_t>(y0 + y);
++      const uint64_t h = Mix(Mix(pos) ^ color ^ key);
++      if ((h & 0xf) != 0) {
++        continue;
++      }
++      const uint64_t pick = (h >> 8) % 3;
++      const int index = pick == 0 ? r : (pick == 1 ? 1 : b);
++      p[index] = static_cast<uint8_t>((p[index] & 0xfe) | ((h >> 16) & 1));
++    }
++  }
++}
++
++void SwiftraNoisePixmap(uint64_t key,
++                        const SkPixmap& pixmap,
++                        int x0,
++                        int y0) {
++  const SkColorType type = pixmap.colorType();
++  if (!key || !pixmap.addr() ||
++      (type != kRGBA_8888_SkColorType && type != kBGRA_8888_SkColorType)) {
++    return;
++  }
++  SwiftraNoiseRGBA8(key, static_cast<uint8_t*>(pixmap.writable_addr()),
++                    pixmap.computeByteSize(), pixmap.width(), pixmap.height(),
++                    pixmap.rowBytes(), x0, y0,
++                    type == kBGRA_8888_SkColorType);
++}
++
++scoped_refptr<StaticBitmapImage> SwiftraNoisedSnapshot(
++    uint64_t key,
++    scoped_refptr<StaticBitmapImage> image) {
++  if (!key || !image) {
++    return image;
++  }
++  PaintImage paint_image = image->PaintImageForCurrentFrame();
++  if (!paint_image || paint_image.IsPaintWorklet()) {
++    return image;
++  }
++  const SkImageInfo source_info = paint_image.GetSkImageInfo();
++  const SkColorType type = source_info.colorType();
++  if (source_info.isEmpty() ||
++      (type != kRGBA_8888_SkColorType && type != kBGRA_8888_SkColorType &&
++       type != kRGB_888x_SkColorType)) {
++    return image;
++  }
++  const SkImageInfo info =
++      SkImageInfo::Make(source_info.dimensions(), kRGBA_8888_SkColorType,
++                        kUnpremul_SkAlphaType, source_info.refColorSpace());
++  SkBitmap bitmap;
++  if (!bitmap.tryAllocPixels(info) ||
++      !paint_image.readPixels(info, bitmap.getPixels(), bitmap.rowBytes(), 0,
++                              0)) {
++    return image;
++  }
++  SwiftraNoisePixmap(key, bitmap.pixmap(), 0, 0);
++  bitmap.setImmutable();
++  return UnacceleratedStaticBitmapImage::Create(bitmap.asImage(),
++                                                image->Orientation());
++}
++
++void SwiftraNoiseAudio(uint64_t key,
++                       float* samples,
++                       size_t count,
++                       uint32_t channel) {
++  if (!key || !samples) {
++    return;
++  }
++  // Per-site gain in (-2^-16, 2^-16) plus +-2^-18 per-sample jitter.
++  const double gain =
++      1.0 + (static_cast<double>(Mix(key) >> 11) / 9007199254740992.0 - 0.5) *
++                (2.0 / 65536.0);
++  for (size_t i = 0; i < count; ++i) {
++    const uint64_t h =
++        Mix(key ^ Mix((static_cast<uint64_t>(channel) << 40) ^ i));
++    const double jitter = (h & 1) ? (1.0 / 262144.0) : (-1.0 / 262144.0);
++    samples[i] = static_cast<float>(samples[i] * (gain + jitter));
++  }
++}
++
++}  // namespace blink
