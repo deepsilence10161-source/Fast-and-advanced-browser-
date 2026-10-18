@@ -1,0 +1,5 @@
+cycle 0 chromium_defaults: {"flags": true, "loads": [null, {"load": 1406, "dcl": 525, "ttfb": 82, "fcp": 488, "lcp": 556, "resources": 37, "transfer": 766555}, {"load": 1438, "dcl": 559, "ttfb": 73, "fcp": 524, "lcp": 592, "resources": 37, "transfer": 766555}], "download": {"requests": 3, "ranges": [null, "bytes=8388608-", "bytes=16777216-"], "covered": 25165824, "complete": true, "all_closed": true, "seconds": 9.1, "max_concurrent": 3}}
+cycle 0 swiftra: {"flags": false, "loads": [], "download": null}
+cycle 1 chromium_defaults: {"flags": false, "loads": [], "download": null}
+cycle 1 swiftra: {"flags": true, "loads": [{"load": 1413, "dcl": 533, "ttfb": 72, "fcp": 496, "lcp": 564, "resources": 37, "transfer": 766555}, {"load": 1436, "dcl": 561, "ttfb": 92, "fcp": 524, "lcp": 592, "resources": 37, "transfer": 766555}, {"load": 1424, "dcl": 544, "ttfb": 85, "fcp": 528, "lcp": 596, "resources": 37, "transfer": 766555}], "download": {"requests": 3, "ranges": [null, "bytes=8388608-", "bytes=16777216-"], "covered": 25165824, "complete": true, "all_closed": true, "seconds": 9.11, "max_concurrent": 3}}
+SPEED_E2E NOT_RUN flags not applied

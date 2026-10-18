@@ -1,0 +1,206 @@
+{
+ "package": "com.swiftra.app",
+ "rules": "MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772",
+ "modes": {
+  "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock",
+  "swiftra": ""
+ },
+ "lat_ms": 60,
+ "ad_lat_ms": 150,
+ "page_rate": 256000,
+ "dl_size": 25165824,
+ "dl_rate": 1048576,
+ "cycles": [
+  {
+   "chromium_defaults": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772 --ignore-certificate-errors --disable-field-trial-config --disable-features=SwiftraAdBlock --flag-switches-begin --flag-switches-end --use-mobile-use"
+    },
+    "loads": [
+     {
+      "open": "no browser websocket",
+      "page": null,
+      "server": {
+       "requests": 0,
+       "bytes": 0,
+       "ad_requests": 0,
+       "ad_bytes": 0,
+       "server_span_ms": null
+      },
+      "closed_tabs": 0
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1406,
+       "dcl": 525,
+       "ttfb": 82,
+       "fcp": 488,
+       "lcp": 556,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1388
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1438,
+       "dcl": 559,
+       "ttfb": 73,
+       "fcp": 524,
+       "lcp": 592,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1427
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.1,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 14:13 swiftra-speed-d0c.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    }
+   },
+   "swiftra": {
+    "restart": {
+     "flags_applied": false,
+     "cmdline": ""
+    },
+    "loads": []
+   }
+  },
+  {
+   "chromium_defaults": {
+    "restart": {
+     "flags_applied": false,
+     "cmdline": ""
+    },
+    "loads": []
+   },
+   "swiftra": {
+    "restart": {
+     "flags_applied": true,
+     "cmdline": " _ --host-resolver-rules=MAP speed.example.com 127.0.0.1:8772,MAP cdn.example.net 127.0.0.1:8772,MAP dl.example.com 127.0.0.1:8772,MAP ib.adnxs.com 127.0.0.1:8772,MAP www.google-analytics.com 127.0.0.1:8772,MAP sb.scorecardresearch.com 127.0.0.1:8772 --ignore-certificate-errors --disable-field-trial-config --disable-features=SwiftraAdBlock --flag-switches-begin --flag-switches-end --use-mobile-use"
+    },
+    "loads": [
+     {
+      "open": "ok",
+      "page": {
+       "load": 1413,
+       "dcl": 533,
+       "ttfb": 72,
+       "fcp": 496,
+       "lcp": 564,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1404
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1436,
+       "dcl": 561,
+       "ttfb": 92,
+       "fcp": 524,
+       "lcp": 592,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1425
+      },
+      "closed_tabs": 1
+     },
+     {
+      "open": "ok",
+      "page": {
+       "load": 1424,
+       "dcl": 544,
+       "ttfb": 85,
+       "fcp": 528,
+       "lcp": 596,
+       "resources": 37,
+       "transfer": 766555
+      },
+      "server": {
+       "requests": 47,
+       "bytes": 908425,
+       "ad_requests": 15,
+       "ad_bytes": 284404,
+       "server_span_ms": 1414
+      },
+      "closed_tabs": 1
+     }
+    ],
+    "download": {
+     "open": "ok",
+     "dialog_taps": [],
+     "server": {
+      "requests": 3,
+      "ranges": [
+       null,
+       "bytes=8388608-",
+       "bytes=16777216-"
+      ],
+      "covered": 25165824,
+      "complete": true,
+      "all_closed": true,
+      "seconds": 9.11,
+      "max_concurrent": 3
+     },
+     "device_file": {
+      "line": "-rwxrwx--- 1 u0_a79 media_rw 25165824 2026-10-18 14:18 swiftra-speed-d1s.zip",
+      "size": 25165824
+     },
+     "closed_tabs": 0
+    }
+   }
+  }
+ ],
+ "summary": null
+}
