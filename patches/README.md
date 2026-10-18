@@ -261,3 +261,12 @@ meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता �
   और HEv3 @155 default बंद है। Server पर भार Chromium के HTTP/1.1 व्यवहार जितना (उतने ही connections)।
 - Device E2E: `speed_e2e.py` का HTTP/2-only server (`scripts/ci/h2_dl_server.py`, 1 MiB/s प्रति connection):
   `h2_download_s` और `h2_conns` (chromium_defaults में feature बंद)। Desktop पर `SocketTag` no-op है, इसलिए प्रमाण केवल device।
+
+## 0018-swiftra-no-webview-pgo-toolchain.patch (2026-10-18 — arm64 PGO build fix)
+- @155 पर arm64 + `chrome_pgo_phase = 2` होने पर `android_webview/variables.gni` standalone WebView के लिए अलग toolchain
+  (`android_clang_arm64_webview`) जोड़ता है। Non-official build में secondary ABI नहीं होता, इसलिए उस toolchain में
+  `components/policy` → `build/timestamp.gni` का default-toolchain assert `gn gen` रोक देता है (run 39146588456)।
+  केवल arg `chrome_pgo_phase_default_toolchain = 0` से `system_webview_apk_tmpl.gni` में `webview_toolchain` undefined
+  रह जाता है (run 39148004780)।
+- बदलाव: `use_webview_pgo_profile` और `use_webview_pgo_profile_default_toolchain` = false। WebView default toolchain में
+  रहता है, जैसा PGO के बिना। Swiftra WebView ship नहीं करता; x64 और non-PGO builds में दोनों पहले से false थे (no-op)।

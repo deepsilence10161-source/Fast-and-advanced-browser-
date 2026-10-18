@@ -65,14 +65,9 @@ if [ "$CPU" = arm64 ] && [[ "$STATE" != *-a1 ]]; then
   # !is_official_build), which makes use_lld false, and chrome_orderfile_config asserts use_lld
   # (build/config/compiler/BUILD.gn:3207; gn gen failed in runs 39133494814 / 39145340622). Official Chrome links with
   # lld (--symbol-ordering-file, --call-graph-profile-sort). Only link commands change.
-  # chrome_pgo_phase_default_toolchain = 0: with 2, android_webview/variables.gni adds the standalone-WebView
-  # toolchain (android_clang_arm64_webview), whose components/policy load hits build/timestamp.gni's
-  # default-toolchain assert (non-official = no secondary ABI; gn gen failed in run 39146588456). That arg is read
-  # only by android_webview/variables.gni and build/toolchain/android (pass-through); the PGO flags read
-  # chrome_pgo_phase. Swiftra does not build WebView.
-  ARGS=$(printf '%s\n%s\n%s\n%s\n%s' "$ARGS" 'chrome_pgo_phase = 2' \
-    'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"' 'use_mold = false' \
-    'chrome_pgo_phase_default_toolchain = 0')
+  # (the standalone-WebView PGO toolchain is switched off by patch 0018; see patches/README.md)
+  ARGS=$(printf '%s\n%s\n%s\n%s' "$ARGS" 'chrome_pgo_phase = 2' \
+    'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"' 'use_mold = false')
 fi
 PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")
 # release signing: patches/signing_cert_sha256.txt (public, अपेक्षित cert SHA-256) हो तो ज़रूरी (finalize_apk.sh)

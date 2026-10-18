@@ -1,0 +1,20 @@
+diff -ruN a/android_webview/variables.gni b/android_webview/variables.gni
+--- a/android_webview/variables.gni	2026-10-18 17:17:50.812201221 +0000
++++ b/android_webview/variables.gni	2026-10-18 17:17:50.824201221 +0000
+@@ -19,9 +19,13 @@
+ 
+ webview_product_config_java_package = "org.chromium.android_webview"
+ 
+-use_webview_pgo_profile = current_cpu == "arm64" && chrome_pgo_phase == 2
+-use_webview_pgo_profile_default_toolchain =
+-    target_cpu == "arm64" && chrome_pgo_phase_default_toolchain == 2
++# Swiftra (0018): no separate standalone-WebView PGO toolchain. Upstream adds
++# it for arm64 chrome_pgo_phase = 2; in a non-official build (no secondary ABI)
++# its components/policy load stops gn gen at build/timestamp.gni's
++# default-toolchain assert. Swiftra ships no WebView, so WebView stays in the
++# default toolchain exactly as in builds without PGO.
++use_webview_pgo_profile = false
++use_webview_pgo_profile_default_toolchain = false
+ 
+ if (use_webview_pgo_profile_default_toolchain) {
+   webview_toolchain = "//build/toolchain/android:android_clang_arm64_webview"

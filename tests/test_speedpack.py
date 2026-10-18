@@ -145,8 +145,13 @@ def test_arm64_pgo_and_orderfile_are_wired_and_guarded():
     assert '\'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"\'' in s
     # the orderfile needs lld; @155 non-official builds default to mold (use_lld false -> gn assert)
     assert "'use_mold = false'" in s
-    # no standalone-WebView toolchain (its timestamp.gni assert needs the secondary ABI = official builds)
-    assert "'chrome_pgo_phase_default_toolchain = 0'" in s
+    # no standalone-WebView PGO toolchain (patch 0018; the arg route left webview_toolchain undefined in
+    # system_webview_apk_tmpl.gni, run 39148004780)
+    assert "chrome_pgo_phase_default_toolchain" not in s
+    series = open(os.path.join(ROOT, "patches", "series")).read().split()
+    assert series.index("0018-swiftra-no-webview-pgo-toolchain.patch") > series.index("0017-swiftra-turbo-download.patch")
+    p18 = open(os.path.join(ROOT, "patches", "0018-swiftra-no-webview-pgo-toolchain.patch")).read()
+    assert "+use_webview_pgo_profile = false" in p18 and "+use_webview_pgo_profile_default_toolchain = false" in p18
     guard = s.index("PGO input missing")
     assert s.index("pgo_profile.arm64.profdata", s.index("2c0.")) < guard < s.index("# ---------- 2c. args.gn")
     # the base heredoc stays untouched (official build stays off; privacy relies on it)

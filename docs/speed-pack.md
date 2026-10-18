@@ -213,8 +213,10 @@ Group reasons:
   The next attempt (39146588456) passed that point and stopped at `build/timestamp.gni`'s default-toolchain assert
   in `android_clang_arm64_webview`: with `chrome_pgo_phase = 2`, android_webview/variables.gni adds a separate
   standalone-WebView toolchain, and official builds pass the assert only because they enable the 32-bit secondary
-  ABI. The args now also set `chrome_pgo_phase_default_toolchain = 0` (read only by the WebView toolchain choice;
-  the PGO compiler flags read `chrome_pgo_phase`). Swiftra does not ship WebView, so nothing else changes.
+  ABI. Setting the arg `chrome_pgo_phase_default_toolchain = 0` was not enough (39148004780:
+  `system_webview_apk_tmpl.gni` still used the undefined `webview_toolchain`), so patch 0018 sets both
+  `use_webview_pgo_profile*` flags in android_webview/variables.gni to false: WebView stays in the default toolchain
+  exactly as without PGO. Swiftra ships no WebView; x64 and non-PGO builds already had both flags false.
 - Baseline kept: the 0011 arm64 APK (no PGO, no orderfile; build 39127525981, sha256
   `8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd`) is copied to the draft release
   `apk-b1-0011-arm64` before the PGO build replaces the state release asset.
