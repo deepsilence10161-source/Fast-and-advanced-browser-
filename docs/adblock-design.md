@@ -98,3 +98,14 @@ All references are to the @155 source.
      nothing leaves it), plus 2 controls.
    - PASS = 0 server hits on all ad hosts while both controls load.
    - It makes up to 3 attempts (because of the startup indexing), and all of them are recorded.
+
+## Not covered yet: `$document` block rules (591 EasyList rules, 2026-10-18 review)
+- These are the "activation" skips in `adblock/stats.json`. Example: `/zclkredirect?$document`. They block a top-level
+  navigation to malvertising or redirect pages; they do not block subresources.
+- The subresource_filter ruleset cannot express them: `components/url_pattern_index/proto/rules.proto` @155 has no
+  main-frame element type (ELEMENT_TYPE_* stops at WEBBUNDLE), and activation types are only for allowlisting.
+- What would be needed: a second, small indexed list (the same UrlRule format, element type OTHER) plus a main-frame
+  NavigationThrottle that matches the navigation URL against it and shows a blocked page. Swiftra Shield already
+  blocks listed hosts at navigation time; these rules add URL-path patterns.
+- Status: NOT STARTED (design note only). The other skips (29 regexp, 23 redirect, 10 important, 8 rewrite, 5 csp,
+  1 method, 1 redirect-rule, 1 match-all) have no equivalent in the Chromium matcher.
