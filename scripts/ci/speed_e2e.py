@@ -328,23 +328,64 @@ def tap_dialog_buttons(seconds):
     return taps
 
 
-def restart(pkg, comp, mode, socket):
-    adb("shell", "am", "force-stop", pkg)
+def pid_of(pkg):
+    out = (adb("shell", "pidof", pkg) or "").strip().split()
+    return out[0] if out else ""
+
+
+def flags_ok(cl, mode):
+    """The browser runs with exactly this mode's flags: its own present, every other mode's flags absent."""
+    if "--host-resolver-rules" not in cl:
+        return False
+    mine = MODES[mode].split()
+    others = {f for m, v in MODES.items() if m != mode for f in v.split()} - set(mine)
+    return all(f in cl for f in mine) and not any(f in cl for f in others)
+
+
+def restart(pkg, comp, mode, socket, attempts=3):
+    """Cold restart with this mode's command line, verified: new browser PID + chrome://version of that process.
+
+    (2026-10-18 A/A run 39132156695: a fixed 7 s wait missed DevTools on arm64, and an empty expected-flag list
+    made a stale command line count as applied. Both are checked now.)"""
     flags = f'_ --host-resolver-rules="{RULES}" --ignore-certificate-errors {MODES[mode]}'.rstrip()
-    adb("shell", f"echo '{flags}' > {CMDLINE_FILE} && chmod 644 {CMDLINE_FILE}")
-    adb("shell", "am", "start", "-W", "-n", comp, timeout=60) if comp else adb(
-        "shell", "monkey", "-p", pkg, "-c", "android.intent.category.LAUNCHER", "1")
-    time.sleep(7)
-    adb("forward", "tcp:9222", f"localabstract:{socket}")
-    time.sleep(2)
-    open_internal(DEVTOOLS, "chrome://version/")
-    time.sleep(2)
-    for t in targets(DEVTOOLS):
-        if t.get("url", "").startswith("chrome://version"):
-            cl = page_text(DEVTOOLS, t["url"], CMDLINE_JS) or ""
-            return {"flags_applied": "--host-resolver-rules" in cl and all(
-                f.split("=")[0] in cl for f in MODES[mode].split()), "cmdline": cl[:400]}
-    return {"flags_applied": False, "cmdline": ""}
+    tries = []
+    for attempt in range(attempts):
+        old = pid_of(pkg)
+        adb("shell", "am", "force-stop", pkg)
+        t0 = time.time()
+        while pid_of(pkg) and time.time() - t0 < 15:
+            time.sleep(1)
+        adb("shell", f"echo '{flags}' > {CMDLINE_FILE} && chmod 644 {CMDLINE_FILE}")
+        adb("shell", "am", "start", "-W", "-n", comp, timeout=60) if comp else adb(
+            "shell", "monkey", "-p", pkg, "-c", "android.intent.category.LAUNCHER", "1")
+        t0, pid, ready = time.time(), "", False
+        while time.time() - t0 < 45:
+            pid = pid_of(pkg)
+            if pid and pid != old:
+                adb("forward", "tcp:9222", f"localabstract:{socket}")
+                if targets(DEVTOOLS):
+                    ready = True
+                    break
+            time.sleep(1.5)
+        nonce = f"{mode[0]}{attempt}{int(time.time() * 1000) % 100000000}"
+        url = f"chrome://version/?swiftra={nonce}"
+        cl = ""
+        if ready:
+            time.sleep(2)
+            open_internal(DEVTOOLS, url)
+            t1 = time.time()
+            while time.time() - t1 < 20 and not cl:
+                if any(t.get("url", "") == url for t in targets(DEVTOOLS)):
+                    cl = page_text(DEVTOOLS, url, CMDLINE_JS) or ""
+                if not cl:
+                    time.sleep(1.5)
+            close_targets("chrome://version")
+        ok = flags_ok(cl, mode)
+        tries.append({"attempt": attempt, "old_pid": old, "pid": pid, "ready": ready,
+                      "seconds": round(time.time() - t0, 1), "ok": ok})
+        if ok:
+            return {"flags_applied": True, "cmdline": cl[:400], "pid": pid, "tries": tries}
+    return {"flags_applied": False, "cmdline": cl[:400], "tries": tries}
 
 
 def close_targets(substr):
@@ -370,8 +411,11 @@ def close_targets(substr):
 def load_page(rid, shot=None):
     url = f"https://{SITE}/news.html?r={rid}"
     r = open_internal(DEVTOOLS, url)
-    t0, val = time.time(), None
+    t0, val, reopened = time.time(), None, False
     while time.time() - t0 < 60:
+        if not reopened and time.time() - t0 > 10 and not page_stats(rid)["requests"]:
+            r, reopened = open_internal(DEVTOOLS, url), True      # the tab never opened (A/A run: 1 of 6 loads)
+            t0 = time.time()
         for t in targets(DEVTOOLS):
             if t.get("type") == "page" and t.get("url", "") == url:
                 v = page_text(DEVTOOLS, url, "(() => ({t: document.title, r: (document.getElementById('r')||{}).textContent||''}))()")
@@ -383,7 +427,7 @@ def load_page(rid, shot=None):
     time.sleep(1)
     if shot:
         subprocess.run(f"adb exec-out screencap -p > '{shot}'", shell=True, timeout=30)
-    out = {"open": r, "page": None}
+    out = {"open": r, "page": None, "reopened": reopened}
     try:
         out["page"] = json.loads(val["r"]) if val else None
     except ValueError:
@@ -396,9 +440,12 @@ def load_page(rid, shot=None):
 def run_bench(rid):
     url = f"https://{SITE}/bench.html?r={rid}"
     r = open_internal(DEVTOOLS, url)
-    t0, val = time.time(), None
+    t0, val, reopened = time.time(), None, False
     while time.time() - t0 < 180 and not val:
         time.sleep(3)
+        if not reopened and time.time() - t0 > 10 and not page_stats(rid)["requests"]:
+            r, reopened = open_internal(DEVTOOLS, url), True
+            t0 = time.time()
         v = page_text(DEVTOOLS, url, "(() => ({t: document.title, r: (document.getElementById('r')||{}).textContent||''}))()")
         if isinstance(v, dict) and v.get("t") == "BENCH:done":
             val = v

@@ -191,3 +191,43 @@ def test_compare_runs_ratio_and_noise():
     rows = {r["metric"]: r for r in cr.compare(cr.page_values(run([1]), "swiftra"), cr.page_values(run([1]), "swiftra"))}
     assert rows["load_ms"]["note"] == "within noise" and rows["download_s"]["ratio"] == 1.0
     assert cr.compare({"total": [1]}, {})[0]["note"] == "no data"
+
+
+def test_speed_restart_verifies_new_process_and_exact_flags(monkeypatch):
+    sys.path.insert(0, os.path.join(ROOT, "scripts", "ci"))
+    import speed_e2e as se
+    base = f' _ --host-resolver-rules="{se.RULES}" --ignore-certificate-errors'
+    cd = base + " " + se.MODES["chromium_defaults"]
+    assert se.flags_ok(cd, "chromium_defaults") and not se.flags_ok(cd, "swiftra")   # the A/A bug: stale cmdline
+    assert se.flags_ok(base, "swiftra") and not se.flags_ok(base, "chromium_defaults")
+    assert not se.flags_ok("", "swiftra")
+
+    state = {"pid": "100", "starts": 0, "cmd": ""}
+
+    def fake_adb(*a, timeout=None):
+        if a[:2] == ("shell", "pidof"):
+            return state["pid"]
+        if a[:2] == ("shell", "am") and a[2] == "force-stop":
+            state["pid"] = ""
+        if a[:2] == ("shell", "am") and a[2] == "start":
+            state["starts"] += 1
+            state["pid"] = str(200 + state["starts"])
+        if len(a) == 2 and a[0] == "shell" and "chrome-command-line" in a[1]:
+            state["cmd"] = a[1].split("'")[1]
+        return ""
+    ready = {"n": 0}
+
+    def fake_targets(_):
+        ready["n"] += 1
+        return [] if state["starts"] == 1 else [{"url": state.get("url", ""), "type": "page"}]   # 1st start: no DevTools
+    monkeypatch.setattr(se, "adb", fake_adb)
+    monkeypatch.setattr(se, "targets", fake_targets)
+    monkeypatch.setattr(se, "open_internal", lambda d, u: state.__setitem__("url", u))
+    monkeypatch.setattr(se, "page_text", lambda d, u, e: " " + state["cmd"].replace('"', '"'))
+    monkeypatch.setattr(se, "close_targets", lambda s: 0)
+    clock = [0.0]
+    monkeypatch.setattr(se, "time", type("T", (), {"time": staticmethod(lambda: clock[0]),
+                                                  "sleep": staticmethod(lambda x: clock.__setitem__(0, clock[0] + x))}))
+    r = se.restart("com.swiftra.app", "com.swiftra.app/.Main", "swiftra", "sock")
+    assert r["flags_applied"] and r["pid"] == "202" and len(r["tries"]) == 2 and not r["tries"][0]["ready"]
+    assert "--disable-field-trial-config" not in r["cmdline"]
