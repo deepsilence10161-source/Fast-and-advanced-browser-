@@ -1,6 +1,6 @@
 # Swiftra search engine choice: design (research 18-10-2026, Chromium 155.0.8059.80)
 
-Status: **research only; not implemented** (PLAN step 6). It will be a separate build after the ad blocker, because
+Status: **patch written (`patches/0014-swiftra-search-choice.patch`), not yet built** (PLAN step 6). The series entry is commented out until the 0012 build is dispatched. It will be a separate build after the ad blocker, because
 it adds a First Run page and every device harness has to learn that page.
 
 ## What Chrome does
@@ -42,3 +42,25 @@ it adds a First Run page and every device harness has to learn that page.
 - On the second launch the page does not appear again.
 - Harness change: `device_checks.sh` / `run_capture.sh` FRE handling must pick an engine (a fixed choice for
   repeatability).
+
+## Implementation record (18-10-2026)
+- `LocaleManagerDelegate.getSearchEnginePromoShowType()` falls through to `getSwiftraSearchChoiceShowType()` when the
+  special locale is not enabled. That method returns `DONT_SHOW` in these cases:
+  - a choice is already confirmed;
+  - the dialog was already shown in this session (the new-tab button calls `showSearchEnginePromoIfNeeded` again);
+  - retail demo mode;
+  - the default search engine is set by policy (checked only once native and the profile are ready).
+
+  Otherwise it returns `SHOW_EXISTING`.
+- `getSearchEnginesForPromoDialog()` returns the TemplateUrls with `getPrepopulatedId() > 0` and
+  `getStarterPackId() == 0`. If none exist, it falls back to the current default, so the chooser always has at least
+  one option.
+- Every API used was verified against the @155 sources (TemplateUrl, TemplateUrlService, ProfileManager.isInitialized,
+  ChromeTabbedActivity call sites at lines 926/1085/4376, FirstRunFlowSequencer line 99,
+  DefaultSearchEngineFirstRunFragment). The patched file parses as Java (javalang), and the patch applies cleanly.
+- Harness: `scripts/ui_capture.py handle_search_choice()` is called from the first-run loop, `wait_ready` and
+  `ensure_main`.
+  - It picks `SWIFTRA_SEARCH_PICK` (default Google, so the other checks stay comparable) and taps "Set as default".
+  - It records the options in the order shown in `meta.json` under `search_choice`.
+  - On APKs without 0014 it does nothing.
+- Tests: `tests/test_search_choice.py`.

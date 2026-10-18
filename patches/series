@@ -17,3 +17,5 @@
 # 0012/0013: Swiftra Ad & Tracker Blocker (subresource_filter on all sites, bundled ruleset; docs/adblock-design.md)
 0012-swiftra-adblock.patch
 0013-swiftra-adblock-ruleset.py
+# 0014: search engine choice for every user (Java only; docs/search-choice-design.md). Enabled after the 0012 build:
+# 0014-swiftra-search-choice.patch

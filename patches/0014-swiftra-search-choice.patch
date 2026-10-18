@@ -1,0 +1,83 @@
+--- a/chrome/browser/locale/java/src/org/chromium/chrome/browser/locale/LocaleManagerDelegate.java
++++ b/chrome/browser/locale/java/src/org/chromium/chrome/browser/locale/LocaleManagerDelegate.java
+@@ -39,6 +39,7 @@
+ import org.chromium.ui.base.PageTransition;
+ 
+ import java.lang.ref.WeakReference;
++import java.util.ArrayList;
+ import java.util.List;
+ import java.util.Objects;
+ 
+@@ -369,7 +370,7 @@
+ 
+     /** @see LocaleManager#getSearchEnginePromoShowType */
+     public @SearchEnginePromoType int getSearchEnginePromoShowType() {
+-        if (!isSpecialLocaleEnabled()) return SearchEnginePromoType.DONT_SHOW;
++        if (!isSpecialLocaleEnabled()) return getSwiftraSearchChoiceShowType();
+         var preferences = ChromeSharedPreferences.getInstance();
+         if (preferences.readBoolean(ChromePreferenceKeys.LOCALE_MANAGER_PROMO_SHOWN, false)) {
+             return SearchEnginePromoType.DONT_SHOW;
+@@ -377,6 +378,33 @@
+         return SearchEnginePromoType.SHOW_SOGOU;
+     }
+ 
++    /**
++     * Swiftra: every user picks the default search engine once, in every region (Chrome on Android
++     * pre-selects it outside the OS choice screen). Shown as the First Run page
++     * (FirstRunFlowSequencer.shouldShowSearchEnginePage) or, if First Run did not show it, as the
++     * DefaultSearchEngineDialogCoordinator dialog on the next launch. The engines are the
++     * prepopulated engines of the user's country and DefaultSearchEngineDialogHelper shuffles them,
++     * so no engine is pre-selected or placed first. Settings > Search engine still changes it later.
++     * Not shown again once a choice is confirmed (SearchEnginePromoState.CHECKED_AND_SHOWN), nor a
++     * second time in a session where the dialog was dismissed, nor in retail demo mode or when the
++     * default search engine is set by policy.
++     */
++    private @SearchEnginePromoType int getSwiftraSearchChoiceShowType() {
++        if (mSearchEnginePromoCompleted || mSearchEnginePromoShownThisSession) {
++            return SearchEnginePromoType.DONT_SHOW;
++        }
++        if (DeviceInfo.isRetailDemoMode()) return SearchEnginePromoType.DONT_SHOW;
++        if (LibraryLoader.getInstance().isInitialized() && ProfileManager.isInitialized()) {
++            TemplateUrlService templateUrlService =
++                    TemplateUrlServiceFactory.getForProfile(
++                            ProfileManager.getLastUsedRegularProfile());
++            if (templateUrlService.isLoaded() && templateUrlService.isDefaultSearchManaged()) {
++                return SearchEnginePromoType.DONT_SHOW;
++            }
++        }
++        return SearchEnginePromoType.SHOW_EXISTING;
++    }
++
+     /** @see LocaleManager#getYandexReferralId */
+     public String getYandexReferralId() {
+         return "";
+@@ -389,8 +417,27 @@
+ 
+     /** @see LocaleManager#getSearchEnginesForPromoDialog  */
+     public List<TemplateUrl> getSearchEnginesForPromoDialog(@SearchEnginePromoType int promoType) {
+-        throw new IllegalStateException(
+-                "Not applicable unless existing or new promos are required");
++        if (promoType != SearchEnginePromoType.SHOW_EXISTING
++                && promoType != SearchEnginePromoType.SHOW_NEW) {
++            throw new IllegalStateException(
++                    "Not applicable unless existing or new promos are required");
++        }
++        // Swiftra: the prepopulated engines of the user's country (the same set Settings > Search
++        // engine lists first). Starter pack entries (@bookmarks, @history, @tabs) are excluded.
++        TemplateUrlService templateUrlService =
++                TemplateUrlServiceFactory.getForProfile(ProfileManager.getLastUsedRegularProfile());
++        List<TemplateUrl> engines = new ArrayList<>();
++        for (TemplateUrl templateUrl : templateUrlService.getTemplateUrls()) {
++            if (templateUrl.getPrepopulatedId() > 0 && templateUrl.getStarterPackId() == 0) {
++                engines.add(templateUrl);
++            }
++        }
++        if (engines.isEmpty()) {
++            // Never leave the chooser without an option (its confirm button needs a selection).
++            TemplateUrl current = templateUrlService.getDefaultSearchEngineTemplateUrl();
++            if (current != null) engines.add(current);
++        }
++        return engines;
+     }
+ 
+     /** @see LocaleManager#onUserSearchEngineChoice */

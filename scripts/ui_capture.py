@@ -146,6 +146,33 @@ class Device:
 
 FRE_BUTTONS = r"^(Use without an account|No thanks|No, thanks|Accept & continue|Accept and continue|Continue|Got it|Done|Skip|Not now|No Thanks|Stay signed out|Use without account)$"
 
+# Swiftra patch 0014 (docs/search-choice-design.md): First Run page / dialog "Choose your search engine", engines
+# shuffled by DefaultSearchEngineDialogHelper, confirm button "Set as default" (android_chrome_strings.grd @155).
+# The harness picks a fixed engine for repeatability (SWIFTRA_SEARCH_PICK, default Google) and records the order shown.
+SEARCH_CHOICE_TITLE = r"^Choose your search engine$"
+SEARCH_CHOICE_CONFIRM = r"^Set as default$"
+
+def handle_search_choice(d, xml):
+    if not d.find(SEARCH_CHOICE_TITLE, ("text",), xml=xml, clickable_pref=False):
+        return False
+    want = os.environ.get("SWIFTRA_SEARCH_PICK", "Google")
+    options = [n for n in d.nodes(xml) if n["checkable"] and n["text"] and n["w"] > 0 and n["h"] > 0]
+    rec = {"options": [n["text"] for n in options], "picked": None, "confirmed": False,
+           "activity": d.foreground_activity()}
+    d.search_choice = getattr(d, "search_choice", []) + [rec]
+    pick = next((n for n in options if n["text"] == want), options[0] if options else None)
+    if not pick:
+        d.log("search choice: no options visible"); time.sleep(2)
+        return False
+    d.tap_node(pick); time.sleep(1.2)
+    rec["picked"] = pick["text"]
+    xml2 = d.dump()
+    btn = d.find(SEARCH_CHOICE_CONFIRM, ("text",), xml=xml2)
+    if btn and btn["enabled"]:
+        d.tap_node(btn); rec["confirmed"] = True; time.sleep(3)
+    d.log(f"search choice: options={rec['options']} picked={rec['picked']} confirmed={rec['confirmed']}")
+    return True
+
 def is_browser_ready(d):
     xml = d.dump()
     return bool(d.find(r"(search_box_text|url_bar|search_box|location_bar)", ("id",), xml=xml)), xml
@@ -188,6 +215,7 @@ def wait_ready(d, seconds=60):
         if ok:
             return True
         if handle_system_dialog(d, xml): continue
+        if handle_search_choice(d, xml): continue
         # handle first-run / promo dialogs generically
         n = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if n:
@@ -232,6 +260,7 @@ def ensure_main(d, tries=4):
             d.log("ensure_main: relaunch (foreground=%s)" % d.foreground_pkg()); launch(d); continue
         xml = d.dump()
         if d.handle_anr(xml): continue
+        if handle_search_choice(d, xml): continue
         fre = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if fre and "firstrun" in (d.foreground_activity() or "").lower():   # FRE पर BACK = FRE बंद (run 38909149132)
             d.log(f"ensure_main: FRE button {fre['text']}"); d.tap_node(fre); time.sleep(3); continue
@@ -485,6 +514,10 @@ def main():
         if ok: ready = True; break
         if d.handle_anr(xml): continue
         if handle_system_dialog(d, xml): continue
+        if d.find(SEARCH_CHOICE_TITLE, ("text",), xml=xml, clickable_pref=False):
+            fre_i += 1
+            d.capture(f"01_first_run_{fre_i}", "search engine choice (before picking)")
+            if handle_search_choice(d, xml): continue
         n = d.find(FRE_BUTTONS, ("text",), xml=xml)
         if n:
             fre_i += 1
@@ -494,6 +527,7 @@ def main():
             time.sleep(2)
     meta["first_run_steps"] = fre_i; meta["reached_browser_ui"] = ready
     meta["system_dialogs"] = getattr(d, "system_dialogs", [])
+    meta["search_choice"] = getattr(d, "search_choice", [])
     log(f"browser UI ready: {ready}")
     if not ready:
         d.capture("01_stuck", "browser UI not reached in 90s")
@@ -660,6 +694,7 @@ def main():
         log(f"truth scan: {meta['false_claims']} false claims, expected found {sorted(seen)}")
     except Exception as e:
         meta["false_claims"] = None; meta["truth_scan_error"] = repr(e)
+    meta["search_choice"] = getattr(d, "search_choice", [])
     json.dump(meta, open(os.path.join(a.out, "meta.json"), "w"), indent=2)
     log("done")
 
