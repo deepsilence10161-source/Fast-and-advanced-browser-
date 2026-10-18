@@ -112,7 +112,28 @@ def make_site():
         marker = f"SWIFTRA_CANARY_{name.upper()}_LOADED"
         with open(os.path.join(root, CANARY_DIR, name + ".html"), "w", encoding="utf-8") as f:
             f.write(f"<!doctype html><title>{marker}</title><h1>{marker}</h1>")
+    # c2d: an ordinary address form - Chromium's Autofill asks content-autofill.googleapis.com about such forms
+    with open(os.path.join(root, CANARY_DIR, "form.html"), "w", encoding="utf-8") as f:
+        f.write(FORM_HTML)
     return root
+
+
+FORM_HTML = """<!doctype html><meta name="viewport" content="width=device-width"><title>SWIFTRA_FORM</title>
+<form action="/submit" method="post">
+<input name="name" autocomplete="name" placeholder="Full name"><input name="email" type="email" autocomplete="email">
+<input name="tel" type="tel" autocomplete="tel"><input name="address" autocomplete="street-address">
+<input name="city" autocomplete="address-level2"><input name="zip" autocomplete="postal-code">
+<input name="country" autocomplete="country-name"><button>Send</button></form>"""
+FORM_URL = f"http://127.0.0.1:{PORT}/{CANARY_DIR}/form.html"
+# c2d (patches/0009): requests that cannot work without a Google API key, or are logging only, must be gone
+NO_KEY_HOSTS = ("content-autofill.googleapis.com", "discover-pa.googleapis.com")
+QUIET_PATHS = ("/async/ddllog", "accounts.google.com/ListAccounts")
+
+
+def quiet_violations(requests):
+    """Request keys ("METHOD url") that patches/0009 should have removed."""
+    return sorted(k for k in (requests or {})
+                  if any(f"://{h}/" in k for h in NO_KEY_HOSTS) or any(q in k for q in QUIET_PATHS))
 
 
 def targets(devtools):
@@ -599,7 +620,7 @@ def main():
 
     # c2c: Standard protection network audit (browser process, NetLog trace): local pages + example.com + idle
     def standard_actions():
-        for u in (CASES[0][1], "https://example.com/", CASES[1][1]):
+        for u in (CASES[0][1], "https://example.com/", FORM_URL, CASES[1][1]):
             adb("shell", "am", "start", "-a", "android.intent.action.VIEW", "-d", u, a.package, timeout=40)
             time.sleep(6)
         time.sleep(30)
@@ -671,13 +692,16 @@ def main():
         verdict = "clean"
     else:
         verdict = "inconclusive"
-    res["net_audit"] = {"verdict": verdict, "positive_control": control,
+    quiet = quiet_violations(ns_.get("requests"))
+    if ns_.get("ok") and quiet and verdict != "sb_contact_in_standard":
+        verdict = "no_key_or_logging_request"
+    res["net_audit"] = {"verdict": verdict, "positive_control": control, "quiet_violations": quiet,
                         "standard_google_hosts": sorted(ns_.get("google_hosts", {})),
                         "standard_google_requests": ns_.get("google_requests"),
                         "standard_requests_total": sum((ns_.get("requests") or {}).values()),
                         "enhanced_sb_hosts": ne_.get("sb_hosts")}
     print("net audit:", res["net_audit"])
-    ok = ok and verdict != "sb_contact_in_standard"
+    ok = ok and verdict not in ("sb_contact_in_standard", "no_key_or_logging_request")
 
     res["pass"] = ok
     with open(os.path.join(a.out, "shield_e2e.json"), "w", encoding="utf-8") as f:

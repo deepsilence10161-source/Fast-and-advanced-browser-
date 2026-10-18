@@ -39,6 +39,14 @@ class Parse(unittest.TestCase):
         self.assertEqual(consts["logEventTypes"]["QUIC_SESSION"], 4)
         self.assertEqual(len(events), len(EVENTS))          # the cut-off last line is ignored
 
+    def test_ndjson_framed(self):
+        # @155 ndjson: {"type":"constants",...} / {"type":"event","event":{...}} / {"type":"end"}
+        text = "\n".join([json.dumps({"type": "constants", "constants": CONSTS})]
+                         + [json.dumps({"type": "event", "event": e}) for e in EVENTS] + ['{"type":"end"}'])
+        consts, events = S.load_netlog(text)
+        self.assertEqual(len(events), len(EVENTS))
+        self.assertEqual(S.summarize(consts, events)["google_requests"], {"GET https://t0.gstatic.com/faviconV2": 1})
+
     def test_json_format(self):
         text = ('{"constants": ' + json.dumps(CONSTS) + ',\n"events": [\n'
                 + ",\n".join(json.dumps(e) for e in EVENTS) + ",\n")   # truncated (no closing ]})
@@ -62,6 +70,20 @@ class Parse(unittest.TestCase):
                   ev(2, {"host": "sb-ssl.google.com:443"}),
                   ev(4, {"host": "safebrowsing.google.com"})):
             self.assertTrue(S.summarize(CONSTS, [e])["sb_hosts"], e)
+
+    def test_quiet_violations(self):
+        reqs = {"GET https://www.google.com/async/ddljson": 1, "GET https://www.google.com/async/ddllog": 2,
+                "POST https://accounts.google.com/ListAccounts": 1, "GET https://www.google.com/complete/search": 1,
+                "POST https://discover-pa.googleapis.com/v1:queryInteractiveFeed": 2,
+                "GET https://content-autofill.googleapis.com/v1/pages/abc": 1,
+                "POST https://update.googleapis.com/service/update2/json": 1}
+        self.assertEqual(S.quiet_violations(reqs), [
+            "GET https://content-autofill.googleapis.com/v1/pages/abc", "GET https://www.google.com/async/ddllog",
+            "POST https://accounts.google.com/ListAccounts",
+            "POST https://discover-pa.googleapis.com/v1:queryInteractiveFeed"])
+        # kept on purpose: doodle image, AI Mode eligibility, suggestions (user setting), component updates
+        self.assertEqual(S.quiet_violations({"GET https://www.google.com/async/ddljson": 1,
+                                             "GET https://www.google.com/async/folae": 1}), [])
 
     def test_norm_host(self):
         self.assertEqual(S.norm_host("https://www.google.com:443"), "www.google.com")

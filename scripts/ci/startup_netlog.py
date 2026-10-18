@@ -14,8 +14,9 @@ Scenario (default Safe Browsing mode is whatever the device is in; run_capture.s
 which restores Standard protection): force-stop -> cold launch -> idle -> open the New Tab Page -> idle.
 Only the browser's own traffic is in the window (no test page is opened).
 
-Verdict: FAIL only if a Safe Browsing endpoint is contacted (request, DNS or connection). Everything else is
-reported (Google requests/resolves/connections), so privacy work can be targeted with evidence.
+Verdict: FAIL if a Safe Browsing endpoint is contacted (request, DNS or connection), or if a request that
+patches/0009 removed comes back (Discover / Autofill server without an API key, doodle impression ping,
+metrics-only ListAccounts). Everything else is reported (Google requests/resolves/connections).
 """
 import argparse
 import gzip
@@ -27,7 +28,7 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from shield_e2e import HOST_RX, SB_HOSTS, adb, browser_ws, internal_text, is_google, open_internal, targets  # noqa: E402
+from shield_e2e import HOST_RX, SB_HOSTS, quiet_violations, adb, browser_ws, internal_text, is_google, open_internal, targets  # noqa: E402
 
 CMDLINE_FILE = "/data/local/tmp/chrome-command-line"
 NETLOG_NAME = "swiftra_startup_netlog.jsonl"
@@ -71,7 +72,9 @@ def load_netlog(text):
             continue
         if "constants" in o and isinstance(o["constants"], dict):
             consts = o["constants"]
-        if "type" in o and "source" in o:
+        if o.get("type") == "event" and isinstance(o.get("event"), dict):   # Chromium ndjson framing @155
+            events.append(o["event"])
+        elif "type" in o and "source" in o:
             events.append(o)
         if isinstance(o.get("events"), list):
             events.extend(e for e in o["events"] if isinstance(e, dict))
@@ -233,7 +236,15 @@ def main():
     res.update(s)
     res["captured"] = s["events"] > 0
     res["bytes"] = len(raw)
-    res["verdict"] = ("sb_contact_at_startup" if s["sb_hosts"] else "clean") if res["captured"] else "not_captured"
+    res["quiet_violations"] = quiet_violations(s["requests"])
+    if not res["captured"]:
+        res["verdict"] = "not_captured"
+    elif s["sb_hosts"]:
+        res["verdict"] = "sb_contact_at_startup"
+    elif res["quiet_violations"]:
+        res["verdict"] = "no_key_or_logging_request"     # patches/0009 regression
+    else:
+        res["verdict"] = "clean"
     json.dump(res, open(os.path.join(a.out, "startup_netlog.json"), "w"), indent=1, ensure_ascii=False)
     short = {k: v for k, v in res.items() if k not in ("requests", "connect_hosts", "resolves", "remote_ips",
                                                        "command_line", "ntp_open", "version_open")}
@@ -242,7 +253,7 @@ def main():
     print("resolves:", json.dumps(res["resolves"], ensure_ascii=False)[:2000])
     print("connect hosts:", json.dumps(res["connect_hosts"], ensure_ascii=False)[:2000])
     print("STARTUP_NETLOG", {"clean": "PASS", "not_captured": "NOT_CAPTURED"}.get(res["verdict"], "FAIL"))
-    return 1 if res["verdict"] == "sb_contact_at_startup" else 0
+    return 1 if res["verdict"] in ("sb_contact_at_startup", "no_key_or_logging_request") else 0
 
 
 if __name__ == "__main__":

@@ -126,6 +126,26 @@ update check कभी नहीं चलता → `UpdateStatusProvider` `Upd
 - E2E (`shield_e2e.py`): chrome://version variations source ≠ field-trial-config; Safe Browsing page के दोनों summaries; Enhanced
   details page; browser-process NetLog trace (CDP Tracing) — Standard window में Safe Browsing endpoint 0, Enhanced window positive control।
 
+## 0009-swiftra-quiet-start.patch (c2d — बेकार और केवल-logging requests हटाना)
+प्रमाण (startup NetLog, `scripts/ci/startup_netlog.py`, runs 39084556269 x64 / 39084557684 arm64; cold start → NTP, कोई user
+action नहीं): `discover-pa.googleapis.com/v1:queryInteractiveFeed` ×2, `www.google.com/async/ddllog` ×2,
+`accounts.google.com/ListAccounts` ×1–2, `async/ddljson`, `async/folae` ×2, `complete/search`, `update.googleapis.com`; Safe Browsing 0।
+- `components/feed/core/shared_prefs/pref_names.cc`: `ntp_snippets.enable` का default = `google_apis::HasAPIKeyConfigured()`।
+  Discover feed API key के बिना कभी नहीं चल सकता; NTP पर हमेशा "Can't refresh Discover / Check back later" दिखता था (झूठा वादा)।
+  policy/pref से अब भी चालू हो सकता है। BUILD.gn में `//google_apis` dep।
+- `chrome/browser/ui/android/logo/logo_bridge.cc` `RecordImpression()`: doodle दिखता रहता है; केवल impression ping
+  (`doodle_impression_android`, logging) नहीं भेजा जाता।
+- `components/sync/service/sync_session_durations_metrics_recorder.cc` (constructor) और
+  `components/signin/core/browser/account_investigator.cc` (`TryPeriodicReport`): दोनों केवल metrics के लिए Google cookie jar
+  पढ़ते थे, जो हर cold start पर ListAccounts fetch करता था; Swiftra metrics upload ही नहीं करता। list किसी और कारण से आए तो
+  report उसी से बनती है (fetch नहीं)।
+- `autofill_crowdsourcing_manager.cc` `IsEnabled()`: API key (या `--autofill-api-key`/`--autofill-server-url`) के बिना
+  content-autofill.googleapis.com को form signatures नहीं (server हर बार reject करता, फिर भी 5 बार तक भेजा जाता)।
+जानबूझकर रखा: doodle image (`ddljson`), AI Mode eligibility (`folae`, AI Mode button काम करता है), omnibox suggestions/preconnect
+("Autocomplete searches and URLs" setting से नियंत्रित), component updater (CRLSet आदि सुरक्षा data)।
+संदर्भ (code नहीं लिया): Bare browser (BSD-3) docs/patches.md 0006/0093/0193/0194 में यही call sites दर्ज हैं।
+E2E gate: `quiet_violations()` — startup NetLog या Standard NetLog window (अब address form page सहित) में इनमें से कोई request = FAIL।
+
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।
