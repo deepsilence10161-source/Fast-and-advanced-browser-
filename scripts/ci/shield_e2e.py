@@ -127,7 +127,10 @@ FORM_HTML = """<!doctype html><meta name="viewport" content="width=device-width"
 FORM_URL = f"http://127.0.0.1:{PORT}/{CANARY_DIR}/form.html"
 # c2d (patches/0009): requests that cannot work without a Google API key, or are logging only, must be gone
 NO_KEY_HOSTS = ("content-autofill.googleapis.com", "discover-pa.googleapis.com")
-QUIET_PATHS = ("/async/ddllog", "accounts.google.com/ListAccounts")
+QUIET_PATHS = ("/async/ddllog",)
+# accounts.google.com/ListAccounts is allowed only together with AI Mode's eligibility check (/async/folae):
+# AimEligibilityService drops that request while the cookie jar is stale (drop_request_if_cookies_stale=true @155),
+# so this one fetch belongs to a working feature. Unpaired ListAccounts is checked in startup_netlog.py.
 
 
 def quiet_violations(requests):

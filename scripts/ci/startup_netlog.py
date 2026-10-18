@@ -16,7 +16,7 @@ Only the browser's own traffic is in the window (no test page is opened).
 
 Verdict: FAIL if a Safe Browsing endpoint is contacted (request, DNS or connection), or if a request that
 patches/0009 removed comes back (Discover / Autofill server without an API key, doodle impression ping,
-metrics-only ListAccounts). Everything else is reported (Google requests/resolves/connections).
+ListAccounts not paired with AI Mode's /async/folae). Everything else is reported (Google requests/resolves/connections).
 """
 import argparse
 import gzip
@@ -84,6 +84,7 @@ def load_netlog(text):
 def summarize(consts, events):
     names = {v: k for k, v in (consts.get("logEventTypes") or {}).items()}
     requests, resolves, connects, preconnects, google_types = {}, {}, {}, {}, {}
+    timeline = []   # (ms, "METHOD url") of real requests, for pairing checks
     ips = set()
     for ev in events:
         name = names.get(ev.get("type"), str(ev.get("type")))
@@ -92,6 +93,10 @@ def summarize(consts, events):
         if name == "URL_REQUEST_START_JOB" and isinstance(params.get("url"), str):
             k = f"{params.get('method', '?')} {params['url'].split('?')[0][:160]}"
             requests[k] = requests.get(k, 0) + 1
+            try:
+                timeline.append((int(ev.get("time", 0)), k))
+            except (TypeError, ValueError):
+                pass
         if name.startswith("HOST_RESOLVER") and isinstance(params.get("host"), str):
             h = norm_host(params["host"])
             resolves[h] = resolves.get(h, 0) + 1
@@ -131,7 +136,15 @@ def summarize(consts, events):
         "preconnect_hosts": preconnects, "google_event_types": google_types,
         "remote_ips": sorted(i for i in ips if i not in loop)[:100],
         "sb_hosts": sb,
+        "unpaired_list_accounts": unpaired_list_accounts(timeline),
     }
+
+
+def unpaired_list_accounts(timeline, window_ms=2000):
+    """ListAccounts fetches with no AI Mode eligibility request (/async/folae) within window_ms."""
+    folae = [t for t, k in timeline if "/async/folae" in k]
+    return [t for t, k in timeline if "accounts.google.com/ListAccounts" in k
+            and not any(abs(t - f) <= window_ms for f in folae)]
 
 
 def resolve_launcher(package):
@@ -236,7 +249,8 @@ def main():
     res.update(s)
     res["captured"] = s["events"] > 0
     res["bytes"] = len(raw)
-    res["quiet_violations"] = quiet_violations(s["requests"])
+    res["quiet_violations"] = quiet_violations(s["requests"]) + [
+        f"POST https://accounts.google.com/ListAccounts (unpaired, t={t})" for t in s["unpaired_list_accounts"]]
     if not res["captured"]:
         res["verdict"] = "not_captured"
     elif s["sb_hosts"]:

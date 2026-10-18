@@ -79,11 +79,22 @@ class Parse(unittest.TestCase):
                 "POST https://update.googleapis.com/service/update2/json": 1}
         self.assertEqual(S.quiet_violations(reqs), [
             "GET https://content-autofill.googleapis.com/v1/pages/abc", "GET https://www.google.com/async/ddllog",
-            "POST https://accounts.google.com/ListAccounts",
             "POST https://discover-pa.googleapis.com/v1:queryInteractiveFeed"])
         # kept on purpose: doodle image, AI Mode eligibility, suggestions (user setting), component updates
         self.assertEqual(S.quiet_violations({"GET https://www.google.com/async/ddljson": 1,
                                              "GET https://www.google.com/async/folae": 1}), [])
+
+    def test_list_accounts_pairing(self):
+        tl = [(1000, "POST https://accounts.google.com/ListAccounts"), (1001, "GET https://www.google.com/async/folae"),
+              (9000, "POST https://accounts.google.com/ListAccounts")]
+        self.assertEqual(S.unpaired_list_accounts(tl), [9000])            # 1000 belongs to AI Mode eligibility
+        self.assertEqual(S.unpaired_list_accounts(tl[:2]), [])
+        evs = [ev(1, {"url": "https://accounts.google.com/ListAccounts?gpsia=1", "method": "POST"}),
+               ev(1, {"url": "https://www.google.com/async/folae?async=_fmt:pb", "method": "GET"})]
+        evs[0]["time"], evs[1]["time"] = "4236717", "4236718"
+        self.assertEqual(S.summarize(CONSTS, evs)["unpaired_list_accounts"], [])
+        evs[1]["time"] = "4300000"
+        self.assertEqual(S.summarize(CONSTS, evs)["unpaired_list_accounts"], [4236717])
 
     def test_norm_host(self):
         self.assertEqual(S.norm_host("https://www.google.com:443"), "www.google.com")
