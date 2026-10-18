@@ -417,13 +417,56 @@ def close_targets(substr):
     return len(ids)
 
 
+SOCKET, OUT, PKG, RECOVERY = "chrome_devtools_remote", ".", "", []
+
+
+def devtools_diag(tag):
+    """Why is the browser DevTools endpoint gone? (a248fde runs 39143906198/39143911192: every swiftra-mode load got
+    "no browser websocket" right after a verified restart and the 1200 s budget ran out). Saved as diag_<tag>.txt."""
+    pid = pid_of(PKG) if PKG else ""
+    fwd = adb("forward", "--list", timeout=10)
+    focus = "\n".join(l.strip() for l in adb("shell", "dumpsys", "window", timeout=20).splitlines()
+                      if "mCurrentFocus" in l or "mFocusedApp" in l)
+    log = adb("logcat", "-d", "-t", "600", timeout=30)
+    keys = ("ANR in", "am_anr", "Application Not Responding", "FATAL", "Fatal signal", "DevTools", "has died",
+            "chrome_devtools_remote")
+    hits = [l for l in log.splitlines() if any(k in l for k in keys)][-60:]
+    anr = "Not Responding" in focus or any("ANR in" in l or "am_anr" in l for l in hits)
+    try:
+        with open(os.path.join(OUT, f"diag_{tag}.txt"), "w") as f:
+            f.write(f"pid={pid}\nforward:\n{fwd}\nfocus:\n{focus}\nlogcat hits:\n" + "\n".join(hits) + "\n")
+    except OSError:
+        pass
+    return {"pid": pid, "anr": anr, "forwarded": SOCKET in fwd, "focus": focus[:200]}
+
+
+def open_tab(url, tag):
+    """open_internal, and if the browser endpoint is gone: re-forward + poll it for up to 25 s, then retry once."""
+    r = open_internal(DEVTOOLS, url)
+    if r == "ok":
+        return r
+    first, t0 = r, time.time()
+    while time.time() - t0 < 25:
+        adb("forward", "tcp:9222", f"localabstract:{SOCKET}", timeout=10)
+        if browser_ws(DEVTOOLS):
+            r = open_internal(DEVTOOLS, url)
+            if r == "ok":
+                break
+        time.sleep(2)
+    RECOVERY.append({"tag": tag, "first": first, "after": r, "seconds": round(time.time() - t0, 1),
+                     "diag": devtools_diag(tag)})
+    return r
+
+
 def load_page(rid, shot=None):
     url = f"https://{SITE}/news.html?r={rid}"
-    r = open_internal(DEVTOOLS, url)
+    r = open_tab(url, rid)
+    if r != "ok":                                  # no tab to wait for: do not burn 60 s of the budget
+        return {"open": r, "page": None, "reopened": False, "server": page_stats(rid), "closed_tabs": 0}
     t0, val, reopened = time.time(), None, False
     while time.time() - t0 < 60:
         if not reopened and time.time() - t0 > 10 and not page_stats(rid)["requests"]:
-            r, reopened = open_internal(DEVTOOLS, url), True      # the tab never opened (A/A run: 1 of 6 loads)
+            r, reopened = open_tab(url, rid + "re"), True        # the tab never opened (A/A run: 1 of 6 loads)
             t0 = time.time()
         for t in targets(DEVTOOLS):
             if t.get("type") == "page" and t.get("url", "") == url:
@@ -448,12 +491,14 @@ def load_page(rid, shot=None):
 
 def run_bench(rid):
     url = f"https://{SITE}/bench.html?r={rid}"
-    r = open_internal(DEVTOOLS, url)
+    r = open_tab(url, rid)
+    if r != "ok":
+        return {"open": r, "seconds": 0, "result": None, "closed_tabs": 0}
     t0, val, reopened = time.time(), None, False
     while time.time() - t0 < 180 and not val:
         time.sleep(3)
         if not reopened and time.time() - t0 > 10 and not page_stats(rid)["requests"]:
-            r, reopened = open_internal(DEVTOOLS, url), True
+            r, reopened = open_tab(url, rid + "re"), True
             t0 = time.time()
         v = page_text(DEVTOOLS, url, "(() => ({t: document.title, r: (document.getElementById('r')||{}).textContent||''}))()")
         if isinstance(v, dict) and v.get("t") == "BENCH:done":
@@ -481,7 +526,9 @@ def device_file(rid, prefix="swiftra-speed"):
 
 def run_download(rid):
     url = f"https://{DL}/f/{rid}.zip"
-    r = open_internal(DEVTOOLS, url)
+    r = open_tab(url, rid)
+    if r != "ok":
+        return {"open": r, "dialog_taps": [], "server": download_stats(rid), "device_file": None, "closed_tabs": 0}
     taps = tap_dialog_buttons(8)
     t0 = time.time()
     st = download_stats(rid)
@@ -500,7 +547,9 @@ def run_download_h2(rid):
     """Same 24 MiB file from the HTTP/2-only server (1 MiB/s per connection): how many connections do the slices use?"""
     if not H2:
         return {"server": {"requests": 0, "error": "h2 server not running"}}
-    r = open_internal(DEVTOOLS, f"https://{H2DL}/f/{rid}.zip")
+    r = open_tab(f"https://{H2DL}/f/{rid}.zip", rid)
+    if r != "ok":
+        return {"open": r, "dialog_taps": [], "server": H2.stats(rid), "device_file": None, "closed_tabs": 0}
     taps = tap_dialog_buttons(8)
     t0, st = time.time(), H2.stats(rid)
     while time.time() - t0 < 75:
@@ -528,9 +577,11 @@ def summarize(res):
         s[mode] = {"loads_ok": len(pages), "loads_total": len(loads),
                    "load_ms": med([p["load"] for p in pages]), "lcp_ms": med([p["lcp"] for p in pages]),
                    "fcp_ms": med([p["fcp"] for p in pages]), "dcl_ms": med([p["dcl"] for p in pages]),
-                   "requests": med([x["server"]["requests"] for x in loads]),
-                   "kib": med([x["server"]["bytes"] / 1024 for x in loads]),
-                   "ad_requests": med([x["server"]["ad_requests"] for x in loads]),
+                   # server-side counts only for loads that finished (a tab that never opened has 0 bytes,
+                   # which would look like a byte saving)
+                   "requests": med([x["server"]["requests"] for x in loads if x.get("page")]),
+                   "kib": med([x["server"]["bytes"] / 1024 for x in loads if x.get("page")]),
+                   "ad_requests": med([x["server"]["ad_requests"] for x in loads if x.get("page")]),
                    "download_s": med([d.get("seconds") for d in dls if d.get("complete")]),
                    "download_conns": med([d.get("requests") for d in dls if d.get("complete")]),
                    "downloads_complete": sum(1 for d in dls if d.get("complete")), "downloads": len(dls)}
@@ -557,7 +608,7 @@ def summarize(res):
 
 
 def main():
-    global DEVTOOLS, DL_DATA
+    global DEVTOOLS, DL_DATA, SOCKET, OUT, PKG
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", required=True)
     ap.add_argument("--out", required=True)
@@ -566,7 +617,7 @@ def main():
     ap.add_argument("--cycles", type=int, default=2)
     ap.add_argument("--loads", type=int, default=3)
     a = ap.parse_args()
-    DEVTOOLS = a.devtools
+    DEVTOOLS, SOCKET, OUT, PKG = a.devtools, a.socket, a.out, a.package
     os.makedirs(a.out, exist_ok=True)
     DL_DATA = hashlib.sha256(b"swiftra").digest() * (DL_SIZE // 32)
     build_assets()
@@ -588,7 +639,13 @@ def main():
                         load_page(f"w{c}{mode[0]}")    # warm-up (renderer, TLS session, ruleset), not counted
                         for i in range(a.loads):
                             shot = os.path.join(a.out, f"page_{mode}_{c}.png") if i == a.loads - 1 else None
-                            rec["loads"].append(load_page(f"c{c}{mode[0]}{i}", shot))
+                            x = load_page(f"c{c}{mode[0]}{i}", shot)
+                            if x["open"] != "ok" and "recovery_restart" not in rec:
+                                # endpoint still gone after open_tab's 25 s: one verified cold restart per mode
+                                rec["recovery_restart"] = restart(pkg, comp, mode, a.socket)
+                                if rec["recovery_restart"]["flags_applied"]:
+                                    x = load_page(f"c{c}{mode[0]}{i}r", shot)
+                            rec["loads"].append(x)
                         rec["download"] = run_download(f"d{c}{mode[0]}")
                         screenshot(os.path.join(a.out, f"download_{mode}_{c}.png"))
                         rec["download_h2"] = run_download_h2(f"h{c}{mode[0]}")
@@ -602,6 +659,7 @@ def main():
                       "download_h2": (rec.get("download_h2") or {}).get("server"),
                       "bench": (rec.get("bench") or {}).get("result")})[:1400], flush=True)
             res["cycles"].append(cyc)
+            res["devtools_recovery"] = RECOVERY
             json.dump(res, open(os.path.join(a.out, "speed_e2e.json"), "w"), indent=1, ensure_ascii=False)
     finally:
         adb("shell", "rm", "-f", CMDLINE_FILE)
@@ -611,6 +669,7 @@ def main():
         c[m]["restart"]["flags_applied"] for c in res["cycles"] for m in MODES)
     some = {m: any(c[m]["restart"]["flags_applied"] for c in res["cycles"]) for m in MODES}
     res["summary"] = summarize(res) if all(some.values()) else None
+    res["devtools_recovery"] = RECOVERY
     json.dump(res, open(os.path.join(a.out, "speed_e2e.json"), "w"), indent=1, ensure_ascii=False)
     if not res["summary"]:
         print("SPEED_E2E NOT_RUN flags not applied in some mode:", some)
@@ -624,7 +683,7 @@ def main():
           f"h2_download_s {d.get('h2_download_s')}->{w.get('h2_download_s')} "
           f"h2_conns {d.get('h2_connections')}->{w.get('h2_connections')} "
           f"bench_ms {d.get('bench_ms')}->{w.get('bench_ms')} "
-          f"speedup {s['speedup']}")
+          f"speedup {s['speedup']} devtools_recoveries {len(RECOVERY)}")
     return 0
 
 

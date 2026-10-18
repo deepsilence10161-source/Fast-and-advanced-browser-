@@ -255,3 +255,41 @@ def test_screenshot_never_raises(monkeypatch, tmp_path):
         body = open(os.path.join(ROOT, "scripts", "ci", f), encoding="utf-8").read()
         calls = body.count('"screencap", "-p"') + body.count("screencap -p")
         assert calls == (1 if f == "shield_e2e.py" else 0), f   # only the guarded helper runs screencap
+
+
+def test_speed_e2e_open_tab_recovers_and_load_page_does_not_wait(monkeypatch, tmp_path):
+    """a248fde runs: "no browser websocket" on every swiftra-mode load burned 60 s each -> speed_e2e hit its 1200 s
+    timeout. open_tab re-forwards + retries; a load whose tab never opened returns at once."""
+    import speed_e2e as se
+    calls, fwd = [], []
+    replies = iter(["no browser websocket", "ok"])
+    monkeypatch.setattr(se, "open_internal", lambda d, u: (calls.append(u), next(replies))[1])
+    monkeypatch.setattr(se, "browser_ws", lambda d: "ws://x")
+    monkeypatch.setattr(se, "adb", lambda *a, **k: fwd.append(a) or "")
+    monkeypatch.setattr(se, "pid_of", lambda p: "123")
+    monkeypatch.setattr(se.time, "sleep", lambda s: None)
+    monkeypatch.setattr(se, "OUT", str(tmp_path))
+    se.RECOVERY.clear()
+    assert se.open_tab("https://a/x", "t1") == "ok" and len(calls) == 2
+    assert any(a[:2] == ("forward", "tcp:9222") for a in fwd)
+    assert se.RECOVERY[0]["first"] == "no browser websocket" and se.RECOVERY[0]["after"] == "ok"
+    assert (tmp_path / "diag_t1.txt").exists()
+    # endpoint never comes back: load_page returns without its 60 s wait
+    monkeypatch.setattr(se, "open_internal", lambda d, u: "no browser websocket")
+    monkeypatch.setattr(se, "browser_ws", lambda d: None)
+    clock = iter(range(0, 10000, 5))
+    monkeypatch.setattr(se.time, "time", lambda: next(clock))
+    monkeypatch.setattr(se, "page_stats", lambda rid: {"requests": 0})
+    out = se.load_page("c0s0")
+    assert out["open"] == "no browser websocket" and out["page"] is None
+    assert len(se.RECOVERY) == 2
+
+
+def test_speed_e2e_failed_loads_do_not_count_as_byte_savings():
+    import speed_e2e as se
+    ok = {"page": {"load": 1000, "lcp": 500, "fcp": 400, "dcl": 450},
+          "server": {"requests": 47, "bytes": 1024 * 900, "ad_requests": 15}}
+    bad = {"page": None, "server": {"requests": 0, "bytes": 0, "ad_requests": 0}}
+    cyc = {m: {"loads": [ok, bad, bad]} for m in se.MODES}
+    s = se.summarize({"cycles": [cyc]})
+    assert s["swiftra"]["kib"] == 900 and s["swiftra"]["requests"] == 47 and s["swiftra"]["loads_ok"] == 1
