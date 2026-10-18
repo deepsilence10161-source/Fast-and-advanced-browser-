@@ -61,8 +61,12 @@ if [ -n "$EXTRA" ]; then ARGS=$(printf '%s\n%s' "$ARGS" "$EXTRA"); fi
 PGO_ARM64=0
 if [ "$CPU" = arm64 ] && [[ "$STATE" != *-a1 ]]; then
   PGO_ARM64=1
-  ARGS=$(printf '%s\n%s\n%s' "$ARGS" 'chrome_pgo_phase = 2' \
-    'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"')
+  # use_mold = false: @155 non-official Android builds link with mold by default (compiler.gni: use_mold needs
+  # !is_official_build), which makes use_lld false, and chrome_orderfile_config asserts use_lld
+  # (build/config/compiler/BUILD.gn:3207; gn gen failed in runs 39133494814 / 39145340622). Official Chrome links with
+  # lld (--symbol-ordering-file, --call-graph-profile-sort). Only link commands change.
+  ARGS=$(printf '%s\n%s\n%s\n%s' "$ARGS" 'chrome_pgo_phase = 2' \
+    'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"' 'use_mold = false')
 fi
 PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")
 # release signing: patches/signing_cert_sha256.txt (public, अपेक्षित cert SHA-256) हो तो ज़रूरी (finalize_apk.sh)

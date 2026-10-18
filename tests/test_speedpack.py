@@ -143,6 +143,8 @@ def test_arm64_pgo_and_orderfile_are_wired_and_guarded():
     assert 'if [ "$CPU" = arm64 ] && [[ "$STATE" != *-a1 ]]; then' in s
     assert "'chrome_pgo_phase = 2'" in s
     assert '\'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"\'' in s
+    # the orderfile needs lld; @155 non-official builds default to mold (use_lld false -> gn assert)
+    assert "'use_mold = false'" in s
     guard = s.index("PGO input missing")
     assert s.index("pgo_profile.arm64.profdata", s.index("2c0.")) < guard < s.index("# ---------- 2c. args.gn")
     # the base heredoc stays untouched (official build stays off; privacy relies on it)

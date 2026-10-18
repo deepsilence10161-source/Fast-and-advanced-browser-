@@ -205,6 +205,11 @@ Group reasons:
 * **memory**: Memory: PartitionAlloc reclaim/tuning, memory-pressure handling (fewer tab reloads on low-RAM phones)
 
 ## arm64 PGO + orderfile (2026-10-18; build pending, device measurement NOT RUN)
+- Build fix (2026-10-18): the first PGO builds (39133494814, 39145340622) stopped in `gn gen` at
+  `assert(use_lld)` in `chrome_orderfile_config` (build/config/compiler/BUILD.gn:3207). @155, non-official Android
+  builds link with mold by default (`use_mold` requires `!is_official_build`, compiler.gni), so `use_lld` is false. The
+  arm64 PGO args now add `use_mold = false` (lld, as in official Chrome). `chromium_stage.sh` now prints the whole
+  `gn gen` output on failure (before, `| tail -2` hid the error line).
 - Baseline kept: the 0011 arm64 APK (no PGO, no orderfile; build 39127525981, sha256
   `8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd`) is copied to the draft release
   `apk-b1-0011-arm64` before the PGO build replaces the state release asset.
