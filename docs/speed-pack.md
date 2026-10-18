@@ -60,6 +60,24 @@ Output: medians of load/LCP/FCP/DCL, server requests/bytes/ad requests; download
 file on /sdcard/Download. `chromium_defaults` is NOT Google Chrome (no Finch); a Chrome comparison is only claimed from
 a real Chrome run.
 
+## ART compilation of the Java code (researched 2026-10-18; measurement running, nothing built yet)
+- A sideloaded APK (GitHub release, `adb install`, tapping the file) is installed with `[status=verify]`. Java runs
+  interpreted/JIT until background dexopt (idle + charging) compiles from the app's own JIT profile. Play Store
+  installs get a cloud or baseline profile compiled at install time
+  (developer.android.com/topic/performance/baselineprofiles/manually-create-measure and .../debug-baseline-profiles).
+  So on day one a sideloaded Swiftra can start slower than a Play-installed Chrome. This is a parity gap, not a lead.
+- A `baseline.prof` inside the APK is **not** used by a sideloaded install on its own. The Jetpack ProfileInstaller
+  library has to copy it into the ART profile (compiled at the next background dexopt), or the profile must be
+  installed together with the APK as a `.dm` (`adb install-multiple`).
+- Chromium @155: `enable_baseline_profiles` / `enable_startup_profiles` are declared false in
+  `build/config/android/config.gni`. `build/android/gyp/binary_baseline_profile.py` (profgen wrapper) exists, but no GN
+  template calls it, and profgen is not in the checkout (`third_party/android_build_tools`). R8 still accepts
+  `--art-profile` (`proguard.py`). `third_party/androidx:androidx_profileinstaller_profileinstaller_java` (1.5.0) is in
+  the tree, visibility-restricted, and not used by Chrome.
+- Gate: `scripts/ci/art_startup.py` measures cold start in the install, speed-profile and speed states on the
+  device. Wiring a profile in (HRF profile from the startup trace -> R8 `--art-profile` -> profgen -> assets/dexopt +
+  ProfileInstaller) is done only if that gap is clearly larger than the noise.
+
 ## Compiler-level options (researched, not applied)
 * `is_high_end_android = true` for arm64/x64 (build/config/android/config.gni:33) -> `optimize_for_size = false`:
   Swiftra already compiles for speed.
