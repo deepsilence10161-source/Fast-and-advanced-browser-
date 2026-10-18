@@ -22,6 +22,9 @@ All references are to the @155 source.
   - `BrowserProcessImpl::CreateSubresourceFilterRulesetService` calls `IndexAndStoreAndPublishRulesetIfNeeded` with
     `UnindexedRulesetInfo.resource_id`.
   - The ruleset is indexed once in the background after startup; the same version is never re-indexed.
+  - `chrome/browser/BUILD.gn` `source_set("core")` gets an explicit dep on `:resources` (the grit target).
+    No file in `core` included `chrome/grit/browser_resources.h` before, so without this dep ninja could compile
+    `browser_process_impl.cc` before the header is regenerated.
   - The file comes from `adblock/swiftra-ruleset.pb.gz` through the transform `patches/0013-swiftra-adblock-ruleset.py`.
     That script pins the SHA-256 and sets the version `swiftra.<sha256[:16]>`.
 - **No Google ruleset download.** `RegisterSubresourceFilterComponent` returns early when `kSwiftraAdBlock` is on.

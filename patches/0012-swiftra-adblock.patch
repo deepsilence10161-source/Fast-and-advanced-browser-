@@ -1,3 +1,13 @@
+--- a/chrome/browser/BUILD.gn
++++ b/chrome/browser/BUILD.gn
+@@ -916,6 +916,7 @@
+     ":process_singleton_internal",
+     ":renderer_preferences_util",
+     ":resources_util",
++    ":resources",  # Swiftra: chrome/grit/browser_resources.h (IDR_SWIFTRA_ADBLOCK_RULESET)
+     ":shell_integration",
+     ":startup_data",
+     ":unexpire_flags",
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
 @@ -100,6 +100,7 @@
