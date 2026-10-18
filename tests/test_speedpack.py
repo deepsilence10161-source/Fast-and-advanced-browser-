@@ -175,3 +175,19 @@ def test_speed_e2e_bench_summary():
         for m in c.values():
             m.pop("bench")
     assert se.summarize(res)["speedup"]["bench"] is None
+
+
+def test_compare_runs_ratio_and_noise():
+    sys.path.insert(0, os.path.join(ROOT, "tools", "speedpack"))
+    import compare_runs as cr
+
+    def run(totals):
+        return {"cycles": [{"swiftra": {"bench": {"result": {"total": t, "ms": {"json": t / 2}}},
+                                        "loads": [{"page": {"load": 1000, "lcp": 400}}],
+                                        "download": {"server": {"complete": True, "seconds": 4.0}}}} for t in totals]}
+    rows = {r["metric"]: r for r in cr.compare(cr.bench_values(run([1000, 1040]), "swiftra"),
+                                               cr.bench_values(run([800, 820]), "swiftra"))}
+    assert rows["total"]["ratio"] == round(1020 / 810, 3) and rows["total"]["note"] == "new faster"
+    rows = {r["metric"]: r for r in cr.compare(cr.page_values(run([1]), "swiftra"), cr.page_values(run([1]), "swiftra"))}
+    assert rows["load_ms"]["note"] == "within noise" and rows["download_s"]["ratio"] == 1.0
+    assert cr.compare({"total": [1]}, {})[0]["note"] == "no data"
