@@ -33,3 +33,23 @@ def test_rules_cover_all_hosts():
     for h in (A.HTTP_HOST, A.TOP_HOST, A.THIRD_HOST):
         assert f"MAP {h} 127.0.0.1:" in A.RULES
     assert A.THIRD_HOST.split(".")[-2:] != A.TOP_HOST.split(".")[-2:]   # really cross-site
+
+
+def _fp(dev, mx, h, frame="f1", wh="w1", audio="1.0", flags=True):
+    c = {"dev": dev, "max": mx, "hash": h, "url_hash": "u" + h, "reread_same": flags, "strip_same": flags,
+         "subrect_same": flags, "url_same": flags}
+    return {"me": {"canvas": c, "webgl": {"available": True, "dev": dev, "max": mx, "hash": wh, "reread_same": True},
+                   "audio": {"sum": audio}}, "frame": frame}
+
+
+def test_fp_verdict():
+    assert A.fp_verdict(None, None)[0] == "no_result"
+    assert A.fp_verdict(_fp(0, 0, "x"), _fp(0, 0, "x"))[0] == "no_shield"
+    ok = A.fp_verdict(_fp(40, 1, "a", "fa", "wa", "1.1"), _fp(37, 1, "b", "fb", "wb", "1.2"))
+    assert ok == ("shielded", [])
+    v, why = A.fp_verdict(_fp(40, 1, "a", "same", "wa", "1.1"), _fp(37, 1, "b", "same", "wb", "1.2"))
+    assert v == "partial" and any("linkable" in w for w in why)
+    v, why = A.fp_verdict(_fp(40, 3, "a"), _fp(37, 1, "b", "fb", "wb", "2"))
+    assert v == "partial" and any("max=3" in w for w in why)
+    v, why = A.fp_verdict(_fp(40, 1, "a", flags=False), _fp(37, 1, "b", "fb", "wb", "2"))
+    assert v == "partial" and any("strip_same" in w for w in why)

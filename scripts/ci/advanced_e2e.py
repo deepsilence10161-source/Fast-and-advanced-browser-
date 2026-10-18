@@ -38,9 +38,10 @@ from startup_netlog import CMDLINE_FILE, CMDLINE_JS, resolve_launcher  # noqa: E
 
 HTTP_PORT, HTTPS_PORT = 8770, 8771
 HTTP_HOST, TOP_HOST, THIRD_HOST = "httponly.example.com", "top.example.com", "cookie3p.example.org"
+FP_A, FP_B = "fp-a.example.com", "fp-b.example.net"   # two unrelated top-level sites (patches/0011)
 HTTP_MARKER = "SWIFTRA_HTTPONLY_PAGE_LOADED"
 RULES = (f"MAP {HTTP_HOST} 127.0.0.1:{HTTP_PORT},MAP {TOP_HOST} 127.0.0.1:{HTTPS_PORT},"
-         f"MAP {THIRD_HOST} 127.0.0.1:{HTTPS_PORT}")
+         f"MAP {THIRD_HOST} 127.0.0.1:{HTTPS_PORT},MAP {FP_A} 127.0.0.1:{HTTPS_PORT},MAP {FP_B} 127.0.0.1:{HTTPS_PORT}")
 
 TOP_HTML = f"""<!doctype html><meta name="viewport" content="width=device-width"><title>3PC:pending</title>
 <h1>Swiftra 3PC test</h1><div id="r"></div>
@@ -55,6 +56,49 @@ window.addEventListener('message', e => {{
 const f = document.createElement('iframe'); f.src = 'https://{THIRD_HOST}/frame?1'; document.body.appendChild(f);
 </script>"""
 FRAME_HTML = "<!doctype html><script>parent.postMessage(document.cookie, '*');</script>"
+
+# Fingerprint probes (patches/0011). Solid fill with a known colour: without the shield every pixel reads back exactly.
+FP_JS = r"""
+async function h(buf){const d=await crypto.subtle.digest('SHA-256',buf);return [...new Uint8Array(d)].slice(0,8).map(b=>b.toString(16).padStart(2,'0')).join('');}
+function dev(d){let n=0,m=0;for(let i=0;i<d.length;i+=4){const e=[Math.abs(d[i]-200),Math.abs(d[i+1]-100),Math.abs(d[i+2]-51)];const x=Math.max(...e);if(x){n++;m=Math.max(m,x);}}return [n,m];}
+async function canvasProbe(){
+  const c=document.createElement('canvas');c.width=120;c.height=60;const x=c.getContext('2d');
+  x.fillStyle='rgb(200,100,51)';x.fillRect(0,0,120,60);
+  const [n,m]=dev(x.getImageData(0,0,120,60).data);
+  x.font='16px sans-serif';x.fillStyle='#069';x.fillText('Swiftra fp 123',4,30);
+  const a=await h(x.getImageData(0,0,120,60).data),b=await h(x.getImageData(0,0,120,60).data);
+  const sub=x.getImageData(30,20,10,10).data,full=x.getImageData(0,0,120,60).data;let subok=true;
+  for(let y=0;y<10;y++)for(let i=0;i<40;i++)if(sub[y*40+i]!==full[((20+y)*120+30)*4+i])subok=false;
+  const img=x.getImageData(0,0,120,60);x.putImageData(img,0,0);const s=await h(x.getImageData(0,0,120,60).data);
+  const u1=c.toDataURL(),u2=c.toDataURL();
+  return {dev:n,max:m,hash:a,reread_same:a===b,strip_same:s===a,subrect_same:subok,url_same:u1===u2,url_hash:await h(new TextEncoder().encode(u1))};
+}
+async function webglProbe(){
+  const c=document.createElement('canvas');c.width=64;c.height=64;const g=c.getContext('webgl',{preserveDrawingBuffer:true});
+  if(!g)return {available:false};
+  g.clearColor(200/255,100/255,51/255,1);g.clear(g.COLOR_BUFFER_BIT);
+  const p=new Uint8Array(64*64*4);g.readPixels(0,0,64,64,g.RGBA,g.UNSIGNED_BYTE,p);const [n,m]=dev(p);
+  const q=new Uint8Array(64*64*4);g.readPixels(0,0,64,64,g.RGBA,g.UNSIGNED_BYTE,q);
+  return {available:true,dev:n,max:m,hash:await h(p),reread_same:(await h(q))===(await h(p))};
+}
+async function audioProbe(){
+  try{const ctx=new OfflineAudioContext(1,5000,44100);const o=ctx.createOscillator();o.type='triangle';o.frequency.value=10000;
+  const k=ctx.createDynamicsCompressor();o.connect(k);k.connect(ctx.destination);o.start(0);
+  const buf=await ctx.startRendering();const d=buf.getChannelData(0);let s=0;for(let i=4500;i<5000;i++)s+=Math.abs(d[i]);return {sum:s.toString()};}
+  catch(e){return {error:String(e)};}
+}
+async function probeAll(){return {canvas:await canvasProbe(),webgl:await webglProbe(),audio:await audioProbe()};}
+"""
+FP_HTML = ("<!doctype html><meta name=viewport content='width=device-width'><title>FP:pending</title><h1>Swiftra FP test</h1>"
+           "<pre id=r></pre><script>" + FP_JS + f"""
+(async()=>{{const me=await probeAll();let frame=null;
+  window.addEventListener('message',e=>{{if(e.origin==='https://{THIRD_HOST}')frame=e.data;}});
+  const f=document.createElement('iframe');f.src='https://{THIRD_HOST}/fpframe';document.body.appendChild(f);
+  for(let i=0;i<60&&!frame;i++)await new Promise(r=>setTimeout(r,250));
+  document.getElementById('r').textContent=JSON.stringify({{me,frame}});document.title='FP:done';}})();
+</script>""")
+FPFRAME_HTML = "<!doctype html><script>" + FP_JS + "(async()=>{parent.postMessage((await canvasProbe()).hash,'*');})();</script>"
+FP_RESULT_JS = "(() => ({title: document.title, r: (document.getElementById('r') || {}).textContent || ''}))()"
 RESULT_JS = ("(() => ({title: document.title, r: (document.getElementById('r') || {}).textContent || '', "
              "fp: document.cookie}))()")
 HFM_JS = ("(() => ({title: document.title, href: location.href, text: (document.body ? document.body.innerText : '')"
@@ -76,6 +120,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body, extra = f"<!doctype html><title>{HTTP_MARKER}</title><h1>{HTTP_MARKER}</h1>", []
         elif host == TOP_HOST and self.path.startswith("/top.html"):
             body, extra = TOP_HTML, [("Set-Cookie", "fp=1; SameSite=Lax; Secure; Path=/")]
+        elif host in (FP_A, FP_B) and self.path.startswith("/fp.html"):
+            body, extra = FP_HTML, []
+        elif host == THIRD_HOST and self.path.startswith("/fpframe"):
+            body, extra = FPFRAME_HTML, []
         elif host == THIRD_HOST and self.path.startswith("/frame"):
             body, extra = FRAME_HTML, [("Set-Cookie", "s3p=1; SameSite=None; Secure; Path=/")]
         else:
@@ -99,7 +147,7 @@ def start_servers(tmp):
     key, crt = os.path.join(tmp, "k.pem"), os.path.join(tmp, "c.pem")
     subprocess.run(["openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "2", "-keyout", key,
                     "-out", crt, "-subj", f"/CN={TOP_HOST}",
-                    "-addext", f"subjectAltName=DNS:{TOP_HOST},DNS:{THIRD_HOST}"],
+                    "-addext", f"subjectAltName=DNS:{TOP_HOST},DNS:{THIRD_HOST},DNS:{FP_A},DNS:{FP_B}"],
                    check=True, capture_output=True, timeout=60)
     https_srv = http.server.ThreadingHTTPServer(("127.0.0.1", HTTPS_PORT), Handler)
     ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -139,6 +187,36 @@ def ui_dialog_text():
     adb("shell", "uiautomator", "dump", "/sdcard/adv_ui.xml", timeout=40)
     xml = adb("shell", "cat", "/sdcard/adv_ui.xml").lower()
     return next((t for t in DIALOG_TEXTS if t in xml), "")
+
+
+def fp_verdict(a, b):
+    """a, b = parsed results for two unrelated top-level sites. Returns (verdict, reasons)."""
+    if not a or not b:
+        return "no_result", ["missing"]
+    reasons = []
+    ca, cb = a["me"]["canvas"], b["me"]["canvas"]
+    if ca["dev"] == 0 and cb["dev"] == 0 and ca["hash"] == cb["hash"]:
+        return "no_shield", ["canvas exact and identical on both sites"]
+    for name, c in (("A", ca), ("B", cb)):
+        if not (c["dev"] > 0 and c["max"] == 1):
+            reasons.append(f"canvas {name}: dev={c['dev']} max={c['max']}")
+        for k in ("reread_same", "strip_same", "subrect_same", "url_same"):
+            if not c.get(k):
+                reasons.append(f"canvas {name}: {k} false")
+    if ca["hash"] == cb["hash"] or ca["url_hash"] == cb["url_hash"]:
+        reasons.append("canvas hash same on both sites")
+    wa, wb = a["me"]["webgl"], b["me"]["webgl"]
+    if wa.get("available") and wb.get("available"):
+        if not (wa["dev"] > 0 and wa["max"] == 1 and wa["reread_same"]):
+            reasons.append(f"webgl A: dev={wa['dev']} max={wa['max']} reread={wa['reread_same']}")
+        if wa["hash"] == wb["hash"]:
+            reasons.append("webgl hash same on both sites")
+    aa, ab = a["me"]["audio"], b["me"]["audio"]
+    if "sum" in aa and "sum" in ab and aa["sum"] == ab["sum"]:
+        reasons.append("audio sum same on both sites")
+    if a.get("frame") and a.get("frame") == b.get("frame"):
+        reasons.append("same third-party iframe fingerprint under both sites (linkable)")
+    return ("shielded" if not reasons else "partial"), reasons
 
 
 def hfm_verdict(r, http_hits=None, dialog=""):
@@ -231,7 +309,19 @@ def main():
             res["tpc_page"] = r
             res["tpc"] = tpc_verdict(r)
             subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'tpc.png')}'", shell=True, timeout=30)
-            res["server_hits"] = HITS[:40]
+            # 3. fingerprint shield (patches/0011): same probes on two unrelated top-level sites
+            fp = {}
+            for host in (FP_A, FP_B):
+                res[f"fp_open_{host}"] = open_internal(DEVTOOLS, f"https://{host}/fp.html")
+                r = eval_on(host, FP_RESULT_JS, wait=40, until=lambda x: x.get("title") == "FP:done")
+                try:
+                    fp[host] = json.loads((r or {}).get("r") or "null")
+                except ValueError:
+                    fp[host] = None
+                subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, host + '.png')}'", shell=True, timeout=30)
+            res["fp"] = fp
+            res["fp_verdict"], res["fp_reasons"] = fp_verdict(fp.get(FP_A), fp.get(FP_B))
+            res["server_hits"] = HITS[:60]
             ok = res["hfm"] in ("warning_dialog", "interstitial", "blocked_no_http") and res["tpc"] == "third_party_blocked"
             res["verdict"] = "pass" if ok else "fail"
     finally:
@@ -242,6 +332,9 @@ def main():
     print("advanced e2e:", json.dumps({k: v for k, v in res.items() if k != "command_line"}, ensure_ascii=False)[:3000])
     print("ADVANCED_E2E", {"pass": "PASS", "fail": "FAIL"}.get(res["verdict"], "NOT_RUN"),
           f"hfm={res.get('hfm')} tpc={res.get('tpc')}")
+    fpv = res.get("fp_verdict")
+    print("FINGERPRINT_E2E", {"shielded": "PASS", None: "NOT_RUN", "no_result": "NOT_RUN"}.get(fpv, "FAIL"),
+          f"verdict={fpv} reasons={res.get('fp_reasons')}")
     return 1 if res["verdict"] == "fail" else 0
 
 
