@@ -68,6 +68,25 @@ def save_profile(pkg):
     return True
 
 
+def dump_profile(pkg, out_dir):
+    """The JIT profile ART collected (human-readable classes + methods): raw material for a baseline profile.
+    `pm dump-profiles --dump-classes-and-methods` writes /data/misc/profman/<pkg>-primary.prof.txt (Android 14);
+    older releases write the same path without the flag. Names are this APK's R8 names."""
+    import gzip
+    adb("shell", "pm", "dump-profiles", "--dump-classes-and-methods", pkg, timeout=120)
+    path = f"/data/misc/profman/{pkg}-primary.prof.txt"
+    txt = adb("shell", "cat", path, timeout=60) or adb("shell", "su", "0", "cat", path, timeout=60)
+    if not txt or "No such file" in txt[:200]:
+        adb("shell", "pm", "dump-profiles", pkg, timeout=120)
+        txt = adb("shell", "cat", path, timeout=60) or adb("shell", "su", "0", "cat", path, timeout=60)
+    lines = [l for l in (txt or "").splitlines() if l.strip() and "No such file" not in l]
+    if lines:
+        with gzip.open(os.path.join(out_dir, "jit_profile.txt.gz"), "wt") as f:
+            f.write("\n".join(lines) + "\n")
+    return {"lines": len(lines), "methods": sum(1 for l in lines if "->" in l),
+            "classes": sum(1 for l in lines if "->" not in l)}
+
+
 def cold_launch(pkg, comp, settle):
     adb("shell", "am", "force-stop", pkg)
     time.sleep(2)
@@ -108,6 +127,11 @@ def main():
                 if name == "install":
                     save_profile(pkg)                        # build up the JIT profile that `speed-profile` uses
             st["total_ms"], st["median_ms"] = times, median(times)
+            if name == "install":
+                try:
+                    st["jit_profile"] = dump_profile(pkg, a.out)
+                except Exception as e:                       # noqa: BLE001
+                    st["jit_profile"] = f"error {e}"
             print(f"art startup {name}: status={st['status']} compile {st['compile_s']} s, TotalTime {times}"
                   f" median {st['median_ms']}")
             json.dump(res, open(os.path.join(a.out, "art_startup.json"), "w"), indent=1)
