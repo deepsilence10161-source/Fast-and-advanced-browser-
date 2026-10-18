@@ -65,6 +65,21 @@
   - कमी: malware coverage कम है। Licence-clean malware URL स्रोत की खोज जारी है।
 - Unwanted-software (UwS) की कोई सूची Shield में नहीं है। Standard protection में Google का `/s/unwanted.html` test page खुलता है (E2E में यही अपेक्षा दर्ज है)।
 
+## PLAN 7 स्रोत-जाँच (18-10-2026): malware/UwS
+Malware/UwS के लिए ऐसी कोई नई feed नहीं मिली जो ताज़ा भी हो और जिसका licence भी साफ़ हो। इसलिए कोई नया स्रोत नहीं जोड़ा गया।
+जाँचे गए स्रोत और उन्हें छोड़ने का कारण:
+
+| स्रोत | कारण |
+|---|---|
+| abuse.ch URLhaus / ThreatFox | 2025-11-04 की ToU मुफ़्त उपयोग को केवल not-for-profit तक सीमित करती है और derivative बनाने से रोकती है ([urlhaus.abuse.ch/api](https://urlhaus.abuse.ch/api/), [linkshield #47](https://github.com/AlexMos555/linkshield/pull/47)) |
+| Maltrail static trails | नया content Community Data License 1.0 में आता है; किसी product या redistributed feed के लिए लिखित अनुमति चाहिए ([stamparm/trails](https://github.com/stamparm/trails)) |
+| pup-filter (UwS) | 2023-05 से update रुके हुए हैं; मूल malware-discoverer "All rights reserved" है |
+| DigitalSide Threat-Intel | आख़िरी commit 2024-10-18 का है और site पहुँच से बाहर है। LICENSE फ़ाइल में किसी दूसरी कंपनी का copyright है, और बड़े domains को गलत block करने की शिकायतें दर्ज हैं |
+| hagezi TIF (GPLv3) | abuse.ch और Maltrail जैसे प्रतिबंधित स्रोतों से data लेती है; GPL ऊपर वाली पाबंदियाँ नहीं हटाता |
+
+अगला रास्ता (research बाकी है): list के बिना on-device download सुरक्षा। उदाहरण: HTTP या IP-literal host से APK,
+double extension (`.pdf.apk`) जैसे संकेत।
+
 ## Enhanced protection (c2b, patches/0007)
 - **मापा गया तथ्य (2026-10-17, `tools/sb_rt_probe.py`):** Enhanced protection जिस URL real-time endpoint (`safebrowsing.google.com/safebrowsing/clientreport/realtime`, `UrlRealTimeMechanism`) को पूछता है, वह बिना key या login के भी उत्तर देता है।
   - `testsafebrowsing …/s/phishing.html` → SOCIAL_ENGINEERING / DANGEROUS
