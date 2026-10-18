@@ -37,6 +37,9 @@ if [ "$T" != chrome_ref ]; then
   # c2d: browser-initiated traffic from a cold start (NetLog from process start; last step: may use adb root)
   timeout 300 python3 scripts/ci/startup_netlog.py --package "$PKG" --out "$OUT/startup" 2>&1 | tee "$OUT/startup_netlog.txt"
   echo "startup_netlog exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  # patches/0010: HTTPS-First (balanced) + third-party cookies blocked, checked by behaviour (local mapped hosts)
+  timeout 240 python3 scripts/ci/advanced_e2e.py --package "$PKG" --out "$OUT/advanced" 2>&1 | tee "$OUT/advanced_e2e.txt"
+  echo "advanced_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 fi
 timeout 60 adb logcat -d | grep -iE "chromium|chrome|FATAL|AndroidRuntime|ndk_translation|DEBUG" | tail -400 > "$OUT/logcat_tail.txt"
 exit 0
