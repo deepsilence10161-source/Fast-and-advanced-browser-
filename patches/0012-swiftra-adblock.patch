@@ -1,0 +1,163 @@
+--- a/chrome/browser/browser_process_impl.cc
++++ b/chrome/browser/browser_process_impl.cc
+@@ -100,6 +100,7 @@
+ #include "chrome/common/pref_names.h"
+ #include "chrome/common/url_constants.h"
+ #include "chrome/grit/branded_strings.h"
++#include "chrome/grit/browser_resources.h"
+ #include "chrome/installer/util/google_update_settings.h"
+ #include "components/activity_reporter/activity_reporter.h"
+ #include "components/application_locale_storage/application_locale_storage.h"
+@@ -1855,6 +1856,19 @@
+           subresource_filter::kSafeBrowsingRulesetConfig, local_state(),
+           user_data_dir,
+           subresource_filter::SafeBrowsingRulesetPublisher::Factory());
++
++  // Swiftra: publish the ad/tracker ruleset bundled in the APK. Indexing runs
++  // on a background thread after startup and is skipped when this version is
++  // already indexed.
++  if (subresource_filter_ruleset_service_ &&
++      base::FeatureList::IsEnabled(subresource_filter::kSwiftraAdBlock)) {
++    subresource_filter::UnindexedRulesetInfo ruleset_info;
++    ruleset_info.content_version =
++        subresource_filter::kSwiftraAdBlockRulesetVersion;
++    ruleset_info.resource_id = IDR_SWIFTRA_ADBLOCK_RULESET;
++    subresource_filter_ruleset_service_->IndexAndStoreAndPublishRulesetIfNeeded(
++        ruleset_info);
++  }
+ }
+ 
+ #if !BUILDFLAG(IS_ANDROID)
+--- a/chrome/browser/browser_resources.grd
++++ b/chrome/browser/browser_resources.grd
+@@ -105,6 +105,7 @@
+       </if>
+ 
+       <include name="IDR_AD_NETWORK_HASHES" file="resources\ad_networks.dat" type="BINDATA" />
++      <include name="IDR_SWIFTRA_ADBLOCK_RULESET" file="resources\swiftra\adblock_ruleset.pb" type="BINDATA" compress="gzip" />
+       <if expr="is_chromeos">
+         <include name="IDR_CHROME_APP_MANIFEST" file="resources\chrome_app\manifest.json" type="BINDATA" />
+         <include name="IDR_URL_MOJOM_LITE_JS" file="${root_gen_dir}\url\mojom\url.mojom-lite.js" use_base_dir="false" type="BINDATA" />
+--- a/chrome/browser/component_updater/subresource_filter_component_installer.cc
++++ b/chrome/browser/component_updater/subresource_filter_component_installer.cc
+@@ -158,6 +158,11 @@
+           subresource_filter::kSafeBrowsingSubresourceFilter)) {
+     return;
+   }
++  // Swiftra: the bundled ruleset is used instead (published by
++  // BrowserProcessImpl); a downloaded ruleset would replace it.
++  if (base::FeatureList::IsEnabled(subresource_filter::kSwiftraAdBlock)) {
++    return;
++  }
+ 
+   auto installer = base::MakeRefCounted<ComponentInstaller>(
+       std::make_unique<SubresourceFilterComponentInstallerPolicy>());
+--- a/components/subresource_filter/content/browser/profile_interaction_manager.cc
++++ b/components/subresource_filter/content/browser/profile_interaction_manager.cc
+@@ -15,6 +15,7 @@
+ #include "components/subresource_filter/content/browser/subresource_filter_content_settings_manager.h"
+ #include "components/subresource_filter/content/browser/subresource_filter_profile_context.h"
+ #include "components/subresource_filter/content/browser/utils.h"
++#include "components/subresource_filter/core/browser/subresource_filter_features.h"
+ #include "content/public/browser/navigation_controller.h"
+ #include "content/public/browser/navigation_handle.h"
+ #include "content/public/browser/page.h"
+@@ -138,7 +139,11 @@
+   if (profile_context_->settings_manager()->ShouldShowUIForSite(
+           top_level_url)) {
+ #if BUILDFLAG(IS_ANDROID)
+-    if (messages::MessageDispatcherBridge::Get()
++    // Swiftra: ads are blocked on every site, so a message on each page would
++    // be noise. The blocked state stays visible (and switchable per site) in
++    // Page Info through OnContentBlocked() below.
++    if (!base::FeatureList::IsEnabled(kSwiftraAdBlock) &&
++        messages::MessageDispatcherBridge::Get()
+             ->IsMessagesEnabledForEmbedder()) {
+       subresource_filter::AdsBlockedMessageDelegate::CreateForWebContents(
+           GetWebContents());
+--- a/components/subresource_filter/core/browser/subresource_filter_features.cc
++++ b/components/subresource_filter/core/browser/subresource_filter_features.cc
+@@ -132,7 +132,10 @@
+       {kPresetPerformanceTestingDryRunOnAllSites, ad_tagging_enabled,
+        &Configuration::MakePresetForPerformanceTestingDryRunOnAllSites},
+       {kPresetLiveRunForBetterAds, true,
+-       &Configuration::MakePresetForLiveRunForBetterAds}};
++       &Configuration::MakePresetForLiveRunForBetterAds},
++      {kPresetSwiftraAdBlockOnAllSites,
++       base::FeatureList::IsEnabled(kSwiftraAdBlock),
++       &Configuration::MakePresetForSwiftraAdBlockOnAllSites}};
+ 
+   CommaSeparatedStrings enabled_presets(
+       TakeVariationParamOrReturnEmpty(params, kEnablePresetsParameterName));
+@@ -248,6 +251,10 @@
+ 
+ BASE_FEATURE(kAdsInterventionsEnforced, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++BASE_FEATURE(kSwiftraAdBlock, base::FEATURE_ENABLED_BY_DEFAULT);
++
++const char kSwiftraAdBlockRulesetVersion[] = "@SWIFTRA_ADBLOCK_VERSION@";
++
+ const base::FeatureParam<base::TimeDelta> kAdsInterventionDuration = {
+     &kAdsInterventionsEnforced, "kAdsInterventionDuration", base::Days(3)};
+ 
+@@ -281,6 +288,7 @@
+     "performance_testing_dryrun_on_all_sites";
+ const char kPresetLiveRunForBetterAds[] =
+     "liverun_on_better_ads_violating_sites";
++const char kPresetSwiftraAdBlockOnAllSites[] = "swiftra_adblock_on_all_sites";
+ 
+ // Configuration --------------------------------------------------------------
+ 
+@@ -311,6 +319,16 @@
+   return config;
+ }
+ 
++// static
++Configuration Configuration::MakePresetForSwiftraAdBlockOnAllSites() {
++  // Below the phishing preset (1000), so phishing activation keeps its
++  // warning behaviour; above Better Ads (800), which it is a superset of.
++  Configuration config(mojom::ActivationLevel::kEnabled,
++                       ActivationScope::ALL_SITES);
++  config.activation_conditions.priority = 900;
++  return config;
++}
++
+ Configuration::Configuration() = default;
+ Configuration::Configuration(mojom::ActivationLevel activation_level,
+                              ActivationScope activation_scope,
+--- a/components/subresource_filter/core/browser/subresource_filter_features.h
++++ b/components/subresource_filter/core/browser/subresource_filter_features.h
+@@ -125,6 +125,9 @@
+   static Configuration MakePresetForLiveRunOnPhishingSites();
+   static Configuration MakePresetForPerformanceTestingDryRunOnAllSites();
+   static Configuration MakePresetForLiveRunForBetterAds();
++  // Swiftra: built-in ad and tracker blocking on all sites, using the ruleset
++  // bundled in the APK (see kSwiftraAdBlock).
++  static Configuration MakePresetForSwiftraAdBlockOnAllSites();
+ 
+   ActivationConditions activation_conditions;
+   ActivationOptions activation_options;
+@@ -191,6 +194,15 @@
+ // Enables the blocking of ads on sites that have ads violations.
+ BASE_DECLARE_FEATURE(kAdsInterventionsEnforced);
+ 
++// Swiftra: blocks ads and trackers on all sites with the bundled ruleset,
++// instead of only on sites that are on a Google activation list. When
++// enabled, the Google component ruleset is not downloaded and the bundled
++// one (IDR_SWIFTRA_ADBLOCK_RULESET) is published at startup.
++BASE_DECLARE_FEATURE(kSwiftraAdBlock);
++
++// Content version of the bundled Swiftra ruleset (changes with the ruleset).
++extern const char kSwiftraAdBlockRulesetVersion[];
++
+ // The maximum duration that an ads intervention is active for.
+ // TODO(crbug.com/40721691): This currently is the default delay.
+ // We should move to an approach where each intervention has a duration that is
+@@ -230,6 +242,7 @@
+ extern const char kPresetLiveRunOnPhishingSites[];
+ extern const char kPresetPerformanceTestingDryRunOnAllSites[];
+ extern const char kPresetLiveRunForBetterAds[];
++extern const char kPresetSwiftraAdBlockOnAllSites[];
+ 
+ }  // namespace subresource_filter
+ 

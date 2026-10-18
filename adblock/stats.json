@@ -1,0 +1,29 @@
+{
+ "bytes": 4707853,
+ "files": {
+  "easylist.txt": {
+   "rules": 58201,
+   "skipped": 622
+  },
+  "easyprivacy.txt": {
+   "rules": 56247,
+   "skipped": 47
+  },
+  "hosts.txt": {
+   "rules": 6366,
+   "skipped": 0
+  }
+ },
+ "skipped_reasons": {
+  "activation": 591,
+  "matches": 1,
+  "regexp": 29,
+  "unsupported option csp": 5,
+  "unsupported option important": 10,
+  "unsupported option method": 1,
+  "unsupported option redirect": 23,
+  "unsupported option redirect-rule": 1,
+  "unsupported option rewrite": 8
+ },
+ "total_rules": 120814
+}

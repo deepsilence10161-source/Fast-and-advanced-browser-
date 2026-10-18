@@ -14,3 +14,6 @@
 0009-swiftra-quiet-start.patch
 0010-swiftra-advanced-defaults.patch
 0011-swiftra-fingerprint-shield.patch
+# 0012/0013: Swiftra Ad & Tracker Blocker (subresource_filter on all sites, bundled ruleset; docs/adblock-design.md)
+0012-swiftra-adblock.patch
+0013-swiftra-adblock-ruleset.py

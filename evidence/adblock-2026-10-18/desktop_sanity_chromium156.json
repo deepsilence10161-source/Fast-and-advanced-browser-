@@ -1,0 +1,55 @@
+{
+ "chrome": "Google Chrome for Testing 156.0.8078.4",
+ "baseline": {
+  "ruleset": false,
+  "attempts": [
+   {
+    "attempt": 0,
+    "verdict": "no_blocker",
+    "hits": {
+     "ib.adnxs.com": 2,
+     "www.google-analytics.com": 1,
+     "sb.scorecardresearch.com": 1,
+     "news.example.com/first.js": 1,
+     "static.example.org": 1
+    },
+    "page": "{\"first_party\":\"loaded\",\"control_third_party\":\"loaded\",\"adnxs_script\":\"loaded\",\"ga_script\":\"loaded\",\"scorecard_script\":\"loaded\",\"adnxs_pixel\":\"loaded\"}"
+   }
+  ],
+  "indexed_dirs": [],
+  "verdict": "no_blocker"
+ },
+ "with_ruleset": {
+  "ruleset": true,
+  "attempts": [
+   {
+    "attempt": 0,
+    "verdict": "no_blocker",
+    "hits": {
+     "ib.adnxs.com": 2,
+     "www.google-analytics.com": 1,
+     "sb.scorecardresearch.com": 1,
+     "news.example.com/first.js": 1,
+     "static.example.org": 1
+    },
+    "page": "{\"first_party\":\"loaded\",\"control_third_party\":\"loaded\",\"adnxs_script\":\"loaded\",\"ga_script\":\"loaded\",\"scorecard_script\":\"loaded\",\"adnxs_pixel\":\"loaded\"}"
+   },
+   {
+    "attempt": 1,
+    "verdict": "blocked",
+    "hits": {
+     "ib.adnxs.com": 0,
+     "www.google-analytics.com": 0,
+     "sb.scorecardresearch.com": 0,
+     "news.example.com/first.js": 1,
+     "static.example.org": 1
+    },
+    "page": "{\"adnxs_script\":\"error\",\"ga_script\":\"error\",\"scorecard_script\":\"error\",\"adnxs_pixel\":\"error\",\"first_party\":\"loaded\",\"control_third_party\":\"loaded\"}"
+   }
+  ],
+  "indexed_dirs": [
+   "38"
+  ],
+  "verdict": "blocked"
+ }
+}

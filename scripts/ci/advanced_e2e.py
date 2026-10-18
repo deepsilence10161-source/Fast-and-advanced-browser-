@@ -39,9 +39,15 @@ from startup_netlog import CMDLINE_FILE, CMDLINE_JS, resolve_launcher  # noqa: E
 HTTP_PORT, HTTPS_PORT = 8770, 8771
 HTTP_HOST, TOP_HOST, THIRD_HOST = "httponly.example.com", "top.example.com", "cookie3p.example.org"
 FP_A, FP_B = "fp-a.example.com", "fp-b.example.net"   # two unrelated top-level sites (patches/0011)
+# Ad & tracker blocker (patches/0012+0013). The ad/tracker hostnames are real list entries (EasyList ||adnxs.com^,
+# EasyPrivacy ||google-analytics.com^$script,third-party, EasyPrivacy ||scorecardresearch.com^$third-party) but are
+# mapped to the runner's local server for this browser only -- no request ever leaves the runner.
+AD_TOP, AD_CONTROL = "news.example.com", "static.example.org"
+AD_HOSTS = ("ib.adnxs.com", "www.google-analytics.com", "sb.scorecardresearch.com")
 HTTP_MARKER = "SWIFTRA_HTTPONLY_PAGE_LOADED"
 RULES = (f"MAP {HTTP_HOST} 127.0.0.1:{HTTP_PORT},MAP {TOP_HOST} 127.0.0.1:{HTTPS_PORT},"
-         f"MAP {THIRD_HOST} 127.0.0.1:{HTTPS_PORT},MAP {FP_A} 127.0.0.1:{HTTPS_PORT},MAP {FP_B} 127.0.0.1:{HTTPS_PORT}")
+         f"MAP {THIRD_HOST} 127.0.0.1:{HTTPS_PORT},MAP {FP_A} 127.0.0.1:{HTTPS_PORT},MAP {FP_B} 127.0.0.1:{HTTPS_PORT},"
+         + ",".join(f"MAP {h} 127.0.0.1:{HTTPS_PORT}" for h in (AD_TOP, AD_CONTROL) + AD_HOSTS))
 
 TOP_HTML = f"""<!doctype html><meta name="viewport" content="width=device-width"><title>3PC:pending</title>
 <h1>Swiftra 3PC test</h1><div id="r"></div>
@@ -98,6 +104,22 @@ FP_HTML = ("<!doctype html><meta name=viewport content='width=device-width'><tit
   document.getElementById('r').textContent=JSON.stringify({{me,frame}});document.title='FP:done';}})();
 </script>""")
 FPFRAME_HTML = "<!doctype html><script>" + FP_JS + "(async()=>{parent.postMessage((await canvasProbe()).hash,'*');})();</script>"
+# Each resource reports load/error; the server log is the ground truth (a blocked request never reaches it).
+AD_HTML = ("<!doctype html><meta name=viewport content='width=device-width'><title>AD:pending</title>"
+           "<h1>Swiftra ad-block test</h1><pre id=r></pre><script>\n"
+           "const res={};let left=0;function done(k,v){res[k]=v;if(--left===0){"
+           "document.getElementById('r').textContent=JSON.stringify(res);document.title='AD:done';}}\n"
+           "function add(tag,k,url){left++;const e=document.createElement(tag);e.onload=()=>done(k,'loaded');"
+           "e.onerror=()=>done(k,'error');e.src=url+(url.includes('?')?'&':'?')+'t='+Date.now();document.body.appendChild(e);}\n"
+           f"add('script','first_party','https://{AD_TOP}/first.js');"
+           f"add('script','control_third_party','https://{AD_CONTROL}/lib.js');"
+           f"add('script','adnxs_script','https://{AD_HOSTS[0]}/ast.js');"
+           f"add('img','adnxs_pixel','https://{AD_HOSTS[0]}/px.gif');"
+           f"add('script','ga_script','https://{AD_HOSTS[1]}/analytics.js');"
+           f"add('script','scorecard_script','https://{AD_HOSTS[2]}/beacon.js');"
+           "setTimeout(()=>{if(document.title!=='AD:done'){document.getElementById('r').textContent=JSON.stringify(res);"
+           "document.title='AD:done';}},15000);\n</script>")
+GIF = bytes.fromhex("47494638396101000100800000000000ffffff21f90401000000002c00000000010001000002024401003b")
 FP_RESULT_JS = "(() => ({title: document.title, r: (document.getElementById('r') || {}).textContent || ''}))()"
 RESULT_JS = ("(() => ({title: document.title, r: (document.getElementById('r') || {}).textContent || '', "
              "fp: document.cookie}))()")
@@ -126,13 +148,21 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body, extra = FPFRAME_HTML, []
         elif host == THIRD_HOST and self.path.startswith("/frame"):
             body, extra = FRAME_HTML, [("Set-Cookie", "s3p=1; SameSite=None; Secure; Path=/")]
+        elif host == AD_TOP and self.path.startswith("/ads.html"):
+            body, extra = AD_HTML, []
+        elif host in (AD_TOP, AD_CONTROL) + AD_HOSTS and self.path.split("?")[0].endswith(".js"):
+            return self._send(b"/* swiftra e2e */", "application/javascript")
+        elif host in AD_HOSTS and self.path.split("?")[0].endswith(".gif"):
+            return self._send(GIF, "image/gif")
         else:
             self.send_response(404)
             self.end_headers()
             return
-        data = body.encode()
+        return self._send(body.encode(), "text/html; charset=utf-8", extra)
+
+    def _send(self, data, ctype, extra=()):
         self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
         for k, v in extra:
@@ -147,7 +177,8 @@ def start_servers(tmp):
     key, crt = os.path.join(tmp, "k.pem"), os.path.join(tmp, "c.pem")
     subprocess.run(["openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "2", "-keyout", key,
                     "-out", crt, "-subj", f"/CN={TOP_HOST}",
-                    "-addext", f"subjectAltName=DNS:{TOP_HOST},DNS:{THIRD_HOST},DNS:{FP_A},DNS:{FP_B}"],
+                    "-addext", "subjectAltName=" + ",".join(
+                        f"DNS:{h}" for h in (TOP_HOST, THIRD_HOST, FP_A, FP_B, AD_TOP, AD_CONTROL) + AD_HOSTS)],
                    check=True, capture_output=True, timeout=60)
     https_srv = http.server.ThreadingHTTPServer(("127.0.0.1", HTTPS_PORT), Handler)
     ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -217,6 +248,31 @@ def fp_verdict(a, b):
     if a.get("frame") and a.get("frame") == b.get("frame"):
         reasons.append("same third-party iframe fingerprint under both sites (linkable)")
     return ("shielded" if not reasons else "partial"), reasons
+
+
+def ad_hits(since=0):
+    """Server hits per ad/tracker host and for the controls, counting only requests after index `since` of HITS."""
+    out = {h: 0 for h in AD_HOSTS + (AD_TOP + "/first.js", AD_CONTROL)}
+    for port, host, path in HITS[since:]:
+        if host in AD_HOSTS:
+            out[host] += 1
+        elif host == AD_TOP and path.startswith("/first.js"):
+            out[AD_TOP + "/first.js"] += 1
+        elif host == AD_CONTROL:
+            out[AD_CONTROL] += 1
+    return out
+
+
+def ad_verdict(hits, page):
+    """blocked = every ad/tracker host got 0 requests while both controls loaded; no_blocker = all ad hosts were hit."""
+    if not page or page.get("title") != "AD:done":
+        return "no_result"
+    if hits.get(AD_TOP + "/first.js", 0) == 0 or hits.get(AD_CONTROL, 0) == 0:
+        return "controls_broken"
+    ad = [hits.get(h, 0) for h in AD_HOSTS]
+    if all(n == 0 for n in ad):
+        return "blocked"
+    return "no_blocker" if all(n > 0 for n in ad) else "partial"
 
 
 def hfm_verdict(r, http_hits=None, dialog=""):
@@ -321,6 +377,24 @@ def main():
                 subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, host + '.png')}'", shell=True, timeout=30)
             res["fp"] = fp
             res["fp_verdict"], res["fp_reasons"] = fp_verdict(fp.get(FP_A), fp.get(FP_B))
+            # 4. ad & tracker blocker (patches/0012+0013). The bundled ruleset is indexed in the background after
+            # startup, so a page loaded before it is published is unfiltered: up to 3 attempts, all recorded.
+            res["ad_attempts"] = []
+            for attempt in range(3):
+                since = len(HITS)
+                res["ad_open"] = open_internal(DEVTOOLS, f"https://{AD_TOP}/ads.html?a={attempt}")
+                r = eval_on(f"{AD_TOP}/ads.html?a={attempt}", FP_RESULT_JS, wait=30,
+                            until=lambda x: x.get("title") == "AD:done")
+                time.sleep(2)
+                hits = ad_hits(since)
+                v = ad_verdict(hits, r)
+                res["ad_attempts"].append({"attempt": attempt, "verdict": v, "hits": hits,
+                                           "page": (r or {}).get("r", "")[:400]})
+                if v in ("blocked", "controls_broken"):
+                    break
+                time.sleep(10)
+            res["ad_verdict"] = res["ad_attempts"][-1]["verdict"]
+            subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'adblock.png')}'", shell=True, timeout=30)
             res["server_hits"] = HITS[:60]
             ok = res["hfm"] in ("warning_dialog", "interstitial", "blocked_no_http") and res["tpc"] == "third_party_blocked"
             res["verdict"] = "pass" if ok else "fail"
@@ -335,6 +409,9 @@ def main():
     fpv = res.get("fp_verdict")
     print("FINGERPRINT_E2E", {"shielded": "PASS", None: "NOT_RUN", "no_result": "NOT_RUN"}.get(fpv, "FAIL"),
           f"verdict={fpv} reasons={res.get('fp_reasons')}")
+    adv = res.get("ad_verdict")
+    print("ADBLOCK_E2E", {"blocked": "PASS", None: "NOT_RUN", "no_result": "NOT_RUN"}.get(adv, "FAIL"),
+          f"verdict={adv} attempts={len(res.get('ad_attempts', []))}")
     return 1 if res["verdict"] == "fail" else 0
 
 

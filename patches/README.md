@@ -197,6 +197,19 @@ Google ने Android पर 155.0.8059.84 जारी किया (security f
   अलग key → अलग, idempotent 0, sub-rect 0, capacity guard; audio max relative 7.8e-6।
 - Licence: अपना code (BSD-style header); Brave "farbling" का केवल विचार सार्वजनिक है, code नहीं लिया।
 
+## 0012-swiftra-adblock.patch + 0013-swiftra-adblock-ruleset.py (2026-10-18 — Ad & Tracker Blocker)
+- Chromium का अपना subresource_filter, सभी sites पर: preset `swiftra_adblock_on_all_sites` (ALL_SITES, priority 900),
+  feature `kSwiftraAdBlock` (ENABLED_BY_DEFAULT)।
+- Ruleset APK में grit resource `IDR_SWIFTRA_ADBLOCK_RULESET` (gzip) के रूप में; `BrowserProcessImpl` इसे startup के बाद
+  background में index करके publish करता है। Version `swiftra.<sha256[:16]>`, जिसे 0013 तय करता है।
+- Google का "Subresource Filter Rules" component register नहीं होता, ताकि वह Swiftra ruleset को बदल न सके और Google को
+  request भी न जाए।
+- हर page पर दिखने वाला Android "Ads blocked" message बंद है; Page Info में ads की स्थिति और हर site का switch बने रहते हैं।
+- 0013 (transform): `adblock/swiftra-ruleset.pb.gz` को `src/chrome/browser/resources/swiftra/adblock_ruleset.pb` में रखता है।
+  Ruleset का SHA-256 script में pinned है, इसलिए mismatch होने पर build रुक जाता है।
+- Lists: EasyList/EasyPrivacy (CC BY-SA 3.0) और AdAway hosts (CC BY 3.0); attribution `adblock/README.md` में है।
+- Design और सत्यापन: `docs/adblock-design.md`। Desktop Chromium 156 matcher: PASS। Device E2E: NOT RUN।
+
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।
