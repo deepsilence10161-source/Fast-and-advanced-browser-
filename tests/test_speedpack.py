@@ -231,3 +231,18 @@ def test_speed_restart_verifies_new_process_and_exact_flags(monkeypatch):
     r = se.restart("com.swiftra.app", "com.swiftra.app/.Main", "swiftra", "sock")
     assert r["flags_applied"] and r["pid"] == "202" and len(r["tries"]) == 2 and not r["tries"][0]["ready"]
     assert "--disable-field-trial-config" not in r["cmdline"]
+
+
+def test_screenshot_never_raises(monkeypatch, tmp_path):
+    sys.path.insert(0, os.path.join(ROOT, "scripts", "ci"))
+    import shield_e2e as sh
+    import subprocess as sp
+
+    def hang(*a, **k):
+        raise sp.TimeoutExpired(a[0], 20)
+    monkeypatch.setattr(sh.subprocess, "run", hang)
+    assert sh.screenshot(str(tmp_path / "x.png")) is False
+    for f in ("shield_e2e.py", "advanced_e2e.py", "speed_e2e.py"):
+        body = open(os.path.join(ROOT, "scripts", "ci", f), encoding="utf-8").read()
+        calls = body.count('"screencap", "-p"') + body.count("screencap -p")
+        assert calls == (1 if f == "shield_e2e.py" else 0), f   # only the guarded helper runs screencap

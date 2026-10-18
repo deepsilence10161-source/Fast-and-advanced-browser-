@@ -33,7 +33,7 @@ import threading
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from shield_e2e import adb, open_internal, page_text, targets, internal_text  # noqa: E402
+from shield_e2e import adb, open_internal, page_text, screenshot, targets, internal_text  # noqa: E402
 from startup_netlog import CMDLINE_FILE, CMDLINE_JS, resolve_launcher  # noqa: E402
 
 HTTP_PORT, HTTPS_PORT = 8770, 8771
@@ -375,13 +375,13 @@ def main():
             res["hfm_page"], res["hfm_http_hits"] = r, http_hits()
             res["hfm_dialog_text"] = ui_dialog_text()
             res["hfm"] = hfm_verdict(r, res["hfm_http_hits"], res["hfm_dialog_text"])
-            subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'hfm.png')}'", shell=True, timeout=30)
+            screenshot(os.path.join(a.out, 'hfm.png'))
             # 2. third-party cookies
             res["tpc_open"] = open_internal(DEVTOOLS, f"https://{TOP_HOST}/top.html")
             r = eval_on(TOP_HOST, RESULT_JS, wait=25, until=lambda x: x.get("title") == "3PC:done")
             res["tpc_page"] = r
             res["tpc"] = tpc_verdict(r)
-            subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'tpc.png')}'", shell=True, timeout=30)
+            screenshot(os.path.join(a.out, 'tpc.png'))
             # 3. fingerprint shield (patches/0011): same probes on two unrelated top-level sites
             fp = {}
             for host in (FP_A, FP_B):
@@ -391,7 +391,7 @@ def main():
                     fp[host] = json.loads((r or {}).get("r") or "null")
                 except ValueError:
                     fp[host] = None
-                subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, host + '.png')}'", shell=True, timeout=30)
+                screenshot(os.path.join(a.out, host + '.png'))
             res["fp"] = fp
             res["fp_verdict"], res["fp_reasons"] = fp_verdict(fp.get(FP_A), fp.get(FP_B))
             # 4. ad & tracker blocker (patches/0012+0013). The bundled ruleset is indexed in the background after
@@ -416,7 +416,7 @@ def main():
             time.sleep(4)
             res["credits"] = internal_text(DEVTOOLS, "chrome://credits", CREDITS_JS)
             res["credits_verdict"] = credits_verdict(res["credits"])
-            subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'adblock.png')}'", shell=True, timeout=30)
+            screenshot(os.path.join(a.out, 'adblock.png'))
             res["server_hits"] = HITS[:60]
             ok = res["hfm"] in ("warning_dialog", "interstitial", "blocked_no_http") and res["tpc"] == "third_party_blocked"
             res["verdict"] = "pass" if ok else "fail"

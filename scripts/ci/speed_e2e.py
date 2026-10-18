@@ -41,7 +41,7 @@ import zlib
 import struct
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from shield_e2e import adb, browser_ws, open_internal, page_text, targets  # noqa: E402
+from shield_e2e import adb, browser_ws, open_internal, page_text, screenshot, targets  # noqa: E402
 from startup_netlog import CMDLINE_FILE, CMDLINE_JS, resolve_launcher  # noqa: E402
 
 PORT = 8772
@@ -426,7 +426,7 @@ def load_page(rid, shot=None):
         time.sleep(1)
     time.sleep(1)
     if shot:
-        subprocess.run(f"adb exec-out screencap -p > '{shot}'", shell=True, timeout=30)
+        screenshot(shot)
     out = {"open": r, "page": None, "reopened": reopened}
     try:
         out["page"] = json.loads(val["r"]) if val else None
@@ -542,37 +542,42 @@ def main():
         for c in range(a.cycles):
             cyc = {}
             for mode in MODES:
-                st = restart(pkg, comp, mode, a.socket)
-                rec = {"restart": st, "loads": []}
-                if st["flags_applied"]:
-                    load_page(f"w{c}{mode[0]}")    # warm-up (renderer, TLS session, ruleset), not counted
-                    for i in range(a.loads):
-                        shot = os.path.join(a.out, f"page_{mode}_{c}.png") if i == a.loads - 1 else None
-                        rec["loads"].append(load_page(f"c{c}{mode[0]}{i}", shot))
-                    rec["download"] = run_download(f"d{c}{mode[0]}")
-                    rec["bench"] = run_bench(f"b{c}{mode[0]}")
-                    subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, f'download_{mode}_{c}.png')}'",
-                                   shell=True, timeout=30)
-                cyc[mode] = rec
+                rec = cyc[mode] = {"restart": {"flags_applied": False}, "loads": []}
+                try:
+                    st = rec["restart"] = restart(pkg, comp, mode, a.socket)
+                    if st["flags_applied"]:
+                        load_page(f"w{c}{mode[0]}")    # warm-up (renderer, TLS session, ruleset), not counted
+                        for i in range(a.loads):
+                            shot = os.path.join(a.out, f"page_{mode}_{c}.png") if i == a.loads - 1 else None
+                            rec["loads"].append(load_page(f"c{c}{mode[0]}{i}", shot))
+                        rec["download"] = run_download(f"d{c}{mode[0]}")
+                        screenshot(os.path.join(a.out, f"download_{mode}_{c}.png"))
+                        rec["bench"] = run_bench(f"b{c}{mode[0]}")
+                except Exception as e:  # noqa: BLE001 - keep every other measurement
+                    rec["error"] = f"{type(e).__name__}: {e}"[:400]
+                st = rec["restart"]
                 print(f"cycle {c} {mode}:", json.dumps({"flags": st["flags_applied"],
                       "loads": [x.get("page") for x in rec["loads"]],
                       "download": (rec.get("download") or {}).get("server"),
                       "bench": (rec.get("bench") or {}).get("result")})[:1400], flush=True)
             res["cycles"].append(cyc)
+            json.dump(res, open(os.path.join(a.out, "speed_e2e.json"), "w"), indent=1, ensure_ascii=False)
     finally:
         adb("shell", "rm", "-f", CMDLINE_FILE)
         adb("shell", "am", "clear-debug-app")
         adb("shell", "am", "force-stop", pkg)
-    ran = all(c[m]["restart"]["flags_applied"] for c in res["cycles"] for m in MODES) and res["cycles"]
-    res["summary"] = summarize(res) if ran else None
+    res["all_flags_applied"] = bool(res["cycles"]) and all(
+        c[m]["restart"]["flags_applied"] for c in res["cycles"] for m in MODES)
+    some = {m: any(c[m]["restart"]["flags_applied"] for c in res["cycles"]) for m in MODES}
+    res["summary"] = summarize(res) if all(some.values()) else None
     json.dump(res, open(os.path.join(a.out, "speed_e2e.json"), "w"), indent=1, ensure_ascii=False)
-    if not ran:
-        print("SPEED_E2E NOT_RUN flags not applied")
+    if not res["summary"]:
+        print("SPEED_E2E NOT_RUN flags not applied in some mode:", some)
         return 0
     s = res["summary"]
     print("speed summary:", json.dumps(s, ensure_ascii=False))
     d, w = s["chromium_defaults"], s["swiftra"]
-    print(f"SPEED_E2E MEASURED load_ms {d['load_ms']}->{w['load_ms']} lcp_ms {d['lcp_ms']}->{w['lcp_ms']} "
+    print(f"SPEED_E2E {'MEASURED' if res['all_flags_applied'] else 'PARTIAL'} load_ms {d['load_ms']}->{w['load_ms']} lcp_ms {d['lcp_ms']}->{w['lcp_ms']} "
           f"kib {d['kib']}->{w['kib']} requests {d['requests']}->{w['requests']} "
           f"download_s {d['download_s']}->{w['download_s']} conns {d['download_conns']}->{w['download_conns']} "
           f"bench_ms {d.get('bench_ms')}->{w.get('bench_ms')} "

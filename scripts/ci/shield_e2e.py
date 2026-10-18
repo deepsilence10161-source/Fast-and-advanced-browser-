@@ -207,6 +207,19 @@ def page_text(devtools, url, expression=None):
     return None
 
 
+def screenshot(path):
+    """Never let a hung `adb exec-out screencap` abort a test (speed A/A run 39132154988 lost its result to one)."""
+    try:
+        r = subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20)
+        if r.stdout:
+            with open(path, "wb") as f:
+                f.write(r.stdout)
+            return True
+    except (subprocess.TimeoutExpired, OSError):
+        pass
+    return False
+
+
 def ui_text():
     adb("shell", "uiautomator", "dump", "/sdcard/shield.xml", timeout=40)
     xml = adb("shell", "cat", "/sdcard/shield.xml", timeout=20)
@@ -267,8 +280,7 @@ def download_case(package, case, expected, out):
         if case == "clean" and f"swiftra-{case}" in downloads_listing() and time.time() - t0 > 6:
             break
         time.sleep(1.5)
-    with open(os.path.join(out, f"download_{case}.png"), "wb") as f:
-        f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+    screenshot(os.path.join(out, f"download_{case}.png"))
     if dialog:
         taps.append("Cancel" if dl_tap(dl_nodes(), "Cancel") else "Cancel(not found)")
         time.sleep(3)
@@ -400,8 +412,7 @@ def set_safe_browsing(package, mode, out):
     checked = bool(radios) and abs(radios[0]["cy"] - title[-1]["cy"]) < 150 and radios[0]["checked"]
     with open(os.path.join(out, f"safe_browsing_{mode.split()[0].lower()}.xml"), "w", encoding="utf-8") as f:
         f.write(xml)
-    with open(os.path.join(out, f"safe_browsing_{mode.split()[0].lower()}.png"), "wb") as f:
-        f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+    screenshot(os.path.join(out, f"safe_browsing_{mode.split()[0].lower()}.png"))
     page_text_ = [n["text"] for n in ns if n["text"]]
     back = to_browser(package)
     return {"set": checked, "log": log, "page_text": page_text_[:150], "back_to_browser": back}
@@ -512,8 +523,7 @@ def esb_details(package, out):
         ns, xml = ui_nodes()
         with open(os.path.join(out, f"esb_details_{k}.xml"), "w", encoding="utf-8") as f:
             f.write(xml)
-        with open(os.path.join(out, f"esb_details_{k}.png"), "wb") as f:
-            f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+        screenshot(os.path.join(out, f"esb_details_{k}.png"))
         texts += [n["text"] for n in ns if n["text"] and n["text"] not in texts]
         adb("shell", "input", "swipe", "540", "1700", "540", "700", "400"); time.sleep(1.2)
     t = " ".join(texts)
@@ -661,8 +671,7 @@ def run_case(a, cid, url, expected, marker, native_ui_check=False):
         if got != "unknown" and (got == expected or got.startswith("blocked")):
             break
     time.sleep(2)  # let the compositor present the final frame (Redroid can show a stale one)
-    with open(os.path.join(a.out, f"{cid}.png"), "wb") as f:
-        f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+    screenshot(os.path.join(a.out, f"{cid}.png"))
     passed = got == expected
     rec = {"id": cid, "url": url, "expected": expected, "got": got, "pass": passed, "source": src,
            "text_head": (text or "")[:300]}
