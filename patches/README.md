@@ -226,3 +226,12 @@ Google ने Android पर 155.0.8059.84 जारी किया (security f
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।
+
+## 0016-swiftra-speedpack.py (2026-10-18 — Swiftra Speed Pack)
+- Transform: `src/testing/variations/fieldtrial_testing_config.json` में सिर्फ़ 80 audited performance studies
+  (Google/तीसरे पक्ष से कोई संपर्क नहीं, UI में कोई बदलाव नहीं; हर study का नाम और features pin) और
+  `SwiftraParallelDownloading` (5 connections, 512 KiB slices) बचते हैं।
+- `args.gn`: `disable_fieldtrial_testing_config = false`। Config binary में compile होता है और startup पर लागू होता है;
+  कुछ भी download नहीं होता।
+- Device पर जाँच: shield_e2e का variations step (`speedpack_check.py`, नतीजा `speedpack_only`) और network audit।
+  Speed का माप: `scripts/ci/speed_e2e.py`। विवरण: `docs/speed-pack.md`।

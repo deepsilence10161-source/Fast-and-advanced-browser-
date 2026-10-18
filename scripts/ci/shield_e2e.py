@@ -433,12 +433,14 @@ VERSION_JS = r"""(() => {
     source_hidden: sec ? sec.hidden : null,
     variations_chars: ((q('#variations-list') || {}).textContent || '').trim().length,
     cmd_chars: ((q('#variations-cmd') || {}).textContent || '').trim().length,
+    cmd: ((q('#variations-cmd') || {}).textContent || '').trim().slice(0, 60000),
     version: ((q('#version') || {}).textContent || '').trim().slice(0, 80)});
 })()"""
 
 
 def variations_state(devtools):
-    r = open_internal(devtools, "chrome://version/")
+    # ?show-variations-cmd fills #variations-cmd with --force-fieldtrials=Study/Group/... (plain text)
+    r = open_internal(devtools, "chrome://version/?show-variations-cmd")
     time.sleep(3)
     raw = internal_text(devtools, "chrome://version", VERSION_JS)
     try:
@@ -448,7 +450,12 @@ def variations_state(devtools):
     if not isinstance(v, dict):
         return {"open": r, "pass": False, "error": "chrome://version not readable", "raw": str(raw)[:200]}
     v["open"] = r
-    v["pass"] = "field-trial-config" not in v.get("source", "")
+    # 0016 Speed Pack: the testing config may be active, but only with the audited studies (speedpack_check.py)
+    from speedpack_check import verdict as speedpack_verdict
+    sp = speedpack_verdict(v.get("source", ""), v.get("cmd", ""))
+    v["speedpack"] = sp
+    v["cmd"] = v.get("cmd", "")[:3000]
+    v["pass"] = sp["verdict"] in ("no_testing_config", "speedpack_only")
     return v
 
 

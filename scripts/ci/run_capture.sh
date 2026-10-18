@@ -40,6 +40,9 @@ if [ "$T" != chrome_ref ]; then
   # patches/0010: HTTPS-First (balanced) + third-party cookies blocked, checked by behaviour (local mapped hosts)
   timeout 240 python3 scripts/ci/advanced_e2e.py --package "$PKG" --out "$OUT/advanced" 2>&1 | tee "$OUT/advanced_e2e.txt"
   echo "advanced_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  # Speed (0016 Speed Pack + 0012 ad blocker): same APK, chromium_defaults vs swiftra, alternated; local mapped hosts
+  timeout 900 python3 scripts/ci/speed_e2e.py --package "$PKG" --out "$OUT/speed" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/speed_e2e.txt"
+  echo "speed_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 fi
 timeout 60 adb logcat -d | grep -iE "chromium|chrome|FATAL|AndroidRuntime|ndk_translation|DEBUG" | tail -400 > "$OUT/logcat_tail.txt"
 exit 0

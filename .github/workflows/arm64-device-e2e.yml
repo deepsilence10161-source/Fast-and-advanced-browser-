@@ -18,7 +18,7 @@ permissions:
 jobs:
   e2e:
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       T: chromium_source_arm64
       # adb server local port 5555 को "emulator-5554" के रूप में भी खोज लेता है — वही device दो नाम

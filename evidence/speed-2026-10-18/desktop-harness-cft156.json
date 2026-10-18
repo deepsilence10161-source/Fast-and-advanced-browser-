@@ -1,0 +1,123 @@
+{
+ "what": "speed_e2e.py server + page metrics + Chromium parallel download, desktop component check",
+ "browser": "Chrome for Testing 156.0.8078.4 (Playwright), headless=new, linux x64 sandbox",
+ "A3": "--enable-features=ParallelDownloading (Chromium defaults: request_count 3, min_slice 1365333, remaining 2s)",
+ "B5": "--enable-features=ParallelDownloading:request_count/5/min_slice_size/524288/parallel_request_remaining_time/1 (Swiftra 0016 values)",
+ "server": "24 MiB, 1 MiB/s per connection; page: 60 ms/response latency, ad servers 150 ms, 250 KiB/s per connection",
+ "results": {
+  "A3": {
+   "loads": [
+    [
+     {
+      "load": 1448,
+      "dcl": 548,
+      "ttfb": 111,
+      "fcp": 356,
+      "lcp": 404,
+      "resources": 38,
+      "transfer": 766813
+     },
+     {
+      "requests": 47,
+      "bytes": 908383,
+      "ad_requests": 15,
+      "ad_bytes": 284395,
+      "server_span_ms": 1398
+     }
+    ],
+    [
+     {
+      "load": 1358,
+      "dcl": 483,
+      "ttfb": 70,
+      "fcp": 296,
+      "lcp": 360,
+      "resources": 37,
+      "transfer": 766513
+     },
+     {
+      "requests": 47,
+      "bytes": 908383,
+      "ad_requests": 15,
+      "ad_bytes": 284395,
+      "server_span_ms": 1348
+     }
+    ]
+   ],
+   "dl": {
+    "requests": 3,
+    "ranges": [
+     null,
+     "bytes=8388608-",
+     "bytes=16777216-"
+    ],
+    "covered": 25165824,
+    "complete": true,
+    "all_closed": true,
+    "seconds": 8.08,
+    "max_concurrent": 3
+   },
+   "files": [
+    "swiftra-speed-A3d.zip"
+   ]
+  },
+  "B5": {
+   "loads": [
+    [
+     {
+      "load": 1469,
+      "dcl": 562,
+      "ttfb": 119,
+      "fcp": 372,
+      "lcp": 420,
+      "resources": 38,
+      "transfer": 766813
+     },
+     {
+      "requests": 47,
+      "bytes": 908383,
+      "ad_requests": 15,
+      "ad_bytes": 284395,
+      "server_span_ms": 1410
+     }
+    ],
+    [
+     {
+      "load": 1358,
+      "dcl": 485,
+      "ttfb": 69,
+      "fcp": 284,
+      "lcp": 332,
+      "resources": 37,
+      "transfer": 766513
+     },
+     {
+      "requests": 47,
+      "bytes": 908383,
+      "ad_requests": 15,
+      "ad_bytes": 284395,
+      "server_span_ms": 1351
+     }
+    ]
+   ],
+   "dl": {
+    "requests": 5,
+    "ranges": [
+     null,
+     "bytes=5033164-",
+     "bytes=10066328-",
+     "bytes=15099492-",
+     "bytes=20132656-"
+    ],
+    "covered": 25165824,
+    "complete": true,
+    "all_closed": true,
+    "seconds": 4.87,
+    "max_concurrent": 5
+   },
+   "files": [
+    "swiftra-speed-B5d.zip"
+   ]
+  }
+ }
+}

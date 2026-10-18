@@ -4,7 +4,11 @@ debuggable_apks = false
 # non-Chrome browsers ...) should disable the testing config". Without this an unbranded build
 # applies all ~1128 experimental studies by default (incl. MaliciousApkDownloadCheck = APK download
 # pings to Google in Standard protection, CSD skip-scoring pings). ungoogled-chromium/Thorium do the same.
-disable_fieldtrial_testing_config = true
+# 0016 (2026-10-18, Swiftra Speed Pack): the testing config is ON again, but patches/0016-swiftra-speedpack.py
+# rewrites it to ONLY audited performance studies (no Google contact, no UI change) + Swiftra's own
+# (SwiftraParallelDownloading). Compiled in, applied at startup instead of a seed -- nothing is downloaded.
+# Device check: scripts/ci/speedpack_check.py via shield_e2e (chrome://version/?show-variations-cmd).
+disable_fieldtrial_testing_config = false
 # 0012/0013 (2026-10-18): non-official builds otherwise ship components/resources/sample_credits.html instead of the
 # real third-party notices (components/resources/BUILD.gn: generate_about_credits = is_official_build). Swiftra must
 # carry the Chromium third-party licence notices and the ad-block list attribution (chrome://credits).
