@@ -80,6 +80,27 @@ Malware/UwS के लिए ऐसी कोई नई feed नहीं मि
 अगला रास्ता (research बाकी है): list के बिना on-device download सुरक्षा। उदाहरण: HTTP या IP-literal host से APK,
 double extension (`.pdf.apk`) जैसे संकेत।
 
+## Download Shield design (patch 0015, NOT WRITTEN; research done 18-10-2026 @155)
+- Gap: Android download URL checks never run.
+  - `DownloadProtectionDelegateAndroid::ShouldCheckDownloadUrl` requires `kMaliciousApkDownloadCheck`, which is
+    disabled by default (Chrome enables it via Finch).
+  - `RemoteSafeBrowsingDatabaseManager::CheckDownloadUrl` returns `true` (safe) unconditionally.
+  - So downloads started with `<a download>` or by JS, and their redirect chains, are never checked against the Shield
+    list.
+- Plan (three files):
+  1. `remote_database_manager.cc`: `ClientRequest` gets download mode. It checks each URL of the chain through
+     `SafeBrowsingApiHandlerBridge::StartHashDatabaseUrlCheck` (threat types URL_MALWARE / URL_PHISHING / URL_UNWANTED,
+     answered by Shield). The first hit calls `OnCheckDownloadUrlResult(chain, SB_THREAT_TYPE_URL_BINARY_MALWARE)`,
+     because `DownloadUrlSBClient::IsDangerous` only accepts BINARY_MALWARE.
+  2. `download_protection_delegate_android.cc`: `ShouldCheckDownloadUrl` is true when Safe Browsing is enabled.
+     `MayCheckClientDownload` stays gated, so no ClientDownloadRequest ping is sent to Google.
+  3. `chrome_download_manager_delegate.cc CheckDownloadUrl`: on Android,
+     `is_content_check_supported &= kMaliciousApkDownloadCheck`. Otherwise a safe APK would get
+     `MAYBE_DANGEROUS_CONTENT` and skip the `DANGEROUS_FILE` logic in `DoCheckVisitedReferrerBefore`.
+- Result: `DANGEROUS_URL` → Android dangerous-download dialog. E2E: `<a download>` to the Shield canary
+  `127.0.0.1/__swiftra_shield_canary__/malware.html` variant (a canary entry for a download path must be added to
+  `scripts/shield/build_shield_db.py`).
+
 ## Enhanced protection (c2b, patches/0007)
 - **मापा गया तथ्य (2026-10-17, `tools/sb_rt_probe.py`):** Enhanced protection जिस URL real-time endpoint (`safebrowsing.google.com/safebrowsing/clientreport/realtime`, `UrlRealTimeMechanism`) को पूछता है, वह बिना key या login के भी उत्तर देता है।
   - `testsafebrowsing …/s/phishing.html` → SOCIAL_ENGINEERING / DANGEROUS
