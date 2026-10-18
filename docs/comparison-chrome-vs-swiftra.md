@@ -25,7 +25,7 @@
 | 12 | B. सुरक्षा | Secure DNS (DoH) | automatic mode | automatic mode; Redroid NetLog में DoH upgrade दिखा | Redroid NetLog (c2d) | PASS (Redroid) | **बराबर** | एक ही व्यवहार | मध्यम | DNS निजी | privacy-first DoH provider चुनने का साफ़ विकल्प पहली बार में | कम | 2:2 |
 | 13 | B. सुरक्षा | Post-quantum TLS + PQ WebCrypto (ML-KEM, ML-DSA, X-Wing) | Chrome 155 में | वही Chromium 155 engine | static; S7 | static | **बराबर** | एक ही engine | मध्यम | भविष्य की सुरक्षा | — | — | 2:2 |
 | 14 | B. सुरक्षा | Password leak check | हाँ (Google account के साथ) | toggle दिखता है पर बिना sign-in के काम नहीं करता (settings fix बाकी) | static; device पर NOT RUN | कमी | **Chrome** | Google का leak database चाहिए | मध्यम | चोरी हुए password की चेतावनी | k-anonymity वाला licence-साफ़ विकल्प या toggle को सच-सच छिपाना | मध्यम | 2:0 |
-| 15 | B. सुरक्षा | Fingerprinting से सुरक्षा | built-in सुरक्षा नहीं: Incognito Script Blocking "Do not launch"; canvas-readback block केवल Canary flag | patch 0011 (SwiftraFingerprintShield: canvas, WebGL readPixels, OfflineAudioContext पर site-आधारित noise) लिखा; build चल रहा | before-run (0010 APK, emulator x64 + arm64): FINGERPRINT_E2E FAIL no_shield (दो sites पर एक ही canvas/WebGL hash) — harness सही पकड़ता है; 0011 का after-run NOT RUN; S13 | कमी (दोनों); 0011 NOT RUN | **बराबर** | दोनों में नहीं | उच्च | cookies के बिना tracking | canvas/WebGL/audio readback सुरक्षा default चालू — सीधे Chrome से आगे | मध्यम | 3:3 |
+| 15 | B. सुरक्षा | Fingerprinting से सुरक्षा | built-in सुरक्षा नहीं: Incognito Script Blocking "Do not launch"; canvas-readback block केवल Canary flag | patch 0011 (SwiftraFingerprintShield: canvas, WebGL readPixels, OfflineAudioContext पर site-आधारित noise), default चालू; builds 39127524068 / 39127525981 | before (0010 APK): FINGERPRINT_E2E FAIL no_shield (दो sites पर एक ही canvas/WebGL hash); after (0011 APK): FINGERPRINT_E2E PASS shielded — arm64 Redroid 39144748799 + x64 emulator 39144742833 (हर site पर अलग canvas/WebGL/audio मान, एक site के अंदर स्थिर); evidence/fingerprint-2026-10-18; S13 | PASS (actual device arm64 Redroid + emulator x64) | **Swiftra** | Chrome में built-in सुरक्षा नहीं | उच्च | cookies के बिना tracking | canvas/WebGL/audio readback सुरक्षा default चालू — सीधे Chrome से आगे | मध्यम | 0:3 |
 | 16 | B. सुरक्षा | Spam notification चेतावनी (on-device ML) | Chrome Android का on-device model संदिग्ध site notifications पर चेतावनी देता है | model नहीं आता (optimization-guide models को API key चाहिए; c2b में models 0) | static + emulator (optimization-guide-internals खाली); S15 | कमी | **Chrome** | Google का model केवल Chrome को | मध्यम | notification scam | Shield सूची + notification दर-सीमा heuristics से चेतावनी | मध्यम | 2:0 |
 | 17 | B. सुरक्षा | Screen-share में password/payment छिपाना (Android 15+) | अक्टूबर 2026 से Chrome और WebView में | NOT RUN (Chromium code + OS पर निर्भर) | NOT RUN; S19 | NOT RUN | **अनिर्णीत** | जाँचा नहीं | मध्यम | screen-share scam | Android 15 emulator पर screen-share E2E | कम | — |
 | 18 | B. सुरक्षा | Download की सुरक्षा (<a download>, JS downloads, redirect chain) | Safe Browsing download check (ClientDownloadRequest Google को; Android पर MaliciousApkDownloadCheck Finch से) | patch 0015 (Swiftra Download Shield): download URL और पूरी redirect chain local Shield सूची से; खतरा → "File might be harmful" dialog; Google को कोई ping नहीं। APK अभी बना नहीं | static: 6 tests (patch साफ़ @155 पर apply, fake-device E2E logic); Shield DB canary; device E2E (DOWNLOAD_SHIELD_E2E: canary / redirect / clean) NOT RUN | static only | **अनिर्णीत** | बिना device E2E के दावा नहीं | उच्च | malware file से बचाव | 0015 वाला APK build + DOWNLOAD_SHIELD_E2E | मध्यम | — |
@@ -71,21 +71,21 @@
 
 ## अंतिम सारांश
 
-कुल **57** पंक्तियाँ — Swiftra **8**, Chrome **21**, बराबर **16**, अनिर्णीत **10**, लागू नहीं **2**। महत्व-भार वाले अंक: **Chrome 86 : Swiftra 55**।
+कुल **57** पंक्तियाँ — Swiftra **9**, Chrome **21**, बराबर **15**, अनिर्णीत **10**, लागू नहीं **2**। महत्व-भार वाले अंक: **Chrome 83 : Swiftra 55**।
 
 | क्षेत्र | Swiftra | Chrome | बराबर | अनिर्णीत | लागू नहीं |
 |---|---|---|---|---|---|
 | A. आधार / अपडेट | 1 | 1 | 2 | 1 | 0 |
-| B. सुरक्षा | 1 | 4 | 6 | 2 | 0 |
+| B. सुरक्षा | 2 | 4 | 5 | 2 | 0 |
 | C. Privacy | 5 | 0 | 1 | 1 | 0 |
 | D. सेवाएँ / features | 1 | 12 | 5 | 2 | 0 |
 | E. UI / सच्चाई / कानूनी | 0 | 1 | 1 | 0 | 2 |
 | F. Performance | 0 | 3 | 0 | 3 | 0 |
 | G. Arena लंबी chat | 0 | 0 | 1 | 1 | 0 |
-| **कुल** | **8** | **21** | **16** | **10** | **2** |
+| **कुल** | **9** | **21** | **15** | **10** | **2** |
 
-- **ईमानदार फ़ैसला:** आज कुल मिलाकर असली Chrome आगे है: 57 पंक्तियों में Chrome 21, Swiftra 8 जीतता है; महत्व-भार वाले अंक Chrome 86 : Swiftra 55 (बराबर में दोनों को अंक)। Swiftra अभी 'हर चीज़ में Chrome से आगे' नहीं है।
-- **उच्च-महत्व पंक्तियाँ:** उच्च महत्व की 24 पंक्तियों में: Chrome 7, Swiftra 2, बराबर 8, अनिर्णीत 5, लागू नहीं 2।
+- **ईमानदार फ़ैसला:** आज कुल मिलाकर असली Chrome आगे है: 57 पंक्तियों में Chrome 21, Swiftra 9 जीतता है; महत्व-भार वाले अंक Chrome 83 : Swiftra 55 (बराबर में दोनों को अंक)। Swiftra अभी 'हर चीज़ में Chrome से आगे' नहीं है।
+- **उच्च-महत्व पंक्तियाँ:** उच्च महत्व की 24 पंक्तियों में: Chrome 7, Swiftra 3, बराबर 7, अनिर्णीत 5, लागू नहीं 2।
 - **Swiftra की जीत:** privacy और पारदर्शिता: Standard Safe Browsing में शून्य डेटा बाहर, telemetry नहीं, server experiments नहीं, startup पर कम requests, autofill form data Google को नहीं, doodle ping नहीं, हर बदलाव खुले patch में।
 - **Chrome की जीत:** security patch level (.84 बनाम .80), अपने-आप update, Safe Browsing coverage + Enhanced AI, HTTPS-by-default, spam-notification चेतावनी, Google सेवाएँ (Sync, Password Manager, Translate, Gemini, Discover, पढ़कर सुनाना, WebAPK, price tracking, push), और emulator पर start/memory (अलग version, असली फ़ोन नहीं)।
 - **बराबर:** एक ही Chromium 155 engine वाली चीज़ें: site isolation, DoH, PQ crypto, JPEG XL, tabs/layout, दूसरे password manager, cookies default, fingerprinting सुरक्षा का न होना, extensions का न होना, search default।

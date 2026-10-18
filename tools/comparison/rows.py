@@ -366,12 +366,13 @@ row(G, "असली Arena पर लंबी chat",
 # ---------- v3: नई पंक्तियाँ (18-10-2026 का अतिरिक्त शोध) ----------
 row(B, "Fingerprinting से सुरक्षा",
     "built-in सुरक्षा नहीं: Incognito Script Blocking \"Do not launch\"; canvas-readback block केवल Canary flag",
-    "patch 0011 (SwiftraFingerprintShield: canvas, WebGL readPixels, OfflineAudioContext पर site-आधारित noise) लिखा; "
-    "build चल रहा",
-    "before-run (0010 APK, emulator x64 + arm64): FINGERPRINT_E2E FAIL no_shield (दो sites पर एक ही canvas/WebGL hash) — "
-    "harness सही पकड़ता है; 0011 का after-run NOT RUN; S13",
-    "कमी (दोनों); 0011 NOT RUN", "बराबर",
-    "दोनों में नहीं",
+    "patch 0011 (SwiftraFingerprintShield: canvas, WebGL readPixels, OfflineAudioContext पर site-आधारित noise), "
+    "default चालू; builds 39127524068 / 39127525981",
+    "before (0010 APK): FINGERPRINT_E2E FAIL no_shield (दो sites पर एक ही canvas/WebGL hash); after (0011 APK): "
+    "FINGERPRINT_E2E PASS shielded — arm64 Redroid 39144748799 + x64 emulator 39144742833 (हर site पर अलग canvas/WebGL/audio "
+    "मान, एक site के अंदर स्थिर); evidence/fingerprint-2026-10-18; S13",
+    "PASS (actual device arm64 Redroid + emulator x64)", "Swiftra",
+    "Chrome में built-in सुरक्षा नहीं",
     "canvas/WebGL/audio readback सुरक्षा default चालू — सीधे Chrome से आगे")
 row(B, "Spam notification चेतावनी (on-device ML)",
     "Chrome Android का on-device model संदिग्ध site notifications पर चेतावनी देता है",
