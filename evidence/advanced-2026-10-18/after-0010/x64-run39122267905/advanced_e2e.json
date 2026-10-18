@@ -1,0 +1,49 @@
+{
+ "package": "com.swiftra.app",
+ "rules": "MAP httponly.example.com 127.0.0.1:8770,MAP top.example.com 127.0.0.1:8771,MAP cookie3p.example.org 127.0.0.1:8771",
+ "version_open": "ok",
+ "flags_applied": true,
+ "command_line": " _ --host-resolver-rules=MAP httponly.example.com 127.0.0.1:8770,MAP top.example.com 127.0.0.1:8771,MAP cookie3p.example.org 127.0.0.1:8771 --ignore-certificate-errors --flag-switches-begin --flag-switches-end --use-mobile-user-agent --top-controls-show-threshold=0.5 --top-controls-hide-threshold=0.5 --use-mobile-user-agent --enable-viewport --enable-desktop-android-scrollbars --validate-input-event-stream --enable-longpress-drag-selection --touch-selection-strategy=direction --disable-composite",
+ "hfm_open": "ok",
+ "hfm_page": {
+  "title": "",
+  "href": "chrome-error://chromewebdata/",
+  "text": "",
+  "ids": [],
+  "target_url": "http://httponly.example.com/"
+ },
+ "hfm_http_hits": 0,
+ "hfm_dialog_text": "support a secure connection",
+ "hfm": "warning_dialog",
+ "tpc_open": "ok",
+ "tpc_page": {
+  "title": "3PC:done",
+  "r": "{\"fp\":\"fp=1\",\"frame\":[\"\",\"\"]}",
+  "fp": "fp=1",
+  "target_url": "https://top.example.com/top.html"
+ },
+ "tpc": "third_party_blocked",
+ "server_hits": [
+  [
+   8771,
+   "top.example.com",
+   "/top.html"
+  ],
+  [
+   8771,
+   "cookie3p.example.org",
+   "/frame?1"
+  ],
+  [
+   8771,
+   "cookie3p.example.org",
+   "/frame?2"
+  ],
+  [
+   8771,
+   "top.example.com",
+   "/favicon.ico"
+  ]
+ ],
+ "verdict": "pass"
+}

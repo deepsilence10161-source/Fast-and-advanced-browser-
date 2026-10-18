@@ -6,8 +6,8 @@ Winner values: Chrome | Swiftra | बराबर | अनिर्णीत | �
 """
 
 DATE = "18-10-2026"
-SWIFTRA_BUILD = ("Swiftra = Chromium 155.0.8059.80 source build (b1/a1), patches 0001-0009, "
-                 "commit b139e3b; x64 emulator + arm64 Redroid पर E2E।")
+SWIFTRA_BUILD = ("Swiftra = Chromium 155.0.8059.80 source build (b1/a1) + patch 0000 (.84 के सभी security fixes), "
+                 "patches 0000-0010, commit f2a3cd0; x64 emulator + arm64 Redroid पर E2E।")
 CHROME_REF = ("असली Chrome = Chrome 155.0.8059.84 for Android (15-10-2026)। "
               "Chrome पर हमारे अपने माप केवल Chrome 133 (emulator image) से हैं; बाकी तथ्य Google के आधिकारिक स्रोतों से।")
 
@@ -24,11 +24,12 @@ def row(*a):
 A = "A. आधार / अपडेट"
 row(A, "Engine version",
     "155.0.8059.84 (Android stable, 15-10-2026)",
-    "155.0.8059.80 (source build, x64 + arm64)",
-    "static: BUILD_INFO; S1",
-    "PASS (build)", "Chrome",
-    ".84 में 10 security fixes (1 critical: Prerender use-after-free CVE-2026-110922) जो .80 में नहीं",
-    "tag 155.0.8059.84 पर rebuild + पूरा E2E (tag मौजूद, HTTP 200 जाँचा)")
+    "code में .84 के सभी security fixes (patch 0000: Chromium 10 + V8 3 fixes); version label 155.0.8059.80 ही (जानबूझकर)",
+    "static: साफ़ .80 files पर patch → 33 files .84 tag से byte-identical; builds 39103667941 (x64) / 39103669428 (arm64); "
+    "emulator + arm64 Redroid E2E सारे gates PASS (39119631793, 39118129068); S1",
+    "PASS (build + E2E)", "बराबर",
+    "security code .84 के बराबर; केवल version label .80 दिखता है (VERSION/v8-version.h बदलने से लगभग पूरा rebuild होता)",
+    "अगले Chrome stable पर 48 घंटे में delta patch; tag-आधारित पूरा rebuild (version label सहित) अलग से")
 row(A, "Security update पहुँचना",
     "Play Store से अपने-आप, हर 1-2 हफ़्ते",
     "कोई update channel नहीं; Safety check सच बताता है कि version जाँच नहीं सकता",
@@ -83,11 +84,13 @@ row(B, "Enhanced protection",
     "on-device model से page-heuristics (licence-साफ़), download hash जाँच Shield में")
 row(B, "HTTPS-by-default (Always use secure connections, public sites)",
     "Google ने Chrome 154/155 में सभी users के लिए default चालू किया (server rollout)",
-    "HTTPS-Upgrades चालू; पर Balanced HTTPS-First का auto-enable code में default बंद, इसलिए केवल Enhanced के साथ चालू",
-    "static: chrome_features.cc @155 में kHttpsFirstBalancedModeAutoEnable = DISABLED_BY_DEFAULT; Swiftra में Finch नहीं; S5",
-    "कमी (static)", "Chrome",
-    "HTTP site पर Chrome पहले चेतावनी देता है, Swiftra Standard में नहीं",
-    "patch: kHttpsFirstBalancedModeAutoEnable default चालू + E2E (http://example.com पर interstitial)")
+    "patch 0010: Balanced HTTPS-First default चालू — HTTPS न देने वाली public site पर native चेतावनी "
+    "(\"This site doesn't support a secure connection\"), HTTP page बिना अनुमति fetch नहीं होता",
+    "emulator x64 (39119631793) + arm64 Redroid (39118129068): ADVANCED_E2E PASS (warning_dialog, HTTP hits 0); "
+    "पहले (0009): HTTP चुपचाप खुला (39103561212/39103562181); desktop Chromium 156 पर तरीका सत्यापित; S5",
+    "PASS (emulator + arm64)", "बराबर",
+    "Chrome यही server rollout (Finch) से देता है; Swiftra में code default, किसी server पर निर्भर नहीं",
+    "Settings में strict HTTPS-only विकल्प (private network सहित) + उसका E2E")
 row(B, "Warning page की सच्चाई",
     "Chrome के लिए सही",
     "\"Google Safe Browsing ने पाया\" जैसे झूठे दावे हटे; स्रोत सच-सच बताया जाता है",
@@ -156,11 +159,12 @@ row(C, "Form data Google को (Autofill crowdsourcing)",
     "—")
 row(C, "Third-party cookies",
     "default में चालू (Privacy Sandbox 17-10-2025 को बंद; केवल Incognito में block)",
-    "वही default",
-    "static; S9",
-    "static", "बराबर",
-    "एक ही default",
-    "default में third-party cookies block (+ site-wise अपवाद) — इससे सीधे Chrome से आगे")
+    "patch 0010: default में third-party cookies block (Settings/site-wise अपवाद संभव); first-party cookies (login) चालू",
+    "emulator x64 (39119631793) + arm64 Redroid (39118129068): cross-site iframe का s3p cookie दोनों loads में नहीं, "
+    "first-party fp=1 control मौजूद → PASS; पहले (0009): s3p=1 दिखा; S9",
+    "PASS (emulator + arm64)", "Swiftra",
+    "Chrome सामान्य tab में cross-site tracking cookies allow करता है; Swiftra default में रोकता है",
+    "site टूटने पर 'इस site के लिए अनुमति' flow का E2E; storage partitioning audit")
 row(C, "Ad / tracker blocking",
     "केवल intrusive-ads filter (Better Ads)",
     "वही engine; filter सूची component updater से आती है या नहीं — NOT RUN",
@@ -551,9 +555,9 @@ def full_rows():
 
 # Ordered plan to beat Chrome, used in summary.
 PLAN = [
-    ("1", "155.0.8059.84 पर rebuild + पूरा E2E", "security patch level में Chrome के बराबर", "Engine version", "कम"),
-    ("2", "HTTPS-First Balanced default चालू (patch)", "HTTPS-by-default में बराबर", "HTTPS", "कम"),
-    ("3", "third-party cookies default block", "Chrome से सीधे आगे (privacy)", "Third-party cookies", "कम"),
+    ("1", "पूरा (18-10): .84 security fixes (patch 0000) + पूरा E2E", "security patch level में Chrome के बराबर", "Engine version", "कम"),
+    ("2", "पूरा (18-10): HTTPS-First Balanced default चालू (patch 0010) + E2E", "HTTPS-by-default में बराबर", "HTTPS", "कम"),
+    ("3", "पूरा (18-10): third-party cookies default block (patch 0010) + E2E", "Chrome से सीधे आगे (privacy)", "Third-party cookies", "कम"),
     ("4", "fingerprinting सुरक्षा (canvas/WebGL/audio) default चालू", "Chrome से सीधे आगे (Chrome में यह launch ही नहीं हुई)", "Fingerprinting", "मध्यम"),
     ("5", "built-in ad/tracker blocker (licence-साफ़ सूची)", "Chrome से सीधे आगे", "Ad / tracker blocking", "मध्यम"),
     ("6", "पहली बार search engine चुनाव screen", "privacy में आगे", "Default search engine", "कम"),

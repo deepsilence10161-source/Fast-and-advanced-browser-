@@ -1,7 +1,7 @@
 # असली Chrome बनाम Swiftra: विस्तृत तुलना v3 (18-10-2026)
 
 - असली Chrome = Chrome 155.0.8059.84 for Android (15-10-2026)। Chrome पर हमारे अपने माप केवल Chrome 133 (emulator image) से हैं; बाकी तथ्य Google के आधिकारिक स्रोतों से।
-- Swiftra = Chromium 155.0.8059.80 source build (b1/a1), patches 0001-0009, commit b139e3b; x64 emulator + arm64 Redroid पर E2E।
+- Swiftra = Chromium 155.0.8059.80 source build (b1/a1) + patch 0000 (.84 के सभी security fixes), patches 0000-0010, commit f2a3cd0; x64 emulator + arm64 Redroid पर E2E।
 - स्थिति: **PASS (emulator)** = x64 Android emulator, **PASS (Redroid)** = arm64 Redroid, **static** = केवल स्रोत/कोड, **NOT RUN** = जाँचा नहीं, **कमी** = मौजूद नहीं।
 - विजेता: **Swiftra** / **Chrome** / **बराबर** / **अनिर्णीत** (माप/test नहीं) / **लागू नहीं** (कानूनी विषय)।
 - महत्व: उच्च = 3, मध्यम = 2, कम = 1 अंक। जीतने वाले को उतने अंक; बराबर में दोनों को; अनिर्णीत/लागू नहीं में किसी को नहीं।
@@ -11,7 +11,7 @@
 
 | # | क्षेत्र | सुविधा / मापदंड | असली Chrome 155 (Android) | Swiftra अभी | प्रमाण (test type + स्रोत) | Swiftra स्थिति | विजेता | कारण | महत्व | user पर असर | Chrome को हराने का अगला कदम | मेहनत | अंक (Chrome:Swiftra) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | A. आधार / अपडेट | Engine version | 155.0.8059.84 (Android stable, 15-10-2026) | 155.0.8059.80 (source build, x64 + arm64) | static: BUILD_INFO; S1 | PASS (build) | **Chrome** | .84 में 10 security fixes (1 critical: Prerender use-after-free CVE-2026-110922) जो .80 में नहीं | उच्च | पुराने security छेद खुले रहते हैं | tag 155.0.8059.84 पर rebuild + पूरा E2E (tag मौजूद, HTTP 200 जाँचा) | कम | 3:0 |
+| 1 | A. आधार / अपडेट | Engine version | 155.0.8059.84 (Android stable, 15-10-2026) | code में .84 के सभी security fixes (patch 0000: Chromium 10 + V8 3 fixes); version label 155.0.8059.80 ही (जानबूझकर) | static: साफ़ .80 files पर patch → 33 files .84 tag से byte-identical; builds 39103667941 (x64) / 39103669428 (arm64); emulator + arm64 Redroid E2E सारे gates PASS (39119631793, 39118129068); S1 | PASS (build + E2E) | **बराबर** | security code .84 के बराबर; केवल version label .80 दिखता है (VERSION/v8-version.h बदलने से लगभग पूरा rebuild होता) | उच्च | पुराने security छेद खुले रहते हैं | अगले Chrome stable पर 48 घंटे में delta patch; tag-आधारित पूरा rebuild (version label सहित) अलग से | कम | 3:3 |
 | 2 | A. आधार / अपडेट | Security update पहुँचना | Play Store से अपने-आप, हर 1-2 हफ़्ते | कोई update channel नहीं; Safety check सच बताता है कि version जाँच नहीं सकता | static + emulator (Safety check text); S1 | कमी | **Chrome** | Swiftra user को नया security fix अपने-आप नहीं मिलता | उच्च | नया fix user तक नहीं पहुँचता | अपना signed in-app update channel (APK signature + version pin) + हर Chrome stable पर 48 घंटे में rebuild | ज़्यादा | 3:0 |
 | 3 | A. आधार / अपडेट | Build पारदर्शिता | बंद (closed) build; Google की internal सेटिंग्स | हर बदलाव खुला patch (0001-0009), BUILD_INFO में patch hash, signer cert प्रकाशित | static: patches/, evidence/*/BUILD_INFO.txt | PASS (static) | **Swiftra** | कोई भी जाँच सकता है कि Swiftra में क्या बदला गया | मध्यम | भरोसा | reproducible build साबित करना (दो runners पर एक जैसा APK hash) | मध्यम | 0:2 |
 | 4 | A. आधार / अपडेट | App की अपनी सुरक्षा | Play-signed, Play Protect | non-debuggable, अपना release key, दूसरे key वाला update reject, same-key update सफल | PASS: device checks 9/9 (emulator + Redroid) | PASS (emulator + Redroid) | **बराबर** | तकनीकी सुरक्षा दोनों में; Play वितरण का भरोसा Chrome के पास | उच्च | नकली update से बचाव | release APK का SHA-256 + signer cert हर release पर प्रकाशित | कम | 3:3 |
@@ -19,7 +19,7 @@
 | 6 | B. सुरक्षा | Safe Browsing Standard: खतरे पकड़ने की क्षमता | local सूची (30-60 मिनट में update) + real-time hash-prefix जाँच Google के server-side सूची से | Swiftra Shield: ~908k signed entries (Phishing.Database MIT + TweetFeed CC0); phishing मज़बूत, malware कमज़ोर, UwS सूची नहीं | PASS: Shield E2E 13/13 (emulator + Redroid); S3 | आंशिक | **Chrome** | Google की सूची बहुत बड़ी, malware/UwS भी, और real-time | उच्च | phishing/malware से बचाव | licence-साफ़ malware/UwS स्रोत + पेज-heuristics + बार-बार signed update | ज़्यादा | 3:0 |
 | 7 | B. सुरक्षा | Safe Browsing Standard: privacy | safe-cache में न मिले URL का 4-byte encrypted hash-prefix Fastly OHTTP relay से Google को जाता है (IP छिपता है) | Standard में Google को URL/hash कुछ नहीं जाता; जाँच पूरी तरह फ़ोन पर | PASS: NetLog, 61 s window में Safe Browsing संपर्क 0 (c2c, c2d); S3, S4 | PASS (emulator + Redroid) | **Swiftra** | शून्य डेटा बाहर जाना hash-prefix भेजने से ज़्यादा निजी | उच्च | browsing निजी रहती है | यही privacy रखते हुए coverage बढ़ाना (ऊपर वाली पंक्ति) | — | 0:3 |
 | 8 | B. सुरक्षा | Enhanced protection | real-time URL जाँच, AI classification, deep download scan, account से जुड़ी सुरक्षा | Google real-time URL जाँच काम करती है + Shield भी; AI/deep scan नहीं (झूठा दावा UI से हटाया) | PASS: ESB E2E (unwanted page block), c2b/c2c | आंशिक | **Chrome** | AI और deep scan Google के private backend पर | मध्यम | opt-in users की अतिरिक्त सुरक्षा | on-device model से page-heuristics (licence-साफ़), download hash जाँच Shield में | ज़्यादा | 2:0 |
-| 9 | B. सुरक्षा | HTTPS-by-default (Always use secure connections, public sites) | Google ने Chrome 154/155 में सभी users के लिए default चालू किया (server rollout) | HTTPS-Upgrades चालू; पर Balanced HTTPS-First का auto-enable code में default बंद, इसलिए केवल Enhanced के साथ चालू | static: chrome_features.cc @155 में kHttpsFirstBalancedModeAutoEnable = DISABLED_BY_DEFAULT; Swiftra में Finch नहीं; S5 | कमी (static) | **Chrome** | HTTP site पर Chrome पहले चेतावनी देता है, Swiftra Standard में नहीं | उच्च | HTTP पर डेटा चोरी का खतरा | patch: kHttpsFirstBalancedModeAutoEnable default चालू + E2E (http://example.com पर interstitial) | कम | 3:0 |
+| 9 | B. सुरक्षा | HTTPS-by-default (Always use secure connections, public sites) | Google ने Chrome 154/155 में सभी users के लिए default चालू किया (server rollout) | patch 0010: Balanced HTTPS-First default चालू — HTTPS न देने वाली public site पर native चेतावनी ("This site doesn't support a secure connection"), HTTP page बिना अनुमति fetch नहीं होता | emulator x64 (39119631793) + arm64 Redroid (39118129068): ADVANCED_E2E PASS (warning_dialog, HTTP hits 0); पहले (0009): HTTP चुपचाप खुला (39103561212/39103562181); desktop Chromium 156 पर तरीका सत्यापित; S5 | PASS (emulator + arm64) | **बराबर** | Chrome यही server rollout (Finch) से देता है; Swiftra में code default, किसी server पर निर्भर नहीं | उच्च | HTTP पर डेटा चोरी का खतरा | Settings में strict HTTPS-only विकल्प (private network सहित) + उसका E2E | कम | 3:3 |
 | 10 | B. सुरक्षा | Warning page की सच्चाई | Chrome के लिए सही | "Google Safe Browsing ने पाया" जैसे झूठे दावे हटे; स्रोत सच-सच बताया जाता है | PASS: 0007 E2E (emulator + Redroid) | PASS | **बराबर** | दोनों अपने product के बारे में सच बोलते हैं | मध्यम | भरोसा | — | — | 2:2 |
 | 11 | B. सुरक्षा | Site isolation (password sites) | Android पर default चालू | वही code, Android पर default चालू (kSiteIsolationForPasswordSites); Finch न होने से कोई कमी नहीं | static: components/site_isolation/features.cc @155 | PASS (static) | **बराबर** | एक ही engine और default | उच्च | Spectre-जैसे हमलों से बचाव | ज़्यादा RAM वाले फ़ोन पर full site-per-process विकल्प | — | 3:3 |
 | 12 | B. सुरक्षा | Secure DNS (DoH) | automatic mode | automatic mode; Redroid NetLog में DoH upgrade दिखा | Redroid NetLog (c2d) | PASS (Redroid) | **बराबर** | एक ही व्यवहार | मध्यम | DNS निजी | privacy-first DoH provider चुनने का साफ़ विकल्प पहली बार में | कम | 2:2 |
@@ -32,7 +32,7 @@
 | 19 | C. Privacy | Server experiments (Finch / variations) | Google server से features चालू/बंद करता है | कोई server experiment नहीं; testing config भी बंद (disable_fieldtrial_testing_config) | static: patches/args.gn; chrome://version "default seed" | PASS (static) | **Swiftra** | व्यवहार अनुमानित और निजी; (कमी: Google के server-rollout वाले सुधार अपने-आप नहीं आते, देखें HTTPS पंक्ति) | मध्यम | निजता, अनुमानित व्यवहार | ज़रूरी rollout features को patch से default चालू करना | — | 0:2 |
 | 20 | C. Privacy | Startup पर background requests | Discover feed, doodle impression ping आदि (Chromium में मापा) | 0009 के बाद: Discover 2→0, doodle ping 2→0; doodle, AI Mode जाँच (+1 ListAccounts), suggestions, component update रखे | PASS: startup NetLog before/after (c2d), x64 + arm64 | PASS (emulator + Redroid) | **Swiftra** | कम requests = कम डेटा, कम tracking | मध्यम | कम डेटा, कम tracking | Translate/optimization-guide/component updater की और छँटाई | कम | 0:2 |
 | 21 | C. Privacy | Form data Google को (Autofill crowdsourcing) | form signatures Google को भेजकर बेहतर prediction | बिना key के बंद (0009) | PASS: NetLog में content-autofill 0 | PASS | **Swiftra** | privacy में बेहतर (सटीकता अलग पंक्ति में) | कम | निजता | — | — | 0:1 |
-| 22 | C. Privacy | Third-party cookies | default में चालू (Privacy Sandbox 17-10-2025 को बंद; केवल Incognito में block) | वही default | static; S9 | static | **बराबर** | एक ही default | उच्च | cross-site tracking | default में third-party cookies block (+ site-wise अपवाद) — इससे सीधे Chrome से आगे | कम | 3:3 |
+| 22 | C. Privacy | Third-party cookies | default में चालू (Privacy Sandbox 17-10-2025 को बंद; केवल Incognito में block) | patch 0010: default में third-party cookies block (Settings/site-wise अपवाद संभव); first-party cookies (login) चालू | emulator x64 (39119631793) + arm64 Redroid (39118129068): cross-site iframe का s3p cookie दोनों loads में नहीं, first-party fp=1 control मौजूद → PASS; पहले (0009): s3p=1 दिखा; S9 | PASS (emulator + arm64) | **Swiftra** | Chrome सामान्य tab में cross-site tracking cookies allow करता है; Swiftra default में रोकता है | उच्च | cross-site tracking | site टूटने पर 'इस site के लिए अनुमति' flow का E2E; storage partitioning audit | कम | 0:3 |
 | 23 | C. Privacy | Ad / tracker blocking | केवल intrusive-ads filter (Better Ads) | वही engine; filter सूची component updater से आती है या नहीं — NOT RUN | NOT RUN | NOT RUN | **अनिर्णीत** | जाँचा नहीं | उच्च | विज्ञापन, गति, निजता | built-in blocker, licence-साफ़ सूची (EasyList GPLv3/CC BY-SA पर कानूनी gate) | मध्यम | — |
 | 24 | C. Privacy | Default search engine | Google (EU में choice screen) | Chromium default (Google); पहली बार कोई चुनाव screen नहीं | emulator (omnibox) | PASS | **बराबर** | एक जैसा default | मध्यम | खोज की निजता | पहली बार search engine चुनाव (privacy engines सहित) — Chrome से आगे | कम | 2:2 |
 | 25 | D. सेवाएँ / features | Sign-in और Sync | पूरा Google account sync | काम नहीं करता: API key नहीं, Sync API Chromium-आधारित browsers के लिए प्रतिबंधित | static; पूरा flow NOT RUN | कमी | **Chrome** | Google की सेवा केवल Chrome के लिए | उच्च | devices के बीच data | अपना end-to-end encrypted sync (बिना Google) | ज़्यादा | 3:0 |
@@ -69,21 +69,21 @@
 
 ## अंतिम सारांश
 
-कुल **55** पंक्तियाँ — Swiftra **7**, Chrome **23**, बराबर **15**, अनिर्णीत **8**, लागू नहीं **2**। महत्व-भार वाले अंक: **Chrome 89 : Swiftra 49**।
+कुल **55** पंक्तियाँ — Swiftra **8**, Chrome **21**, बराबर **16**, अनिर्णीत **8**, लागू नहीं **2**। महत्व-भार वाले अंक: **Chrome 86 : Swiftra 55**।
 
 | क्षेत्र | Swiftra | Chrome | बराबर | अनिर्णीत | लागू नहीं |
 |---|---|---|---|---|---|
-| A. आधार / अपडेट | 1 | 2 | 1 | 1 | 0 |
-| B. सुरक्षा | 1 | 5 | 5 | 1 | 0 |
-| C. Privacy | 4 | 0 | 2 | 1 | 0 |
+| A. आधार / अपडेट | 1 | 1 | 2 | 1 | 0 |
+| B. सुरक्षा | 1 | 4 | 6 | 1 | 0 |
+| C. Privacy | 5 | 0 | 1 | 1 | 0 |
 | D. सेवाएँ / features | 1 | 12 | 5 | 2 | 0 |
 | E. UI / सच्चाई / कानूनी | 0 | 1 | 1 | 0 | 2 |
 | F. Performance | 0 | 3 | 0 | 2 | 0 |
 | G. Arena लंबी chat | 0 | 0 | 1 | 1 | 0 |
-| **कुल** | **7** | **23** | **15** | **8** | **2** |
+| **कुल** | **8** | **21** | **16** | **8** | **2** |
 
-- **ईमानदार फ़ैसला:** आज कुल मिलाकर असली Chrome आगे है: 55 पंक्तियों में Chrome 23, Swiftra 7 जीतता है; महत्व-भार वाले अंक Chrome 89 : Swiftra 49 (बराबर में दोनों को अंक)। Swiftra अभी 'हर चीज़ में Chrome से आगे' नहीं है।
-- **उच्च-महत्व पंक्तियाँ:** उच्च महत्व की 23 पंक्तियों में: Chrome 9, Swiftra 1, बराबर 7, अनिर्णीत 4, लागू नहीं 2।
+- **ईमानदार फ़ैसला:** आज कुल मिलाकर असली Chrome आगे है: 55 पंक्तियों में Chrome 21, Swiftra 8 जीतता है; महत्व-भार वाले अंक Chrome 86 : Swiftra 55 (बराबर में दोनों को अंक)। Swiftra अभी 'हर चीज़ में Chrome से आगे' नहीं है।
+- **उच्च-महत्व पंक्तियाँ:** उच्च महत्व की 23 पंक्तियों में: Chrome 7, Swiftra 2, बराबर 8, अनिर्णीत 4, लागू नहीं 2।
 - **Swiftra की जीत:** privacy और पारदर्शिता: Standard Safe Browsing में शून्य डेटा बाहर, telemetry नहीं, server experiments नहीं, startup पर कम requests, autofill form data Google को नहीं, doodle ping नहीं, हर बदलाव खुले patch में।
 - **Chrome की जीत:** security patch level (.84 बनाम .80), अपने-आप update, Safe Browsing coverage + Enhanced AI, HTTPS-by-default, spam-notification चेतावनी, Google सेवाएँ (Sync, Password Manager, Translate, Gemini, Discover, पढ़कर सुनाना, WebAPK, price tracking, push), और emulator पर start/memory (अलग version, असली फ़ोन नहीं)।
 - **बराबर:** एक ही Chromium 155 engine वाली चीज़ें: site isolation, DoH, PQ crypto, JPEG XL, tabs/layout, दूसरे password manager, cookies default, fingerprinting सुरक्षा का न होना, extensions का न होना, search default।
@@ -94,9 +94,9 @@
 
 | क्रम | काम | असर | संबंधित पंक्ति | मेहनत |
 |---|---|---|---|---|
-| 1 | 155.0.8059.84 पर rebuild + पूरा E2E | security patch level में Chrome के बराबर | Engine version | कम |
-| 2 | HTTPS-First Balanced default चालू (patch) | HTTPS-by-default में बराबर | HTTPS | कम |
-| 3 | third-party cookies default block | Chrome से सीधे आगे (privacy) | Third-party cookies | कम |
+| 1 | पूरा (18-10): .84 security fixes (patch 0000) + पूरा E2E | security patch level में Chrome के बराबर | Engine version | कम |
+| 2 | पूरा (18-10): HTTPS-First Balanced default चालू (patch 0010) + E2E | HTTPS-by-default में बराबर | HTTPS | कम |
+| 3 | पूरा (18-10): third-party cookies default block (patch 0010) + E2E | Chrome से सीधे आगे (privacy) | Third-party cookies | कम |
 | 4 | fingerprinting सुरक्षा (canvas/WebGL/audio) default चालू | Chrome से सीधे आगे (Chrome में यह launch ही नहीं हुई) | Fingerprinting | मध्यम |
 | 5 | built-in ad/tracker blocker (licence-साफ़ सूची) | Chrome से सीधे आगे | Ad / tracker blocking | मध्यम |
 | 6 | पहली बार search engine चुनाव screen | privacy में आगे | Default search engine | कम |
