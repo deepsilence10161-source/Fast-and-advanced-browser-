@@ -130,7 +130,18 @@ def eval_on(substr, js, wait=20, until=None):
     return last
 
 
-def hfm_verdict(r, http_hits=None):
+DIALOG_TEXTS = ("support a secure connection", "connection is not secure", "your connection is not private")
+
+
+def ui_dialog_text():
+    """The Android HTTPS-First warning is a native dialog (kHttpsFirstDialogUi), invisible to page JS: read the UI tree
+    (same dump method as shield_e2e.py)."""
+    adb("shell", "uiautomator", "dump", "/sdcard/adv_ui.xml", timeout=40)
+    xml = adb("shell", "cat", "/sdcard/adv_ui.xml").lower()
+    return next((t for t in DIALOG_TEXTS if t in xml), "")
+
+
+def hfm_verdict(r, http_hits=None, dialog=""):
     """interstitial = warning page rendered; blocked_no_http = error page and the plain-HTTP page was never fetched
     (same security outcome; desktop headless renders the HFM interstitial as an empty chrome-error page)."""
     if not r:
@@ -138,6 +149,8 @@ def hfm_verdict(r, http_hits=None):
     text = (r.get("title", "") + " " + r.get("text", ""))
     if HTTP_MARKER in text or http_hits:
         return "http_loaded_silently"
+    if dialog:
+        return "warning_dialog"
     if r.get("ids") or "not secure" in text.lower() or "secure connection" in text.lower():
         return "interstitial"
     if str(r.get("href", "")).startswith("chrome-error://") and http_hits == 0:
@@ -209,7 +222,8 @@ def main():
             time.sleep(4)   # a late silent fallback must not be missed
             r = eval_on(HTTP_HOST, HFM_JS, wait=5) or r
             res["hfm_page"], res["hfm_http_hits"] = r, http_hits()
-            res["hfm"] = hfm_verdict(r, res["hfm_http_hits"])
+            res["hfm_dialog_text"] = ui_dialog_text()
+            res["hfm"] = hfm_verdict(r, res["hfm_http_hits"], res["hfm_dialog_text"])
             subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'hfm.png')}'", shell=True, timeout=30)
             # 2. third-party cookies
             res["tpc_open"] = open_internal(DEVTOOLS, f"https://{TOP_HOST}/top.html")
@@ -218,7 +232,7 @@ def main():
             res["tpc"] = tpc_verdict(r)
             subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, 'tpc.png')}'", shell=True, timeout=30)
             res["server_hits"] = HITS[:40]
-            ok = res["hfm"] in ("interstitial", "blocked_no_http") and res["tpc"] == "third_party_blocked"
+            ok = res["hfm"] in ("warning_dialog", "interstitial", "blocked_no_http") and res["tpc"] == "third_party_blocked"
             res["verdict"] = "pass" if ok else "fail"
     finally:
         adb("shell", "rm", "-f", CMDLINE_FILE)

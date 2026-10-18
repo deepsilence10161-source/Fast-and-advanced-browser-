@@ -1,0 +1,4 @@
+net audit: {'verdict': 'clean', 'positive_control': True, 'quiet_violations': [], 'standard_google_hosts': ['accounts.google.com', 'fonts.gstatic.com', 't0.gstatic.com', 'www.google.com', 'www.gstatic.com', 'www.youtube.com'], 'standard_google_requests': {}, 'standard_requests_total': 5, 'enhanced_sb_hosts': ['safebrowsing.google.com']}
+SHIELD_E2E PASS
+STARTUP_NETLOG PASS
+[09:58:51] timings: {'cold_ms': [773, 693, 682, 714, 741, 699, 698, 734, 714, 692], 'warm_ms': [222, 183, 186, 186, 185, 188, 184, 188, 186, 182], 'activity': 'com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher', 'landing_activities': ['com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity'], 'cold_ms_median': 706.5, 'cold_ms_p95': 773, 'warm_ms_median': 186.0, 'warm_ms_p95': 222, 'comparable': True}

@@ -16,6 +16,8 @@ def test_hfm_verdict():
     assert A.hfm_verdict(err, 0) == "blocked_no_http"
     assert A.hfm_verdict(err, 1) == "http_loaded_silently"
     assert A.hfm_verdict(err, None) == "unknown"
+    assert A.hfm_verdict(err, 0, "support a secure connection") == "warning_dialog"
+    assert A.hfm_verdict({"title": A.HTTP_MARKER, "text": "", "ids": []}, 2, "x") == "http_loaded_silently"
 
 
 def test_tpc_verdict():
