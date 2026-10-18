@@ -1,0 +1,2 @@
+[06:46:48] timings: {'cold_ms': [1011, 897, 864, 910, 967, 891, 982, 968, 1019, 849], 'warm_ms': [794, 643, 734, 756, 761, 677, 711, 557, 779, 714], 'activity': 'com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher', 'landing_activities': ['com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity'], 'cold_ms_median': 938.5, 'cold_ms_p95': 1019, 'warm_ms_median': 724.0, 'warm_ms_p95': 794, 'comparable': True}
+"pss_kb_after_example": 150206
