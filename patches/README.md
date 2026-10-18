@@ -235,3 +235,14 @@ meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता �
   कुछ भी download नहीं होता।
 - Device पर जाँच: shield_e2e का variations step (`speedpack_check.py`, नतीजा `speedpack_only`) और network audit।
   Speed का माप: `scripts/ci/speed_e2e.py`। विवरण: `docs/speed-pack.md`।
+
+## 0015-swiftra-download-shield.patch (2026-10-18 — Swiftra Download Shield)
+- Gap @155: Android पर download URL check कभी नहीं चलता (`ShouldCheckDownloadUrl` को `kMaliciousApkDownloadCheck` चाहिए,
+  जो default बंद है; `RemoteSafeBrowsingDatabaseManager::CheckDownloadUrl` हमेशा safe लौटाता था)। इसलिए `<a download>`,
+  JS से शुरू downloads और उनकी redirect chain Shield सूची से नहीं जाँची जाती थीं।
+- तीन files: `components/safe_browsing/android/remote_database_manager.cc` (chain का हर URL local Shield lookup से),
+  `chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc` (Safe Browsing चालू हो तो
+  URL check; Google को ClientDownloadRequest ping नहीं), `chrome/browser/download/chrome_download_manager_delegate.cc`
+  (Android पर content check केवल `kMaliciousApkDownloadCheck` के साथ, ताकि safe URL `NOT_DANGEROUS` रहे)।
+- सूचीबद्ध URL → `DANGEROUS_URL` → "File might be harmful" dialog। कोई नया network request नहीं।
+- Device E2E: `shield_e2e.py` की `DOWNLOAD_SHIELD_E2E` पंक्ति (canary / redirect / clean)। विवरण: `docs/swiftra-shield.md`।

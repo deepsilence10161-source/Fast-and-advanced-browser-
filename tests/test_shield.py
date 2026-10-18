@@ -152,7 +152,10 @@ class JavaTwin(unittest.TestCase):
                       ("https://www.google.com/", 0), ("http://malware.test/anything", 4), ("http://203.0.113.9/bin.exe", 4),
                       ("https://testsafebrowsing.appspot.com/s/phishing.html", 2), ("https://testsafebrowsing.appspot.com/s/malware.html", 4),
                       ("http://127.0.0.1:8000/__swiftra_shield_canary__/phishing.html", 2), ("https://example.com/", 0),
-                      ("https://evil-tenant.github.io/a", 2), ("https://github.io/", 0)]
+                      ("https://evil-tenant.github.io/a", 2), ("https://github.io/", 0),
+                      # patches/0015 Download Shield canary (exact path; a sibling file is not listed)
+                      ("http://127.0.0.1:8001/__swiftra_shield_canary__/download/swiftra-canary.zip", 4),
+                      ("http://127.0.0.1:8001/__swiftra_shield_canary__/download/clean.zip", 0)]
             _write(os.path.join(d, "c.tsv"), "\n".join(f"{u}\t{t}" for u, t in checks) + "\n")
             src = [os.path.join(ROOT, "shield", "java", "org", "chromium", "components", "safe_browsing", "SwiftraShield.java"),
                    os.path.join(ROOT, "shield", "javatest", "ShieldParity.java"),

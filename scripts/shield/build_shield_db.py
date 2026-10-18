@@ -54,6 +54,9 @@ CANARIES = [
     # real-time lookup for it -> proves Shield still blocks when Google says SAFE (patches/0007).
     # The path does not exist on the host (404), nothing harmful is served.
     ("testsafebrowsing.appspot.com/s/swiftra_shield_canary.html", PHISH),
+    # patches/0015 Download Shield: a download that bypasses navigation (<a download>, also reached through a
+    # redirect) must be checked against the list. Loopback only; the file served there is harmless bytes.
+    ("127.0.0.1/__swiftra_shield_canary__/download/swiftra-canary.zip", MALWARE),
 ]
 
 # FIRST_PARTY: every subdomain is operated by the owner -> never block a whole host under it

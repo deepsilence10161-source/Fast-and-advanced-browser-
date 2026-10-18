@@ -97,10 +97,28 @@ def adb(*args, timeout=30):
         return ""
 
 
+DL_DIR = f"{CANARY_DIR}/download"
+DL_REDIRECT = f"/{DL_DIR}/redirect.zip"          # not listed; 302 -> the listed canary (redirect chain check)
+DL_HITS = []                                      # paths of download requests the runner served
+
+
+class SiteHandler(http.server.SimpleHTTPRequestHandler):
+    def do_GET(self):
+        if self.path.startswith(f"/{DL_DIR}/"):
+            DL_HITS.append(self.path)
+        if self.path.split("?")[0] == DL_REDIRECT:
+            self.send_response(302)
+            self.send_header("Location", f"/{DL_DIR}/swiftra-canary.zip")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        return super().do_GET()
+
+
 def serve(root):
-    handler = lambda *a, **k: http.server.SimpleHTTPRequestHandler(*a, directory=root, **k)  # noqa: E731
+    handler = lambda *a, **k: SiteHandler(*a, directory=root, **k)  # noqa: E731
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), handler)
-    srv.RequestHandlerClass.log_message = lambda *a: None
+    SiteHandler.log_message = lambda *a: None
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv
 
@@ -112,6 +130,14 @@ def make_site():
         marker = f"SWIFTRA_CANARY_{name.upper()}_LOADED"
         with open(os.path.join(root, CANARY_DIR, name + ".html"), "w", encoding="utf-8") as f:
             f.write(f"<!doctype html><title>{marker}</title><h1>{marker}</h1>")
+    # patches/0015 Download Shield: harmless zip bytes + a page that starts an <a download> (no navigation, so the
+    # Shield navigation check does not see it; only the download URL check does)
+    os.makedirs(os.path.join(root, DL_DIR))
+    for name in ("swiftra-canary.zip", "clean.zip"):
+        with open(os.path.join(root, DL_DIR, name), "wb") as f:
+            f.write(b"PK\x05\x06" + b"\x00" * 18)   # empty zip archive (end-of-central-directory record only)
+    with open(os.path.join(root, CANARY_DIR, "dl.html"), "w", encoding="utf-8") as f:
+        f.write(DL_PAGE)
     # c2d: an ordinary address form - Chromium's Autofill asks content-autofill.googleapis.com about such forms
     with open(os.path.join(root, CANARY_DIR, "form.html"), "w", encoding="utf-8") as f:
         f.write(FORM_HTML)
@@ -125,6 +151,18 @@ FORM_HTML = """<!doctype html><meta name="viewport" content="width=device-width"
 <input name="city" autocomplete="address-level2"><input name="zip" autocomplete="postal-code">
 <input name="country" autocomplete="country-name"><button>Send</button></form>"""
 FORM_URL = f"http://127.0.0.1:{PORT}/{CANARY_DIR}/form.html"
+DL_PAGE = """<!doctype html><meta name="viewport" content="width=device-width"><title>SWIFTRA_DL_PAGE</title>
+<h1>Swiftra download test</h1><a id="a" download>download</a><script>
+const f = new URLSearchParams(location.search).get('f');
+const a = document.getElementById('a');
+a.href = f === 'redirect' ? '/__swiftra_shield_canary__/download/redirect.zip'
+       : '/__swiftra_shield_canary__/download/' + (f === 'canary' ? 'swiftra-canary.zip' : 'clean.zip');
+a.download = (f === 'clean' ? 'swiftra-clean' : 'swiftra-' + f) + '-' + Date.now() + '.zip';
+setTimeout(() => a.click(), 800);
+</script>"""
+# Android DangerousDownloadDialog (android_chrome_strings.grd @155): IDS_DANGEROUS_DOWNLOAD_DIALOG_TITLE
+DL_DIALOG_TITLE = "File might be harmful"
+DL_CASES = [("canary", "blocked_dialog"), ("redirect", "blocked_dialog"), ("clean", "downloaded")]
 # c2d (patches/0009): requests that cannot work without a Google API key, or are logging only, must be gone
 NO_KEY_HOSTS = ("content-autofill.googleapis.com", "discover-pa.googleapis.com")
 QUIET_PATHS = ("/async/ddllog",)
@@ -188,6 +226,68 @@ def classify(text, marker):
     if any(m in text for m in markers):
         return "loaded"
     return "loaded" if not marker and text.strip() else "unknown"
+
+
+def dl_nodes():
+    adb("shell", "uiautomator", "dump", "/sdcard/dl.xml", timeout=40)
+    xml = adb("shell", "cat", "/sdcard/dl.xml", timeout=20)
+    return [(m.group(1), (int(m.group(2)) + int(m.group(4))) // 2, (int(m.group(3)) + int(m.group(5))) // 2)
+            for m in re.finditer(r'<node [^>]*?text="([^"]*)"[^>]*?bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', xml)]
+
+
+def dl_tap(nodes, label):
+    for t, x, y in nodes:
+        if t == label:
+            adb("shell", "input", "tap", str(x), str(y))
+            return True
+    return False
+
+
+def downloads_listing():
+    return adb("shell", "ls", "/sdcard/Download/", timeout=20)
+
+
+def download_case(package, case, expected, out):
+    """<a download> from a local page; dangerous URL -> DangerousDownloadDialog, Cancel -> no file."""
+    since = len(DL_HITS)
+    adb("shell", "am", "start", "-a", "android.intent.action.VIEW", "-d",
+        f"http://127.0.0.1:{PORT}/{CANARY_DIR}/dl.html?f={case}", package, timeout=40)
+    t0, dialog, texts, taps = time.time(), False, [], []
+    while time.time() - t0 < 25:
+        nodes = dl_nodes()
+        texts = [t for t, _, _ in nodes if t]
+        if DL_DIALOG_TITLE in texts:
+            dialog = True
+            break
+        # first-download prompts (download location / notification permission): never the danger dialog's buttons
+        for label in ("Download", "Don't allow", "Don\u2019t allow"):
+            if dl_tap(nodes, label):
+                taps.append(label)
+                break
+        if case == "clean" and f"swiftra-{case}" in downloads_listing() and time.time() - t0 > 6:
+            break
+        time.sleep(1.5)
+    with open(os.path.join(out, f"download_{case}.png"), "wb") as f:
+        f.write(subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=20).stdout)
+    if dialog:
+        taps.append("Cancel" if dl_tap(dl_nodes(), "Cancel") else "Cancel(not found)")
+        time.sleep(3)
+    listing = downloads_listing()
+    files = [ln for ln in listing.split() if ln.startswith(f"swiftra-{case}")]
+    complete = [x for x in files if not x.endswith(".crdownload") and not x.startswith(".")]
+    served = DL_HITS[since:]
+    if not served:
+        verdict = "no_request"
+    elif dialog and not complete:
+        verdict = "blocked_dialog"
+    elif dialog:
+        verdict = "dialog_but_file_kept"
+    elif complete:
+        verdict = "downloaded"
+    else:
+        verdict = "no_result"
+    return {"case": case, "expected": expected, "verdict": verdict, "pass": verdict == expected, "dialog": dialog,
+            "files": files, "served": served, "taps": taps, "texts": texts[:25]}
 
 
 def wait_list(timeout):
@@ -628,6 +728,11 @@ def main():
     print("variations:", {k: v for k, v in res["variations"].items() if k != "raw"})
     ok = ok and res["variations"]["pass"]
 
+    # patches/0015 Download Shield (reported separately until the 0015 APK is built: DOWNLOAD_SHIELD_E2E)
+    res["download_shield"] = [download_case(a.package, c, e, a.out) for c, e in DL_CASES]
+    for r_ in res["download_shield"]:
+        print("download shield:", {k: v for k, v in r_.items() if k != "texts"})
+
     # c2c: Standard protection network audit (browser process, NetLog trace): local pages + example.com + idle
     def standard_actions():
         for u in (CASES[0][1], "https://example.com/", FORM_URL, CASES[1][1]):
@@ -718,6 +823,9 @@ def main():
         json.dump(res, f, indent=1, ensure_ascii=False)
     srv.shutdown()
     print("SHIELD_E2E", "PASS" if ok else "FAIL")
+    ds = res.get("download_shield") or []
+    print("DOWNLOAD_SHIELD_E2E", "PASS" if ds and all(r_["pass"] for r_ in ds) else ("NOT_RUN" if not ds else "FAIL"),
+          " ".join(f"{r_['case']}={r_['verdict']}" for r_ in ds))
     return 0 if ok else 1
 
 

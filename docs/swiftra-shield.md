@@ -80,7 +80,7 @@ Malware/UwS के लिए ऐसी कोई नई feed नहीं मि
 अगला रास्ता (research बाकी है): list के बिना on-device download सुरक्षा। उदाहरण: HTTP या IP-literal host से APK,
 double extension (`.pdf.apk`) जैसे संकेत।
 
-## Download Shield design (patch 0015, NOT WRITTEN; research done 18-10-2026 @155)
+## Download Shield (patch 0015, WRITTEN 18-10-2026 @155; device E2E: NOT RUN until the 0015 APK is built)
 - Gap: Android download URL checks never run.
   - `DownloadProtectionDelegateAndroid::ShouldCheckDownloadUrl` requires `kMaliciousApkDownloadCheck`, which is
     disabled by default (Chrome enables it via Finch).
@@ -97,9 +97,23 @@ double extension (`.pdf.apk`) जैसे संकेत।
   3. `chrome_download_manager_delegate.cc CheckDownloadUrl`: on Android,
      `is_content_check_supported &= kMaliciousApkDownloadCheck`. Otherwise a safe APK would get
      `MAYBE_DANGEROUS_CONTENT` and skip the `DANGEROUS_FILE` logic in `DoCheckVisitedReferrerBefore`.
-- Result: `DANGEROUS_URL` → Android dangerous-download dialog. E2E: `<a download>` to the Shield canary
-  `127.0.0.1/__swiftra_shield_canary__/malware.html` variant (a canary entry for a download path must be added to
-  `scripts/shield/build_shield_db.py`).
+- Result: `DANGEROUS_URL` → Android dangerous-download dialog (title "File might be harmful", buttons
+  "Download anyway" / "Cancel").
+- Implementation details (`patches/0015-swiftra-download-shield.patch`):
+  - The chain is checked one URL at a time (skipping URLs that `CanCheckUrl` rejects). SAFE + more URLs → next URL;
+    a hit → `SB_THREAT_TYPE_URL_BINARY_MALWARE`. Then the request is removed (`CancelCheck`).
+  - On shutdown (`StopOnUIThread`) a pending download check reports SAFE once, without chaining.
+  - `GetNonBrowseUrlThreatSource()` returns `ANDROID_SAFEBROWSING` instead of `NOTREACHED`, because the
+    warning-shown report path (`kCreateWarningShownClientSafeBrowsingReports`, on by default) asks for it.
+  - The JNI result is always posted to the UI thread, so the asynchronous chain never re-enters a caller.
+  - No network request is added: the check is the same local Shield lookup the navigation check uses.
+- Canary: `127.0.0.1/__swiftra_shield_canary__/download/swiftra-canary.zip` (MALWARE, exact path) in
+  `scripts/shield/build_shield_db.py`.
+- E2E (`scripts/ci/shield_e2e.py`, line `DOWNLOAD_SHIELD_E2E`): `<a download>` started by script on a local page, so
+  no navigation happens and only the download check can catch it.
+  - `canary`: direct link → expected `blocked_dialog` (dialog seen, Cancel tapped, no file in `/sdcard/Download`).
+  - `redirect`: unlisted URL that answers 302 → the canary → expected `blocked_dialog` (redirect chain check).
+  - `clean`: unlisted file → expected `downloaded`, with no dialog (control against false positives).
 
 ## Enhanced protection (c2b, patches/0007)
 - **मापा गया तथ्य (2026-10-17, `tools/sb_rt_probe.py`):** Enhanced protection जिस URL real-time endpoint (`safebrowsing.google.com/safebrowsing/clientreport/realtime`, `UrlRealTimeMechanism`) को पूछता है, वह बिना key या login के भी उत्तर देता है।

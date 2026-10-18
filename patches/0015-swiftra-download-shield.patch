@@ -1,0 +1,188 @@
+diff -ruN a/chrome/browser/download/chrome_download_manager_delegate.cc b/chrome/browser/download/chrome_download_manager_delegate.cc
+--- a/chrome/browser/download/chrome_download_manager_delegate.cc
++++ b/chrome/browser/download/chrome_download_manager_delegate.cc
+@@ -1937,6 +1937,15 @@
+   if (service) {
+     bool is_content_check_supported =
+         service->IsSupportedDownload(*download, suggested_path);
++#if BUILDFLAG(IS_ANDROID)
++    // Swiftra Download Shield: on Android the URL check now runs without the
++    // content check (kMaliciousApkDownloadCheck off). A safe URL must then stay
++    // NOT_DANGEROUS (as before), not MAYBE_DANGEROUS_CONTENT, which would wait
++    // for a content check that never starts.
++    is_content_check_supported =
++        is_content_check_supported &&
++        base::FeatureList::IsEnabled(safe_browsing::kMaliciousApkDownloadCheck);
++#endif
+     DVLOG(2) << __func__ << "() Start SB URL check for download = "
+              << download->DebugString(false);
+     if (service->ShouldCheckDownloadUrl(download)) {
+diff -ruN a/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc b/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc
+--- a/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc
++++ b/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc
+@@ -154,7 +154,18 @@
+ 
+ bool DownloadProtectionDelegateAndroid::ShouldCheckDownloadUrl(
+     download::DownloadItem* item) const {
+-  return IsAndroidDownloadProtectionEnabledForDownloadProfile(item);
++  // Swiftra Download Shield: the URL chain check is answered by the on-device
++  // Swiftra Shield list (RemoteSafeBrowsingDatabaseManager::CheckDownloadUrl),
++  // so it runs whenever Safe Browsing is on. It does not depend on
++  // kMaliciousApkDownloadCheck, which only gates the server ping
++  // (MayCheckClientDownload stays unchanged: no ClientDownloadRequest is sent).
++  if (!item) {
++    return false;
++  }
++  Profile* profile = Profile::FromBrowserContext(
++      content::DownloadItemUtils::GetBrowserContext(item));
++  return profile && profile->GetPrefs() &&
++         IsSafeBrowsingEnabled(*profile->GetPrefs());
+ }
+ 
+ bool DownloadProtectionDelegateAndroid::MayCheckClientDownload(
+diff -ruN a/components/safe_browsing/android/remote_database_manager.cc b/components/safe_browsing/android/remote_database_manager.cc
+--- a/components/safe_browsing/android/remote_database_manager.cc
++++ b/components/safe_browsing/android/remote_database_manager.cc
+@@ -62,10 +62,24 @@
+                 RemoteSafeBrowsingDatabaseManager* db_manager,
+                 const GURL& url,
+                 bool is_subresource_filter);
++  // Swiftra Download Shield: checks every URL of |url_chain| in order against
++  // the hash database (answered on the device by the Swiftra Shield list).
++  ClientRequest(Client* client,
++                RemoteSafeBrowsingDatabaseManager* db_manager,
++                std::vector<GURL> url_chain);
+ 
+   void OnRequestDone(SBThreatType matched_threat_type,
+                      const ThreatMetadata& metadata);
+ 
++  // Download mode: starts the check of the next checkable URL of the chain.
++  // Returns false if no URL is left. The result always arrives as a posted
++  // task, never synchronously.
++  bool StartNextDownloadCheck();
++
++  // Reports SAFE to the client without starting further checks. Used when the
++  // manager stops.
++  void ReportSafeOnStop();
++
+   // Accessors
+   Client* client() const { return client_; }
+   const GURL& url() const { return url_; }
+@@ -78,6 +92,9 @@
+   raw_ptr<RemoteSafeBrowsingDatabaseManager, DanglingUntriaged> db_manager_;
+   GURL url_;
+   bool is_subresource_filter_ = false;
++  bool is_download_ = false;
++  std::vector<GURL> url_chain_;
++  size_t next_download_index_ = 0;
+   base::ElapsedTimer timer_;
+   base::WeakPtrFactory<ClientRequest> weak_factory_{this};
+ };
+@@ -92,11 +109,63 @@
+       url_(url),
+       is_subresource_filter_(is_subresource_filter) {}
+ 
++RemoteSafeBrowsingDatabaseManager::ClientRequest::ClientRequest(
++    Client* client,
++    RemoteSafeBrowsingDatabaseManager* db_manager,
++    std::vector<GURL> url_chain)
++    : client_(client),
++      db_manager_(db_manager),
++      is_download_(true),
++      url_chain_(std::move(url_chain)) {}
++
++bool RemoteSafeBrowsingDatabaseManager::ClientRequest::
++    StartNextDownloadCheck() {
++  while (next_download_index_ < url_chain_.size()) {
++    const GURL& next = url_chain_[next_download_index_++];
++    if (!db_manager_->CanCheckUrl(next)) {
++      continue;
++    }
++    url_ = next;
++    SafeBrowsingApiHandlerBridge::GetInstance().StartHashDatabaseUrlCheck(
++        base::BindOnce(&ClientRequest::OnRequestDone, GetWeakPtr()), next,
++        CreateSBThreatTypeSet({SBThreatType::SB_THREAT_TYPE_URL_MALWARE,
++                               SBThreatType::SB_THREAT_TYPE_URL_PHISHING,
++                               SBThreatType::SB_THREAT_TYPE_URL_UNWANTED}));
++    return true;
++  }
++  return false;
++}
++
++void RemoteSafeBrowsingDatabaseManager::ClientRequest::ReportSafeOnStop() {
++  if (is_download_) {
++    client_->OnCheckDownloadUrlResult(url_chain_,
++                                      SBThreatType::SB_THREAT_TYPE_SAFE);
++    return;
++  }
++  OnRequestDone(SBThreatType::SB_THREAT_TYPE_SAFE, ThreatMetadata());
++}
++
+ void RemoteSafeBrowsingDatabaseManager::ClientRequest::OnRequestDone(
+     SBThreatType matched_threat_type,
+     const ThreatMetadata& metadata) {
+   DVLOG(1) << "OnRequestDone took " << timer_.Elapsed().InMilliseconds()
+            << " ms for client " << client_ << " and URL " << url_;
++  if (is_download_) {
++    if (matched_threat_type == SBThreatType::SB_THREAT_TYPE_SAFE &&
++        StartNextDownloadCheck()) {
++      return;  // The next URL of the chain is being checked.
++    }
++    // Any Shield hit (malware, phishing or unwanted) on any URL of the chain
++    // makes the download dangerous. DownloadUrlSBClient::IsDangerous() only
++    // accepts SB_THREAT_TYPE_URL_BINARY_MALWARE.
++    client_->OnCheckDownloadUrlResult(
++        url_chain_, matched_threat_type == SBThreatType::SB_THREAT_TYPE_SAFE
++                        ? SBThreatType::SB_THREAT_TYPE_SAFE
++                        : SBThreatType::SB_THREAT_TYPE_URL_BINARY_MALWARE);
++    // CancelCheck() will delete *this.
++    db_manager_->CancelCheck(client_);
++    return;
++  }
+   if (is_subresource_filter_) {
+     client_->OnCheckSubresourceFilterUrlResult(
+         url_, matched_threat_type, metadata.subresource_filter_match);
+@@ -180,9 +249,20 @@
+ bool RemoteSafeBrowsingDatabaseManager::CheckDownloadUrl(
+     const std::vector<GURL>& url_chain,
+     Client* client) {
+-  // Omit this blocklist check on Android. The overhead for importing a new
+-  // blocklist on Android makes this prohibitive.
+-  return true;
++  // Swiftra Download Shield: upstream skips this check on Android (no local
++  // blocklist). Swiftra has one on the device (Swiftra Shield), so every URL of
++  // the chain (redirects included) is checked; nothing leaves the device.
++  DCHECK(ui_task_runner()->RunsTasksInCurrentSequence());
++  if (!enabled_) {
++    return true;
++  }
++  auto req = std::make_unique<ClientRequest>(client, this, url_chain);
++  if (!req->StartNextDownloadCheck()) {
++    return true;  // No checkable URL: safe, continue right away.
++  }
++  current_requests_.push_back(std::move(req));
++  // Defer the download.
++  return false;
+ }
+ 
+ bool RemoteSafeBrowsingDatabaseManager::CheckExtensionIDs(
+@@ -287,7 +367,9 @@
+ 
+ safe_browsing::ThreatSource
+ RemoteSafeBrowsingDatabaseManager::GetNonBrowseUrlThreatSource() const {
+-  NOTREACHED();
++  // Download URL verdicts come from the same on-device list
++  // (DownloadUrlSBClient reports use this; upstream never reached it).
++  return safe_browsing::ThreatSource::ANDROID_SAFEBROWSING;
+ }
+ 
+ void RemoteSafeBrowsingDatabaseManager::StartOnUIThread(
+@@ -310,7 +392,7 @@
+       std::move(current_requests_));
+   for (const std::unique_ptr<ClientRequest>& req : to_callback) {
+     DVLOG(1) << "Stopping: Invoking unfinished req for URL " << req->url();
+-    req->OnRequestDone(SBThreatType::SB_THREAT_TYPE_SAFE, ThreatMetadata());
++    req->ReportSafeOnStop();
+   }
+   SafeBrowsingApiHandlerBridge::GetInstance().ClearArtificialDatabase();
+   enabled_ = false;
