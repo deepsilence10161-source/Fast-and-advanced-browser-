@@ -208,7 +208,20 @@ Google ने Android पर 155.0.8059.84 जारी किया (security f
 - 0013 (transform): `adblock/swiftra-ruleset.pb.gz` को `src/chrome/browser/resources/swiftra/adblock_ruleset.pb` में रखता है।
   Ruleset का SHA-256 script में pinned है, इसलिए mismatch होने पर build रुक जाता है।
 - Lists: EasyList/EasyPrivacy (CC BY-SA 3.0) और AdAway hosts (CC BY 3.0); attribution `adblock/README.md` में है।
+- `ruleset_service.cc`: feature चालू होने पर indexing USER_VISIBLE priority पर चलती है (पहले BEST_EFFORT थी), ताकि पहली launch
+  पर ad blocking जल्दी शुरू हो। `FinishInitialization` अब भी UI BestEffort runner पर है, इसलिए यह देरी घटती है, खत्म नहीं होती।
+- Licence notices: पहले के सभी non-official builds में `chrome://credits` पर Chromium का `sample_credits.html` दिखता था,
+  असली third-party notices नहीं। अब `args.gn` में `generate_about_credits = true` है, और 0013
+  `third_party/swiftra_adblock/{README.chromium,LICENSE}` जोड़ता है, जिससे list attribution भी app के अंदर दिखता है।
+  इसकी device जाँच `CREDITS_E2E` करता है।
 - Design और सत्यापन: `docs/adblock-design.md`। Desktop Chromium 156 matcher: PASS। Device E2E: NOT RUN।
+
+## 0014-swiftra-search-choice.patch (2026-10-18 — हर user के लिए search engine चुनाव; series में अभी comment)
+- सिर्फ़ Java में बदलाव (`LocaleManagerDelegate`)। Chromium का पहले से मौजूद First Run page "Choose your search engine" और dialog
+  अब हर region में एक बार दिखते हैं। Engines देश के prepopulated engines होते हैं, जिन्हें upstream code shuffle करता है।
+  पहले से कुछ भी चुना हुआ नहीं होता।
+- Harness इसके लिए `handle_search_choice()` इस्तेमाल करता है (`SWIFTRA_SEARCH_PICK`, default Google)। Design: `docs/search-choice-design.md`।
+- Build: NOT RUN (0012 build dispatch होने के बाद series में चालू होगा)।
 
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
