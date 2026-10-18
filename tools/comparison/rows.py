@@ -12,7 +12,8 @@ CHROME_REF = ("असली Chrome = Chrome 155.0.8059.84 for Android (15-10-202
               "Chrome पर हमारे अपने माप केवल Chrome 133 (emulator image) से हैं; बाकी तथ्य Google के आधिकारिक स्रोतों से।")
 
 COLUMNS = ["#", "क्षेत्र", "सुविधा / मापदंड", "असली Chrome 155 (Android)", "Swiftra अभी",
-           "प्रमाण (test type + स्रोत)", "Swiftra स्थिति", "विजेता", "कारण", "Chrome को हराने का अगला कदम"]
+           "प्रमाण (test type + स्रोत)", "Swiftra स्थिति", "विजेता", "कारण", "महत्व",
+           "user पर असर", "Chrome को हराने का अगला कदम", "मेहनत", "अंक (Chrome:Swiftra)"]
 
 R = []
 def row(*a):
@@ -355,6 +356,137 @@ row(G, "असली Arena पर लंबी chat",
     "जाँचा नहीं",
     "user के फ़ोन पर test")
 
+# ---------- v3: नई पंक्तियाँ (18-10-2026 का अतिरिक्त शोध) ----------
+row(B, "Fingerprinting से सुरक्षा",
+    "built-in सुरक्षा नहीं: Incognito Script Blocking \"Do not launch\"; canvas-readback block केवल Canary flag",
+    "नहीं (वही engine)",
+    "S13; static",
+    "कमी (दोनों)", "बराबर",
+    "दोनों में नहीं",
+    "canvas/WebGL/audio readback सुरक्षा default चालू — सीधे Chrome से आगे")
+row(B, "Spam notification चेतावनी (on-device ML)",
+    "Chrome Android का on-device model संदिग्ध site notifications पर चेतावनी देता है",
+    "model नहीं आता (optimization-guide models को API key चाहिए; c2b में models 0)",
+    "static + emulator (optimization-guide-internals खाली); S15",
+    "कमी", "Chrome",
+    "Google का model केवल Chrome को",
+    "Shield सूची + notification दर-सीमा heuristics से चेतावनी")
+row(B, "Screen-share में password/payment छिपाना (Android 15+)",
+    "अक्टूबर 2026 से Chrome और WebView में",
+    "NOT RUN (Chromium code + OS पर निर्भर)",
+    "NOT RUN; S19",
+    "NOT RUN", "अनिर्णीत",
+    "जाँचा नहीं",
+    "Android 15 emulator पर screen-share E2E")
+row(C, "Default search engine",
+    "Google (EU में choice screen)",
+    "Chromium default (Google); पहली बार कोई चुनाव screen नहीं",
+    "emulator (omnibox)",
+    "PASS", "बराबर",
+    "एक जैसा default",
+    "पहली बार search engine चुनाव (privacy engines सहित) — Chrome से आगे")
+row(D, "Listen to this page (पढ़कर सुनाना)",
+    "हाँ, background playback के साथ (Google आवाज़ें)",
+    "नहीं: public code में ReadAloudPlaybackHooks.createPlayback खाली (Google-internal)",
+    "static: chrome/android/modules/readaloud @155",
+    "कमी (static)", "Chrome",
+    "backend केवल Google build में",
+    "Android के on-device TextToSpeech से पढ़ना (offline, निजी) — privacy में आगे")
+row(D, "PWA / web app install (WebAPK)",
+    "असली WebAPK (app drawer में अलग app) Google server से बनता है",
+    "WebAPK नहीं: AppHooks.getGooglePlayWebApkInstallDelegate() = null, server URL खाली; केवल home-screen shortcut अपेक्षित",
+    "static: AppHooks.java, WebApkInstaller.java @155; device NOT RUN",
+    "कमी (static)", "Chrome",
+    "WebAPK बनाने की सेवा Google की",
+    "फ़ोन पर ही signed WebAPK बनाना (शोध) या shortcut अनुभव सुधारना")
+row(D, "Price tracking / shopping",
+    "India में उपलब्ध; sign-in + sync ज़रूरी",
+    "नहीं (sign-in नहीं)",
+    "S16",
+    "कमी", "Chrome",
+    "Google account और server ज़रूरी",
+    "बिना account local price watch (निजी)")
+row(D, "Tabs: groups, pinned tabs, tab search",
+    "हाँ (pinned tabs Chrome 144)",
+    "वही engine; NOT RUN",
+    "static अपेक्षित; S18",
+    "NOT RUN", "बराबर",
+    "एक ही code (device पर अभी जाँचना बाकी)",
+    "E2E test; tab group sync अपने encrypted sync से")
+row(D, "Layout: bottom address bar, bookmarks bar",
+    "हाँ (bottom bar 2025, bookmarks bar 146); नया Gemini bottom-bar redesign (Sept 2026)",
+    "वही engine; नया bottom-bar redesign code में default बंद (kAndroidBottomBar)",
+    "static: chrome_feature_list.cc @155; S17",
+    "NOT RUN", "बराबर",
+    "मूल विकल्प एक जैसे; Gemini button केवल Chrome में",
+    "E2E test")
+row(D, "दूसरे password manager से autofill",
+    "Chrome 135 से \"Autofill using another service\"",
+    "वही engine; NOT RUN",
+    "static अपेक्षित; S14",
+    "NOT RUN", "बराबर",
+    "एक ही code — Swiftra users के लिए Google PM का विकल्प",
+    "Bitwarden-जैसे app के साथ E2E")
+
+META = {
+ "Engine version": ("उच्च", "पुराने security छेद खुले रहते हैं", "कम"),
+ "Security update पहुँचना": ("उच्च", "नया fix user तक नहीं पहुँचता", "ज़्यादा"),
+ "Build पारदर्शिता": ("मध्यम", "भरोसा", "मध्यम"),
+ "App की अपनी सुरक्षा": ("उच्च", "नकली update से बचाव", "कम"),
+ "Stability": ("उच्च", "crash से काम रुकना", "मध्यम"),
+ "Safe Browsing Standard: खतरे पकड़ने की क्षमता": ("उच्च", "phishing/malware से बचाव", "ज़्यादा"),
+ "Safe Browsing Standard: privacy": ("उच्च", "browsing निजी रहती है", "—"),
+ "Enhanced protection": ("मध्यम", "opt-in users की अतिरिक्त सुरक्षा", "ज़्यादा"),
+ "HTTPS-by-default (Always use secure connections, public sites)": ("उच्च", "HTTP पर डेटा चोरी का खतरा", "कम"),
+ "Warning page की सच्चाई": ("मध्यम", "भरोसा", "—"),
+ "Site isolation (password sites)": ("उच्च", "Spectre-जैसे हमलों से बचाव", "—"),
+ "Secure DNS (DoH)": ("मध्यम", "DNS निजी", "कम"),
+ "Post-quantum TLS + PQ WebCrypto (ML-KEM, ML-DSA, X-Wing)": ("मध्यम", "भविष्य की सुरक्षा", "—"),
+ "Password leak check": ("मध्यम", "चोरी हुए password की चेतावनी", "मध्यम"),
+ "Usage stats / crash reports": ("मध्यम", "निजता", "—"),
+ "Server experiments (Finch / variations)": ("मध्यम", "निजता, अनुमानित व्यवहार", "—"),
+ "Startup पर background requests": ("मध्यम", "कम डेटा, कम tracking", "कम"),
+ "Form data Google को (Autofill crowdsourcing)": ("कम", "निजता", "—"),
+ "Third-party cookies": ("उच्च", "cross-site tracking", "कम"),
+ "Ad / tracker blocking": ("उच्च", "विज्ञापन, गति, निजता", "मध्यम"),
+ "Sign-in और Sync": ("उच्च", "devices के बीच data", "ज़्यादा"),
+ "Password manager": ("उच्च", "रोज़ का login", "मध्यम"),
+ "Autofill सटीकता": ("मध्यम", "form भरना", "मध्यम"),
+ "Translate": ("उच्च", "दूसरी भाषा के पेज पढ़ना", "ज़्यादा"),
+ "Voice search / Lens": ("मध्यम", "बोलकर/फ़ोटो से खोज", "ज़्यादा"),
+ "Gemini in Chrome": ("मध्यम", "AI सहायता", "ज़्यादा"),
+ "AI Mode button": ("कम", "AI खोज", "कम"),
+ "Discover feed": ("कम", "खबरें", "मध्यम"),
+ "Doodle": ("कम", "निजता (थोड़ी)", "—"),
+ "Push notifications (FCM)": ("उच्च", "site notifications", "ज़्यादा"),
+ "Safety check": ("मध्यम", "एक जगह सुरक्षा जाँच", "मध्यम"),
+ "Extensions": ("उच्च", "ad-block और tools", "ज़्यादा"),
+ "Incognito lock": ("मध्यम", "निजी tabs की सुरक्षा", "कम"),
+ "JPEG XL, नए web features": ("कम", "नई sites का सही दिखना", "—"),
+ "UI ढाँचा": ("मध्यम", "Chrome जैसा अनुभव", "मध्यम"),
+ "Settings की सच्चाई": ("मध्यम", "भरोसा", "कम"),
+ "Branding / trademark": ("उच्च", "कानूनी जोखिम", "मध्यम"),
+ "Copyright / licence": ("उच्च", "कानूनी जोखिम", "—"),
+ "Cold start (median)": ("उच्च", "हर बार खोलने का इंतज़ार", "मध्यम"),
+ "Warm start (median)": ("मध्यम", "app पर लौटना", "मध्यम"),
+ "Memory (PSS, example.com के बाद)": ("मध्यम", "कम RAM वाले फ़ोन", "मध्यम"),
+ "Page load / JS speed (Speedometer आदि)": ("उच्च", "हर पेज की गति", "मध्यम"),
+ "Data / battery (background)": ("मध्यम", "data pack और battery", "मध्यम"),
+ "लंबी chat fixture (300 संदेश, streaming, draft, scroll)": ("उच्च", "Arena का रोज़ उपयोग", "कम"),
+ "असली Arena पर लंबी chat": ("उच्च", "Arena का रोज़ उपयोग", "कम"),
+ "Fingerprinting से सुरक्षा": ("उच्च", "cookies के बिना tracking", "मध्यम"),
+ "Spam notification चेतावनी (on-device ML)": ("मध्यम", "notification scam", "मध्यम"),
+ "Screen-share में password/payment छिपाना (Android 15+)": ("मध्यम", "screen-share scam", "कम"),
+ "Default search engine": ("मध्यम", "खोज की निजता", "कम"),
+ "Listen to this page (पढ़कर सुनाना)": ("मध्यम", "सुनकर पढ़ना, accessibility", "मध्यम"),
+ "PWA / web app install (WebAPK)": ("मध्यम", "web apps को app की तरह चलाना", "ज़्यादा"),
+ "Price tracking / shopping": ("कम", "खरीदारी में बचत", "ज़्यादा"),
+ "Tabs: groups, pinned tabs, tab search": ("मध्यम", "बहुत tabs संभालना", "कम"),
+ "Layout: bottom address bar, bookmarks bar": ("मध्यम", "एक हाथ से उपयोग", "कम"),
+ "दूसरे password manager से autofill": ("उच्च", "Google PM के बिना login", "कम"),
+}
+WEIGHT = {"उच्च": 3, "मध्यम": 2, "कम": 1}
+
 SOURCES = [
     ("S1", "Chrome for Android Update 155.0.8059.84 (15-10-2026)",
      "https://chromereleases.googleblog.com/2026/10/chrome-for-android-update_01464551208.html"),
@@ -378,18 +510,57 @@ SOURCES = [
      "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/common/chrome_features.cc"),
     ("S11", "Chromium @155: components/site_isolation/features.cc",
      "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/site_isolation/features.cc"),
+    ("S13", "Privacy Sandbox feature status (Script Blocking: Do not launch)",
+     "https://privacysandbox.google.com/overview/status"),
+    ("S14", "Android Developers Blog: third-party autofill in Chrome 135",
+     "https://android-developers.googleblog.com/2025/02/chrome-3p-autofill-services-update.html"),
+    ("S15", "Google: AI to combat scams (Chrome Android notification warnings)",
+     "https://blog.google/innovation-and-ai/technology/safety-security/how-were-using-ai-to-combat-the-latest-scams/"),
+    ("S16", "Chrome Help: price tracking (Android) — देश/sign-in शर्तें",
+     "https://support.google.com/chrome/answer/11625545?co=GENIE.Platform%3DAndroid"),
+    ("S17", "9to5Google: Chrome Android bottom address bar",
+     "https://9to5google.com/2025/06/24/chrome-bottom-address-bar-android/"),
+    ("S18", "ZDNET: pinned tabs + tab groups, Chrome 144 Android",
+     "https://www.zdnet.com/article/chrome-android-update-pinned-tabs-groups/"),
+    ("S19", "Google: new Android scam protections (screen-share privacy in Chrome/WebView)",
+     "https://blog.google/security/new-android-scam-protections/"),
+    ("S20", "Chromium @155: AppHooks.java (WebAPK delegate null, server URL खाली)",
+     "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/AppHooks.java"),
+    ("S21", "Chromium @155: ReadAloudPlaybackHooks.java (खाली default)",
+     "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/modules/readaloud/public/java/src/org/chromium/chrome/modules/readaloud/ReadAloudPlaybackHooks.java"),
     ("S12", "Repo प्रमाण: evidence/c2d-2026-10-18, evidence/c2c-2026-10-17, evidence/shield-c2*, evidence/ui-capture-run-*/chrome_ref",
      "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/tree/main/evidence"),
 ]
 
+_ORDER = [A, B, C, D, E, F, G]
+R.sort(key=lambda r: _ORDER.index(r[0]))
+assert set(META) == {r[1] for r in R}, set(META) ^ {r[1] for r in R}
+
+def points(r):
+    w = WEIGHT[META[r[1]][0]]
+    return {"Chrome": (w, 0), "Swiftra": (0, w), "बराबर": (w, w)}.get(r[6], (0, 0))
+
+def full_rows():
+    out = []
+    for i, r in enumerate(R, 1):
+        imp, impact, effort = META[r[1]]
+        c, sw = points(r)
+        out.append([i, r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], imp, impact, r[8], effort,
+                    f"{c}:{sw}" if r[6] in ("Chrome", "Swiftra", "बराबर") else "—"])
+    return out
+
 # Ordered plan to beat Chrome, used in summary.
 PLAN = [
-    ("1", "155.0.8059.84 पर rebuild + पूरा E2E", "security fixes में Chrome के बराबर", "Engine version"),
-    ("2", "HTTPS-First Balanced default चालू (patch)", "HTTPS-by-default में बराबर", "HTTPS पंक्ति"),
-    ("3", "third-party cookies default block + built-in tracker blocker (licence-साफ़)", "privacy में Chrome से साफ़ आगे", "cookies, ad-block"),
-    ("4", "Shield में malware/UwS स्रोत + on-device heuristics", "Standard coverage में बराबरी, privacy में आगे", "Safe Browsing"),
-    ("5", "signed in-app update channel", "update में बराबर", "Security update"),
-    ("6", "phone पर extensions (desktop-android)", "Chrome Android से सीधे आगे", "Extensions"),
-    ("7", "एक ही असली फ़ोन पर Chrome 155 बनाम Swiftra: start, memory, Speedometer", "speed का सच्चा फ़ैसला", "Performance"),
-    ("8", "बाकी NOT RUN: Translate, password manager, Incognito lock, AI Mode, असली Arena", "अनिर्णीत पंक्तियाँ निपटाना", "D, G"),
+    ("1", "155.0.8059.84 पर rebuild + पूरा E2E", "security patch level में Chrome के बराबर", "Engine version", "कम"),
+    ("2", "HTTPS-First Balanced default चालू (patch)", "HTTPS-by-default में बराबर", "HTTPS", "कम"),
+    ("3", "third-party cookies default block", "Chrome से सीधे आगे (privacy)", "Third-party cookies", "कम"),
+    ("4", "fingerprinting सुरक्षा (canvas/WebGL/audio) default चालू", "Chrome से सीधे आगे (Chrome में यह launch ही नहीं हुई)", "Fingerprinting", "मध्यम"),
+    ("5", "built-in ad/tracker blocker (licence-साफ़ सूची)", "Chrome से सीधे आगे", "Ad / tracker blocking", "मध्यम"),
+    ("6", "पहली बार search engine चुनाव screen", "privacy में आगे", "Default search engine", "कम"),
+    ("7", "Shield में malware/UwS + heuristics", "Standard coverage में बराबरी, privacy में आगे", "Safe Browsing", "ज़्यादा"),
+    ("8", "signed in-app update channel", "update में बराबर", "Security update", "ज़्यादा"),
+    ("9", "on-device पढ़कर सुनाना (Android TTS)", "Chrome की कमी पूरी, निजता में आगे", "Listen to this page", "मध्यम"),
+    ("10", "phone पर extensions (desktop-android)", "Chrome Android से सीधे आगे", "Extensions", "ज़्यादा"),
+    ("11", "एक ही असली फ़ोन पर Chrome 155 बनाम Swiftra: start, memory, Speedometer, battery", "speed का सच्चा फ़ैसला", "Performance", "मध्यम"),
+    ("12", "बाकी NOT RUN: Translate, password manager, 3P autofill, tabs, Incognito lock, AI Mode, असली Arena", "अनिर्णीत पंक्तियाँ निपटाना", "D, G", "मध्यम"),
 ]
