@@ -150,6 +150,35 @@ action नहीं): `discover-pa.googleapis.com/v1:queryInteractiveFeed` ×2, 
 संदर्भ (code नहीं लिया): Bare browser (BSD-3) docs/patches.md 0006/0093/0193/0194 में यही call sites दर्ज हैं।
 E2E gate: `quiet_violations()` — startup NetLog या Standard NetLog window (अब address form page सहित) में इनमें से कोई request = FAIL।
 
+## 0000-upstream-155.0.8059.84.patch (2026-10-18 — engine security बराबर Chrome stable)
+Google ने Android पर 155.0.8059.84 जारी किया (security fixes)। tag बदलने का मतलब नया STATE और पूरा fresh build (घंटों),
+इसलिए .80 → .84 का source delta (gitiles `+log/refs/tags/155.0.8059.80..refs/tags/155.0.8059.84`, 63 commits) patch के रूप में:
+- Chromium 10 fixes: cc/paint (paint_op reader/writer, paint_shader, transfer cache), gpu raster_decoder/service_transfer_cache,
+  chrome_content_renderer_client, soda_util, navigation_request, text_input_manager, worker_host (dedicated/shared/fetcher),
+  content/common/features, blink element.cc / svg_resource.cc।
+- V8 3 [M155] fixes (d89479ac..712e1808): compiler (JSCreateGeneratorObject lowering), maglev graph builder, code serializer।
+- जानबूझकर **नहीं** लिया: `chrome/VERSION` और `v8/include/v8-version.h` (लगभग हर file इन्हें include करती है → लगभग पूरा
+  rebuild), xtb अनुवाद (security नहीं; 0002 से टकराव), devtools UI commit। इसलिए **version label 155.0.8059.80 / V8 15.5.35.23
+  ही दिखता है, जबकि code में .84 के सभी security fixes हैं।** यह बात README/BUILD_INFO/report में स्पष्ट लिखी जाती है।
+- सत्यापन: साफ़ .80 files पर `patch -p1` (fuzz/offset 0) → सभी 33 files .84 tag की files से byte-identical।
+- series में सबसे पहले (pristine upstream code पर); हमारे 0001–0010 में से कोई इन files को नहीं छूता।
+
+## 0010-swiftra-advanced-defaults.patch (2026-10-18 — Chrome से कड़े privacy/security defaults)
+- `chrome/common/chrome_features.cc`: `kHttpsFirstBalancedModeAutoEnable` = ENABLED_BY_DEFAULT। Chrome में यह server-side
+  field trial से चालू होता है (`testing/variations/fieldtrial_testing_config.json` @155: `HttpsFirstBalancedModeAutoEnableAndroid`
+  Enabled); Swiftra में `disable_fieldtrial_testing_config = true` और कोई Finch नहीं → अब तक बंद था। असर: public site HTTPS
+  पर न खुले तो चुपचाप HTTP पर जाने के बजाय "connection is not secure" चेतावनी (private IP/single-label host छूट)। Settings से बंद हो सकता है।
+- `components/content_settings/core/browser/cookie_settings.cc`: `prefs::kCookieControlsMode` default
+  kIncognitoOnly → **kBlockThirdParty** (Chrome में third-party cookies सामान्य tab में allowed)। pref को startup पर कोई नहीं
+  लिखता (code search: केवल enterprise policy handler और desktop settings UI) → user/policy अब भी बदल सकते हैं।
+- E2E (`scripts/ci/advanced_e2e.py`, `run_capture.sh` से): `--host-resolver-rules` से `httponly.example.com`,
+  `top.example.com`, `cookie3p.example.org` runner के local servers पर (HTTP 8770; HTTPS 8771 self-signed +
+  `--ignore-certificate-errors` केवल इस run में)। HTTPS: चेतावनी/HTTP page कभी fetch न हो = PASS; चुपचाप HTTP = FAIL।
+  Cookies: cross-site iframe का `s3p=1; SameSite=None; Secure` cookie दो loads में न दिखे = PASS, first-party `fp=1` control ज़रूरी।
+  Desktop Chromium 156 पर तरीका सत्यापित: AutoEnable off → HTTP silently (server hits 2), on → blocked (hits 0);
+  3PC default → allowed, CDP restriction → blocked।
+- Fingerprinting protection: @155 में कोई तैयार flag नहीं (press में बताया canvas-readback flag इस tree में नहीं) → अगले चरण में अपना implementation।
+
 ## सत्यता scan (harness)
 `scripts/ci/branding_scan.py` `FALSE_CLAIMS`/`EXPECTED` + `scan_claims()`; `scripts/ui_capture.py` हर capture xml पर चलाकर
 meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता है। 1f2788f artifacts पर (fix से पहले): x64 4, arm64 6 hits।

@@ -1,0 +1,30 @@
+--- a/chrome/common/chrome_features.cc
++++ b/chrome/common/chrome_features.cc
+@@ -1233,8 +1233,11 @@
+ 
+ // Automatically enables HTTPS-First Mode in a balanced configuration when
+ // possible.
++// Swiftra: on by default. Google Chrome enables this through a server-side
++// field trial (HttpsFirstBalancedModeAutoEnableAndroid); Swiftra runs no
++// field trials, so the default lives here. Users can turn it off in Settings.
+ BASE_FEATURE(kHttpsFirstBalancedModeAutoEnable,
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // Kill switch for crbug.com/40892208.
+ BASE_FEATURE(kHttpsFirstModeForAdvancedProtectionUsers,
+--- a/components/content_settings/core/browser/cookie_settings.cc
++++ b/components/content_settings/core/browser/cookie_settings.cc
+@@ -76,9 +76,11 @@
+ 
+ void CookieSettings::RegisterProfilePrefs(
+     user_prefs::PrefRegistrySyncable* registry) {
++  // Swiftra: third-party cookies are blocked by default (Chromium default:
++  // blocked in Incognito only). Users can allow them per site or globally.
+   registry->RegisterIntegerPref(
+       prefs::kCookieControlsMode,
+-      static_cast<int>(CookieControlsMode::kIncognitoOnly),
++      static_cast<int>(CookieControlsMode::kBlockThirdParty),
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+ }
+ 
