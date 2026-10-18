@@ -159,6 +159,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 return self._download(rec)
             time.sleep((ADLAT_MS if host in ADS else LAT_MS) / 1000)
             name = path.lstrip("/")
+            if host == SITE and name == "bench.html":
+                return self._send(rec, BENCH_HTML.encode(), "text/html; charset=utf-8", rate=10 * 1024 * 1024)
             if host == SITE and name == "news.html":
                 return self._send(rec, news_html(rec["rid"]).encode(), "text/html; charset=utf-8")
             if host in ADS and name == "creative.html":
@@ -224,6 +226,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 DL_DATA = b""
+# CPU benchmark (tools/speedpack/bench.js, own code): JS engine + DOM/layout work, no network. Same page in both
+# modes; across APKs it is the PGO before/after number (arm64).
+BENCH_RUNS = 5
+BENCH_HTML = ("<!doctype html><meta name=viewport content='width=device-width'><title>BENCH:running</title>"
+              "<body><pre id=r></pre><script>"
+              + open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "tools", "speedpack",
+                                  "bench.js"), encoding="utf-8").read()
+              + "\nsetTimeout(function(){var r=swiftraBench(%d);document.getElementById('r').textContent="
+                "JSON.stringify(r);document.title='BENCH:done';},1500);</script>" % BENCH_RUNS)
 
 
 def start_server(tmp):
@@ -382,6 +393,24 @@ def load_page(rid, shot=None):
     return out
 
 
+def run_bench(rid):
+    url = f"https://{SITE}/bench.html?r={rid}"
+    r = open_internal(DEVTOOLS, url)
+    t0, val = time.time(), None
+    while time.time() - t0 < 180 and not val:
+        time.sleep(3)
+        v = page_text(DEVTOOLS, url, "(() => ({t: document.title, r: (document.getElementById('r')||{}).textContent||''}))()")
+        if isinstance(v, dict) and v.get("t") == "BENCH:done":
+            val = v
+    out = {"open": r, "seconds": round(time.time() - t0, 1), "result": None}
+    try:
+        out["result"] = json.loads(val["r"]) if val else None
+    except ValueError:
+        pass
+    out["closed_tabs"] = close_targets("bench.html")
+    return out
+
+
 def device_file(rid):
     ls = adb("shell", "ls", "-l", "/sdcard/Download/", timeout=20)
     for ln in ls.splitlines():
@@ -428,12 +457,17 @@ def summarize(res):
                    "download_s": med([d.get("seconds") for d in dls if d.get("complete")]),
                    "download_conns": med([d.get("requests") for d in dls if d.get("complete")]),
                    "downloads_complete": sum(1 for d in dls if d.get("complete")), "downloads": len(dls)}
+        benches = [c[mode]["bench"]["result"] for c in res["cycles"] if (c[mode].get("bench") or {}).get("result")]
+        s[mode]["bench_ms"] = med([b["total"] for b in benches])
+        s[mode]["bench_runs"] = len(benches)
+        s[mode]["bench_parts"] = {k: med([b["ms"].get(k) for b in benches]) for k in (benches[0]["ms"] if benches else {})}
     a, b = s["chromium_defaults"], s["swiftra"]
 
     def ratio(x, y):
         return round(x / y, 2) if x and y else None
     s["speedup"] = {"load": ratio(a["load_ms"], b["load_ms"]), "lcp": ratio(a["lcp_ms"], b["lcp_ms"]),
-                    "download": ratio(a["download_s"], b["download_s"]), "bytes": ratio(a["kib"], b["kib"])}
+                    "download": ratio(a["download_s"], b["download_s"]), "bytes": ratio(a["kib"], b["kib"]),
+                    "bench": ratio(a.get("bench_ms"), b.get("bench_ms"))}
     return s
 
 
@@ -469,12 +503,14 @@ def main():
                         shot = os.path.join(a.out, f"page_{mode}_{c}.png") if i == a.loads - 1 else None
                         rec["loads"].append(load_page(f"c{c}{mode[0]}{i}", shot))
                     rec["download"] = run_download(f"d{c}{mode[0]}")
+                    rec["bench"] = run_bench(f"b{c}{mode[0]}")
                     subprocess.run(f"adb exec-out screencap -p > '{os.path.join(a.out, f'download_{mode}_{c}.png')}'",
                                    shell=True, timeout=30)
                 cyc[mode] = rec
                 print(f"cycle {c} {mode}:", json.dumps({"flags": st["flags_applied"],
                       "loads": [x.get("page") for x in rec["loads"]],
-                      "download": (rec.get("download") or {}).get("server")})[:900], flush=True)
+                      "download": (rec.get("download") or {}).get("server"),
+                      "bench": (rec.get("bench") or {}).get("result")})[:1400], flush=True)
             res["cycles"].append(cyc)
     finally:
         adb("shell", "rm", "-f", CMDLINE_FILE)
@@ -492,6 +528,7 @@ def main():
     print(f"SPEED_E2E MEASURED load_ms {d['load_ms']}->{w['load_ms']} lcp_ms {d['lcp_ms']}->{w['lcp_ms']} "
           f"kib {d['kib']}->{w['kib']} requests {d['requests']}->{w['requests']} "
           f"download_s {d['download_s']}->{w['download_s']} conns {d['download_conns']}->{w['download_conns']} "
+          f"bench_ms {d.get('bench_ms')}->{w.get('bench_ms')} "
           f"speedup {s['speedup']}")
     return 0
 

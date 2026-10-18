@@ -148,3 +148,30 @@ def test_arm64_pgo_and_orderfile_are_wired_and_guarded():
     # the base heredoc stays untouched (official build stays off; privacy relies on it)
     base = s.split("ARGS=$(cat <<EOF\n", 1)[1].split("\nEOF\n", 1)[0]
     assert "is_official_build = false" in base and "chrome_pgo_phase" not in base
+
+
+def test_speed_e2e_bench_summary():
+    sys.path.insert(0, os.path.join(ROOT, "scripts", "ci"))
+    import speed_e2e as se
+    assert "swiftraBench(5)" in se.BENCH_HTML and "BENCH:done" in se.BENCH_HTML
+    js = open(os.path.join(ROOT, "tools", "speedpack", "bench.js"), encoding="utf-8").read()
+    for api in ("fetch(", "XMLHttpRequest", "import(", "WebSocket", "sendBeacon", ".src", "navigator."):
+        assert api not in js, api   # no network, no device APIs: pure CPU work
+
+    def mode(total, dl):
+        page = {"load": 1000, "lcp": 500, "fcp": 300, "dcl": 200}
+        srv = {"requests": 47, "bytes": 900 * 1024, "ad_requests": 15}
+        return {"loads": [{"page": page, "server": srv}],
+                "download": {"server": {"complete": True, "seconds": dl, "requests": 3}},
+                "bench": {"result": {"total": total, "ms": {"json": total / 2, "dom": total / 2}}}}
+    res = {"cycles": [{"chromium_defaults": mode(1000, 8.0), "swiftra": mode(800, 4.0)},
+                      {"chromium_defaults": mode(1200, 8.2), "swiftra": mode(900, 4.2)}]}
+    s = se.summarize(res)
+    assert s["chromium_defaults"]["bench_ms"] == 1100 and s["swiftra"]["bench_ms"] == 850   # statistics.median
+    assert s["swiftra"]["bench_runs"] == 2 and s["swiftra"]["bench_parts"]["json"] == 425
+    assert s["speedup"]["bench"] == 1.29 and s["speedup"]["download"] == round(8.1 / 4.1, 2)
+    # an older run without the bench still summarises
+    for c in res["cycles"]:
+        for m in c.values():
+            m.pop("bench")
+    assert se.summarize(res)["speedup"]["bench"] is None
