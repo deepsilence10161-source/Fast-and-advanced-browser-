@@ -210,6 +210,11 @@ Group reasons:
   builds link with mold by default (`use_mold` requires `!is_official_build`, compiler.gni), so `use_lld` is false. The
   arm64 PGO args now add `use_mold = false` (lld, as in official Chrome). `chromium_stage.sh` now prints the whole
   `gn gen` output on failure (before, `| tail -2` hid the error line).
+  The next attempt (39146588456) passed that point and stopped at `build/timestamp.gni`'s default-toolchain assert
+  in `android_clang_arm64_webview`: with `chrome_pgo_phase = 2`, android_webview/variables.gni adds a separate
+  standalone-WebView toolchain, and official builds pass the assert only because they enable the 32-bit secondary
+  ABI. The args now also set `chrome_pgo_phase_default_toolchain = 0` (read only by the WebView toolchain choice;
+  the PGO compiler flags read `chrome_pgo_phase`). Swiftra does not ship WebView, so nothing else changes.
 - Baseline kept: the 0011 arm64 APK (no PGO, no orderfile; build 39127525981, sha256
   `8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd`) is copied to the draft release
   `apk-b1-0011-arm64` before the PGO build replaces the state release asset.
