@@ -46,6 +46,9 @@ if [ "$T" != chrome_ref ]; then
   # cold-start trace (diagnostic for startup speed work; never fails the job)
   timeout 240 python3 scripts/ci/startup_trace.py --package "$PKG" --out "$OUT/startup_trace" 2>&1 | tee "$OUT/startup_trace.txt"
   echo "startup_trace exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  # ART compile state vs cold start (install/verify vs speed-profile vs speed): is a baseline profile worth it?
+  timeout 1200 python3 scripts/ci/art_startup.py --package "$PKG" --out "$OUT/art_startup" 2>&1 | tee "$OUT/art_startup.txt"
+  echo "art_startup exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
 fi
 timeout 60 adb logcat -d | grep -iE "chromium|chrome|FATAL|AndroidRuntime|ndk_translation|DEBUG" | tail -400 > "$OUT/logcat_tail.txt"
 exit 0
