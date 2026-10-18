@@ -33,6 +33,13 @@ components/download/internal/common/parallel_download_utils.cc @155 defaults: re
 Swiftra: request_count 5 (HTTP/1.1 allows 6 per host, one stays free), min_slice_size 512 KiB, remaining 1 s.
 Helps on servers that cap per-connection speed; it cannot exceed the link's bandwidth.
 
+HTTP/2 and QUIC (checked @155): `kUseParallelRequestsForHTTP2` and `kUseParallelRequestsForQUIC` are both
+`FEATURE_ENABLED_BY_DEFAULT` (`download_features.cc`), so the slices are also requested from H2/QUIC servers. The
+"HTTP/1.1 only" comment in `download_job_factory.cc` is stale. But on H2/QUIC the slices are streams on the **same**
+connection (same session key), not extra TCP/QUIC connections. So the measured 1.66x applies to HTTP/1.1 servers or
+servers that limit each request. On a CDN serving H2/QUIC the gain can be small or zero. The device harness uses an
+HTTP/1.1 server, so its number must be reported as "HTTP/1.1 server, 1 MiB/s per connection", not as a general claim.
+
 Desktop component check (evidence/speed-2026-10-18/desktop-harness-cft156.json; CfT 156, same harness server,
 24 MiB at 1 MiB/s per connection): defaults (3 connections) **8.08 s**, Swiftra values (5) **4.87 s** (1.66x), single
 connection would be 24 s. File complete in both.
