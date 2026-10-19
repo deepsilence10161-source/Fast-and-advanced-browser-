@@ -130,6 +130,13 @@ row(B, "Password leak check",
     "कमी", "Chrome",
     "Google का leak database चाहिए",
     "k-anonymity वाला licence-साफ़ विकल्प या toggle को सच-सच छिपाना")
+row(B, "Cookies और card data का disk पर encryption",
+    "Android पर OSCrypt की केवल \"v10\" key, जो Chromium के सार्वजनिक source में लिखी है (यानी केवल छिपाना)",
+    "patch 0021: हर install की random AES-256-GCM key, Android Keystore की non-exportable key से wrapped (tag sw1); v10 data पढ़ा जा सकता है",
+    "static (code @155 + JCE wrap test 3/3); device KEYSTORE_E2E NOT RUN (builds 39223536200 / 39223539138)",
+    "NOT RUN", "अनिर्णीत",
+    "device पर PASS होते ही Swiftra आगे; startup गति पर असर मापना बाकी",
+    "KEYSTORE_E2E + STARTUP_TRACE तुलना")
 
 # ---------- C. Privacy ----------
 C = "C. Privacy"
@@ -478,6 +485,7 @@ META = {
  "Secure DNS (DoH)": ("मध्यम", "DNS निजी", "कम"),
  "Post-quantum TLS + PQ WebCrypto (ML-KEM, ML-DSA, X-Wing)": ("मध्यम", "भविष्य की सुरक्षा", "—"),
  "Password leak check": ("मध्यम", "चोरी हुए password की चेतावनी", "मध्यम"),
+ "Cookies और card data का disk पर encryption": ("उच्च", "फ़ोन का data निकाले जाने पर login-session और card की सुरक्षा", "कम"),
  "Usage stats / crash reports": ("मध्यम", "निजता", "—"),
  "Server experiments (Finch / variations)": ("मध्यम", "निजता, अनुमानित व्यवहार", "—"),
  "Startup पर background requests": ("मध्यम", "कम डेटा, कम tracking", "कम"),
