@@ -34,7 +34,7 @@ import speed_e2e as se  # noqa: E402
 
 LCPP_FEATURES = ("LCPCriticalPathPredictor,LCPPFontURLPredictor,LCPPAutoPreconnectLcpOrigin,"
                  "LCPPPrefetchSubresource,HttpDiskCachePrewarming")
-MODE_BUDGET_S = 130          # per mode and cycle: 2 cycles x 3 modes inside run_capture's 900 s
+MODE_BUDGET_S = 130          # per mode and cycle: 4 cycles x 3 modes inside run_capture's 1700 s
 MODES = {
     "chromium_defaults": se.MODES["chromium_defaults"],
     "swiftra": "",

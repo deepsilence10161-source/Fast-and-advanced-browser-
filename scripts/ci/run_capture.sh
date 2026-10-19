@@ -54,7 +54,8 @@ if [ "$T" != chrome_ref ]; then
   echo "speed_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
   timeout 90 adb logcat -b all -d 2>/dev/null | gzip -6 > "$OUT/logcat_speed_e2e.txt.gz"   # kept before any later logcat -c
   # repeat visits (SPA with cached assets; cold restart + warm): chromium_defaults / swiftra / swiftra_lcpp candidate
-  timeout 900 python3 -u scripts/ci/repeat_e2e.py --package "$PKG" --out "$OUT/repeat" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/repeat_e2e.txt"
+  # 4 cycles: with 2 the 6-vs-6 medians swung +-15% between runs (39202833756 vs 39218924046), too noisy to decide
+  timeout 1700 python3 -u scripts/ci/repeat_e2e.py --cycles 4 --package "$PKG" --out "$OUT/repeat" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/repeat_e2e.txt"
   echo "repeat_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
   timeout 90 adb logcat -b all -d 2>/dev/null | gzip -6 > "$OUT/logcat_repeat_e2e.txt.gz"   # kept before any later logcat -c
   # cold-start trace (diagnostic for startup speed work; never fails the job)
