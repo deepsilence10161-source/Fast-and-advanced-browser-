@@ -187,6 +187,9 @@ def checked_adb(*args, raw_input=None, timeout=45):
 
 
 def root_device():
+    hardware = checked_adb("shell", "getprop", "ro.hardware").strip()
+    if hardware not in (b"ranchu", b"goldfish", b"redroid"):
+        raise RuntimeError("refusing private-pref fixtures on a physical or unknown Android device")
     if checked_adb("shell", "id", "-u").strip() != b"0":
         checked_adb("root")
         checked_adb("wait-for-device", timeout=60)
@@ -216,13 +219,27 @@ def read_prefs(path):
 
 
 def write_prefs(path, raw):
-    # Truncate the EXISTING file while stopped: preserves its app uid/mode/SELinux context.
-    # Refuse an AtomicFile backup rather than edit a file Android might ignore on next load.
-    q = shlex.quote(path)
-    script = "test ! -e %s.bak && test -f %s && cat > %s" % (q, q, q)
-    checked_adb("exec-in", "sh -c " + shlex.quote(script), raw_input=raw)
-    if read_prefs(path) != raw:
-        raise RuntimeError("SharedPreferences fixture write did not round-trip")
+    # Stage in the private app directory, verify bytes AND uid/mode/SELinux label, then rename.
+    # shell -T uses the shell-v2 stdin/exit protocol; exec-in can close without a remote-exit ack.
+    # A dropped/truncated stdin or failed metadata operation must never truncate the original.
+    pref_root(raw)
+    tmp = path + ".swiftra_e2e.tmp"
+    q, t = shlex.quote(path), shlex.quote(tmp)
+    metadata = checked_adb("shell", "stat", "-c", "%u:%g:%a", path).strip()
+    context = checked_adb("shell", "ls", "-Zd", path).split()[0]
+    script = "umask 077; test ! -e %s.bak && test ! -e %s && test -f %s && cp -p %s %s && cat > %s" % (q, t, q, q, t, t)
+    try:
+        checked_adb("shell", "-T", script, raw_input=raw)
+        if read_prefs(tmp) != raw:
+            raise RuntimeError("SharedPreferences fixture write did not round-trip")
+        if b":" in context:
+            checked_adb("shell", "chcon", context.decode("ascii"), tmp)
+        if (checked_adb("shell", "stat", "-c", "%u:%g:%a", tmp).strip() != metadata
+                or checked_adb("shell", "ls", "-Zd", tmp).split()[0] != context):
+            raise RuntimeError("SharedPreferences fixture metadata changed")
+        checked_adb("shell", "mv", "-f", tmp, path)
+    finally:
+        checked_adb("shell", "rm", "-f", tmp)
 
 
 def device_ms():
@@ -264,8 +281,10 @@ def run_case(package, comp, path, name, out, version, hits):
     before = last_ok(read_prefs(path))
     production = name == "good_production"
     flags = "_" if production else "_ --swiftra-update-manifest-url=http://127.0.0.1:%d/bad.json" % PORT
-    checked_adb("exec-in", "sh -c " + shlex.quote("cat > " + CMDLINE_FILE + " && chmod 644 " + CMDLINE_FILE),
+    checked_adb("shell", "-T", "cat > " + CMDLINE_FILE + " && chmod 644 " + CMDLINE_FILE,
                 raw_input=(flags + "\n").encode())
+    if checked_adb("exec-out", "cat", CMDLINE_FILE) != (flags + "\n").encode():
+        raise RuntimeError("command-line fixture write did not round-trip")
     adb("logcat", "-c")
     n0, start_ms = len(hits), device_ms()
     checked_adb("shell", "am", "start", "-W", "-n", comp, "-a", "android.intent.action.VIEW", "-d", "about:blank", timeout=60)

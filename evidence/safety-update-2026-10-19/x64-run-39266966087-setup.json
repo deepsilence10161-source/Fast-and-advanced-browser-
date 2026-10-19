@@ -1,0 +1,9 @@
+{
+ "package": "com.swiftra.app",
+ "cases": {},
+ "restored": false,
+ "stage": "bad_fresh:prepare",
+ "setup_error": "prefs parse refused: bytes=0 format=empty code=3 position=(1, 0) controls=0",
+ "restore_error": "RuntimeError",
+ "verdict": "not_run"
+}
