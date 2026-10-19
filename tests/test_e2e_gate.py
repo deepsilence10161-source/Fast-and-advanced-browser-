@@ -27,3 +27,12 @@ def test_not_run_blocked(tmp_path):
 
 def test_device_check_failure_blocked(tmp_path):
     assert g.gate(_mk(tmp_path, ALL, dev="DEVICE_CHECKS: 8 pass, 1 fail"), SHA)
+
+
+def test_update_e2e_required_only_with_0020(tmp_path):
+    d = tmp_path / "u"; d.mkdir()
+    (d / "BUILD_INFO.txt").write_text(f"x\n--- patches\n0016-swiftra-speedpack.py\n0020-swiftra-update-channel.patch\n--- sha256\n{SHA}\n")
+    (d / "e.txt").write_text("\n".join(ALL) + "\nDEVICE_CHECKS: 9 pass, 0 fail\n")
+    assert any("UPDATE_E2E" in r for r in g.gate(str(d), SHA))
+    (d / "e.txt").write_text("\n".join(ALL) + "\nUPDATE_E2E PASS\nDEVICE_CHECKS: 9 pass, 0 fail\n")
+    assert g.gate(str(d), SHA) == []

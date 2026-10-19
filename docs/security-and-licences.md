@@ -35,6 +35,8 @@ APK में है)। Private scalar वहाँ नहीं है। इ�
 | HTTPS-First + third-party cookie block | ADVANCED_E2E | PASS emulator |
 | Fingerprint shield | FINGERPRINT_E2E shielded | PASS emulator |
 | Ad/tracker blocker | ADBLOCK_E2E blocked | PASS emulator |
+| Update channel (0020) का network व्यवहार | अधिकतम 24 घंटे में एक बार (विफल होने पर 1 घंटे बाद) GitHub से `swiftra-update.json` + `.sig` का GET; केवल `User-Agent: SwiftraUpdate/1`, कोई ID/cookie/install data नहीं जोड़ा जाता; cache बंद; https के अलावा कुछ भी (redirect के बाद भी) अस्वीकार; 64 KiB सीमा; ECDSA P-256 हस्ताक्षर (0006 वाली public key) जाँचे बिना कुछ नहीं दिखता, 1 byte बदलने पर भी अस्वीकार। GitHub को IP पता दिखता है (हर download की तरह)। यह Java HttpURLConnection से होता है, इसलिए Chromium NetLog (`startup_netlog.py`) में नहीं दिखेगा, जो उस जाँच की सीमा है | PASS static/unit (javac 10+3+4, pytest 8); device UPDATE_E2E NOT RUN (builds 39221421949 / 39221425129) |
+| Safety check का update संदेश (0005 v2) | "up to date" केवल तब, जब पिछले 48 घंटे में हस्ताक्षरित manifest सत्यापित हुआ हो; वरना "जाँच नहीं हो सकी"। कभी झूठा "up to date" नहीं | PASS static (patch APPLY-OK @155); device NOT RUN |
 | Network security config | upstream Chrome जैसा (user + system CA, browsing के लिए http) | दर्ज, बदला नहीं |
 
 ## 3. Copyright और trademark
