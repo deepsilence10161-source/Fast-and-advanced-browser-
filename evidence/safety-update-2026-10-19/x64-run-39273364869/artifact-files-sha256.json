@@ -1,0 +1,15 @@
+{
+  "BUILD_INFO.txt": "f80dba8868aebaf879559b7d158ba4f7e3e634dd398ebdf4dfb687e74b58439c",
+  "bad_fresh.png": "ba540fe75c2cb109f7de3ad55aa3401dbb60e32a543accd1f487eeb555f1db26",
+  "bad_fresh.xml": "a442f1e7fcffd6299614e439054131cd57dac1a2a0eadba6a2f2583da28641fe",
+  "bad_future.png": "b1ce15c9730bf984627fa45cc32016ad28b32bda767ee471baf23bbe79526385",
+  "bad_future.xml": "a442f1e7fcffd6299614e439054131cd57dac1a2a0eadba6a2f2583da28641fe",
+  "bad_recent.png": "a326d6f7ef151e7cce7ab6d1f9e38e479a43e3b3039a5bf22e3a3f1399b37a71",
+  "bad_recent.xml": "2e979bf9de6521109c0885d478cc950e076f4cfc2fdf1aa53d5f527d345ee954",
+  "bad_stale.png": "aa42335c46f44b9048732d50b3f8c2c29bfef259d9699db5ee2f9df137754bb3",
+  "bad_stale.xml": "b05577324b66b5d609d7cd2790b019cef9fa9853916ed9fbb04433ca8a6d0e1e",
+  "good_production.png": "947964d7f34e9b07909d44b936cb6290d8e987044a710be89757b3c6f4be8ab2",
+  "good_production.xml": "aed4aa96c4dd5a7a7f217671981fdc9848bc053f7a285cd2b234befb6902f408",
+  "markers.txt": "0725455368f9f9ee7feff456ddf93a0ec1f0f20b4002aa52c2bae6d751b32c6c",
+  "safety_update_e2e.json": "f512af58a0795cd432cad073d5b1050d784d55cf344bb19544dd8066d97663f3"
+}

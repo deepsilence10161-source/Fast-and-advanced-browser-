@@ -1,0 +1,12 @@
+{
+  "type": "CI unit evidence, NOT native Android app acceptance",
+  "run_id": 39273365779,
+  "head_sha": "ff4944e1d1470e2a6517d303014e770f3ccb3c6f",
+  "job_id": 118131200176,
+  "url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39273365779",
+  "marker_utc": "2026-10-19T14:57:58.0136101Z",
+  "result": "259 passed, 1 skipped in 124.54s (0:02:04)",
+  "relevant_local_suite": "88 passed in 0.27s",
+  "secret_scan_run": 39273364636,
+  "secret_scan_result": "success"
+}

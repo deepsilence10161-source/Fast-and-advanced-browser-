@@ -41,7 +41,11 @@ A tampered request **does not** erase a genuine recent success. Claiming "every 
 
 ## Status
 
-Local suite after changes: `199 passed, 8 skipped in 123.33s`; YAML parsing, shell syntax and pristine-patch checks also passed: **PASS (static only)**. Android x64/arm64 results must be recorded from actual run artifacts, not inferred from workflow status or from these local tests. Runtime evidence pending.
+Current focused x64 result: [39273364869](https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39273364869), driver `ff4944e`: **PASS (Android emulator), 5/5, restored=True**, API 36/x86_64. All JSON, XML and screenshots were inspected; both `current` modules were genuinely expanded and showed the exact installed version. Installed source APK SHA-256 `b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff` was checked against BUILD_INFO before installation. This is focused evidence, not the full release suite, physical-device/account acceptance, or update-button tap/download proof. The publish job was **skipped**, as intended.
+
+Pinned CI unit run `39273365779` at `ff4944e`: **259 passed, 1 skipped in 124.54s**; local relevant suite **88 passed in 0.27s**. Initial full local suite after the original integration was `199 passed, 8 skipped in 123.33s`; later full local coverage and failed-run chronology are retained below.
+
+On builds declaring 0021, focused mode now follows successful Safety restoration with the real loopback cookie Keystore E2E on that **same profile**. Its postcondition requires `sw1`, no plaintext/token in DB, wrapped pref, restart-cookie recovery and Keystore2. It does not trust the legacy script's exit 0 alone (NOT_RUN also returns 0). This extra probe is pending new x64/arm64 focused runs; it is not retroactively claimed for run 39273364869.
 
 The first full local run was **2 failed, 197 passed, 8 skipped**: the focused ARM publish guard had not yet been added, and the A/B workflow assertion expected the old (non-focused-aware) condition. Both were corrected before any push/dispatch. This is harness development history, not an Android-app failure.
 

@@ -117,3 +117,25 @@ def test_wrapper_patch_awareness_is_executable_not_a_substring_check(tmp_path, p
     r = subprocess.run(["bash", "-c", "safety_update_supported() {" + body + "\n}\nsafety_update_supported"],
                        env=env, capture_output=True)
     assert (r.returncode == 0) is supported
+
+
+PROBE_PASS = ("KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False "
+              "wrapped_pref=True cookie_after_restart=True keystore2=True\n")
+
+
+@pytest.mark.parametrize("code,log,expected", [
+    (0, PROBE_PASS, True), (1, PROBE_PASS, False), (0, "", False),
+    (0, PROBE_PASS.replace("PASS", "NOT_RUN"), False),
+    (0, PROBE_PASS.replace("PASS", "FAIL"), False),
+    (0, PROBE_PASS.replace("wrapped_pref=True", "wrapped_pref=False"), False),
+    (0, PROBE_PASS.replace("keystore2=True", "keystore2=False"), False),
+])
+def test_focused_keystore_postcondition_requires_actual_evidence(tmp_path, code, log, expected):
+    wrapper = Path(__file__).resolve().parents[1] / "scripts/ci/run_capture.sh"
+    body = wrapper.read_text().split("keystore_probe_passed() {", 1)[1].split("\n}", 1)[0]
+    p = tmp_path / "probe.txt"
+    p.write_text(log)
+    r = subprocess.run(["bash", "-c", "keystore_probe_passed() {" + body +
+                        '\n}\nkeystore_probe_passed "$1" "$2"', "probe", str(code), str(p)],
+                       capture_output=True)
+    assert (r.returncode == 0) is expected

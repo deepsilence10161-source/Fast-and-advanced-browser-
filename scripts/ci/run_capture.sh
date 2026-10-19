@@ -9,6 +9,10 @@ safety_update_supported() {
   grep -Eq '^[[:space:]]*0005-safety-hub-no-false-up-to-date[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null &&
     grep -Eq '^[[:space:]]*0020-swiftra-update-channel[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null
 }
+# The legacy keystore script exits 0 for NOT_RUN too; a focused postcondition must check evidence.
+keystore_probe_passed() {
+  [ "$1" -eq 0 ] && grep -Eq '^KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True([[:space:]]|$)' "$2"
+}
 # Focused acceptance on the same already-built APK. Not a replacement for full release E2E:
 # workflows explicitly skip publish in this mode; e2e_gate also rejects its missing full-suite markers.
 if [ "${2:-full}" = safety_update ]; then
@@ -17,6 +21,12 @@ if [ "${2:-full}" = safety_update ]; then
   [ -n "$APK_FILE" ] || { echo 'SAFETY_UPDATE_E2E NOT_RUN no source APK'; exit 2; }
   timeout 900 python3 -u scripts/ci/safety_update_e2e.py --package "$ART_PKG" --apk "$APK_FILE" --out "$OUT/safety_update" 2>&1 | tee "$OUT/safety_update_e2e.txt"
   rc=${PIPESTATUS[0]}; echo "safety_update_e2e exit=$rc" | tee -a "$OUT/journey.log"
+  # On 0021 builds, prove the provider still encrypts/decrypts after the private-pref fixture cycle.
+  if [ "$rc" -eq 0 ] && grep -Eq '^[[:space:]]*0021-swiftra-keystore-oscrypt[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt"; then
+    timeout 240 python3 -u scripts/ci/keystore_e2e.py --package "$ART_PKG" --out "$OUT/keystore" 2>&1 | tee "$OUT/keystore_e2e.txt"
+    kr=${PIPESTATUS[0]}; echo "keystore_e2e exit=$kr" | tee -a "$OUT/journey.log"
+    keystore_probe_passed "$kr" "$OUT/keystore_e2e.txt" || rc=1
+  fi
   exit "$rc"
 fi
 case "$T" in

@@ -1,0 +1,37 @@
+{
+  "checked_utc": "2026-10-19T15:14:14.944321+00:00",
+  "type": "focused native Android UI E2E, not a full release gate",
+  "run_id": 39273364869,
+  "job_id": 118131205341,
+  "artifact_id": 12196796979,
+  "test_driver_commit": "ff4944e1d1470e2a6517d303014e770f3ccb3c6f",
+  "url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39273364869",
+  "platform": "Android API 36, x86_64 emulator, Pixel 6 profile (not a physical Pixel)",
+  "package": "com.swiftra.app",
+  "version_name": "155.0.8059.80",
+  "version_code": 805908008,
+  "variant": "b1",
+  "apk_sha256": "b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+  "apk_sha256_binding": "workflow hashes dl/ChromePublic.apk and compares to BUILD_INFO before installation",
+  "chromium_tag": "155.0.8059.80",
+  "chromium_upstream_commit": "43a195105613ac83c21d3f14de279f4a045c7da0",
+  "apk_signer_sha256": "029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06",
+  "cases_passed": 5,
+  "cases_total": 5,
+  "update_preferences_restored": true,
+  "marker_utc": "2026-10-19T15:03:35.0352027Z",
+  "publication_jobs": [
+    {
+      "id": 118135689940,
+      "name": "publish",
+      "conclusion": "skipped"
+    }
+  ],
+  "limitations": [
+    "focused evidence cannot publish; full release suite was not repeated in this run",
+    "not arm64/Redroid or physical device evidence",
+    "no update-button tap/download acceptance",
+    "no Google/Arena account validation",
+    "whole-project acceptance is incomplete"
+  ]
+}
