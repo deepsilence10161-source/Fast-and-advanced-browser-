@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Chrome (Android 155) vs Swiftra comparison data, 18-10-2026.
+"""Chrome (Android 155) vs Swiftra comparison data, 19-10-2026.
 
 Single source for docs/comparison-chrome-vs-swiftra.{md,xlsx}.
 Winner values: Chrome | Swiftra | बराबर | अनिर्णीत | लागू नहीं
 """
 
-DATE = "18-10-2026"
+DATE = "19-10-2026"
 SWIFTRA_BUILD = ("Swiftra = Chromium 155.0.8059.80 source build (b1/a1) + patch 0000 (.84 के सभी security fixes), "
-                 "patches 0000-0010, commit f2a3cd0; x64 emulator + arm64 Redroid पर E2E।")
+                 "patches 0000-0013, 0015-0017 (APK 2bd84b64, build 39145132480); x64 emulator E2E 39185114548 / 39202833756; "
+                 "arm64 Redroid पर पिछला E2E 0011 APK का।")
 CHROME_REF = ("असली Chrome = Chrome 155.0.8059.84 for Android (15-10-2026)। "
               "Chrome पर हमारे अपने माप केवल Chrome 133 (emulator image) से हैं; बाकी तथ्य Google के आधिकारिक स्रोतों से।")
 
@@ -168,12 +169,12 @@ row(C, "Third-party cookies",
 row(C, "Ad / tracker blocking",
     "केवल intrusive-ads filter (Better Ads)",
     "patches 0012/0013: Swiftra Ad & Tracker Blocker (subresource_filter सभी sites पर, bundled ruleset "
-    "swiftra.bbc65e3afc380c8e; EasyList/EasyPrivacy GPLv3/CC BY-SA + AdAway CC BY 3.0); APK अभी बना नहीं",
-    "desktop component (Chromium 156 का असली matcher, tools/adblock/desktop_sanity.py): load 2 में 3 ad/tracker hosts "
-    "पर 0 server hits, controls loaded (evidence/adblock-2026-10-18); device E2E (ADBLOCK_E2E) NOT RUN",
-    "PASS (desktop component); device NOT RUN", "अनिर्णीत",
-    "device पर अभी साबित नहीं; desktop matcher पर सूची काम करती है",
-    "0012/0013 वाला APK build + ADBLOCK_E2E (x64 + arm64)")
+    "swiftra.bbc65e3afc380c8e; EasyList/EasyPrivacy GPLv3/CC BY-SA + AdAway CC BY 3.0)",
+    "emulator x64: ADBLOCK_E2E PASS verdict=blocked (runs 39185114548, 39202833756, APK 2bd84b64); speed test page पर "
+    "ad requests 15 -> 0 (chromium_defaults बनाम swiftra); desktop component भी PASS (evidence/adblock-2026-10-18)",
+    "PASS (emulator x64); arm64 NOT RUN", "Swiftra",
+    "Chrome में सामान्य ad/tracker blocker नहीं (केवल Better Ads filter); Swiftra हर site पर रोकता है (device पर साबित)",
+    "arm64 (नया build) पर ADBLOCK_E2E; site टूटने पर 'इस site पर अनुमति' flow")
 
 # ---------- D. Google सेवाएँ और features ----------
 D = "D. सेवाएँ / features"
@@ -332,12 +333,14 @@ row(F, "Memory (PSS, example.com के बाद)",
     "x64 पर Swiftra ~12% ज़्यादा; version अलग",
     "बराबर version पर माप, memory trace, बेकार services बंद")
 row(F, "Page load / JS speed (Speedometer आदि)",
-    "—",
-    "—",
-    "NOT RUN",
-    "NOT RUN", "अनिर्णीत",
-    "किसी का माप नहीं",
-    "एक ही फ़ोन पर benchmark suite")
+    "असली Chrome नहीं मापा; Chrome-जैसा proxy (उसी APK में Chromium defaults: field-trial config + Swiftra features बंद): "
+    "load 2102 ms, LCP 1010 ms, 887.1 KiB, 47 requests",
+    "x64 emulator, उसी run में A/B (6/6 loads): load 1203.5 ms (1.75x), LCP 964 ms (1.05x), 609.4 KiB (1.46x कम), "
+    "32 requests; JS bench 354.4 ms (proxy का bench budget में नहीं चला)",
+    "emulator x64 run 39202833756 (SPEED_E2E PARTIAL, evidence/speed-after-2026-10-19); बड़ा लाभ मुख्यतः ad blocking से",
+    "मापा (emulator, proxy baseline)", "अनिर्णीत",
+    "proxy असली Chrome नहीं (असली Chrome को Google के Finch studies मिलते हैं); असली फ़ोन पर माप नहीं",
+    "arm64 PGO build पर A/B; असली फ़ोन पर Chrome 155 बनाम Swiftra")
 row(F, "Data / battery (background)",
     "ज़्यादा background requests",
     "startup पर कम requests",
@@ -442,18 +445,18 @@ row(D, "दूसरे password manager से autofill",
 row(B, "Download की सुरक्षा (<a download>, JS downloads, redirect chain)",
     "Safe Browsing download check (ClientDownloadRequest Google को; Android पर MaliciousApkDownloadCheck Finch से)",
     "patch 0015 (Swiftra Download Shield): download URL और पूरी redirect chain local Shield सूची से; खतरा → "
-    "\"File might be harmful\" dialog; Google को कोई ping नहीं। APK अभी बना नहीं",
-    "static: 6 tests (patch साफ़ @155 पर apply, fake-device E2E logic); Shield DB canary; device E2E "
-    "(DOWNLOAD_SHIELD_E2E: canary / redirect / clean) NOT RUN",
-    "static only", "अनिर्णीत",
-    "बिना device E2E के दावा नहीं",
-    "0015 वाला APK build + DOWNLOAD_SHIELD_E2E")
+    "\"File might be harmful\" dialog; Google को कोई ping नहीं",
+    "emulator x64: DOWNLOAD_SHIELD_E2E PASS canary=blocked_dialog redirect=blocked_dialog clean=downloaded "
+    "(runs 39185114548, 39202833756); static 6 tests",
+    "PASS (emulator x64); arm64 NOT RUN", "अनिर्णीत",
+    "Chrome की cloud जाँच ज़्यादा व्यापक (नए खतरे तुरंत), Swiftra की जाँच local और बिना Google ping: अलग trade-off",
+    "arm64 पर DOWNLOAD_SHIELD_E2E; hash आधारित जाँच")
 row(F, "बड़ी file download की गति",
     "Chromium parallel download (default 3 connections, Finch पर निर्भर)",
-    "patch 0016 Speed Pack: 5 connections, 512 KiB slices (SwiftraParallelDownloading); APK अभी बना नहीं",
-    "desktop component (Chrome for Testing 156, 24 MiB, 1 MiB/s प्रति connection): 3 connections 8.06-8.08 s बनाम "
-    "5 connections 4.87-4.89 s = 1.65x तेज़ (evidence/speed-2026-10-18); device (speed_e2e.py) NOT RUN",
-    "मापा (desktop component); device NOT RUN", "अनिर्णीत",
+    "patch 0016 Speed Pack: 5 connections, 512 KiB slices (SwiftraParallelDownloading), HTTP/2 पर भी 5 अलग connections",
+    "emulator x64 run 39202833756 (24 MiB, प्रति connection सीमित server): HTTP/1.1 9.4 s / 3 conns -> 6.4 s / 5 conns "
+    "(1.47x); HTTP/2 24.1 s / 1 conn -> 5.3 s / 5 conns (4.55x); baseline = Chrome-जैसा proxy; desktop component 1.65x",
+    "मापा (emulator, proxy baseline)", "अनिर्णीत",
     "server हर connection को सीमित करे तो लाभ; असली Chrome Android पर तुलना नहीं हुई",
     "0016 वाला APK + speed_e2e (chromium_defaults बनाम swiftra) + असली फ़ोन")
 
