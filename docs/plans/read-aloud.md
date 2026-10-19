@@ -13,7 +13,8 @@
 ## Swiftra का रास्ता (Chrome से अलग: offline, कोई data बाहर नहीं)
 
 1. Menu में "पढ़कर सुनाएँ" item, केवल तब दिखे जब `IsUrlDistillable(url)` true हो।
-2. Text: upstream DOM Distiller (वही जो "Simplified view" में है)। कोई network request नहीं।
+2. Text: upstream DOM Distiller (वही जो "Simplified view" में है), native side से (`DomDistillerService::ViewUrlIgnoreCache`, जैसा `read_aloud_service.cc` करता है)। कोई network request नहीं।
+   **मना:** Java का `WebContents.evaluateJavaScript()` आम web page पर नहीं चलाया जा सकता। `RenderFrameHostImpl::ExecuteJavaScript()` में `CHECK(CanExecuteJavaScript())` है, जो केवल WebUI/DevTools/about:blank की अनुमति देता है (`render_frame_host_impl.cc` @155), इसलिए आम page पर browser crash होगा। दूसरा रास्ता: native `ExecuteJavaScriptInIsolatedWorld`।
 3. आवाज़: Android `android.speech.tts.TextToSpeech` (फ़ोन का on-device engine), वाक्य-दर-वाक्य `speak(QUEUE_ADD)`; play/pause/गति के controls; tab बदलने पर रुक जाए।
 4. Privacy: कोई metrics ID नहीं, server नहीं। Engine user के फ़ोन वाला ही रहेगा।
 5. E2E: example.org (distillable नहीं, इसलिए item नहीं दिखना चाहिए) + loopback article page (item दिखे, `TextToSpeech` utterance callbacks आएँ)। Emulator का Pico/Google TTS engine उपलब्ध हो तभी PASS, वरना NOT RUN।
