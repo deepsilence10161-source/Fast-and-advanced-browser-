@@ -113,6 +113,8 @@ def main():
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     adb("reverse", f"tcp:{PORT}", f"tcp:{PORT}")
     try:
+        svc = adb("shell", "service", "check", "android.system.keystore2.IKeystoreService/default", timeout=20) or ""
+        res["device_keystore2"] = "not found" not in svc and "found" in svc   # diagnosis if the provider is unavailable
         open_url(a.package, f"http://127.0.0.1:{PORT}/set")
         time.sleep(4)
         res["set_served"] = any(h["path"].startswith("/set") for h in HITS)
@@ -152,7 +154,8 @@ def main():
     r = res.get("row") or {}
     print("KEYSTORE_E2E", {"pass": "PASS", "fail": "FAIL"}.get(res["verdict"], "NOT_RUN"),
           f"prefix={r.get('enc_prefix')} plain_value={bool(r.get('value'))} token_in_db={res.get('token_in_plaintext')}"
-          f" wrapped_pref={res.get('wrapped_pref')} cookie_after_restart={res.get('restart_cookie_sent')}",
+          f" wrapped_pref={res.get('wrapped_pref')} cookie_after_restart={res.get('restart_cookie_sent')}"
+          f" keystore2={res.get('device_keystore2')}",
           res.get("error", ""))
     return 0
 
