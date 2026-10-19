@@ -299,6 +299,18 @@ def parse_db(blob: bytes):
     return created, lists
 
 
+def feed_notice():
+    """Licence notice for the redistributed feed data (MIT requires it in every copy): the LICENSE text of
+    patches/0019-swiftra-shield-feeds-credits.py, which also puts it in the app's chrome://credits."""
+    import importlib.util
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                        "patches", "0019-swiftra-shield-feeds-credits.py")
+    spec = importlib.util.spec_from_file_location("shield_feeds_credits", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.LICENSE
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
@@ -327,6 +339,9 @@ def main():
 
     for s in manifest["sources"]:
         print(s["id"], s.get("accepted"), s.get("error", ""))
+    with open(os.path.join(a.out, "NOTICE.txt"), "w", encoding="utf-8") as f:
+        f.write(feed_notice())
+    manifest["notice"] = "NOTICE.txt"
     json.dump(manifest, open(os.path.join(a.out, "manifest.json"), "w"), indent=1)
     print(json.dumps({k: manifest.get(k) for k in ("counts", "bytes", "transport_bytes", "guard_removed", "redundant_url_entries")}))
     if total < a.min_entries:

@@ -45,5 +45,25 @@ if [ -f "$KSP" ] || [ -f "$KS" ]; then
   [ $kp_ok = 1 ] && ok "17 release keystore: vault में 600; password vault के बाहर/argv में नहीं" \
     || { bad "17 release keystore perms/रिसाव"; [ -n "$hits" ] && echo "$hits" | sed 's/^/      /'; }
 fi
+# 18 हर vault secret (token, keystore password/bytes, private keys का केवल private हिस्सा) workspace + /tmp में कहीं नहीं
+#    (/tmp में CI artifacts/logs आते हैं; platform का hydrate.zip केवल .secrets/ प्रति हो तो NOTE)
+ls_out=$(python3 "$SG_DIR/leakscan.py" paths "$SG_HOME" /tmp 2>&1); ls_rc=$?
+[ $ls_rc = 0 ] && ok "18 leakscan: $(tail -1 <<<"$ls_out" | sed 's/^LEAKSCAN paths: //')" \
+  || { bad "18 leakscan (rc=$ls_rc)"; grep '^LEAK' <<<"$ls_out" | sed 's/^/      /'; }
+# 19 CI hygiene: secrets केवल env: से (run: के अंदर ${{ secrets.* }} नहीं), pull_request_target नहीं, हर workflow में permissions:
+WF="$SG_REPO/.github/workflows"; hy=""
+for f in "$WF"/*.yml; do
+  grep -q '^permissions:' "$f" || hy="$hy $(basename "$f"):no-permissions"
+  grep -q 'pull_request_target' "$f" && hy="$hy $(basename "$f"):pull_request_target"
+  awk '/^ *(- )?run: *\|/{r=1;next} /^ *(- )?(name|uses|with|env|if|id|shell|timeout-minutes|continue-on-error):/{r=0} r && /\$\{\{ *secrets\./{print FILENAME": "FNR}' "$f" | grep -q . \
+    && hy="$hy $(basename "$f"):secret-in-run"
+done
+[ -z "$hy" ] && ok "19 CI workflows: secrets केवल env से, pull_request_target नहीं, permissions घोषित" || bad "19 CI hygiene:$hy"
+if [ "${1:-}" != --no-network ]; then
+  repo=$(sed -E 's#https://github.com/##; s#\.git$##' <<<"$SG_URL")
+  cl=$(timeout 600 python3 "$SG_DIR/leakscan.py" ci-logs "$repo" "${SG_CI_RUNS:-8}" 2>&1); cl_rc=$?
+  [ $cl_rc = 0 ] && ok "20 CI logs: $(tail -1 <<<"$cl" | sed 's/^LEAKSCAN ci-logs: //')" \
+    || { bad "20 CI logs leakscan (rc=$cl_rc)"; grep '^LEAK' <<<"$cl" | sed 's/^/      /'; }
+fi
 [ -f /tmp/arena-workspace/hydrate.zip ] && note "/tmp/arena-workspace/hydrate.zip: platform का workspace-restore archive (vault की प्रति सहित); workspace के बाहर, snapshot में नहीं"
 echo "AUDIT: $P पास, $F विफल"; [ $F = 0 ]

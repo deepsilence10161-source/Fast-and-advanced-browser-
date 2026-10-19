@@ -9,7 +9,8 @@
 | API helper | `~/.secrets/gh.sh <api-path>` (canonical: repo का `tools/secret-guard/gh.sh`, बिना secret) | token को curl config के रूप में **stdin** से देता है, इसलिए वह `ps`/argv में नहीं दिखता। token केवल `api.github.com`/`uploads.github.com` को जाता है। हर output `redact.py` से गुज़रता है। |
 | git auth | `~/.secrets/git-cred.sh` (canonical: repo का `tools/secret-guard/git-cred.sh`) + `gitx` | credential helper token केवल `https://github.com` को देता है (दूसरे host या plain http पर कुछ नहीं)। URL, `.git/config` या `~/.git-credentials` में कुछ नहीं लिखा जाता। |
 | Self-heal | `lib.sh` (gitx, bootstrap) | हर उपयोग से पहले: vault 700/token 600, symlink/owner जाँच, helpers, exec bits, clean origin URL, `core.hooksPath`, verified gitleaks। ठीक न हो सके तो git नहीं चलता (fail-closed)। |
-| Audit | `audit.sh` | 16 जाँचें (perms, workspace में exact/base64 token, git config, hooks, scanner, argv, GitHub push protection)। मान कभी print नहीं होता। |
+| Audit | `audit.sh` | 20 जाँचें (perms, workspace में exact/base64 token, git config, hooks, scanner, argv, GitHub push protection, keystore, सभी secrets का leakscan, CI hygiene, CI logs)। मान कभी print नहीं होता। |
+| Leakscan | `leakscan.py` | हर vault secret (token, keystore password/bytes, private keys का केवल private हिस्सा, public key नहीं) को workspace, `/tmp` (CI artifacts), zip files और असली GitHub Actions job logs में खोजता है। केवल label छपता है। Positive control: 4/4 पकड़े गए। |
 | Redaction | `redact.py` | असली token, उसका base64 रूप, `github_pat_…`, `ghp_/gho_/ghu_/ghs_/ghr_…` और `Authorization:` header को `***REDACTED***` कर देता है। |
 | pre-commit | `hooks/pre-commit` | staged बदलावों में exact-token match और gitleaks चलाता है। स्कैनर विफल हो तो commit रुक जाता है (fail-closed)। |
 | commit-msg | `hooks/commit-msg` | commit message में token हो तो commit रोकता है। |

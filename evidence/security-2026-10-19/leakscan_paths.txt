@@ -1,0 +1,2 @@
+NOTE  /tmp/arena-workspace/hydrate.zip: vault copy only (members under .secrets/), no secret elsewhere in it
+LEAKSCAN paths: 2815 files, 14 needles (github-token, github-token-b64, github-token-basic-auth-b64, keystore-password, release-keystore-b64, release-keystore-bytes, shield-signing.pem-private-pem, shield-signing.pem-private-scalar, shield-signing.pem-private-scalar-hex), 0 leaks

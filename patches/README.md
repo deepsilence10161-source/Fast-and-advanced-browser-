@@ -270,3 +270,10 @@ meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता �
   रह जाता है (run 39148004780)।
 - बदलाव: `use_webview_pgo_profile` और `use_webview_pgo_profile_default_toolchain` = false। WebView default toolchain में
   रहता है, जैसा PGO के बिना। Swiftra WebView ship नहीं करता; x64 और non-PGO builds में दोनों पहले से false थे (no-op)।
+
+## 0019-swiftra-shield-feeds-credits.py (2026-10-19, Shield feed licences)
+- कमी: Shield list (shield-db release, जिसे app download करता है) Phishing.Database (MIT) और TweetFeed (CC0) से बनती है।
+  MIT notice न app में था, न release में।
+- Transform: `third_party/swiftra_shield_feeds/{README.chromium,LICENSE}` लिखता है, जिससे chrome://credits में entry
+  बनती है (0013 वाला तरीका)। वही text `scripts/shield/build_shield_db.py` `NOTICE.txt` के रूप में release में डालता है।
+- Gate: `tests/test_licences.py`। Status: WRITTEN; build और CREDITS E2E बाकी। Tranco केवल build-time guard है, बाँटा नहीं जाता।

@@ -17,6 +17,8 @@
 # 0012/0013: Swiftra Ad & Tracker Blocker (subresource_filter on all sites, bundled ruleset; docs/adblock-design.md)
 0012-swiftra-adblock.patch
 0013-swiftra-adblock-ruleset.py
+# 0019: chrome://credits entry for the Shield threat-feed data (Phishing.Database MIT, TweetFeed CC0)
+0019-swiftra-shield-feeds-credits.py
 # 0016: Swiftra Speed Pack (testing config = audited performance studies only; docs/speed-pack.md)
 0016-swiftra-speedpack.py
 # 0015: Swiftra Download Shield (download URL + redirect chain checked against the Shield list; docs/swiftra-shield.md)

@@ -9,6 +9,12 @@ case "$T" in
   chromium_*) timeout 2400 python3 scripts/ui_capture.py --package "$ART_PKG" --label "$T" --out "$OUT" --apk "$(find dl -name ChromePublic.apk | head -1)" ;;
 esac
 echo "ui_capture exit=$?" | tee -a "$OUT/journey.log"
+# static security + branding audit of the tested APK (tools/security/apk_audit.py; no device needed)
+APK_FILE=$(find dl -name ChromePublic.apk 2>/dev/null | head -1)
+if [ -n "$APK_FILE" ]; then
+  timeout 600 python3 tools/security/apk_audit.py --apk "$APK_FILE" --json "$OUT/apk_audit.json" 2>&1 | grep -v "^WARNING\|DEBUG" | tee "$OUT/apk_audit.txt"
+  echo "apk_audit exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+fi
 # synthetic long-chat fixture in the SAME browser on the emulator (not real Arena)
 PKG=$([ "$T" = chrome_ref ] && echo com.android.chrome || echo "$ART_PKG")
 (cd experiments/chat-rendering && exec python3 -m http.server 8000 --bind 127.0.0.1 >/dev/null 2>&1) &

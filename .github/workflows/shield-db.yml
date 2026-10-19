@@ -48,10 +48,10 @@ jobs:
           if ! gh release view shield-db -R "$R" >/dev/null 2>&1; then
             gh release create shield-db -R "$R" --prerelease --latest=false --target "${GITHUB_SHA}" \
               -t "Swiftra Shield list (auto-updated)" \
-              -n "Signed on-device threat list for Swiftra Shield. Built by .github/workflows/shield-db.yml from redistributable feeds; see docs/swiftra-shield.md and manifest.json."
+              -n "Signed on-device threat list for Swiftra Shield. Built by .github/workflows/shield-db.yml from redistributable feeds; see docs/swiftra-shield.md and manifest.json. Feed licences (MIT notice): NOTICE.txt."
           fi
           # A client that races these uploads sees a list/signature mismatch, rejects it, retries in 1 h (fail-safe).
-          for f in out/shield.swz out/shield.swz.sig out/manifest.json; do
+          for f in out/shield.swz out/shield.swz.sig out/manifest.json out/NOTICE.txt; do
             for i in 1 2 3 4; do gh release upload shield-db -R "$R" --clobber "$f" && break; sleep $((i*10)); done
           done
           gh release view shield-db -R "$R" --json assets -q '.assets[] | "\(.name) \(.size) \(.digest)"'
