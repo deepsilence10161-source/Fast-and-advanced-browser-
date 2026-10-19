@@ -4,9 +4,15 @@ set -u
 T=$1; OUT=out/$T; mkdir -p "$OUT"; timeout 120 adb wait-for-device; timeout 20 adb logcat -G 16M >/dev/null 2>&1; timeout 30 adb logcat -c
 # source build (branding patch के बाद package बदल सकता है): package BUILD_INFO के aapt2 badging से
 ART_PKG=$(sed -n "s/^package: name='\([^']*\)'.*/\1/p" "$OUT/BUILD_INFO.txt" 2>/dev/null | head -1); ART_PKG=${ART_PKG:-org.chromium.chrome}
+# A baseline/older APK without the feature must be NOT_RUN, not a false browser FAIL.
+safety_update_supported() {
+  grep -Eq '^[[:space:]]*0005-safety-hub-no-false-up-to-date[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null &&
+    grep -Eq '^[[:space:]]*0020-swiftra-update-channel[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null
+}
 # Focused acceptance on the same already-built APK. Not a replacement for full release E2E:
 # workflows explicitly skip publish in this mode; e2e_gate also rejects its missing full-suite markers.
 if [ "${2:-full}" = safety_update ]; then
+  safety_update_supported || { echo 'SAFETY_UPDATE_E2E NOT_RUN build lacks 0005+0020'; exit 2; }
   APK_FILE=$(find dl -name ChromePublic.apk 2>/dev/null | head -1)
   [ -n "$APK_FILE" ] || { echo 'SAFETY_UPDATE_E2E NOT_RUN no source APK'; exit 2; }
   timeout 900 python3 -u scripts/ci/safety_update_e2e.py --package "$ART_PKG" --apk "$APK_FILE" --out "$OUT/safety_update" 2>&1 | tee "$OUT/safety_update_e2e.txt"
@@ -60,8 +66,12 @@ if [ "$T" != chrome_ref ]; then
   echo "update_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
   # 0005 v2 + 0020: native Safety check, actual production signature check + rejected/stale/future fixtures.
   # Only update prefs are temporarily changed; the wrapped OSCrypt key and unrelated prefs are preserved.
-  timeout 600 python3 -u scripts/ci/safety_update_e2e.py --package "$PKG" --out "$OUT/safety_update" 2>&1 | tee "$OUT/safety_update_e2e.txt"
-  echo "safety_update_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  if safety_update_supported; then
+    timeout 600 python3 -u scripts/ci/safety_update_e2e.py --package "$PKG" --out "$OUT/safety_update" 2>&1 | tee "$OUT/safety_update_e2e.txt"
+    echo "safety_update_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  else
+    echo 'SAFETY_UPDATE_E2E NOT_RUN build lacks 0005+0020' | tee "$OUT/safety_update_e2e.txt"
+  fi
   # Speed (0016 Speed Pack + 0012 ad blocker): same APK, chromium_defaults vs swiftra, alternated; local mapped hosts
   timeout 1500 python3 -u scripts/ci/speed_e2e.py --package "$PKG" --out "$OUT/speed" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/speed_e2e.txt"
   echo "speed_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"

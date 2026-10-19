@@ -82,9 +82,38 @@ def test_private_pref_fixture_refuses_physical_device_before_adb_root(monkeypatc
     assert calls == [("shell", "getprop", "ro.hardware")]
 
 
+def test_main_physical_refusal_has_no_cleanup_mutations(tmp_path, monkeypatch):
+    mutations = []
+    monkeypatch.setattr(sys, "argv", ["safety_update_e2e.py", "--package", "com.swiftra.app",
+                                    "--out", str(tmp_path), "--apk", "must-not-install.apk"])
+    monkeypatch.setattr(s, "checked_adb", lambda *a, **kw: b"physical-phone-hardware\n")
+    monkeypatch.setattr(s, "adb", lambda *a, **kw: mutations.append(a))
+    monkeypatch.setattr(s, "prepare_browser", lambda *a: pytest.fail("must not install on refused device"))
+    assert s.main() == 2
+    assert mutations == []  # no force-stop, flags removal or reverse removal in finally either
+
+
 @pytest.mark.parametrize("hardware", [b"ranchu", b"goldfish", b"redroid"])
 def test_pref_fixture_accepts_known_disposable_android_only(monkeypatch, hardware):
     def fake(*args, **kwargs):
         return hardware + b"\n" if args == ("shell", "getprop", "ro.hardware") else b"0\n"
     monkeypatch.setattr(s, "checked_adb", fake)
     s.root_device()
+
+
+P1 = "0005-safety-hub-no-false-up-to-date.patch\n"
+P2 = "0020-swiftra-update-channel.patch\n"
+
+
+@pytest.mark.parametrize("patches,supported", [(None, False), ("", False), (P1, False),
+                                               (P2, False), (P1 + P2, True),
+                                               (P1.replace(".patch", "Xpatch") + P2, False)])
+def test_wrapper_patch_awareness_is_executable_not_a_substring_check(tmp_path, patches, supported):
+    wrapper = Path(__file__).resolve().parents[1] / "scripts/ci/run_capture.sh"
+    body = wrapper.read_text().split("safety_update_supported() {", 1)[1].split("\n}", 1)[0]
+    if patches is not None:
+        (tmp_path / "BUILD_INFO.txt").write_text(patches)
+    env = dict(os.environ, OUT=str(tmp_path))
+    r = subprocess.run(["bash", "-c", "safety_update_supported() {" + body + "\n}\nsafety_update_supported"],
+                       env=env, capture_output=True)
+    assert (r.returncode == 0) is supported

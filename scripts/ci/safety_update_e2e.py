@@ -55,21 +55,33 @@ def pref_root(raw):
     text = raw.decode("utf-8")
     if any(mark in text for mark in ("<!DOCTYPE", "<!ENTITY", "<![CDATA[")):
         raise RuntimeError("unsupported SharedPreferences XML construct")
+    references = re.compile(r"&#(x[0-9A-Fa-f]+|[0-9]+);")
+
+    def reference_point(match):
+        value = match.group(1)
+        return int(value[1:], 16) if value.startswith("x") else int(value)
+
+    def collision_text(match):
+        point = reference_point(match)
+        return chr(point) if point <= 0x10FFFF else match.group(0)
+
+    # A literal marker can itself be spelled with legal numeric refs (e.g. &#95;).
+    # Avoid collisions in both the source and its decoded numeric-reference representation.
+    decoded = references.sub(collision_text, text)
     prefix = "__SWIFTRA_XML_CONTROL_"
-    while prefix in text:
+    while prefix in text or prefix in decoded:
         prefix += "_"
     controls = {}
 
     def substitute(match):
-        value = match.group(1)
-        point = int(value[1:], 16) if value.startswith("x") else int(value)
+        point = reference_point(match)
         if not (0 <= point < 32 and point not in (9, 10, 13)):
             return match.group(0)
         token = prefix + str(len(controls)) + "__"
         controls[token] = chr(point)
         return token
 
-    escaped = re.sub(r"&#(x[0-9A-Fa-f]+|[0-9]+);", substitute, text)
+    escaped = references.sub(substitute, text)
     root = ET.fromstring(escaped)
     if root.tag != "map":
         raise ValueError("unexpected SharedPreferences root")
@@ -90,11 +102,20 @@ def pref_root(raw):
 
 
 def prefs_bytes(root):
-    # ElementTree can hold controls in Python strings but emits raw invalid XML. Put them back
-    # in Android's numeric-reference form before any bytes reach disk. This also preserves NULs.
+    # ElementTree emits forbidden raw controls. Re-escape them AND legal CR, which XML would
+    # otherwise normalize to LF on the next read. Tab/LF in text and the declaration stay legal.
     text = ET.tostring(root, encoding="unicode", xml_declaration=True)
-    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", lambda m: "&#%d;" % ord(m.group(0)), text)
-    return text.encode("utf-8")
+    text = re.sub(r"[\x00-\x08\x0b-\x1f]", lambda m: "&#%d;" % ord(m.group(0)), text)
+    raw = text.encode("utf-8")
+
+    def data(node):
+        return (node.tag, dict(node.attrib), node.text or "", node.tail or "",
+                [data(child) for child in node])
+
+    # Refuse any semantic change before a fixture ever reaches disk; no private values in errors.
+    if data(pref_root(raw)) != data(root):
+        raise RuntimeError("SharedPreferences codec did not round-trip semantically")
+    return raw
 
 
 def update_nodes(raw):
@@ -262,15 +283,26 @@ def open_safety(package, out, name, version):
         tap(n)
         time.sleep(2)
     # Good rows can be below warning rows; capture only when the actual row is visible.
-    state, xml = {}, ""
+    state, xml, expanded = {}, "", False
     for i in range(6):
-        _, xml = ui_nodes()
+        ns, xml = ui_nodes()
         state = page_state(xml, package, version)
+        # Upstream collapses safe modules. Tap the real native header to reveal its version;
+        # do not weaken the assertion just because a collapsed row hides its summary.
+        if state.get("state") == "current" and not state.get("version"):
+            headers = [n for n in ns if normalize(n.get("text", "")) == "swiftra is up to date" and n.get("h", 0) > 0]
+            if headers:
+                tap(headers[-1])
+                time.sleep(1)
+                _, xml = ui_nodes()
+                state = page_state(xml, package, version)
+                expanded = True
         if state.get("states"):
             break
         if i < 5:
             adb("shell", "input", "swipe", "540", "1700", "540", "850", "350")
             time.sleep(1)
+    state["expanded_for_version"] = expanded
     with open(os.path.join(out, name + ".xml"), "w", encoding="utf-8") as f:
         f.write(xml)
     screenshot(os.path.join(out, name + ".png"))
@@ -339,9 +371,11 @@ def main():
     result = {"package": a.package, "cases": {}, "restored": False}
     path = "/data/data/%s/shared_prefs/%s_preferences.xml" % (a.package, a.package)
     original, srv, thread = None, None, None
+    disposable = False
     hits = []
     try:
         root_device()
+        disposable = True
         if a.apk:
             prepare_browser(a.package, a.apk, a.out)
         # CommandLineInitUtil also checks ADB_ENABLED (fresh Redroid differs from a prepared full run).
@@ -400,15 +434,17 @@ def main():
         key = "error" if result["cases"] else "setup_error"
         result[key] = str(e) if type(e) is RuntimeError else type(e).__name__ + " (private details withheld)"
     finally:
-        adb("shell", "am", "force-stop", a.package)
+        if disposable:
+            adb("shell", "am", "force-stop", a.package)
         if original is not None:
             try:
                 write_prefs(path, replace_update_nodes(read_prefs(path), original))
                 result["restored"] = True
             except Exception as e:  # noqa: BLE001
                 result["restore_error"] = type(e).__name__
-        adb("shell", "rm", "-f", CMDLINE_FILE)
-        adb("reverse", "--remove", "tcp:%d" % PORT)
+        if disposable:
+            adb("shell", "rm", "-f", CMDLINE_FILE)
+            adb("reverse", "--remove", "tcp:%d" % PORT)
         if srv:
             srv.shutdown()
             srv.server_close()

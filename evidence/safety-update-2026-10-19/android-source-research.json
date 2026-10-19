@@ -25,6 +25,12 @@
     {
       "url": "https://android.googlesource.com/platform/packages/modules/adb/+/refs/tags/android-16.0.0_r1/docs/user/adb.1.md",
       "sha256": "571c12a434845ef1efbd513f32dea0fb7264e95b28923dbcdee8b44e8899228d"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/safety_hub/android/java/src/org/chromium/chrome/browser/safety_hub/SafetyHubExpandablePreference.java",
+      "sha256": "3cb2d832fbbf931d42b800ad374bf1fe85e753a509e8b1575a7edf50695db03a",
+      "checked_utc": "2026-10-19T14:55:32.233606+00:00",
+      "finding": "summary visible only when expanded; onClick toggles expansion"
     }
   ]
 }

@@ -90,6 +90,22 @@ def test_control_codec_keeps_literal_references_unicode_and_marker_collisions():
     assert list(a)[1].get("name") == list(b)[1].get("name") == "attribute" + chr(1) + "key"
 
 
+def test_encoded_legal_references_cannot_collide_with_control_placeholders():
+    raw = b'<map><string name="unrelated">&#95;&#x5f;SWIFTRA_XML_CONTROL_0__&#0;</string></map>'
+    expected = "__SWIFTRA_XML_CONTROL_0__" + chr(0)
+    assert s.pref_root(raw).find("string").text == expected
+    assert s.pref_root(s.replace_update_nodes(raw, [])).find("string").text == expected
+
+
+def test_all_32_android_controls_roundtrip_in_text_and_attributes():
+    refs = "".join("&#%d;" % p for p in range(32))
+    controls = "".join(chr(p) for p in range(32))
+    raw = ('<map><string name="key%s">value%s</string></map>' % (refs, refs)).encode()
+    restored = s.pref_root(s.replace_update_nodes(raw, [])).find("string")
+    assert restored.get("name") == "key" + controls
+    assert restored.text == "value" + controls  # raw CR must not be normalized to LF
+
+
 def test_control_codec_does_not_repair_unsupported_xml_constructs():
     for raw in (b'<!DOCTYPE map [<!ENTITY x "value">]><map />',
                 b'<map><string name="x"><![CDATA[&#0;]]></string></map>',
@@ -114,6 +130,23 @@ def test_private_prefs_validation_fails_closed():
         s.last_ok(b'<map><string name="swiftra_update_last_ok_ms">123</string></map>')
     with pytest.raises(ValueError):
         s.last_ok(b'<map><long name="swiftra_update_last_ok_ms" value="1" /><long name="swiftra_update_last_ok_ms" value="2" /></map>')
+
+
+def test_native_current_module_is_expanded_before_asserting_version(tmp_path, monkeypatch):
+    taps = []
+    menu = {"id": PKG + ":id/menu_button", "h": 48, "text": "Menu"}
+    header = {"id": "android:id/title", "h": 48, "text": "Swiftra is up to date"}
+    collapsed = xml_for("current").replace("Version " + VERSION, "")
+    screens = iter([([menu], ""), ([header], collapsed), ([header], xml_for("current"))])
+    monkeypatch.setattr(s, "to_browser", lambda *a: True)
+    monkeypatch.setattr(s, "ui_nodes", lambda: next(screens))
+    monkeypatch.setattr(s, "find_text", lambda text, **kw: ({"text": text}, ""))
+    monkeypatch.setattr(s, "tap", lambda n: taps.append(n.get("text")))
+    monkeypatch.setattr(s, "screenshot", lambda *a: None)
+    monkeypatch.setattr(s.time, "sleep", lambda *a: None)
+    ui = s.open_safety(PKG, str(tmp_path), "current", VERSION)
+    assert taps[-1] == "Swiftra is up to date"
+    assert ui["expanded_for_version"] and ui["version"] and ui["state"] == "current"
 
 
 @pytest.mark.parametrize("state", ["current", "unavailable", "outdated"])

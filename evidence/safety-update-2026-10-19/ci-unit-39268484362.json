@@ -1,0 +1,17 @@
+{
+  "type": "CI unit and desktop browser-component evidence, NOT native Android app acceptance",
+  "run_id": 39268484362,
+  "head_sha": "07a332f669b34ad4ccfd5fef8123be929c8a46aa",
+  "url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39268484362",
+  "unit": {
+    "job_id": 118114229347,
+    "marker_utc": "2026-10-19T14:25:32.1183960Z",
+    "result": "249 passed, 1 skipped in 123.18s (0:02:03)"
+  },
+  "chat_component": {
+    "trial_job_ids": [118114229807, 118114229643, 118114229235],
+    "result_per_trial": "10/10 passed",
+    "user_agent_browser": "HeadlessChrome/155.0.0.0",
+    "limitations": "Desktop local component only. Not Android, not the real Arena site/account, not Chrome Android parity or physical-device acceptance."
+  }
+}
