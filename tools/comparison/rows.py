@@ -37,8 +37,8 @@ row(A, "Security update पहुँचना",
     "LIVE: x64); patch 0020: signed manifest से app में upstream \"Update Swiftra\" menu/badge (24 घंटे में 1 बार); "
     "install खुद user करता है (Android installer वही Swiftra certificate माँगता है)",
     "x64 link: public download का SHA-256 = 2bd84b64 (मिलान); manifest: app का Java code + असली key से verify=true, "
-    "1 byte बदलने पर false (javac 11 + org.json); 0020 वाला APK build queued, UPDATE_E2E NOT RUN",
-    "आंशिक (link LIVE; 0020 static/unit PASS, device NOT RUN)", "Chrome",
+    "1 byte बदलने पर false (javac 11 + org.json); UPDATE_E2E PASS x64 emulator (run 39249911374: नकली manifest पर item/badge नहीं, असली पर दोनों), arm64 बाकी",
+    "आंशिक (0020 emulator PASS; install user के tap से)", "Chrome",
     "Chrome Play Store से अपने-आप install करता है; Swiftra बताता है पर install user के tap से होता है",
     "0020 वाला APK + UPDATE_E2E (x64 + arm64); हर Chrome stable पर जल्दी rebuild")
 row(A, "Build पारदर्शिता",
@@ -133,9 +133,9 @@ row(B, "Password leak check",
 row(B, "Cookies और card data का disk पर encryption",
     "Android पर OSCrypt की केवल \"v10\" key, जो Chromium के सार्वजनिक source में लिखी है (यानी केवल छिपाना)। device पर पुष्टि: 0021 के बिना वाले build में Cookies DB का encrypted_value prefix = v10 (Redroid arm64, run 39240241640)",
     "patch 0021: हर install की random AES-256-GCM key, Android Keystore की non-exportable key से wrapped (tag sw1); v10 data पढ़ा जा सकता है",
-    "static (code @155 + JCE wrap test 3/3); device KEYSTORE_E2E NOT RUN (builds 39223536200 / 39223539138)",
-    "NOT RUN", "अनिर्णीत",
-    "device पर PASS होते ही Swiftra आगे; startup गति पर असर मापना बाकी",
+    "KEYSTORE_E2E PASS x64 emulator (run 39249911374): Cookies DB में prefix sw1, कहीं plaintext नहीं, restart के बाद cookie वापस भेजी; arm64 बाकी",
+    "PASS emulator", "Swiftra",
+    "Chrome की cookies सार्वजनिक key से, Swiftra की hardware Keystore से; startup असर: इस run में emulator का baseline भी 21% धीमा था, इसलिए गिरावट साबित नहीं (निगरानी जारी)",
     "KEYSTORE_E2E + STARTUP_TRACE तुलना")
 
 # ---------- C. Privacy ----------

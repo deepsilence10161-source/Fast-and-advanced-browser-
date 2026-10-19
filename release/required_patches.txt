@@ -9,3 +9,6 @@
 0015-swiftra-download-shield.patch
 0016-swiftra-speedpack.py
 0017-swiftra-turbo-download.patch
+0019-swiftra-shield-feeds-credits.py
+0020-swiftra-update-channel.patch
+0021-swiftra-keystore-oscrypt.patch
