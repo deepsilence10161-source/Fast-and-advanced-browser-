@@ -233,6 +233,11 @@ if [ -f "$PK/progress.json" ]; then
   ev "remaining_edges_prev_stage_end=$PREVREM"
   # watchdog: restore से पूरा हुआ काम दोबारा dirty हो गया तो रुकें (mtime/restore गड़बड़)
   # (patches/args बदलने पर काम का बढ़ना अपेक्षित है — तब watchdog लागू नहीं)
+  # (2026-10-19, run 39150804010: the previous stage's ninja stopped on a missing input, so `ninja -n` failed and its
+  # saved count was 0. A count from a stage whose ninja ended in an error (rc not 0 / 124 timeout) is not trusted.)
+  PREVRC=$(python3 -c "import json;print(json.load(open('$PK/progress.json')).get('ninja_rc',0))")
+  ev "ninja_rc_prev_stage=$PREVRC"
+  if [ "$PREVRC" != 0 ] && [ "$PREVRC" != 124 ]; then ev "watchdog skipped: previous stage ended in a build error"; PREVREM=999999999; fi
   if [ "$PATCH_CHANGED" = 0 ] && [ "$ARGS_CHANGED" = 0 ] && [ "$REM0" -gt $(( PREVREM + PREVREM/50 + 50 )) ]; then echo "WATCHDOG FAIL: restore के बाद काम बढ़ गया ($PREVREM -> $REM0)"; exit 1; fi
 fi
 
