@@ -253,3 +253,33 @@ Group reasons:
   emulator target, and the non-PGO control.
 - **Status:** this is parity with official Chrome arm64 (Chrome is built the same way), not a lead over it. The gain
   must be measured on arm64 against the non-PGO 0011 APK before any number is claimed.
+
+## Repeat visits: LCPP + HTTP disk cache prewarming candidate (2026-10-19; device run pending, nothing shipped)
+
+Question: on a page the user has visited before, can Swiftra paint the main content sooner than its own 0016 build?
+Candidates (all `FEATURE_DISABLED_BY_DEFAULT` @155 and absent from the testing config, so not in the Speed Pack):
+`LCPCriticalPathPredictor`, `LCPPFontURLPredictor`, `LCPPAutoPreconnectLcpOrigin`, `LCPPPrefetchSubresource`,
+`HttpDiskCachePrewarming`. Source facts (gitiles @155):
+- `LcppEnabled()` is already true in the 0016 build (LCPPDeferUnusedPreload, LCPPLazyLoadImagePreload and
+  LCPTimingPredictorPrerender2 are in the pack), so the browser already learns LCP/critical-path data per site.
+- Feature names are the `BASE_FEATURE` variable minus the leading `k` (base/feature_internal.h).
+- The prewarm job reads the learned resources into memory from the HTTP cache only (no network, credentials
+  omitted). It runs on navigation and on pointerdown/hover, and by default (`skip_during_browser_startup=true`)
+  not during browser startup.
+
+Harness `scripts/ci/repeat_e2e.py` (reuses the speed_e2e server):
+- A single-page-app page whose stable assets have `immutable` caching. The LCP hero image is discovered only by the
+  200 KB script: the late-discovered-LCP pattern that LCPP targets.
+- Modes: `chromium_defaults`, `swiftra` and `swiftra_lcpp`. Per cycle (order alternates): 3 training visits, then
+  3x (cold: verified restart, plus page-cache drop where root allows; warm: second visit in the same session).
+- Server-side attribution shows which cached assets still went to the network on each visit.
+- **Certificate pitfall found on desktop:** Chromium never caches a response whose certificate has an error, so
+  with the plain `--ignore-certificate-errors` every repeat visit was a network visit (3 of 3 loads fetched all
+  assets, load about 1160 ms). Every mode therefore also gets
+  `--ignore-certificate-errors-spki-list=<test cert SPKI>`, the WebPageReplay method. Desktop headless check after
+  the fix: first visit 1169 ms, repeat visits 79 and 100 ms, 0 network requests (desktop component only,
+  not device evidence).
+- Note: the server adds latency per response, not per round trip, so preconnect gains cannot show here.
+
+Decision rule: a SWIFTRA study for these features is added to patch 0016 only if `swiftra_lcpp` beats `swiftra` on
+cold LCP medians in both cycles on the device. Otherwise the result is recorded here and nothing ships.

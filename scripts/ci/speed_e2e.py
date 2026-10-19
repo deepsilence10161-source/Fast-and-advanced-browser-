@@ -139,6 +139,9 @@ addEventListener('load',()=>setTimeout(()=>{{
 
 LOCK = threading.Lock()
 REQ = []   # dicts: host, path, rid, t0, t1, bytes, range_start, status
+# extra routes for other harnesses on the same server (repeat_e2e.py): (host, name) -> fn(rec, query) ->
+# (body bytes, content type, Cache-Control value)
+EXTRA = {}
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -171,6 +174,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
                                   "text/html; charset=utf-8")
             if host in ADS and name == "collect":
                 name = "b.gif"
+            if (host, name) in EXTRA:
+                data, ctype, cache = EXTRA[(host, name)](rec, query)
+                return self._send(rec, data, ctype, cache=cache)
             if name in ASSETS:
                 data, ctype = ASSETS[name]
                 return self._send(rec, data, ctype)
@@ -183,12 +189,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         finally:
             rec["t1"] = time.time()
 
-    def _send(self, rec, data, ctype, rate=PAGE_RATE):
+    def _send(self, rec, data, ctype, rate=PAGE_RATE, cache="no-store"):
         rec["status"] = 200
         self.send_response(200)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
-        self.send_header("Cache-Control", "no-store")
+        self.send_header("Cache-Control", cache)
         self.send_header("Timing-Allow-Origin", "*")
         self.end_headers()
         self._throttled(rec, data, rate)
