@@ -253,11 +253,11 @@ row(D, "Push notifications (FCM)",
     "UnifiedPush जैसा खुला विकल्प या सच-सच बताना")
 row(D, "Safety check",
     "update, passwords, Safe Browsing, permissions",
-    "सच बताता है पर version/password जाँच नहीं कर सकता",
-    "emulator",
+    "सच बताता है; version जाँच अब हस्ताक्षरित update channel से (0005 v2 + 0020, device NOT RUN); password leak जाँच नहीं",
+    "emulator (पुराना व्यवहार); version जाँच static/unit",
     "आंशिक", "Chrome",
-    "update/leak backend नहीं",
-    "update channel के साथ version जाँच जोड़ना")
+    "leak backend नहीं; version जाँच का device E2E बाकी",
+    "0020 build पर UPDATE_E2E; leak जाँच का निजी विकल्प")
 row(D, "Extensions",
     "Android phone पर नहीं",
     "नहीं",
