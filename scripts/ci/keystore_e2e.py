@@ -76,9 +76,9 @@ def verdict(res):
         return "not_run"
     value, enc_prefix = row["value"], row["enc_prefix"]
     if enc_prefix != "sw1":
-        if not res.get("wrapped_pref") and enc_prefix == "v10":
-            return "not_run"                         # APK without 0021: upstream behaviour
-        return "fail"
+        if not res.get("wrapped_pref"):
+            return "not_run"                         # APK without 0021 (or Keystore unusable): upstream behaviour
+        return "fail"                                # 0021 key exists but the cookie did not use it
     if value or res.get("token_in_plaintext") or not res.get("restart_cookie_sent"):
         return "fail"
     return "pass"

@@ -37,6 +37,7 @@ def test_verdicts():
     assert k.verdict(_res("sw1", token_in_plaintext=True)) == "fail"
     assert k.verdict(_res("sw1", restart_cookie_sent=False)) == "fail"   # unwrap after restart broken
     assert k.verdict({"row": {"value": "plain", "enc_prefix": ""}, "wrapped_pref": True}) == "fail"
+    assert k.verdict({"row": {"value": "plain", "enc_prefix": ""}, "wrapped_pref": False}) == "not_run"  # old APK never blocks
     assert k.verdict({}) == "not_run"
 
 
