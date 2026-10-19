@@ -12,7 +12,12 @@
 Status: Swiftra में password save **नहीं** होता (static, code से पक्का)। Device पर NOT RUN।
 दूसरे password manager (Android Autofill service, जैसे Bitwarden) से login का रास्ता upstream जैसा खुला है; उसका E2E PLAN 12 में है।
 
-## Patch योजना (0021, बड़ा काम)
+## पहला कदम अलग से फ़ायदेमंद: Keystore key provider (0021)
+
+`components/autofill/core/browser/webdata/payments/payments_autofill_table.cc` card/IBAN के fields को `encryptor` से encrypt करता है, और `chrome/browser/webdata_services/web_data_service_factory.cc` वह encryptor `g_browser_process->os_crypt_async()` से लेता है। Android पर उसमें केवल सार्वजनिक fixed key (`kV10Key`) है। इसलिए Chrome Android और आज का Swiftra, दोनों local card/IBAN data उसी सार्वजनिक key से "encrypt" करते हैं (static, code से)।
+Keystore वाला provider (नीचे कदम 3) vault से पहले भी Swiftra को Chrome से ज़्यादा सुरक्षित बनाएगा। यह एक मापने लायक "Chrome से आगे" बिंदु है, जो device E2E के बाद ही PASS माना जाएगा।
+
+## Patch योजना (0021 provider, फिर 0022 vault; बड़ा काम)
 
 1. `BUILD.gn`: Android पर built-in backend की फ़ाइलें compile करना (`login_database_posix.cc` सहित)।
 2. `password_store_backend_factory.cc`: internal backend न हो तो `PasswordStoreBuiltInBackend` (profile store), account store नहीं।
