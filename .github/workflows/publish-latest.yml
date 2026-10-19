@@ -1,0 +1,87 @@
+name: Publish latest Swiftra APK (gated, fixed download link)
+# Stable links (always the newest APK that passed the gate):
+#   https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/releases/latest/download/Swiftra-arm64.apk
+#   https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/releases/latest/download/Swiftra-x64.apk
+# One rolling public release (tag "swiftra", marked latest); assets keep fixed names and are replaced in place.
+# Gate per ABI (scripts/release/release_gate.py): every patch in release/required_patches.txt is in the build,
+# signer cert == patches/signing_cert_sha256.txt (apksigner + apk_audit), apk_audit 7/7. An ABI that fails keeps
+# its previously published APK; nothing older or unverified replaces it.
+on:
+  workflow_run:
+    workflows: ["Chromium source build (staged, free standard runners)"]
+    types: [completed]
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: publish-latest
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+      R: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Tools
+        run: pip install -q androguard
+      - name: Fetch, verify and gate each ABI
+        run: |
+          set -u
+          mkdir -p pub
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+          WANT=$(grep -v '^#' patches/signing_cert_sha256.txt | grep -oE '[0-9a-f]{64}' | head -1)
+          : > pub/gate.txt
+          for ABI in arm64 x64; do
+            TAG="crstate-155.0.8059.80-${ABI}-b1"
+            RID=$(gh api "repos/$R/releases?per_page=50" -q ".[] | select(.tag_name==\"$TAG\") | .id" | head -1)
+            [ -n "$RID" ] || { echo "$ABI: no state release" | tee -a pub/gate.txt; continue; }
+            for N in "ChromePublic-155.0.8059.80-${ABI}.apk" BUILD_INFO.txt; do
+              AID=$(gh api "repos/$R/releases/$RID/assets?per_page=100" -q ".[] | select(.name==\"$N\") | .id")
+              [ -n "$AID" ] && gh api -H "Accept: application/octet-stream" "repos/$R/releases/assets/$AID" > "pub/$ABI-$N"
+            done
+            APK="pub/$ABI-ChromePublic-155.0.8059.80-${ABI}.apk"; BI="pub/$ABI-BUILD_INFO.txt"
+            [ -s "$APK" ] && [ -s "$BI" ] || { echo "$ABI: APK/BUILD_INFO missing" | tee -a pub/gate.txt; continue; }
+            CERT=$("$BT/apksigner" verify --print-certs "$APK" 2>/dev/null | grep -m1 'Signer #1 certificate SHA-256' | awk '{print $NF}')
+            if [ "$CERT" != "$WANT" ]; then echo "$ABI: GATE FAIL apksigner cert mismatch" | tee -a pub/gate.txt; continue; fi
+            if python3 scripts/release/release_gate.py --apk "$APK" --build-info "$BI" --abi "$ABI" > "pub/$ABI-gate.log" 2>&1; then
+              mv "$APK" "pub/Swiftra-$ABI.apk"; mv "$BI" "pub/BUILD_INFO-$ABI.txt"
+              echo "$ABI: GATE PASS sha256=$(sha256sum "pub/Swiftra-$ABI.apk" | cut -c1-64)" | tee -a pub/gate.txt
+            else
+              echo "$ABI: $(tail -1 "pub/$ABI-gate.log")" | tee -a pub/gate.txt
+            fi
+          done
+      - name: Update the rolling "swiftra" release
+        run: |
+          set -u
+          ls pub/Swiftra-*.apk >/dev/null 2>&1 || { echo "no ABI passed the gate; release unchanged"; cat pub/gate.txt; exit 0; }
+          if ! gh release view swiftra -R "$R" >/dev/null 2>&1; then
+            gh release create swiftra -R "$R" --target "$GITHUB_SHA" --latest --title "Swiftra (latest)" \
+              --notes "Rolling release. Updated automatically by .github/workflows/publish-latest.yml."
+          fi
+          for f in pub/Swiftra-*.apk pub/BUILD_INFO-*.txt; do
+            for i in 1 2 3 4; do gh release upload swiftra -R "$R" --clobber "$f" && break; sleep $((i*15)); done
+          done
+          # checksums of what the release holds now (an ABI that failed today keeps its earlier APK)
+          mkdir -p cur && cd cur
+          for a in arm64 x64; do gh release download swiftra -R "$R" -p "Swiftra-$a.apk" 2>/dev/null || true; done
+          sha256sum Swiftra-*.apk > SHA256SUMS.txt; cd ..
+          gh release upload swiftra -R "$R" --clobber cur/SHA256SUMS.txt
+          {
+            echo "Swiftra browser (Chromium 155 engine with security fixes up to 155.0.8059.84) - updated $(date -u +%Y-%m-%dT%H:%MZ)"
+            echo
+            echo "Phones: Swiftra-arm64.apk.  x86_64 devices/emulators: Swiftra-x64.apk."
+            echo "Fixed links: https://github.com/$R/releases/latest/download/Swiftra-arm64.apk"
+            echo "             https://github.com/$R/releases/latest/download/Swiftra-x64.apk"
+            echo
+            echo "Gate (this update):"; sed 's/^/  /' pub/gate.txt
+            echo; echo "SHA-256:"; sed 's/^/  /' cur/SHA256SUMS.txt
+            echo; echo "Signer certificate SHA-256: $(grep -v '^#' patches/signing_cert_sha256.txt | grep -oE '[0-9a-f]{64}' | head -1)"
+            echo "Licences: chrome://credits in the app; Shield feed notice: shield-db release NOTICE.txt."
+          } > notes.txt
+          gh release edit swiftra -R "$R" --latest --notes-file notes.txt
+          gh release view swiftra -R "$R" --json assets -q '.assets[] | "\(.name) \(.size)"'

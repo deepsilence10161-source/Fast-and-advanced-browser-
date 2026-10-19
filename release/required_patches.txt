@@ -1,0 +1,11 @@
+# Swiftra public release gate: an APK is published only if its BUILD_INFO lists every patch below.
+# (security level, Shield, HTTPS-First/3PC, fingerprint, ad blocker, Download Shield, Speed Pack, Turbo Download)
+0000-upstream-155.0.8059.84.patch
+0006-swiftra-shield.patch
+0010-swiftra-advanced-defaults.patch
+0011-swiftra-fingerprint-shield.patch
+0012-swiftra-adblock.patch
+0013-swiftra-adblock-ruleset.py
+0015-swiftra-download-shield.patch
+0016-swiftra-speedpack.py
+0017-swiftra-turbo-download.patch
