@@ -345,8 +345,22 @@ def tap_dialog_buttons(seconds):
 
 
 def pid_of(pkg):
-    out = (adb("shell", "pidof", pkg) or "").strip().split()
+    out = (adb("shell", "pidof", pkg, timeout=10) or "").strip().split()
     return out[0] if out else ""
+
+
+def socket_up(socket):
+    """True/False: the browser's DevTools abstract socket exists on the device; None: /proc/net/unix unreadable.
+
+    2026-10-19 run 39202833756: in chromium_defaults mode the socket appeared later than in swiftra mode; the
+    harness forwarded tcp:9222 and connected before it existed ("adbd: failed to connect to socket
+    'localabstract:chrome_devtools_remote'"), after which the host adb server stopped answering for ~60 s (no adbd
+    activity in logcat while the browser UI was up), every pidof/forward call timed out, the restart was retried
+    twice and the mode's bench budget was used up. Forward/connect only once the socket is listening."""
+    out = adb("shell", "cat", "/proc/net/unix", timeout=10) or ""
+    if "Path" not in out and "Num" not in out:
+        return None
+    return ("@" + socket) in out
 
 
 def flags_ok(cl, mode):
@@ -380,10 +394,13 @@ def restart(pkg, comp, mode, socket, attempts=3):
         adb("shell", "am", "start", "-W", "-n", comp, timeout=60) if comp else adb(
             "shell", "monkey", "-p", pkg, "-c", "android.intent.category.LAUNCHER", "1")
         t0, pid, ready = time.time(), "", False
-        while time.time() - t0 < 45:
+        forwarded = False
+        while time.time() - t0 < 60:
             pid = pid_of(pkg)
-            if pid and pid != old:
-                adb("forward", "tcp:9222", f"localabstract:{socket}")
+            if pid and pid != old and socket_up(socket) is not False:
+                if not forwarded:
+                    adb("forward", "tcp:9222", f"localabstract:{socket}", timeout=10)
+                    forwarded = True
                 if targets(DEVTOOLS):
                     ready = True
                     break

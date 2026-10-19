@@ -66,3 +66,14 @@ def test_devtools_diag_writes_stacks_and_logcat(monkeypatch, tmp_path):
     st = (tmp_path / "stacks_c0s0.txt").read_text()
     assert "debuggerd -j" in st and "-b" in st and '"main" tid=1' in st
     assert (tmp_path / "logcat_c0s0.txt").exists() and (tmp_path / "diag_c0s0.txt").exists()
+
+
+def test_socket_up_reads_proc_net_unix(monkeypatch):
+    import speed_e2e as se
+    table = "Num       RefCount Protocol Flags    Type St Inode Path\n0000: 00000002 00000000 00010000 0001 01 1234 @chrome_devtools_remote\n"
+    monkeypatch.setattr(se, "adb", lambda *a, **k: table)
+    assert se.socket_up("chrome_devtools_remote") is True
+    monkeypatch.setattr(se, "adb", lambda *a, **k: table.replace("@chrome_devtools_remote", "@other"))
+    assert se.socket_up("chrome_devtools_remote") is False
+    monkeypatch.setattr(se, "adb", lambda *a, **k: "")          # unreadable / adb timeout -> unknown, old behaviour
+    assert se.socket_up("chrome_devtools_remote") is None
