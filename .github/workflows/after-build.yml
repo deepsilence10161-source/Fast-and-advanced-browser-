@@ -39,10 +39,15 @@ jobs:
             case "$TITLE" in *" b1"*) for c in arm64 x64; do case "$TITLE" in *" $c "*) CPUS=$c;; esac; done;; esac
           fi
           if [ -z "$CPUS" ]; then
+            # the build uploads BUILD_INFO as its last step: newest upload after T0 = this build
+            # (a long build can start before another ABI's build finished, so pick only the newest)
+            BEST=""; BESTU=""
             for c in arm64 x64; do
               U=$(gh api "repos/$R/releases?per_page=50" -q ".[] | select(.tag_name==\"crstate-155.0.8059.80-$c-b1\") | .assets[] | select(.name==\"BUILD_INFO.txt\") | .updated_at" | head -1)
-              [ -n "$U" ] && [ -n "$T0" ] && [[ "$U" > "$T0" ]] && CPUS="$CPUS $c"
+              echo "crstate $c BUILD_INFO updated_at=${U:-none}"
+              if [ -n "$U" ] && [ -n "$T0" ] && [[ "$U" > "$T0" ]] && [[ "$U" > "$BESTU" ]]; then BEST=$c; BESTU=$U; fi
             done
+            CPUS="$BEST"
           fi
           echo "build=$TITLE started=$T0 -> cpus='$CPUS'"
           [ -n "$CPUS" ] || { echo "::error::could not tell which ABI this build produced; no E2E dispatched"; exit 1; }
