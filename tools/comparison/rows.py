@@ -131,7 +131,7 @@ row(B, "Password leak check",
     "Google का leak database चाहिए",
     "k-anonymity वाला licence-साफ़ विकल्प या toggle को सच-सच छिपाना")
 row(B, "Cookies और card data का disk पर encryption",
-    "Android पर OSCrypt की केवल \"v10\" key, जो Chromium के सार्वजनिक source में लिखी है (यानी केवल छिपाना)",
+    "Android पर OSCrypt की केवल \"v10\" key, जो Chromium के सार्वजनिक source में लिखी है (यानी केवल छिपाना)। device पर पुष्टि: 0021 के बिना वाले build में Cookies DB का encrypted_value prefix = v10 (Redroid arm64, run 39240241640)",
     "patch 0021: हर install की random AES-256-GCM key, Android Keystore की non-exportable key से wrapped (tag sw1); v10 data पढ़ा जा सकता है",
     "static (code @155 + JCE wrap test 3/3); device KEYSTORE_E2E NOT RUN (builds 39223536200 / 39223539138)",
     "NOT RUN", "अनिर्णीत",
