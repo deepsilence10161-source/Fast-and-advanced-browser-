@@ -7,9 +7,12 @@ on:
     types: [completed]
   workflow_dispatch:
     inputs:
-      cpu: { description: "arm64 | x64", required: true }
+      cpu: { description: "arm64 | x64 (empty: detect from crstate assets newer than t0)", required: false, default: "" }
+      t0: { description: "build start time for detection, e.g. 2026-10-19T05:41:14Z", required: false, default: "" }
+      dry_run: { description: "only print the detected ABI", required: false, default: "false" }
 permissions:
-  contents: read
+  # write: GITHUB_TOKEN sees draft releases (crstate-*) only with write access; the job only reads them
+  contents: write
   actions: write
 jobs:
   e2e:
@@ -20,7 +23,8 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       R: ${{ github.repository }}
       TITLE: ${{ github.event.workflow_run.display_title }}
-      T0: ${{ github.event.workflow_run.run_started_at }}
+      T0: ${{ github.event.workflow_run.run_started_at || inputs.t0 }}
+      DRY: ${{ inputs.dry_run || 'false' }}
       CPU_IN: ${{ inputs.cpu }}
       # same-device A/B baseline for arm64 (draft release with the previous arm64 APK)
       AB_BASELINE: apk-b1-0011-arm64
@@ -41,8 +45,10 @@ jobs:
             done
           fi
           echo "build=$TITLE started=$T0 -> cpus='$CPUS'"
+          [ -n "$CPUS" ] || { echo "::error::could not tell which ABI this build produced; no E2E dispatched"; exit 1; }
           echo "cpus=$CPUS" >> "$GITHUB_OUTPUT"
       - name: Dispatch E2E
+        if: env.DRY != 'true'
         run: |
           set -u
           for c in ${{ steps.abi.outputs.cpus }}; do
