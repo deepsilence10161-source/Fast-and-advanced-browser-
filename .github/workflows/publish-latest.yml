@@ -105,9 +105,15 @@ jobs:
           {
             echo "Swiftra browser (Chromium 155 engine with security fixes up to 155.0.8059.84) - updated $(date -u +%Y-%m-%dT%H:%MZ)"
             echo
-            echo "Phones: Swiftra-arm64.apk.  x86_64 devices/emulators: Swiftra-x64.apk."
-            echo "Fixed links: https://github.com/$R/releases/latest/download/Swiftra-arm64.apk"
-            echo "             https://github.com/$R/releases/latest/download/Swiftra-x64.apk"
+            # only files the release really holds (an ABI that never passed the gate has no file: its link is 404)
+            for a in arm64 x64; do
+              case $a in arm64) WHO="Phones (arm64)";; x64) WHO="x86_64 devices/emulators";; esac
+              if grep -q " Swiftra-$a.apk$" cur/SHA256SUMS.txt; then
+                echo "$WHO: https://github.com/$R/releases/latest/download/Swiftra-$a.apk"
+              else
+                echo "$WHO: Swiftra-$a.apk not published yet (no build has passed the $a E2E gate); this link works after the first pass."
+              fi
+            done
             echo
             echo "Every APK here was E2E-tested byte-for-byte (security/feature checks PASS) and audited before publishing."
             echo
