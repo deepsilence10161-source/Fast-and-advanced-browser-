@@ -1,0 +1,34 @@
+{
+ "package": "com.swiftra.app",
+ "cases": {
+  "bad": {
+   "fetched": true,
+   "hits": [
+    "/bad.json",
+    "/bad.json.sig"
+   ],
+   "menu_button": true,
+   "menu_desc": "Customize and control Swiftra",
+   "badge": false,
+   "item": false,
+   "log": [
+    "10-19 15:37:18.186 22772 22804 W cr_SwiftraUpdate: test manifest rejected: bad signature"
+   ]
+  },
+  "good": {
+   "fetched": true,
+   "hits": [
+    "/good.json",
+    "/good.json.sig"
+   ],
+   "menu_button": true,
+   "menu_desc": "Update available. More options",
+   "badge": true,
+   "item": true,
+   "log": [
+    "10-19 15:37:30.901 23013 23038 W cr_SwiftraUpdate: test manifest verified"
+   ]
+  }
+ },
+ "verdict": "pass"
+}

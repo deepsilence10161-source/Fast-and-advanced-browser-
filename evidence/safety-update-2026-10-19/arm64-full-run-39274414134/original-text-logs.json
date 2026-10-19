@@ -1,0 +1,26 @@
+{
+  "encoding": "UTF-8",
+  "note": "Exact original text retained here. Readable .txt copies only trim trailing spaces/tabs for git whitespace hygiene; no content/metrics removed.",
+  "logs": [
+    {
+      "file": "safety_update_e2e.txt",
+      "sha256": "c91d2598df1245283f0704615e567a4e7b447ad29f377208fe2b75dba9adbb03",
+      "text": "SAFETY_CASE bad_fresh PASS state=unavailable\nSAFETY_CASE good_production PASS state=current\nSAFETY_CASE bad_recent PASS state=current\nSAFETY_CASE bad_stale PASS state=unavailable\nSAFETY_CASE bad_future PASS state=unavailable\nSAFETY_UPDATE_E2E PASS cases=5/5 restored=True stage=done \n"
+    },
+    {
+      "file": "keystore_e2e.txt",
+      "sha256": "6a6d1932a882fa96af148c329d635e020d19c687ce3a38a3c5e4d0ce2b46f56a",
+      "text": "KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True \n"
+    },
+    {
+      "file": "job-markers.txt",
+      "sha256": "5dc065d64855cd4554bda549e89afaa32e766aac21be13e2bc8625db7943ebf4",
+      "text": "2026-10-19T15:28:32.5237239Z apk_audit exit=0\n2026-10-19T15:34:50.9683751Z SHIELD_E2E PASS\n2026-10-19T15:34:50.9684081Z DOWNLOAD_SHIELD_E2E PASS canary=blocked_dialog redirect=blocked_dialog clean=downloaded\n2026-10-19T15:37:16.7914405Z ADVANCED_E2E PASS hfm=warning_dialog tpc=third_party_blocked\n2026-10-19T15:37:16.7915096Z FINGERPRINT_E2E PASS verdict=shielded reasons=[]\n2026-10-19T15:37:16.7915710Z CREDITS_E2E PASS verdict=complete info={'len': 20873, 'sample': False, 'adblock': True, 'boringssl': True, 'entries': 771}\n2026-10-19T15:37:16.7916435Z ADBLOCK_E2E PASS verdict=blocked attempts=1\n2026-10-19T15:37:42.9162906Z UPDATE_E2E PASS bad:fetched=True,item=False,badge=False good:fetched=True,item=True,badge=True \n2026-10-19T15:42:02.7569927Z SAFETY_UPDATE_E2E PASS cases=5/5 restored=True stage=done \n2026-10-19T15:42:02.7703240Z safety_update_e2e exit=0\n2026-10-19T16:09:42.9307254Z STARTUP_TRACE CAPTURED span_ms=10382.4 am_start={'TotalTime': 825, 'WaitTime': 829}\n2026-10-19T16:12:22.8286118Z ART_STARTUP MEASURED medians_ms={'install': 1098, 'profile': 1069, 'speed': 1133} gain_vs_install_pct={'profile': 2.6, 'speed': -3.2} status_changed=True\n2026-10-19T16:12:48.1865307Z KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True \n2026-10-19T16:17:15.0698020Z AB_BENCH MEASURED base=apk-b1-0011-arm64 bench_ms new 355.0 base 390.4 cold_ms new 750.0 base 694.5 load_ms new 677.5 base 882.0 base_over_new {'cold_ms': 0.926, 'bench_ms': 1.1, 'load_ms': 1.302, 'lcp_ms': 0.989}\n2026-10-19T16:17:42.5898998Z DEVICE_CHECKS: 9 \u092a\u093e\u0938, 0 \u0935\u093f\u092b\u0932\n2026-10-19T16:18:09.3313275Z \u001b[36;1mgrep -h -E \"DEVICE_CHECKS|passed;|ui_capture exit|chat_fixture exit\" out/$T/*.txt out/$T/journey.log 2>/dev/null || true\u001b[0m\n2026-10-19T16:18:09.4327493Z DEVICE_CHECKS: 9 \u092a\u093e\u0938, 0 \u0935\u093f\u092b\u0932\n"
+    },
+    {
+      "file": "update_e2e.txt",
+      "sha256": "5323929f5b860318f2a9e283770bcd32d0dbc179a146d932e32a26ec7e17ffd9",
+      "text": "UPDATE_E2E PASS bad:fetched=True,item=False,badge=False good:fetched=True,item=True,badge=True \n"
+    }
+  ]
+}

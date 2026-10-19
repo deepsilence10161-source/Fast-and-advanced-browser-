@@ -1,0 +1,14 @@
+{
+  "type": "CI/local unit and desktop functional evidence, NOT Android feature acceptance",
+  "run_id": 39278996300,
+  "head_sha": "e28192ea0a2861d2251bd252ce82da7f11b227ce",
+  "job_id": 118149714379,
+  "url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39278996300",
+  "marker_utc": "2026-10-19T15:36:07.5401392Z",
+  "ci_result": "266 passed, 1 skipped in 111.96s",
+  "local_full_result": "259 passed, 8 skipped in 122.51s",
+  "local_relevant_result": "95 passed in 0.26s",
+  "scope": "component/static only; no physical Google/Arena account acceptance",
+  "secret_scan_run": 39278996455,
+  "secret_scan_result": "success"
+}

@@ -1,0 +1,81 @@
+{
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "file": "BUILD_INFO.txt",
+      "sha256": "f80dba8868aebaf879559b7d158ba4f7e3e634dd398ebdf4dfb687e74b58439c"
+    },
+    {
+      "file": "artifact-validation.json",
+      "sha256": "7492cef12246303d32cd10133d823cc1f9ec87d796ecbd1177a704f0852d5c1c"
+    },
+    {
+      "file": "bad_fresh.png",
+      "sha256": "4bbafb29a25ecbeaebde5fa2123d0aef39d186a97d883fd2be9c8c4260694f79"
+    },
+    {
+      "file": "bad_fresh.xml",
+      "sha256": "a442f1e7fcffd6299614e439054131cd57dac1a2a0eadba6a2f2583da28641fe"
+    },
+    {
+      "file": "bad_future.png",
+      "sha256": "aed87c665f7881b5c7b22312da3ea51632a368281ac21ce7bf25903e2bc19f29"
+    },
+    {
+      "file": "bad_future.xml",
+      "sha256": "b05577324b66b5d609d7cd2790b019cef9fa9853916ed9fbb04433ca8a6d0e1e"
+    },
+    {
+      "file": "bad_recent.png",
+      "sha256": "61bcdade7e0d26298a8fba758f09d72e65ad9f1406c76d9aba03520b81be4a07"
+    },
+    {
+      "file": "bad_recent.xml",
+      "sha256": "2e979bf9de6521109c0885d478cc950e076f4cfc2fdf1aa53d5f527d345ee954"
+    },
+    {
+      "file": "bad_stale.png",
+      "sha256": "4e4007fd16c8f100e659ab8514794dac188aad676e5d20c328456659c0aca5de"
+    },
+    {
+      "file": "bad_stale.xml",
+      "sha256": "a442f1e7fcffd6299614e439054131cd57dac1a2a0eadba6a2f2583da28641fe"
+    },
+    {
+      "file": "good_production.png",
+      "sha256": "cc6bea1713d4cbeb7fa2451e89e2ede5ba8dba136e43a8d2f5017725b58f8868"
+    },
+    {
+      "file": "good_production.xml",
+      "sha256": "2e979bf9de6521109c0885d478cc950e076f4cfc2fdf1aa53d5f527d345ee954"
+    },
+    {
+      "file": "job-markers.txt",
+      "sha256": "851d19986a2e79cb2c705d9c30faa5fb12fcb320064e890b3043d5f79a7b82ff"
+    },
+    {
+      "file": "keystore_e2e.json",
+      "sha256": "d5cdabe0c6bddd020e0b0858cf9ae39ad3c1cfbcfeba7c3be92c68fa8431afde"
+    },
+    {
+      "file": "keystore_e2e.txt",
+      "sha256": "bcce020e3bbb5c9fa2874a5f3b8beb8aae8b2636e4f6f37fce831cf2c7c165d9"
+    },
+    {
+      "file": "original-text-logs.json",
+      "sha256": "0939b62c9e31dfbec3553a17218c454a34ae853539bab7522301af40f88252da"
+    },
+    {
+      "file": "run-provenance.json",
+      "sha256": "6b98bb7a406b45f5b184cda8ae97f7fc4acaa2d01582fa8e431a680de720bb58"
+    },
+    {
+      "file": "safety_update_e2e.json",
+      "sha256": "7ae9882ac34c4f0ec4f7783a6f533b64b1ad3af2c228d15ad27cf09dddcedef8"
+    },
+    {
+      "file": "safety_update_e2e.txt",
+      "sha256": "40a69fa018a9c13b90924ddded0f32791710c18b136635e3da8c7c35342215c8"
+    }
+  ]
+}

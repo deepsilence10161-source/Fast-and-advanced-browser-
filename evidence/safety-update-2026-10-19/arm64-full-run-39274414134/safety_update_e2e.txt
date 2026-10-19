@@ -1,0 +1,6 @@
+SAFETY_CASE bad_fresh PASS state=unavailable
+SAFETY_CASE good_production PASS state=current
+SAFETY_CASE bad_recent PASS state=current
+SAFETY_CASE bad_stale PASS state=unavailable
+SAFETY_CASE bad_future PASS state=unavailable
+SAFETY_UPDATE_E2E PASS cases=5/5 restored=True stage=done

@@ -1,0 +1,1 @@
+UPDATE_E2E PASS bad:fetched=True,item=False,badge=False good:fetched=True,item=True,badge=True

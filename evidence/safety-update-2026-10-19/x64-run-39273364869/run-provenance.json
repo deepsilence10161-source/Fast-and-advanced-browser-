@@ -33,5 +33,8 @@
     "no update-button tap/download acceptance",
     "no Google/Arena account validation",
     "whole-project acceptance is incomplete"
-  ]
+  ],
+  "source_build_run": 39223536200,
+  "source_fork_commit": "9d2446ff0452353f9e915fbba8f0984d9f1a2656",
+  "source_apk_sha_seen_in_producer_logs": true
 }

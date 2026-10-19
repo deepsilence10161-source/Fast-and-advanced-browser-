@@ -1,0 +1,3 @@
+2026-10-19T11:51:38.7174881Z STARTUP_TRACE CAPTURED span_ms=10393.5 am_start={'TotalTime': 798, 'WaitTime': 799}
+2026-10-19T11:54:16.6679771Z ART_STARTUP MEASURED medians_ms={'install': 1036, 'profile': 944, 'speed': 1079} gain_vs_install_pct={'profile': 8.9, 'speed': -4.2} status_changed=True
+2026-10-19T11:54:41.9182993Z KEYSTORE_E2E NOT_RUN prefix=v10 plain_value=False token_in_db=False wrapped_pref=False cookie_after_restart=True keystore2=True

@@ -31,6 +31,12 @@
       "sha256": "3cb2d832fbbf931d42b800ad374bf1fe85e753a509e8b1575a7edf50695db03a",
       "checked_utc": "2026-10-19T14:55:32.233606+00:00",
       "finding": "summary visible only when expanded; onClick toggles expansion"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-14.0.0_r1/core/java/com/android/internal/util/FastXmlSerializer.java",
+      "sha256": "31cc98dc533653efd249292c43507803633c1636f399455289782b80c1c85787",
+      "checked_utc": "2026-10-19T15:45:04.562090+00:00",
+      "finding": "Android 14 baseline also serializes all C0 controls as numeric references; source inspection, not a claim about exact mutable Redroid image contents"
     }
   ]
 }

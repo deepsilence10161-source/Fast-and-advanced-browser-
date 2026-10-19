@@ -1,0 +1,2470 @@
+{
+ "package": "com.swiftra.app",
+ "modes": {
+  "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnections",
+  "swiftra": "",
+  "swiftra_lcpp": "--enable-features=LCPCriticalPathPredictor,LCPPFontURLPredictor,LCPPAutoPreconnectLcpOrigin,LCPPPrefetchSubresource,HttpDiskCachePrewarming"
+ },
+ "lat_ms": 60,
+ "page_rate": 256000,
+ "cycles": [
+  {
+   "swiftra_lcpp": {
+    "cold": [
+     {
+      "rid": "c0swpp0",
+      "open": "ok",
+      "page": {
+       "load": 130,
+       "dcl": 125,
+       "ttfb": 74,
+       "fcp": 252,
+       "lcp": 252,
+       "app_ran": 124,
+       "hero_start": 125,
+       "hero_end": 129,
+       "hero_transfer": 0,
+       "app_end": 122,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c0swpp1",
+      "open": "ok",
+      "page": {
+       "load": 135,
+       "dcl": 133,
+       "ttfb": 73,
+       "fcp": 208,
+       "lcp": 208,
+       "app_ran": 132,
+       "hero_start": 133,
+       "hero_end": 134,
+       "hero_transfer": 0,
+       "app_end": 125,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c0swpp2",
+      "open": "ok",
+      "page": {
+       "load": 167,
+       "dcl": 165,
+       "ttfb": 74,
+       "fcp": 348,
+       "lcp": 348,
+       "app_ran": 163,
+       "hero_start": 164,
+       "hero_end": 166,
+       "hero_transfer": 0,
+       "app_end": 161,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w0swpp0",
+      "open": "ok",
+      "page": {
+       "load": 156,
+       "dcl": 152,
+       "ttfb": 79,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 143,
+       "hero_start": 144,
+       "hero_end": 145,
+       "hero_transfer": 0,
+       "app_end": 134,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swpp1",
+      "open": "ok",
+      "page": {
+       "load": 174,
+       "dcl": 162,
+       "ttfb": 84,
+       "fcp": 272,
+       "lcp": 272,
+       "app_ran": 161,
+       "hero_start": 162,
+       "hero_end": 170,
+       "hero_transfer": 0,
+       "app_end": 147,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swpp2",
+      "open": "ok",
+      "page": {
+       "load": 142,
+       "dcl": 140,
+       "ttfb": 90,
+       "fcp": 236,
+       "lcp": 236,
+       "app_ran": 128,
+       "hero_start": 129,
+       "hero_end": 137,
+       "hero_transfer": 0,
+       "app_end": 125,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t0swpp0",
+      "open": "ok",
+      "page": {
+       "load": 1201,
+       "dcl": 946,
+       "ttfb": 82,
+       "fcp": 356,
+       "lcp": 1020,
+       "app_ran": 945,
+       "hero_start": 945,
+       "hero_end": 1200,
+       "hero_transfer": 64190,
+       "app_end": 944,
+       "app_transfer": 200674,
+       "resources": 3,
+       "transfer": 296916
+      },
+      "network": [
+       "spa-app.8b2e4d.js",
+       "spa-hero.c71d0e.png",
+       "spa.3f9a1c.css"
+      ],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swpp1",
+      "open": "ok",
+      "page": {
+       "load": 150,
+       "dcl": 128,
+       "ttfb": 74,
+       "fcp": 264,
+       "lcp": 264,
+       "app_ran": 126,
+       "hero_start": 128,
+       "hero_end": 149,
+       "hero_transfer": 0,
+       "app_end": 122,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swpp2",
+      "open": "ok",
+      "page": {
+       "load": 130,
+       "dcl": 127,
+       "ttfb": 75,
+       "fcp": 320,
+       "lcp": 320,
+       "app_ran": 126,
+       "hero_start": 127,
+       "hero_end": 128,
+       "hero_transfer": 0,
+       "app_end": 118,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra": {
+    "cold": [
+     {
+      "rid": "c0swra0",
+      "open": "ok",
+      "page": {
+       "load": 136,
+       "dcl": 133,
+       "ttfb": 75,
+       "fcp": 324,
+       "lcp": 324,
+       "app_ran": 131,
+       "hero_start": 132,
+       "hero_end": 135,
+       "hero_transfer": 0,
+       "app_end": 128,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0swra1",
+      "open": "ok",
+      "page": {
+       "load": 161,
+       "dcl": 152,
+       "ttfb": 73,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 151,
+       "hero_start": 152,
+       "hero_end": 157,
+       "hero_transfer": 0,
+       "app_end": 149,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0swra2",
+      "open": "ok",
+      "page": {
+       "load": 150,
+       "dcl": 148,
+       "ttfb": 72,
+       "fcp": 208,
+       "lcp": 276,
+       "app_ran": 141,
+       "hero_start": 144,
+       "hero_end": 146,
+       "hero_transfer": 0,
+       "app_end": 139,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w0swra0",
+      "open": "ok",
+      "page": {
+       "load": 138,
+       "dcl": 136,
+       "ttfb": 78,
+       "fcp": 240,
+       "lcp": 304,
+       "app_ran": 135,
+       "hero_start": 135,
+       "hero_end": 137,
+       "hero_transfer": 0,
+       "app_end": 131,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swra1",
+      "open": "ok",
+      "page": {
+       "load": 131,
+       "dcl": 130,
+       "ttfb": 79,
+       "fcp": 204,
+       "lcp": 204,
+       "app_ran": 124,
+       "hero_start": 125,
+       "hero_end": 126,
+       "hero_transfer": 0,
+       "app_end": 116,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swra2",
+      "open": "ok",
+      "page": {
+       "load": 118,
+       "dcl": 114,
+       "ttfb": 76,
+       "fcp": 244,
+       "lcp": 244,
+       "app_ran": 113,
+       "hero_start": 114,
+       "hero_end": 117,
+       "hero_transfer": 0,
+       "app_end": 110,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t0swra0",
+      "open": "ok",
+      "page": {
+       "load": 124,
+       "dcl": 122,
+       "ttfb": 75,
+       "fcp": 260,
+       "lcp": 260,
+       "app_ran": 121,
+       "hero_start": 122,
+       "hero_end": 123,
+       "hero_transfer": 0,
+       "app_end": 120,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swra1",
+      "open": "ok",
+      "page": {
+       "load": 113,
+       "dcl": 110,
+       "ttfb": 90,
+       "fcp": 248,
+       "lcp": 248,
+       "app_ran": 109,
+       "hero_start": 109,
+       "hero_end": 111,
+       "hero_transfer": 0,
+       "app_end": 107,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swra2",
+      "open": "ok",
+      "page": {
+       "load": 147,
+       "dcl": 143,
+       "ttfb": 82,
+       "fcp": 232,
+       "lcp": 296,
+       "app_ran": 142,
+       "hero_start": 142,
+       "hero_end": 146,
+       "hero_transfer": 0,
+       "app_end": 139,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "chromium_defaults": {
+    "cold": [
+     {
+      "rid": "c0chts0",
+      "open": "ok",
+      "page": {
+       "load": 131,
+       "dcl": 128,
+       "ttfb": 72,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 127,
+       "hero_start": 128,
+       "hero_end": 130,
+       "hero_transfer": 0,
+       "app_end": 126,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0chts1",
+      "open": "ok",
+      "page": {
+       "load": 122,
+       "dcl": 115,
+       "ttfb": 71,
+       "fcp": 252,
+       "lcp": 252,
+       "app_ran": 114,
+       "hero_start": 115,
+       "hero_end": 118,
+       "hero_transfer": 0,
+       "app_end": 113,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0chts2",
+      "open": "ok",
+      "page": {
+       "load": 140,
+       "dcl": 137,
+       "ttfb": 74,
+       "fcp": 328,
+       "lcp": 328,
+       "app_ran": 133,
+       "hero_start": 137,
+       "hero_end": 139,
+       "hero_transfer": 0,
+       "app_end": 132,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w0chts0",
+      "open": "ok",
+      "page": {
+       "load": 136,
+       "dcl": 136,
+       "ttfb": 72,
+       "fcp": 216,
+       "lcp": 216,
+       "app_ran": 129,
+       "hero_start": 130,
+       "hero_end": 132,
+       "hero_transfer": 0,
+       "app_end": 124,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0chts1",
+      "open": "ok",
+      "page": {
+       "load": 137,
+       "dcl": 132,
+       "ttfb": 77,
+       "fcp": 228,
+       "lcp": 296,
+       "app_ran": 131,
+       "hero_start": 132,
+       "hero_end": 136,
+       "hero_transfer": 0,
+       "app_end": 125,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0chts2",
+      "open": "ok",
+      "page": {
+       "load": 135,
+       "dcl": 131,
+       "ttfb": 81,
+       "fcp": 312,
+       "lcp": 312,
+       "app_ran": 125,
+       "hero_start": 130,
+       "hero_end": 133,
+       "hero_transfer": 0,
+       "app_end": 120,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t0chts0",
+      "open": "ok",
+      "page": {
+       "load": 156,
+       "dcl": 152,
+       "ttfb": 74,
+       "fcp": 304,
+       "lcp": 304,
+       "app_ran": 149,
+       "hero_start": 150,
+       "hero_end": 155,
+       "hero_transfer": 0,
+       "app_end": 141,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0chts1",
+      "open": "ok",
+      "page": {
+       "load": 122,
+       "dcl": 122,
+       "ttfb": 85,
+       "fcp": 208,
+       "lcp": 208,
+       "app_ran": 115,
+       "hero_start": 116,
+       "hero_end": 117,
+       "hero_transfer": 0,
+       "app_end": 104,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0chts2",
+      "open": "ok",
+      "page": {
+       "load": 128,
+       "dcl": 128,
+       "ttfb": 84,
+       "fcp": 200,
+       "lcp": 200,
+       "app_ran": 121,
+       "hero_start": 122,
+       "hero_end": 123,
+       "hero_transfer": 0,
+       "app_end": 113,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   }
+  },
+  {
+   "chromium_defaults": {
+    "cold": [
+     {
+      "rid": "c1chts0",
+      "open": "ok",
+      "page": {
+       "load": 130,
+       "dcl": 127,
+       "ttfb": 71,
+       "fcp": 272,
+       "lcp": 272,
+       "app_ran": 125,
+       "hero_start": 127,
+       "hero_end": 130,
+       "hero_transfer": 0,
+       "app_end": 120,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1chts1",
+      "open": "ok",
+      "page": {
+       "load": 153,
+       "dcl": 141,
+       "ttfb": 76,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 139,
+       "hero_start": 140,
+       "hero_end": 149,
+       "hero_transfer": 0,
+       "app_end": 126,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1chts2",
+      "open": "ok",
+      "page": {
+       "load": 135,
+       "dcl": 129,
+       "ttfb": 74,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 126,
+       "hero_start": 128,
+       "hero_end": 133,
+       "hero_transfer": 0,
+       "app_end": 124,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w1chts0",
+      "open": "ok",
+      "page": {
+       "load": 114,
+       "dcl": 111,
+       "ttfb": 73,
+       "fcp": 260,
+       "lcp": 260,
+       "app_ran": 110,
+       "hero_start": 111,
+       "hero_end": 112,
+       "hero_transfer": 0,
+       "app_end": 109,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1chts1",
+      "open": "ok",
+      "page": {
+       "load": 125,
+       "dcl": 124,
+       "ttfb": 78,
+       "fcp": 288,
+       "lcp": 288,
+       "app_ran": 122,
+       "hero_start": 123,
+       "hero_end": 124,
+       "hero_transfer": 0,
+       "app_end": 109,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1chts2",
+      "open": "ok",
+      "page": {
+       "load": 140,
+       "dcl": 139,
+       "ttfb": 91,
+       "fcp": 268,
+       "lcp": 268,
+       "app_ran": 134,
+       "hero_start": 135,
+       "hero_end": 136,
+       "hero_transfer": 0,
+       "app_end": 131,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t1chts0",
+      "open": "ok",
+      "page": {
+       "load": 137,
+       "dcl": 135,
+       "ttfb": 90,
+       "fcp": 292,
+       "lcp": 292,
+       "app_ran": 134,
+       "hero_start": 135,
+       "hero_end": 136,
+       "hero_transfer": 0,
+       "app_end": 130,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1chts1",
+      "open": "ok",
+      "page": {
+       "load": 118,
+       "dcl": 115,
+       "ttfb": 79,
+       "fcp": 204,
+       "lcp": 268,
+       "app_ran": 114,
+       "hero_start": 115,
+       "hero_end": 117,
+       "hero_transfer": 0,
+       "app_end": 110,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1chts2",
+      "open": "ok",
+      "page": {
+       "load": 119,
+       "dcl": 117,
+       "ttfb": 74,
+       "fcp": 260,
+       "lcp": 260,
+       "app_ran": 116,
+       "hero_start": 117,
+       "hero_end": 118,
+       "hero_transfer": 0,
+       "app_end": 112,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra": {
+    "cold": [
+     {
+      "rid": "c1swra0",
+      "open": "ok",
+      "page": {
+       "load": 128,
+       "dcl": 115,
+       "ttfb": 77,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 113,
+       "hero_start": 115,
+       "hero_end": 118,
+       "hero_transfer": 0,
+       "app_end": 109,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c1swra1",
+      "open": "ok",
+      "page": {
+       "load": 142,
+       "dcl": 142,
+       "ttfb": 76,
+       "fcp": 268,
+       "lcp": 268,
+       "app_ran": 133,
+       "hero_start": 135,
+       "hero_end": 140,
+       "hero_transfer": 0,
+       "app_end": 132,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swra2",
+      "open": "ok",
+      "page": {
+       "load": 150,
+       "dcl": 147,
+       "ttfb": 72,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 145,
+       "hero_start": 147,
+       "hero_end": 148,
+       "hero_transfer": 0,
+       "app_end": 130,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w1swra0",
+      "open": "ok",
+      "page": {
+       "load": 97,
+       "dcl": 95,
+       "ttfb": 78,
+       "fcp": 176,
+       "lcp": 176,
+       "app_ran": 93,
+       "hero_start": 94,
+       "hero_end": 95,
+       "hero_transfer": 0,
+       "app_end": 87,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swra1",
+      "open": "ok",
+      "page": {
+       "load": 111,
+       "dcl": 106,
+       "ttfb": 73,
+       "fcp": 292,
+       "lcp": 292,
+       "app_ran": 105,
+       "hero_start": 106,
+       "hero_end": 110,
+       "hero_transfer": 0,
+       "app_end": 104,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swra2",
+      "open": "ok",
+      "page": {
+       "load": 147,
+       "dcl": 137,
+       "ttfb": 79,
+       "fcp": 216,
+       "lcp": 216,
+       "app_ran": 136,
+       "hero_start": 137,
+       "hero_end": 141,
+       "hero_transfer": 0,
+       "app_end": 121,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t1swra0",
+      "open": "ok",
+      "page": {
+       "load": 135,
+       "dcl": 130,
+       "ttfb": 82,
+       "fcp": 320,
+       "lcp": 320,
+       "app_ran": 129,
+       "hero_start": 130,
+       "hero_end": 132,
+       "hero_transfer": 0,
+       "app_end": 128,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swra1",
+      "open": "ok",
+      "page": {
+       "load": 115,
+       "dcl": 113,
+       "ttfb": 74,
+       "fcp": 188,
+       "lcp": 188,
+       "app_ran": 111,
+       "hero_start": 112,
+       "hero_end": 114,
+       "hero_transfer": 0,
+       "app_end": 109,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swra2",
+      "open": "ok",
+      "page": {
+       "load": 137,
+       "dcl": 130,
+       "ttfb": 73,
+       "fcp": 320,
+       "lcp": 320,
+       "app_ran": 127,
+       "hero_start": 128,
+       "hero_end": 131,
+       "hero_transfer": 0,
+       "app_end": 114,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra_lcpp": {
+    "cold": [
+     {
+      "rid": "c1swpp0",
+      "open": "ok",
+      "page": {
+       "load": 146,
+       "dcl": 144,
+       "ttfb": 76,
+       "fcp": 216,
+       "lcp": 216,
+       "app_ran": 142,
+       "hero_start": 143,
+       "hero_end": 145,
+       "hero_transfer": 0,
+       "app_end": 139,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swpp1",
+      "open": "ok",
+      "page": {
+       "load": 147,
+       "dcl": 146,
+       "ttfb": 78,
+       "fcp": 276,
+       "lcp": 276,
+       "app_ran": 140,
+       "hero_start": 142,
+       "hero_end": 144,
+       "hero_transfer": 0,
+       "app_end": 139,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swpp2",
+      "open": "ok",
+      "page": {
+       "load": 137,
+       "dcl": 126,
+       "ttfb": 86,
+       "fcp": 256,
+       "lcp": 320,
+       "app_ran": 125,
+       "hero_start": 126,
+       "hero_end": 136,
+       "hero_transfer": 0,
+       "app_end": 124,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w1swpp0",
+      "open": "ok",
+      "page": {
+       "load": 132,
+       "dcl": 128,
+       "ttfb": 84,
+       "fcp": 240,
+       "lcp": 240,
+       "app_ran": 127,
+       "hero_start": 128,
+       "hero_end": 129,
+       "hero_transfer": 0,
+       "app_end": 122,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swpp1",
+      "open": "ok",
+      "page": {
+       "load": 121,
+       "dcl": 120,
+       "ttfb": 81,
+       "fcp": 252,
+       "lcp": 252,
+       "app_ran": 115,
+       "hero_start": 116,
+       "hero_end": 119,
+       "hero_transfer": 0,
+       "app_end": 108,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swpp2",
+      "open": "ok",
+      "page": {
+       "load": 122,
+       "dcl": 117,
+       "ttfb": 95,
+       "fcp": 236,
+       "lcp": 236,
+       "app_ran": 116,
+       "hero_start": 117,
+       "hero_end": 119,
+       "hero_transfer": 0,
+       "app_end": 114,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t1swpp0",
+      "open": "ok",
+      "page": {
+       "load": 140,
+       "dcl": 134,
+       "ttfb": 90,
+       "fcp": 272,
+       "lcp": 272,
+       "app_ran": 133,
+       "hero_start": 134,
+       "hero_end": 135,
+       "hero_transfer": 0,
+       "app_end": 132,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swpp1",
+      "open": "ok",
+      "page": {
+       "load": 126,
+       "dcl": 125,
+       "ttfb": 73,
+       "fcp": 188,
+       "lcp": 188,
+       "app_ran": 115,
+       "hero_start": 116,
+       "hero_end": 118,
+       "hero_transfer": 0,
+       "app_end": 109,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swpp2",
+      "open": "ok",
+      "page": {
+       "load": 106,
+       "dcl": 104,
+       "ttfb": 85,
+       "fcp": 244,
+       "lcp": 244,
+       "app_ran": 102,
+       "hero_start": 103,
+       "hero_end": 105,
+       "hero_transfer": 0,
+       "app_end": 101,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   }
+  },
+  {
+   "swiftra_lcpp": {
+    "cold": [
+     {
+      "rid": "c2swpp0",
+      "open": "ok",
+      "page": {
+       "load": 166,
+       "dcl": 155,
+       "ttfb": 70,
+       "fcp": 292,
+       "lcp": 292,
+       "app_ran": 154,
+       "hero_start": 155,
+       "hero_end": 165,
+       "hero_transfer": 0,
+       "app_end": 152,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c2swpp1",
+      "open": "ok",
+      "page": {
+       "load": 135,
+       "dcl": 135,
+       "ttfb": 72,
+       "fcp": 220,
+       "lcp": 220,
+       "app_ran": 127,
+       "hero_start": 128,
+       "hero_end": 130,
+       "hero_transfer": 0,
+       "app_end": 121,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c2swpp2",
+      "open": "ok",
+      "page": {
+       "load": 139,
+       "dcl": 132,
+       "ttfb": 72,
+       "fcp": 212,
+       "lcp": 212,
+       "app_ran": 128,
+       "hero_start": 132,
+       "hero_end": 137,
+       "hero_transfer": 0,
+       "app_end": 123,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w2swpp0",
+      "open": "ok",
+      "page": {
+       "load": 184,
+       "dcl": 183,
+       "ttfb": 80,
+       "fcp": 272,
+       "lcp": 272,
+       "app_ran": 175,
+       "hero_start": 177,
+       "hero_end": 181,
+       "hero_transfer": 0,
+       "app_end": 159,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w2swpp1",
+      "open": "ok",
+      "page": {
+       "load": 127,
+       "dcl": 125,
+       "ttfb": 82,
+       "fcp": 272,
+       "lcp": 272,
+       "app_ran": 124,
+       "hero_start": 125,
+       "hero_end": 126,
+       "hero_transfer": 0,
+       "app_end": 121,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w2swpp2",
+      "open": "ok",
+      "page": {
+       "load": 116,
+       "dcl": 114,
+       "ttfb": 82,
+       "fcp": 200,
+       "lcp": 200,
+       "app_ran": 113,
+       "hero_start": 114,
+       "hero_end": 115,
+       "hero_transfer": 0,
+       "app_end": 104,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t2swpp0",
+      "open": "ok",
+      "page": {
+       "load": 135,
+       "dcl": 132,
+       "ttfb": 82,
+       "fcp": 280,
+       "lcp": 280,
+       "app_ran": 131,
+       "hero_start": 132,
+       "hero_end": 134,
+       "hero_transfer": 0,
+       "app_end": 130,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t2swpp1",
+      "open": "ok",
+      "page": {
+       "load": 137,
+       "dcl": 137,
+       "ttfb": 81,
+       "fcp": 260,
+       "lcp": 260,
+       "app_ran": 125,
+       "hero_start": 126,
+       "hero_end": 127,
+       "hero_transfer": 0,
+       "app_end": 115,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t2swpp2",
+      "open": "ok",
+      "page": {
+       "load": 126,
+       "dcl": 119,
+       "ttfb": 79,
+       "fcp": 236,
+       "lcp": 236,
+       "app_ran": 116,
+       "hero_start": 117,
+       "hero_end": 123,
+       "hero_transfer": 0,
+       "app_end": 104,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra": {
+    "cold": [
+     {
+      "rid": "c2swra0",
+      "open": "ok",
+      "page": {
+       "load": 150,
+       "dcl": 148,
+       "ttfb": 73,
+       "fcp": 348,
+       "lcp": 348,
+       "app_ran": 146,
+       "hero_start": 147,
+       "hero_end": 149,
+       "hero_transfer": 0,
+       "app_end": 142,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c2swra1",
+      "open": "ok",
+      "page": {
+       "load": 129,
+       "dcl": 126,
+       "ttfb": 73,
+       "fcp": 284,
+       "lcp": 284,
+       "app_ran": 125,
+       "hero_start": 126,
+       "hero_end": 128,
+       "hero_transfer": 0,
+       "app_end": 124,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c2swra2",
+      "open": "ok",
+      "page": {
+       "load": 128,
+       "dcl": 125,
+       "ttfb": 72,
+       "fcp": 268,
+       "lcp": 268,
+       "app_ran": 123,
+       "hero_start": 125,
+       "hero_end": 127,
+       "hero_transfer": 0,
+       "app_end": 121,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w2swra0",
+      "open": "ok",
+      "page": {
+       "load": 161,
+       "dcl": 158,
+       "ttfb": 78,
+       "fcp": 276,
+       "lcp": 344,
+       "app_ran": 157,
+       "hero_start": 157,
+       "hero_end": 160,
+       "hero_transfer": 0,
+       "app_end": 150,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w2swra1",
+      "open": "ok",
+      "page": {
+       "load": 109,
+       "dcl": 109,
+       "ttfb": 74,
+       "fcp": 196,
+       "lcp": 196,
+       "app_ran": 103,
+       "hero_start": 104,
+       "hero_end": 106,
+       "hero_transfer": 0,
+       "app_end": 98,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w2swra2",
+      "open": "ok",
+      "page": {
+       "load": 136,
+       "dcl": 126,
+       "ttfb": 75,
+       "fcp": 252,
+       "lcp": 252,
+       "app_ran": 121,
+       "hero_start": 122,
+       "hero_end": 130,
+       "hero_transfer": 0,
+       "app_end": 114,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t2swra0",
+      "open": "ok",
+      "page": {
+       "load": 136,
+       "dcl": 133,
+       "ttfb": 82,
+       "fcp": 204,
+       "lcp": 204,
+       "app_ran": 132,
+       "hero_start": 133,
+       "hero_end": 134,
+       "hero_transfer": 0,
+       "app_end": 132,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t2swra1",
+      "open": "ok",
+      "page": {
+       "load": 124,
+       "dcl": 124,
+       "ttfb": 72,
+       "fcp": 188,
+       "lcp": 188,
+       "app_ran": 115,
+       "hero_start": 116,
+       "hero_end": 117,
+       "hero_transfer": 0,
+       "app_end": 107,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t2swra2",
+      "open": "ok",
+      "page": {
+       "load": 114,
+       "dcl": 110,
+       "ttfb": 74,
+       "fcp": 232,
+       "lcp": 232,
+       "app_ran": 109,
+       "hero_start": 110,
+       "hero_end": 113,
+       "hero_transfer": 0,
+       "app_end": 99,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "chromium_defaults": {
+    "cold": [
+     {
+      "rid": "c2chts0",
+      "open": "ok",
+      "page": {
+       "load": 166,
+       "dcl": 154,
+       "ttfb": 70,
+       "fcp": 292,
+       "lcp": 292,
+       "app_ran": 152,
+       "hero_start": 153,
+       "hero_end": 161,
+       "hero_transfer": 0,
+       "app_end": 151,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c2chts1",
+      "open": "ok",
+      "page": {
+       "load": 144,
+       "dcl": 128,
+       "ttfb": 72,
+       "fcp": 288,
+       "lcp": 288,
+       "app_ran": 127,
+       "hero_start": 127,
+       "hero_end": 138,
+       "hero_transfer": 0,
+       "app_end": 125,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c2chts2",
+      "open": "ok",
+      "page": {
+       "load": 134,
+       "dcl": 131,
+       "ttfb": 75,
+       "fcp": 320,
+       "lcp": 320,
+       "app_ran": 129,
+       "hero_start": 130,
+       "hero_end": 133,
+       "hero_transfer": 0,
+       "app_end": 126,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w2chts0",
+      "open": "ok",
+      "page": {
+       "load": 96,
+       "dcl": 92,
+       "ttfb": 74,
+       "fcp": 216,
+       "lcp": 216,
+       "app_ran": 91,
+       "hero_start": 92,
+       "hero_end": 95,
+       "hero_transfer": 0,
+       "app_end": 90,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w2chts1",
+      "open": "ok",
+      "page": {
+       "load": 122,
+       "dcl": 120,
+       "ttfb": 77,
+       "fcp": 260,
+       "lcp": 260,
+       "app_ran": 119,
+       "hero_start": 120,
+       "hero_end": 122,
+       "hero_transfer": 0,
+       "app_end": 114,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w2chts2",
+      "open": "ok",
+      "page": {
+       "load": 132,
+       "dcl": 128,
+       "ttfb": 76,
+       "fcp": 240,
+       "lcp": 240,
+       "app_ran": 125,
+       "hero_start": 127,
+       "hero_end": 129,
+       "hero_transfer": 0,
+       "app_end": 123,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t2chts0",
+      "open": "ok",
+      "page": {
+       "load": 120,
+       "dcl": 119,
+       "ttfb": 83,
+       "fcp": 264,
+       "lcp": 264,
+       "app_ran": 117,
+       "hero_start": 117,
+       "hero_end": 118,
+       "hero_transfer": 0,
+       "app_end": 116,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "t2chts1",
+      "open": "ok",
+      "page": {
+       "load": 100,
+       "dcl": 98,
+       "ttfb": 72,
+       "fcp": 244,
+       "lcp": 244,
+       "app_ran": 97,
+       "hero_start": 98,
+       "hero_end": 98,
+       "hero_transfer": 0,
+       "app_end": 96,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t2chts2",
+      "open": "ok",
+      "page": {
+       "load": 125,
+       "dcl": 124,
+       "ttfb": 72,
+       "fcp": 192,
+       "lcp": 192,
+       "app_ran": 119,
+       "hero_start": 120,
+       "hero_end": 121,
+       "hero_transfer": 0,
+       "app_end": 111,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   }
+  },
+  {
+   "chromium_defaults": {
+    "cold": [
+     {
+      "rid": "c3chts0",
+      "open": "ok",
+      "page": {
+       "load": 125,
+       "dcl": 122,
+       "ttfb": 71,
+       "fcp": 280,
+       "lcp": 280,
+       "app_ran": 120,
+       "hero_start": 122,
+       "hero_end": 124,
+       "hero_transfer": 0,
+       "app_end": 119,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c3chts1",
+      "open": "ok",
+      "page": {
+       "load": 124,
+       "dcl": 124,
+       "ttfb": 74,
+       "fcp": 192,
+       "lcp": 192,
+       "app_ran": 117,
+       "hero_start": 119,
+       "hero_end": 120,
+       "hero_transfer": 0,
+       "app_end": 110,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c3chts2",
+      "open": "ok",
+      "page": {
+       "load": 133,
+       "dcl": 129,
+       "ttfb": 74,
+       "fcp": 328,
+       "lcp": 328,
+       "app_ran": 128,
+       "hero_start": 129,
+       "hero_end": 131,
+       "hero_transfer": 0,
+       "app_end": 126,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w3chts0",
+      "open": "ok",
+      "page": {
+       "load": 122,
+       "dcl": 119,
+       "ttfb": 88,
+       "fcp": 276,
+       "lcp": 276,
+       "app_ran": 118,
+       "hero_start": 119,
+       "hero_end": 121,
+       "hero_transfer": 0,
+       "app_end": 115,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w3chts1",
+      "open": "ok",
+      "page": {
+       "load": 123,
+       "dcl": 121,
+       "ttfb": 79,
+       "fcp": 260,
+       "lcp": 260,
+       "app_ran": 120,
+       "hero_start": 121,
+       "hero_end": 122,
+       "hero_transfer": 0,
+       "app_end": 110,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w3chts2",
+      "open": "ok",
+      "page": {
+       "load": 118,
+       "dcl": 115,
+       "ttfb": 74,
+       "fcp": 304,
+       "lcp": 304,
+       "app_ran": 114,
+       "hero_start": 114,
+       "hero_end": 115,
+       "hero_transfer": 0,
+       "app_end": 113,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t3chts0",
+      "open": "ok",
+      "page": {
+       "load": 132,
+       "dcl": 130,
+       "ttfb": 72,
+       "fcp": 288,
+       "lcp": 288,
+       "app_ran": 129,
+       "hero_start": 130,
+       "hero_end": 131,
+       "hero_transfer": 0,
+       "app_end": 128,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t3chts1",
+      "open": "ok",
+      "page": {
+       "load": 119,
+       "dcl": 113,
+       "ttfb": 83,
+       "fcp": 196,
+       "lcp": 196,
+       "app_ran": 111,
+       "hero_start": 112,
+       "hero_end": 116,
+       "hero_transfer": 0,
+       "app_end": 103,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t3chts2",
+      "open": "ok",
+      "page": {
+       "load": 123,
+       "dcl": 122,
+       "ttfb": 86,
+       "fcp": 196,
+       "lcp": 196,
+       "app_ran": 116,
+       "hero_start": 117,
+       "hero_end": 119,
+       "hero_transfer": 0,
+       "app_end": 109,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra": {
+    "cold": [
+     {
+      "rid": "c3swra0",
+      "open": "ok",
+      "page": {
+       "load": 128,
+       "dcl": 124,
+       "ttfb": 77,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 122,
+       "hero_start": 124,
+       "hero_end": 126,
+       "hero_transfer": 0,
+       "app_end": 121,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c3swra1",
+      "open": "ok",
+      "page": {
+       "load": 151,
+       "dcl": 150,
+       "ttfb": 74,
+       "fcp": 224,
+       "lcp": 224,
+       "app_ran": 138,
+       "hero_start": 143,
+       "hero_end": 145,
+       "hero_transfer": 0,
+       "app_end": 137,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c3swra2",
+      "open": "ok",
+      "page": {
+       "load": 139,
+       "dcl": 135,
+       "ttfb": 80,
+       "fcp": 332,
+       "lcp": 332,
+       "app_ran": 134,
+       "hero_start": 135,
+       "hero_end": 138,
+       "hero_transfer": 0,
+       "app_end": 127,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w3swra0",
+      "open": "ok",
+      "page": {
+       "load": 130,
+       "dcl": 129,
+       "ttfb": 78,
+       "fcp": 208,
+       "lcp": 208,
+       "app_ran": 124,
+       "hero_start": 124,
+       "hero_end": 127,
+       "hero_transfer": 0,
+       "app_end": 115,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w3swra1",
+      "open": "ok",
+      "page": {
+       "load": 110,
+       "dcl": 108,
+       "ttfb": 86,
+       "fcp": 196,
+       "lcp": 196,
+       "app_ran": 107,
+       "hero_start": 108,
+       "hero_end": 109,
+       "hero_transfer": 0,
+       "app_end": 103,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w3swra2",
+      "open": "ok",
+      "page": {
+       "load": 118,
+       "dcl": 116,
+       "ttfb": 88,
+       "fcp": 308,
+       "lcp": 308,
+       "app_ran": 114,
+       "hero_start": 115,
+       "hero_end": 116,
+       "hero_transfer": 0,
+       "app_end": 113,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t3swra0",
+      "open": "ok",
+      "page": {
+       "load": 126,
+       "dcl": 125,
+       "ttfb": 74,
+       "fcp": 196,
+       "lcp": 196,
+       "app_ran": 118,
+       "hero_start": 119,
+       "hero_end": 120,
+       "hero_transfer": 0,
+       "app_end": 112,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "t3swra1",
+      "open": "ok",
+      "page": {
+       "load": 188,
+       "dcl": 182,
+       "ttfb": 83,
+       "fcp": 268,
+       "lcp": 336,
+       "app_ran": 181,
+       "hero_start": 182,
+       "hero_end": 183,
+       "hero_transfer": 0,
+       "app_end": 172,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t3swra2",
+      "open": "ok",
+      "page": {
+       "load": 118,
+       "dcl": 117,
+       "ttfb": 71,
+       "fcp": 184,
+       "lcp": 184,
+       "app_ran": 111,
+       "hero_start": 112,
+       "hero_end": 113,
+       "hero_transfer": 0,
+       "app_end": 103,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra_lcpp": {
+    "cold": [
+     {
+      "rid": "c3swpp0",
+      "open": "ok",
+      "page": {
+       "load": 142,
+       "dcl": 131,
+       "ttfb": 77,
+       "fcp": 220,
+       "lcp": 220,
+       "app_ran": 129,
+       "hero_start": 130,
+       "hero_end": 139,
+       "hero_transfer": 0,
+       "app_end": 125,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     },
+     {
+      "rid": "c3swpp1",
+      "open": "ok",
+      "page": {
+       "load": 130,
+       "dcl": 123,
+       "ttfb": 71,
+       "fcp": 220,
+       "lcp": 220,
+       "app_ran": 121,
+       "hero_start": 123,
+       "hero_end": 128,
+       "hero_transfer": 0,
+       "app_end": 118,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c3swpp2",
+      "open": "ok",
+      "page": {
+       "load": 141,
+       "dcl": 138,
+       "ttfb": 83,
+       "fcp": 320,
+       "lcp": 320,
+       "app_ran": 137,
+       "hero_start": 138,
+       "hero_end": 140,
+       "hero_transfer": 0,
+       "app_end": 136,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 2
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w3swpp0",
+      "open": "ok",
+      "page": {
+       "load": 115,
+       "dcl": 113,
+       "ttfb": 75,
+       "fcp": 192,
+       "lcp": 192,
+       "app_ran": 112,
+       "hero_start": 113,
+       "hero_end": 114,
+       "hero_transfer": 0,
+       "app_end": 102,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w3swpp1",
+      "open": "ok",
+      "page": {
+       "load": 142,
+       "dcl": 137,
+       "ttfb": 86,
+       "fcp": 256,
+       "lcp": 256,
+       "app_ran": 130,
+       "hero_start": 131,
+       "hero_end": 139,
+       "hero_transfer": 0,
+       "app_end": 118,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w3swpp2",
+      "open": "ok",
+      "page": {
+       "load": 132,
+       "dcl": 129,
+       "ttfb": 73,
+       "fcp": 228,
+       "lcp": 228,
+       "app_ran": 128,
+       "hero_start": 129,
+       "hero_end": 131,
+       "hero_transfer": 0,
+       "app_end": 125,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t3swpp0",
+      "open": "ok",
+      "page": {
+       "load": 125,
+       "dcl": 122,
+       "ttfb": 74,
+       "fcp": 216,
+       "lcp": 216,
+       "app_ran": 121,
+       "hero_start": 122,
+       "hero_end": 124,
+       "hero_transfer": 0,
+       "app_end": 118,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t3swpp1",
+      "open": "ok",
+      "page": {
+       "load": 137,
+       "dcl": 137,
+       "ttfb": 83,
+       "fcp": 268,
+       "lcp": 268,
+       "app_ran": 128,
+       "hero_start": 129,
+       "hero_end": 131,
+       "hero_transfer": 0,
+       "app_end": 120,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t3swpp2",
+      "open": "ok",
+      "page": {
+       "load": 138,
+       "dcl": 137,
+       "ttfb": 83,
+       "fcp": 240,
+       "lcp": 240,
+       "app_ran": 122,
+       "hero_start": 123,
+       "hero_end": 125,
+       "hero_transfer": 0,
+       "app_end": 112,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   }
+  }
+ ],
+ "page_cache_dropped": true,
+ "devtools_recovery": [],
+ "summary": {
+  "chromium_defaults": {
+   "cold": {
+    "n": 12,
+    "of": 12,
+    "load_ms": 133.5,
+    "lcp_ms": 276.0,
+    "fcp_ms": 276.0,
+    "app_ran_ms": 127.0,
+    "hero_end_ms": 132.0,
+    "network_hits": 0.0
+   },
+   "warm": {
+    "n": 12,
+    "of": 12,
+    "load_ms": 124.0,
+    "lcp_ms": 264.0,
+    "fcp_ms": 260.0,
+    "app_ran_ms": 121.0,
+    "hero_end_ms": 123.0,
+    "network_hits": 0.0
+   }
+  },
+  "swiftra": {
+   "cold": {
+    "n": 12,
+    "of": 12,
+    "load_ms": 140.5,
+    "lcp_ms": 268.0,
+    "fcp_ms": 246.0,
+    "app_ran_ms": 133.5,
+    "hero_end_ms": 139.0,
+    "network_hits": 0.0
+   },
+   "warm": {
+    "n": 12,
+    "of": 12,
+    "load_ms": 124.0,
+    "lcp_ms": 230.0,
+    "fcp_ms": 228.0,
+    "app_ran_ms": 117.5,
+    "hero_end_ms": 121.5,
+    "network_hits": 0.0
+   }
+  },
+  "swiftra_lcpp": {
+   "cold": {
+    "n": 12,
+    "of": 12,
+    "load_ms": 140.0,
+    "lcp_ms": 236.0,
+    "fcp_ms": 236.0,
+    "app_ran_ms": 130.5,
+    "hero_end_ms": 138.0,
+    "network_hits": 0.0
+   },
+   "warm": {
+    "n": 12,
+    "of": 12,
+    "load_ms": 132.0,
+    "lcp_ms": 238.0,
+    "fcp_ms": 238.0,
+    "app_ran_ms": 127.5,
+    "hero_end_ms": 130.0,
+    "network_hits": 0.0
+   }
+  }
+ }
+}

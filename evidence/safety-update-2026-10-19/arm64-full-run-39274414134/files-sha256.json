@@ -1,0 +1,121 @@
+{
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "file": "BUILD_INFO.txt",
+      "sha256": "f59bb8f9abad681f5cc9b6ac5f488fae7cf2b7e2cbec45ea737d0908516e9ad1"
+    },
+    {
+      "file": "ab/ab_bench.json",
+      "sha256": "7b0ad905475e816765cf1230668def47794bf26b0b0f6ccb442a4a1ac4d1a35d"
+    },
+    {
+      "file": "advanced/advanced_e2e.json",
+      "sha256": "5c8d93e03d880e3a3e2be27e7ec3db2553345634876b2598ab8f874c4261f352"
+    },
+    {
+      "file": "advanced_e2e.txt",
+      "sha256": "3257a5adde2f0232b11adc1e1c19148019d99b4f2eed8ee7b1156fa8ad492e05"
+    },
+    {
+      "file": "apk_audit.json",
+      "sha256": "66112dbae8bb6770429c96d9fdfca3b6f9d6f8bd410d01c92bacb38ca2e1b75f"
+    },
+    {
+      "file": "apk_audit.txt",
+      "sha256": "948070d00549e9ee8bb9cf188f325dcd773f97297bc01a84def652039cfa0567"
+    },
+    {
+      "file": "art_startup/art_startup.json",
+      "sha256": "8f22451a73aa3e50acfa07cd2724ad24106e6a362b140b55361c1eaf011e422d"
+    },
+    {
+      "file": "chat_fixture.txt",
+      "sha256": "ab1fcc3b5a3c9135031b27aeede1e4eccab8c9098e76e7f27eff0f2ee3fe265b"
+    },
+    {
+      "file": "curated-release-gate.txt",
+      "sha256": "a9ae49868235aab3a6cb1607414bea8586c9ca44baa2548670cb782cfd4564ab"
+    },
+    {
+      "file": "device_checks.json",
+      "sha256": "931c66fa41e5ec5c6ede6ef1e4bb2e36699aa5959daf7d7edb399b9ff4726534"
+    },
+    {
+      "file": "device_checks.txt",
+      "sha256": "af10db77878f5272a26bf459836ba1d14486adc3f6704642d7f5680dfff81752"
+    },
+    {
+      "file": "job-markers.txt",
+      "sha256": "92a98cb1b7e86797528a479db96a5a38939ee7798bdae8b1d3d008f6d76539b7"
+    },
+    {
+      "file": "journey.log",
+      "sha256": "76db0244a9a48ef3d3bfff96c12fc35416d4d59af879245ee6ce9f0f16967b99"
+    },
+    {
+      "file": "keystore/keystore_e2e.json",
+      "sha256": "d5cdabe0c6bddd020e0b0858cf9ae39ad3c1cfbcfeba7c3be92c68fa8431afde"
+    },
+    {
+      "file": "keystore_e2e.txt",
+      "sha256": "bcce020e3bbb5c9fa2874a5f3b8beb8aae8b2636e4f6f37fce831cf2c7c165d9"
+    },
+    {
+      "file": "original-text-logs.json",
+      "sha256": "ad159d9cda9dbe0ec4c18637bc1a16befd462ab7ad5ec398c30418d6caef988d"
+    },
+    {
+      "file": "performance-caveats.json",
+      "sha256": "69ab809c7cbdb39a0f1b8bf66b85fe0772521515abc28a46ec0db31717bd4ed8"
+    },
+    {
+      "file": "release-gate.txt",
+      "sha256": "a9ae49868235aab3a6cb1607414bea8586c9ca44baa2548670cb782cfd4564ab"
+    },
+    {
+      "file": "repeat/repeat_e2e.json",
+      "sha256": "d286dea6d14617f7e2a03ba66fa7d8d986b6c3867284139b0928b43b3ae3c6cf"
+    },
+    {
+      "file": "repeat_e2e.txt",
+      "sha256": "de050b206c9b8376d856886cf9015f7d4e23355f7a6b6c568119dfe32f6bbcc6"
+    },
+    {
+      "file": "run-provenance.json",
+      "sha256": "8c8f15c92878e2181635f0526185fbc9339ed79e68d4e73ae643dde46ef8ec36"
+    },
+    {
+      "file": "safety_update/safety_update_e2e.json",
+      "sha256": "c718a9225cec2d56ae5120615c264e87234484bc15dc607005eeee0004c115e6"
+    },
+    {
+      "file": "safety_update_e2e.txt",
+      "sha256": "3d5970f1dad89033079a9338076e76601623f9f8996e533d879350cd74fe0b9c"
+    },
+    {
+      "file": "shield/shield_e2e.json",
+      "sha256": "36b41f42df3258754a67c0d5cd383f0121d89eba23b2a4473d71f8d11810d96e"
+    },
+    {
+      "file": "shield_e2e.txt",
+      "sha256": "f7d57e255f8509507516930eebffd0fe41785b4b626bca72444f2dc9c0bc997f"
+    },
+    {
+      "file": "speed/speed_e2e.json",
+      "sha256": "207d1fa3f2c0713aefea49bfe97fb1968e439afcca2ad69bed785c8cb39d9032"
+    },
+    {
+      "file": "speed_e2e.txt",
+      "sha256": "798d947c25a5584d0b2d56cd58a23e82e4e7b4265b41a6525bae54b35c683a49"
+    },
+    {
+      "file": "update/update_e2e.json",
+      "sha256": "1c95b086769b430624b001fb3075bcefb12c9ca5d7ab9639de1386d1cb303d8b"
+    },
+    {
+      "file": "update_e2e.txt",
+      "sha256": "788d85a202e87a46db3061cbe61f2be4d8d461f769da1af6d6b2936524e16b14"
+    }
+  ]
+}

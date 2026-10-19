@@ -1,0 +1,5 @@
+{
+  "note": "Exact original before trailing-space-only normalization of readable txt",
+  "sha256": "f5d92a4f765b882d2c742e7c562aba9f7599d749df12acc2f0937bfc7d4ee874",
+  "text": "2026-10-19T11:51:38.7174881Z STARTUP_TRACE CAPTURED span_ms=10393.5 am_start={'TotalTime': 798, 'WaitTime': 799}\n2026-10-19T11:54:16.6679771Z ART_STARTUP MEASURED medians_ms={'install': 1036, 'profile': 944, 'speed': 1079} gain_vs_install_pct={'profile': 8.9, 'speed': -4.2} status_changed=True\n2026-10-19T11:54:41.9182993Z KEYSTORE_E2E NOT_RUN prefix=v10 plain_value=False token_in_db=False wrapped_pref=False cookie_after_restart=True keystore2=True \n"
+}

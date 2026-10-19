@@ -1,0 +1,21 @@
+{
+  "encoding": "UTF-8",
+  "note": "Exact original text retained here. Readable .txt copies only trim trailing spaces/tabs for git whitespace hygiene; no content/metrics removed.",
+  "logs": [
+    {
+      "file": "safety_update_e2e.txt",
+      "sha256": "ffe2648676c94268ec06f3c56ef41e5d750894bea5c9d505e88e527766e01fa4",
+      "text": "SAFETY_PREPARE FRE/promo button: Continue\nSAFETY_CASE bad_fresh PASS state=unavailable\nSAFETY_CASE good_production PASS state=current\nSAFETY_CASE bad_recent PASS state=current\nSAFETY_CASE bad_stale PASS state=unavailable\nSAFETY_CASE bad_future PASS state=unavailable\nSAFETY_UPDATE_E2E PASS cases=5/5 restored=True stage=done \n"
+    },
+    {
+      "file": "keystore_e2e.txt",
+      "sha256": "6a6d1932a882fa96af148c329d635e020d19c687ce3a38a3c5e4d0ce2b46f56a",
+      "text": "KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True \n"
+    },
+    {
+      "file": "job-markers.txt",
+      "sha256": "c6418820dcf6f058a6728b48bd1e138fc48d0211005034c04d33f36e0a36c246",
+      "text": "2026-10-19T15:35:52.3774516Z SAFETY_PREPARE FRE/promo button: Continue\n2026-10-19T15:36:51.5276788Z SAFETY_CASE bad_fresh PASS state=unavailable\n2026-10-19T15:37:46.2992597Z SAFETY_CASE good_production PASS state=current\n2026-10-19T15:38:41.3856211Z SAFETY_CASE bad_recent PASS state=current\n2026-10-19T15:39:30.2464119Z SAFETY_CASE bad_stale PASS state=unavailable\n2026-10-19T15:40:19.0586177Z SAFETY_CASE bad_future PASS state=unavailable\n2026-10-19T15:40:19.6692762Z SAFETY_UPDATE_E2E PASS cases=5/5 restored=True stage=done \n2026-10-19T15:40:19.6822513Z safety_update_e2e exit=0\n2026-10-19T15:40:44.8945912Z KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True \n2026-10-19T15:40:44.9064065Z keystore_e2e exit=0\n"
+    }
+  ]
+}

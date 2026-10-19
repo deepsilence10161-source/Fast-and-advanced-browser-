@@ -1,0 +1,10 @@
+{
+  "commit": "e28192ea0a2861d2251bd252ce82da7f11b227ce",
+  "layer": "local full unit/desktop functional suite, NOT Android feature acceptance",
+  "passed": 259,
+  "skipped": 8,
+  "seconds": 122.51,
+  "relevant_suite_passed": 95,
+  "relevant_suite_seconds": 0.26,
+  "shell_syntax": "PASS"
+}

@@ -1,0 +1,396 @@
+{
+ "package": "com.swiftra.app",
+ "order": [
+  "new",
+  "base",
+  "new",
+  "base"
+ ],
+ "base_label": "apk-b1-0011-arm64",
+ "apk_sha256": {
+  "new": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "base": "8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd"
+ },
+ "rounds": [
+  {
+   "round": 0,
+   "apk": "new",
+   "install": [
+    "Success"
+   ],
+   "device_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+   "installed_ok": true,
+   "cold_ms": [
+    782,
+    773,
+    725
+   ],
+   "flags_applied": true,
+   "loads": [
+    {
+     "load": 642,
+     "dcl": 512,
+     "ttfb": 74,
+     "fcp": 488,
+     "lcp": 556,
+     "resources": 35,
+     "transfer": 633621
+    },
+    {
+     "load": 656,
+     "dcl": 531,
+     "ttfb": 75,
+     "fcp": 464,
+     "lcp": 528,
+     "resources": 35,
+     "transfer": 633621
+    },
+    {
+     "load": 685,
+     "dcl": 556,
+     "ttfb": 75,
+     "fcp": 484,
+     "lcp": 552,
+     "resources": 35,
+     "transfer": 633621
+    }
+   ],
+   "bench": [
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.3,
+      "json": 40.4,
+      "regex": 12.7,
+      "strings": 2.7,
+      "numeric": 4.4,
+      "sort": 56.7,
+      "mapset": 103.6,
+      "hashing": 12,
+      "parse": 12.5,
+      "dom": 96.2
+     },
+     "total": 351.5,
+     "sink": 935.9912872314453
+    },
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.5,
+      "json": 40.5,
+      "regex": 12.9,
+      "strings": 2.7,
+      "numeric": 4.6,
+      "sort": 56.6,
+      "mapset": 109.3,
+      "hashing": 12.1,
+      "parse": 12.9,
+      "dom": 93.3
+     },
+     "total": 355.4,
+     "sink": 935.9912872314453
+    }
+   ]
+  },
+  {
+   "round": 1,
+   "apk": "base",
+   "install": [
+    "Success"
+   ],
+   "device_sha256": "8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd",
+   "installed_ok": true,
+   "cold_ms": [
+    664,
+    710,
+    697
+   ],
+   "flags_applied": true,
+   "loads": [
+    {
+     "load": 879,
+     "dcl": 550,
+     "ttfb": 86,
+     "fcp": 528,
+     "lcp": 596,
+     "resources": 35,
+     "transfer": 684437
+    },
+    {
+     "load": 886,
+     "dcl": 557,
+     "ttfb": 72,
+     "fcp": 544,
+     "lcp": 544,
+     "resources": 35,
+     "transfer": 684437
+    },
+    {
+     "load": 879,
+     "dcl": 550,
+     "ttfb": 78,
+     "fcp": 480,
+     "lcp": 548,
+     "resources": 35,
+     "transfer": 684437
+    }
+   ],
+   "bench": [
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.5,
+      "json": 48.8,
+      "regex": 13.3,
+      "strings": 2.9,
+      "numeric": 4.3,
+      "sort": 57.5,
+      "mapset": 113,
+      "hashing": 12.1,
+      "parse": 15.5,
+      "dom": 117.8
+     },
+     "total": 395.7,
+     "sink": 935.9912872314453
+    },
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.6,
+      "json": 48.6,
+      "regex": 13.1,
+      "strings": 2.9,
+      "numeric": 4.3,
+      "sort": 57.4,
+      "mapset": 110.5,
+      "hashing": 12,
+      "parse": 15.5,
+      "dom": 115.8
+     },
+     "total": 390.7,
+     "sink": 935.9912872314453
+    }
+   ]
+  },
+  {
+   "round": 2,
+   "apk": "new",
+   "install": [
+    "Success"
+   ],
+   "device_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+   "installed_ok": true,
+   "cold_ms": [
+    733,
+    741,
+    759
+   ],
+   "flags_applied": true,
+   "loads": [
+    {
+     "load": 687,
+     "dcl": 557,
+     "ttfb": 75,
+     "fcp": 532,
+     "lcp": 600,
+     "resources": 35,
+     "transfer": 633621
+    },
+    {
+     "load": 670,
+     "dcl": 549,
+     "ttfb": 72,
+     "fcp": 480,
+     "lcp": 548,
+     "resources": 35,
+     "transfer": 633621
+    },
+    {
+     "load": 782,
+     "dcl": 653,
+     "ttfb": 72,
+     "fcp": 616,
+     "lcp": 684,
+     "resources": 35,
+     "transfer": 633621
+    }
+   ],
+   "bench": [
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.5,
+      "json": 40.4,
+      "regex": 12.9,
+      "strings": 2.8,
+      "numeric": 4.7,
+      "sort": 56,
+      "mapset": 105.4,
+      "hashing": 12.1,
+      "parse": 13.1,
+      "dom": 96.8
+     },
+     "total": 354.7,
+     "sink": 935.9912872314453
+    },
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.1,
+      "json": 40.8,
+      "regex": 12.8,
+      "strings": 2.7,
+      "numeric": 4.6,
+      "sort": 56.3,
+      "mapset": 106,
+      "hashing": 12.1,
+      "parse": 13.2,
+      "dom": 97.1
+     },
+     "total": 355.7,
+     "sink": 935.9912872314453
+    }
+   ]
+  },
+  {
+   "round": 3,
+   "apk": "base",
+   "install": [
+    "Success"
+   ],
+   "device_sha256": "8954118e4f902086bd8b4c8267e8b8c9e327241ec60c9979d948080f4a3714fd",
+   "installed_ok": true,
+   "cold_ms": [
+    675,
+    692,
+    724
+   ],
+   "flags_applied": true,
+   "loads": [
+    {
+     "load": 969,
+     "dcl": 641,
+     "ttfb": 76,
+     "fcp": 624,
+     "lcp": 624,
+     "resources": 35,
+     "transfer": 684437
+    },
+    {
+     "load": 885,
+     "dcl": 555,
+     "ttfb": 88,
+     "fcp": 476,
+     "lcp": 544,
+     "resources": 35,
+     "transfer": 684437
+    },
+    {
+     "load": 863,
+     "dcl": 542,
+     "ttfb": 72,
+     "fcp": 480,
+     "lcp": 548,
+     "resources": 35,
+     "transfer": 684437
+    }
+   ],
+   "bench": [
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.4,
+      "json": 48.9,
+      "regex": 13.1,
+      "strings": 2.8,
+      "numeric": 4.6,
+      "sort": 57,
+      "mapset": 107.8,
+      "hashing": 12.1,
+      "parse": 15.1,
+      "dom": 118.4
+     },
+     "total": 390.2,
+     "sink": 935.9912872314453
+    },
+    {
+     "runs": 5,
+     "ms": {
+      "objects": 10.2,
+      "json": 49.3,
+      "regex": 13,
+      "strings": 2.9,
+      "numeric": 4.6,
+      "sort": 56.8,
+      "mapset": 104.9,
+      "hashing": 12.1,
+      "parse": 15.2,
+      "dom": 115.1
+     },
+     "total": 384.1,
+     "sink": 935.9912872314453
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "new": {
+   "rounds_ok": 2,
+   "cold_ms": 750.0,
+   "bench_ms": 355.0,
+   "bench_n": 4,
+   "bench_parts": {
+    "objects": 10.4,
+    "json": 40.5,
+    "regex": 12.9,
+    "strings": 2.7,
+    "numeric": 4.6,
+    "sort": 56.5,
+    "mapset": 105.7,
+    "hashing": 12.1,
+    "parse": 13.0,
+    "dom": 96.5
+   },
+   "load_ms": 677.5,
+   "lcp_ms": 554.0
+  },
+  "base": {
+   "rounds_ok": 2,
+   "cold_ms": 694.5,
+   "bench_ms": 390.4,
+   "bench_n": 4,
+   "bench_parts": {
+    "objects": 10.4,
+    "json": 48.8,
+    "regex": 13.1,
+    "strings": 2.9,
+    "numeric": 4.4,
+    "sort": 57.2,
+    "mapset": 109.2,
+    "hashing": 12.1,
+    "parse": 15.3,
+    "dom": 116.8
+   },
+   "load_ms": 882.0,
+   "lcp_ms": 548.0
+  },
+  "base_over_new": {
+   "cold_ms": 0.926,
+   "bench_ms": 1.1,
+   "load_ms": 1.302,
+   "lcp_ms": 0.989
+  },
+  "parts_base_over_new": {
+   "objects": 1.0,
+   "json": 1.205,
+   "regex": 1.016,
+   "strings": 1.074,
+   "numeric": 0.957,
+   "sort": 1.012,
+   "mapset": 1.033,
+   "hashing": 1.0,
+   "parse": 1.177,
+   "dom": 1.21
+  }
+ }
+}

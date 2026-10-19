@@ -1,0 +1,243 @@
+{
+  "type": "actual ARM64 Redroid measurements; mixed metrics, NOT a uniform no-regression or current-Chrome claim",
+  "run_id": 39274414134,
+  "apk_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "same_apk_speed": {
+    "chromium_defaults": {
+      "loads_ok": 6,
+      "loads_total": 6,
+      "load_ms": 1431.5,
+      "lcp_ms": 556.0,
+      "fcp_ms": 488.0,
+      "dcl_ms": 560.5,
+      "requests": 47.0,
+      "kib": 887.1,
+      "ad_requests": 15.0,
+      "download_s": 9.1,
+      "download_conns": 3.0,
+      "downloads_complete": 2,
+      "downloads": 2,
+      "h2_download_s": 24.1,
+      "h2_connections": 1.0,
+      "h2_streams": 3.0,
+      "h2_alpn": [
+        "h2"
+      ],
+      "h2_complete": 2,
+      "h2_downloads": 2,
+      "bench_ms": 366.1,
+      "bench_runs": 1,
+      "bench_parts": {
+        "objects": 10.4,
+        "json": 43.8,
+        "regex": 12.8,
+        "strings": 2.8,
+        "numeric": 4.5,
+        "sort": 56.9,
+        "mapset": 113.1,
+        "hashing": 12.3,
+        "parse": 14.6,
+        "dom": 94.9
+      }
+    },
+    "swiftra": {
+      "loads_ok": 3,
+      "loads_total": 3,
+      "load_ms": 706,
+      "lcp_ms": 620,
+      "fcp_ms": 552,
+      "dcl_ms": 577,
+      "requests": 32,
+      "kib": 609.4,
+      "ad_requests": 0,
+      "download_s": 6.0,
+      "download_conns": 5,
+      "downloads_complete": 1,
+      "downloads": 1,
+      "h2_download_s": 4.8,
+      "h2_connections": 5,
+      "h2_streams": 5,
+      "h2_alpn": [
+        "h2"
+      ],
+      "h2_complete": 1,
+      "h2_downloads": 1,
+      "bench_ms": 387.7,
+      "bench_runs": 1,
+      "bench_parts": {
+        "objects": 10.8,
+        "json": 40.8,
+        "regex": 13,
+        "strings": 4,
+        "numeric": 4.5,
+        "sort": 57.8,
+        "mapset": 136.3,
+        "hashing": 12.1,
+        "parse": 13.9,
+        "dom": 94.5
+      }
+    },
+    "speedup": {
+      "load": 2.03,
+      "lcp": 0.9,
+      "download": 1.52,
+      "download_h2": 5.02,
+      "bytes": 1.46,
+      "bench": 0.94
+    }
+  },
+  "same_apk_repeat": {
+    "chromium_defaults": {
+      "cold": {
+        "n": 12,
+        "of": 12,
+        "load_ms": 133.5,
+        "lcp_ms": 276.0,
+        "fcp_ms": 276.0,
+        "app_ran_ms": 127.0,
+        "hero_end_ms": 132.0,
+        "network_hits": 0.0
+      },
+      "warm": {
+        "n": 12,
+        "of": 12,
+        "load_ms": 124.0,
+        "lcp_ms": 264.0,
+        "fcp_ms": 260.0,
+        "app_ran_ms": 121.0,
+        "hero_end_ms": 123.0,
+        "network_hits": 0.0
+      }
+    },
+    "swiftra": {
+      "cold": {
+        "n": 12,
+        "of": 12,
+        "load_ms": 140.5,
+        "lcp_ms": 268.0,
+        "fcp_ms": 246.0,
+        "app_ran_ms": 133.5,
+        "hero_end_ms": 139.0,
+        "network_hits": 0.0
+      },
+      "warm": {
+        "n": 12,
+        "of": 12,
+        "load_ms": 124.0,
+        "lcp_ms": 230.0,
+        "fcp_ms": 228.0,
+        "app_ran_ms": 117.5,
+        "hero_end_ms": 121.5,
+        "network_hits": 0.0
+      }
+    },
+    "swiftra_lcpp": {
+      "cold": {
+        "n": 12,
+        "of": 12,
+        "load_ms": 140.0,
+        "lcp_ms": 236.0,
+        "fcp_ms": 236.0,
+        "app_ran_ms": 130.5,
+        "hero_end_ms": 138.0,
+        "network_hits": 0.0
+      },
+      "warm": {
+        "n": 12,
+        "of": 12,
+        "load_ms": 132.0,
+        "lcp_ms": 238.0,
+        "fcp_ms": 238.0,
+        "app_ran_ms": 127.5,
+        "hero_end_ms": 130.0,
+        "network_hits": 0.0
+      }
+    }
+  },
+  "art": {
+    "runs": 5,
+    "medians_ms": {
+      "install": 1098,
+      "profile": 1069,
+      "speed": 1133
+    },
+    "gain_vs_install_pct": {
+      "profile": 2.6,
+      "speed": -3.2
+    }
+  },
+  "cross_apk_baseline": {
+    "new": {
+      "rounds_ok": 2,
+      "cold_ms": 750.0,
+      "bench_ms": 355.0,
+      "bench_n": 4,
+      "bench_parts": {
+        "objects": 10.4,
+        "json": 40.5,
+        "regex": 12.9,
+        "strings": 2.7,
+        "numeric": 4.6,
+        "sort": 56.5,
+        "mapset": 105.7,
+        "hashing": 12.1,
+        "parse": 13.0,
+        "dom": 96.5
+      },
+      "load_ms": 677.5,
+      "lcp_ms": 554.0
+    },
+    "base": {
+      "rounds_ok": 2,
+      "cold_ms": 694.5,
+      "bench_ms": 390.4,
+      "bench_n": 4,
+      "bench_parts": {
+        "objects": 10.4,
+        "json": 48.8,
+        "regex": 13.1,
+        "strings": 2.9,
+        "numeric": 4.4,
+        "sort": 57.2,
+        "mapset": 109.2,
+        "hashing": 12.1,
+        "parse": 15.3,
+        "dom": 116.8
+      },
+      "load_ms": 882.0,
+      "lcp_ms": 548.0
+    },
+    "base_over_new": {
+      "cold_ms": 0.926,
+      "bench_ms": 1.1,
+      "load_ms": 1.302,
+      "lcp_ms": 0.989
+    },
+    "parts_base_over_new": {
+      "objects": 1.0,
+      "json": 1.205,
+      "regex": 1.016,
+      "strings": 1.074,
+      "numeric": 0.957,
+      "sort": 1.012,
+      "mapset": 1.033,
+      "hashing": 1.0,
+      "parse": 1.177,
+      "dom": 1.21
+    }
+  },
+  "cross_apk_changes_pct": {
+    "cold_ms": 7.99,
+    "bench_ms": -9.07,
+    "load_ms": -23.19,
+    "lcp_ms": 1.09
+  },
+  "warnings": [
+    "new vs old 0011 baseline cold launch +7.99%; all six new samples exceeded all six base samples in this one CI run",
+    "same-APK full-page load/download improved but first-page LCP and one JS/DOM sample regressed; sample counts are small/unbalanced",
+    "cached SPA cold load slightly regressed, warm load tied; LCPP candidate not a universal win",
+    "different-APK comparison includes multiple feature changes; it does not isolate Keystore causality",
+    "software-rendered container/shared runner is not physical phone or current installed Chrome",
+    "E2E_GATE PASS means existing release check passed, not that every measured performance metric improved"
+  ]
+}

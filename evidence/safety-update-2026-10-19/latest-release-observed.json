@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-10-19T16:32:04.669001+00:00",
+  "release_id": 417019857,
+  "updated_at": "2026-10-19T07:35:39Z",
+  "assets": [
+    {
+      "id": 656179828,
+      "name": "Swiftra-arm64.apk",
+      "size": 367006403,
+      "digest": "sha256:046550e9555890d44f35ce3956d5a866c4bdfb3256c5028246bc89055b004da9",
+      "updated_at": "2026-10-19T12:14:09Z"
+    },
+    {
+      "id": 656351306,
+      "name": "Swiftra-x64.apk",
+      "size": 398885843,
+      "digest": "sha256:b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+      "updated_at": "2026-10-19T13:25:46Z"
+    }
+  ]
+}

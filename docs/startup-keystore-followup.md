@@ -23,4 +23,34 @@
 3. किसी नए speed lever का दावा same-APK, alternating controlled A/B और पर्याप्त trials के बाद ही। TLS, sandbox या encryption कमज़ोर करके लाभ न दिखाएँ।
 4. Crypto failure को public-key fallback या credential deletion से छिपाने के बजाय fail-closed correctness भी जाँची जाए।
 
-प्रमाण: `evidence/safety-update-2026-10-19/startup-history.json` में पूरे SHA और source job URLs; `startup-history-markers.txt` में exact timestamped log lines। **Status: historical Android emulator observations only; new 0021 performance acceptance NOT RUN / BLOCKED.**
+प्रमाण: `evidence/safety-update-2026-10-19/startup-history.json` में पूरे SHA और source job URLs; `startup-history-markers.txt` में exact timestamped log lines। ऊपर की तालिका केवल ऐतिहासिक x64 observations है।
+
+## अब उपलब्ध नया full ARM64 run — मिश्रित परिणाम, regression छिपाएँ नहीं
+
+Full native Redroid run **39274414134** के वास्तविक artifact में source APK `a3df4cf7…248f02`, Safety 5/5, `KEYSTORE_E2E PASS sw1`, device checks 9/0 और मौजूदा `E2E_GATE PASS` हैं। **यह gate measured performance की उपस्थिति स्वीकार करता है; इससे हर metric में improvement/no-regression सिद्ध नहीं होता।**
+
+- नया ARM trace `TotalTime=825 ms`; ART पाँच-launch medians: **1098 / 1069 / 1133 ms** (install/profile/speed), gains **+2.6% / −3.2%**। केवल `speed` compile करना अपने-आप तेज़ नहीं था।
+- पुराना ARM **39240241640**: trace **798 ms**, ART **1036 / 944 / 1079 ms**, `KEYSTORE_E2E NOT_RUN prefix=v10 wrapped_pref=False`। दोनों अलग APK/hosts हैं। इन ratios को causal Keystore cost या correction न कहें।
+
+### उसी host का alternating अलग-APK baseline (0011)
+
+क्रम `new,base,new,base`; हर candidate के 6 cold launches। नया SHA `a3df4cf7…248f02`, baseline `8954118e…3714fd`।
+
+| metric | नया | पुराना 0011 | नया समय परिवर्तन |
+|---|---:|---:|---:|
+| cold launch | 750.0 ms | 694.5 ms | **+7.99% धीमा** |
+| JS/DOM bench | 355.0 ms | 390.4 ms | −9.07% |
+| fixture load | 677.5 ms | 882.0 ms | −23.19% |
+| fixture LCP | 554.0 ms | 548.0 ms | **+1.09% धीमा** |
+
+इस एक run में सभी छह new cold samples सभी छह baseline samples से बड़े थे। इसे अनदेखा नहीं किया गया। फिर भी कई source/features साथ बदले हैं: **सिर्फ Keystore को कारण कहना असमर्थित** होगा। और यह installed current Chrome benchmark नहीं है।
+
+### Same-APK flags / fixture measurements
+
+- Full-page load **1431.5 → 706 ms**, HTTP download **9.1 → 6.0 s**, shaped local H2 download **24.1 → 4.8 s**। यह नियंत्रित CI-local network है, आम इंटरनेट की सार्वभौमिक गति नहीं। Loads 6 vs 3, downloads 2 vs 1: छोटे/असमान samples।
+- उसी test का LCP **556 → 620 ms (+11.51%)**, एक JS/DOM bench **366.1 → 387.7 ms (+5.90%)**। इसलिए बेहतर load/download देखकर uniform speed PASS न कहें।
+- Cached-SPA, हर mode में cold/warm **12+12**: cold load **133.5 → 140.5 ms (+5.24%)**, warm load **124 → 124 ms**; warm LCP **264 → 230 ms**। LCPP candidate का warm load **132 ms** भी universal win नहीं है।
+
+**Status: actual Android measurements, लेकिन uniform no-regression acceptance FAIL / further adjudication BLOCKED.** किसी speed lever/crypto setting को इस noisy mixed bundle के आधार पर अकेला culprit मानकर नहीं बदला गया; encryption/TLS/sandbox कमजोर नहीं किए गए। अगले निर्णय के लिए privacy/security समान रखते हुए isolated lever ablation, balanced repeated trials और physical/current-Chrome reference चाहिए।
+
+Curated full artifact और दोबारा runnable release-gate proof: `evidence/safety-update-2026-10-19/arm64-full-run-39274414134/`। `performance-caveats.json` में summaries/limitations और `prior-arm-39240241640-markers.txt` में exact पुराने ARM markers हैं।

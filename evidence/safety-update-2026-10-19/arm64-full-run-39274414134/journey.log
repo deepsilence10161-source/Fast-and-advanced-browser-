@@ -1,0 +1,170 @@
+[15:04:14] install: Success
+[15:04:15] meta: {'label': 'chromium_source_arm64', 'package': 'com.swiftra.app', 'versionName': '155.0.8059.80', 'versionCode': '805908004', 'primaryCpuAbi': 'arm64-v8a', 'android_release': '14', 'sdk': '34', 'model': 'redroid14_arm64_only', 'abilist': 'arm64-v8a', 'native_bridge': '0', 'locale': '', 'wm_size': 'Physical size: 1080x2400', 'wm_density': 'Physical density: 420', 'font_scale': 'null', 'navigation_mode': '0', 'webview': 'Current WebView package (name, version): (com.android.webview, 125.0.6422.113)'}
+[15:04:25] captured 01_first_run (10 labelled nodes, fg=com.swiftra.app)
+[15:04:30] captured 01_first_run_1 (10 labelled nodes, fg=com.swiftra.app)
+[15:04:38] captured 01_first_run_2 (8 labelled nodes, fg=com.swiftra.app)
+[15:04:43] browser UI ready: True
+[15:04:49] captured 02_ntp (65 labelled nodes, fg=com.swiftra.app)
+[15:04:53] tap OK  /:id/(search_box_text|url_bar)$/ -> com.swiftra.app:id/search_box_text
+[15:04:57] captured 03_omnibox_focused (76 labelled nodes, fg=com.swiftra.app)
+[15:05:04] captured 04_omnibox_suggestions (72 labelled nodes, fg=com.swiftra.app)
+[15:05:20] captured 05_page_loaded (29 labelled nodes, fg=com.swiftra.app)
+[15:05:24] tap OK  /:id/(location_bar_status_icon|location_bar_status|security_button|status_icon)$/ -> com.swiftra.app:id/location_bar_status
+[15:05:28] captured 06_page_info (18 labelled nodes, fg=com.swiftra.app)
+[15:05:37] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:05:40] captured 07_app_menu (62 labelled nodes, fg=com.swiftra.app)
+[15:05:50] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:05:54] tap OK  /^New tab$/ -> com.swiftra.app:id/menu_item_text
+[15:05:57] captured 08_second_tab_ntp (84 labelled nodes, fg=com.swiftra.app)
+[15:05:59] promo sheet dismissed: Search Google or type URL -> No thanks
+[15:06:05] tap OK  /tab_switcher_button/ -> com.swiftra.app:id/tab_switcher_button
+[15:06:13] captured 09_tab_switcher (39 labelled nodes, fg=com.swiftra.app)
+[15:06:18] tab switcher: opened, tabs=2, BACK returns to tab: True
+[15:06:22] captured 09b_after_back_from_switcher (67 labelled nodes, fg=com.swiftra.app)
+[15:06:30] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:06:36] tap OK  /^Settings$/ -> com.swiftra.app:id/menu_item_text
+[15:06:41] captured 11_settings (35 labelled nodes, fg=com.swiftra.app)
+[15:06:46] captured 11b_settings_scrolled (32 labelled nodes, fg=com.swiftra.app)
+[15:06:58] captured 20_set_01_google_services (51 labelled nodes, fg=com.swiftra.app)
+[15:07:03] captured 20_set_01_google_services_b (51 labelled nodes, fg=com.swiftra.app)
+[15:07:23] captured 20_set_01_google_services__01_touch_to_search (45 labelled nodes, fg=com.swiftra.app)
+[15:07:28] captured 20_set_01_google_services__01_touch_to_search_b (45 labelled nodes, fg=com.swiftra.app)
+[15:07:39] settings deep crawl: Google services: 1 पन्ने
+[15:07:51] captured 20_set_02_search_engine (61 labelled nodes, fg=com.swiftra.app)
+[15:07:56] captured 20_set_02_search_engine_b (61 labelled nodes, fg=com.swiftra.app)
+[15:08:08] captured 20_set_03_address_bar (48 labelled nodes, fg=com.swiftra.app)
+[15:08:13] captured 20_set_03_address_bar_b (48 labelled nodes, fg=com.swiftra.app)
+[15:08:25] captured 20_set_04_privacy_and_security (59 labelled nodes, fg=com.swiftra.app)
+[15:08:30] captured 20_set_04_privacy_and_security_b (60 labelled nodes, fg=com.swiftra.app)
+[15:08:44] captured 20_set_04_privacy_and_security__01_delete_browsing_data (83 labelled nodes, fg=com.swiftra.app)
+[15:08:49] captured 20_set_04_privacy_and_security__01_delete_browsing_data_b (83 labelled nodes, fg=com.swiftra.app)
+[15:09:02] captured 20_set_04_privacy_and_security__02_privacy_guide (18 labelled nodes, fg=com.swiftra.app)
+[15:09:07] captured 20_set_04_privacy_and_security__02_privacy_guide_b (18 labelled nodes, fg=com.swiftra.app)
+[15:09:20] captured 20_set_04_privacy_and_security__03_third_party_cookies (61 labelled nodes, fg=com.swiftra.app)
+[15:09:25] captured 20_set_04_privacy_and_security__03_third_party_cookies_b (61 labelled nodes, fg=com.swiftra.app)
+[15:09:38] captured 20_set_04_privacy_and_security__04_send_a_do_not_track_request (41 labelled nodes, fg=com.swiftra.app)
+[15:09:43] captured 20_set_04_privacy_and_security__04_send_a_do_not_track_request_b (41 labelled nodes, fg=com.swiftra.app)
+[15:09:56] captured 20_set_04_privacy_and_security__05_preload_pages (59 labelled nodes, fg=com.swiftra.app)
+[15:10:01] captured 20_set_04_privacy_and_security__05_preload_pages_b (59 labelled nodes, fg=com.swiftra.app)
+[15:10:17] captured 20_set_04_privacy_and_security__06_safe_browsing (58 labelled nodes, fg=com.swiftra.app)
+[15:10:22] captured 20_set_04_privacy_and_security__06_safe_browsing_b (58 labelled nodes, fg=com.swiftra.app)
+[15:10:43] captured 20_set_04_privacy_and_security__07_always_use_secure_connection (51 labelled nodes, fg=com.swiftra.app)
+[15:10:48] captured 20_set_04_privacy_and_security__07_always_use_secure_connection_b (51 labelled nodes, fg=com.swiftra.app)
+[15:11:04] captured 20_set_04_privacy_and_security__08_use_secure_dns (51 labelled nodes, fg=com.swiftra.app)
+[15:11:09] captured 20_set_04_privacy_and_security__08_use_secure_dns_b (51 labelled nodes, fg=com.swiftra.app)
+[15:11:21] settings deep crawl: Privacy and security: 8 पन्ने
+[15:11:32] captured 20_set_05_safety_check (65 labelled nodes, fg=com.swiftra.app)
+[15:11:38] captured 20_set_05_safety_check_b (65 labelled nodes, fg=com.swiftra.app)
+[15:11:46] settings crawl: 'Default browser' ने app छोड़ा (fg=com.android.permissioncontroller)
+[15:11:58] captured 20_set_07_google_password_manager (11 labelled nodes, fg=com.swiftra.app)
+[15:12:16] captured 20_set_08_payment_methods (57 labelled nodes, fg=com.swiftra.app)
+[15:12:21] captured 20_set_08_payment_methods_b (57 labelled nodes, fg=com.swiftra.app)
+[15:12:33] captured 20_set_09_addresses_and_more (48 labelled nodes, fg=com.swiftra.app)
+[15:12:38] captured 20_set_09_addresses_and_more_b (48 labelled nodes, fg=com.swiftra.app)
+[15:12:50] captured 20_set_10_autofill_settings (64 labelled nodes, fg=com.swiftra.app)
+[15:12:55] captured 20_set_10_autofill_settings_b (63 labelled nodes, fg=com.swiftra.app)
+[15:13:06] captured 20_set_11_tabs_and_tab_groups (40 labelled nodes, fg=com.swiftra.app)
+[15:13:12] captured 20_set_11_tabs_and_tab_groups_b (40 labelled nodes, fg=com.swiftra.app)
+[15:13:25] captured 20_set_11_tabs_and_tab_groups__01_move_to_inactive_section (61 labelled nodes, fg=com.swiftra.app)
+[15:13:30] captured 20_set_11_tabs_and_tab_groups__01_move_to_inactive_section_b (61 labelled nodes, fg=com.swiftra.app)
+[15:13:44] settings deep crawl: Tabs and tab groups: 1 पन्ने
+[15:14:01] captured 20_set_12_homepage (46 labelled nodes, fg=com.swiftra.app)
+[15:14:07] captured 20_set_12_homepage_b (46 labelled nodes, fg=com.swiftra.app)
+[15:14:15] settings crawl: 'Notifications' ने app छोड़ा (fg=com.android.settings)
+[15:14:27] captured 20_set_14_appearance (37 labelled nodes, fg=com.swiftra.app)
+[15:14:32] captured 20_set_14_appearance_b (37 labelled nodes, fg=com.swiftra.app)
+[15:14:46] captured 20_set_14_appearance__01_theme (48 labelled nodes, fg=com.swiftra.app)
+[15:14:50] captured 20_set_14_appearance__01_theme_b (48 labelled nodes, fg=com.swiftra.app)
+[15:15:04] captured 20_set_14_appearance__02_toolbar_shortcut (72 labelled nodes, fg=com.swiftra.app)
+[15:15:09] captured 20_set_14_appearance__02_toolbar_shortcut_b (72 labelled nodes, fg=com.swiftra.app)
+[15:15:20] settings deep crawl: Appearance: 2 पन्ने
+[15:15:32] captured 20_set_15_accessibility (62 labelled nodes, fg=com.swiftra.app)
+[15:15:37] captured 20_set_15_accessibility_b (63 labelled nodes, fg=com.swiftra.app)
+[15:15:50] captured 20_set_15_accessibility__01_saved_zoom_for_sites (36 labelled nodes, fg=com.swiftra.app)
+[15:15:55] captured 20_set_15_accessibility__01_saved_zoom_for_sites_b (36 labelled nodes, fg=com.swiftra.app)
+[15:16:41] settings deep crawl: Accessibility: 1 पन्ने
+[15:16:52] captured 20_set_16_site_settings (71 labelled nodes, fg=com.swiftra.app)
+[15:16:57] captured 20_set_16_site_settings_b (76 labelled nodes, fg=com.swiftra.app)
+[15:17:11] captured 20_set_16_site_settings__01_all_sites (44 labelled nodes, fg=com.swiftra.app)
+[15:17:16] captured 20_set_16_site_settings__01_all_sites_b (44 labelled nodes, fg=com.swiftra.app)
+[15:17:29] captured 20_set_16_site_settings__02_location (64 labelled nodes, fg=com.swiftra.app)
+[15:17:34] captured 20_set_16_site_settings__02_location_b (64 labelled nodes, fg=com.swiftra.app)
+[15:17:48] captured 20_set_16_site_settings__03_camera (51 labelled nodes, fg=com.swiftra.app)
+[15:17:52] captured 20_set_16_site_settings__03_camera_b (51 labelled nodes, fg=com.swiftra.app)
+[15:18:06] captured 20_set_16_site_settings__04_microphone (51 labelled nodes, fg=com.swiftra.app)
+[15:18:10] captured 20_set_16_site_settings__04_microphone_b (51 labelled nodes, fg=com.swiftra.app)
+[15:18:24] captured 20_set_16_site_settings__05_notifications (63 labelled nodes, fg=com.swiftra.app)
+[15:18:29] captured 20_set_16_site_settings__05_notifications_b (63 labelled nodes, fg=com.swiftra.app)
+[15:18:42] captured 20_set_16_site_settings__06_embedded_content (49 labelled nodes, fg=com.swiftra.app)
+[15:18:47] captured 20_set_16_site_settings__06_embedded_content_b (49 labelled nodes, fg=com.swiftra.app)
+[15:19:00] captured 20_set_16_site_settings__07_motion_sensors (50 labelled nodes, fg=com.swiftra.app)
+[15:19:05] captured 20_set_16_site_settings__07_motion_sensors_b (50 labelled nodes, fg=com.swiftra.app)
+[15:19:18] captured 20_set_16_site_settings__08_nfc_devices (50 labelled nodes, fg=com.swiftra.app)
+[15:19:23] captured 20_set_16_site_settings__08_nfc_devices_b (50 labelled nodes, fg=com.swiftra.app)
+[15:19:36] captured 20_set_16_site_settings__09_usb (49 labelled nodes, fg=com.swiftra.app)
+[15:19:41] captured 20_set_16_site_settings__09_usb_b (49 labelled nodes, fg=com.swiftra.app)
+[15:20:00] captured 20_set_16_site_settings__10_serial_port (49 labelled nodes, fg=com.swiftra.app)
+[15:20:05] captured 20_set_16_site_settings__10_serial_port_b (49 labelled nodes, fg=com.swiftra.app)
+[15:20:22] captured 20_set_16_site_settings__11_file_editing (49 labelled nodes, fg=com.swiftra.app)
+[15:20:26] captured 20_set_16_site_settings__11_file_editing_b (49 labelled nodes, fg=com.swiftra.app)
+[15:20:43] captured 20_set_16_site_settings__12_clipboard (49 labelled nodes, fg=com.swiftra.app)
+[15:20:48] captured 20_set_16_site_settings__12_clipboard_b (49 labelled nodes, fg=com.swiftra.app)
+[15:21:09] captured 20_set_16_site_settings__13_virtual_reality (49 labelled nodes, fg=com.swiftra.app)
+[15:21:13] captured 20_set_16_site_settings__13_virtual_reality_b (49 labelled nodes, fg=com.swiftra.app)
+[15:21:25] settings deep crawl: Site settings: 13 पन्ने
+[15:21:42] captured 20_set_17_languages (55 labelled nodes, fg=com.swiftra.app)
+[15:21:48] captured 20_set_17_languages_b (55 labelled nodes, fg=com.swiftra.app)
+[15:22:01] captured 20_set_17_languages__01_current_device_language (67 labelled nodes, fg=com.swiftra.app)
+[15:22:06] captured 20_set_17_languages__01_current_device_language_b (71 labelled nodes, fg=com.swiftra.app)
+[15:22:22] captured 20_set_17_languages__02_translate_into_this_language (66 labelled nodes, fg=com.swiftra.app)
+[15:22:26] captured 20_set_17_languages__02_translate_into_this_language_b (70 labelled nodes, fg=com.swiftra.app)
+[15:22:46] captured 20_set_17_languages__03_automatically_translate_thes (31 labelled nodes, fg=com.swiftra.app)
+[15:22:50] captured 20_set_17_languages__03_automatically_translate_thes_b (31 labelled nodes, fg=com.swiftra.app)
+[15:23:07] captured 20_set_17_languages__04_don_t_offer_to_translate_the (35 labelled nodes, fg=com.swiftra.app)
+[15:23:12] captured 20_set_17_languages__04_don_t_offer_to_translate_the_b (35 labelled nodes, fg=com.swiftra.app)
+[15:23:24] settings deep crawl: Languages: 4 पन्ने
+[15:23:35] captured 20_set_18_downloads (41 labelled nodes, fg=com.swiftra.app)
+[15:23:40] captured 20_set_18_downloads_b (41 labelled nodes, fg=com.swiftra.app)
+[15:23:54] captured 20_set_18_downloads__01_download_location (13 labelled nodes, fg=com.swiftra.app)
+[15:24:09] settings deep crawl: Downloads: 1 पन्ने
+[15:24:21] captured 20_set_19_developer_options (33 labelled nodes, fg=com.swiftra.app)
+[15:24:26] captured 20_set_19_developer_options_b (33 labelled nodes, fg=com.swiftra.app)
+[15:24:38] captured 20_set_20_about_swiftra (37 labelled nodes, fg=com.swiftra.app)
+[15:24:43] captured 20_set_20_about_swiftra_b (37 labelled nodes, fg=com.swiftra.app)
+[15:25:09] captured 20_set_20_about_swiftra__03_legal_information (35 labelled nodes, fg=com.swiftra.app)
+[15:25:14] captured 20_set_20_about_swiftra__03_legal_information_b (35 labelled nodes, fg=com.swiftra.app)
+[15:25:26] settings deep crawl: About Swiftra: 1 पन्ने
+[15:25:37] settings crawl: 18 पन्ने capture, 1129 s
+[15:25:48] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:25:54] tap OK  /^History$/ -> com.swiftra.app:id/menu_item_text
+[15:25:59] captured 12_history (19 labelled nodes, fg=com.swiftra.app)
+[15:26:09] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:26:15] tap OK  /^Bookmarks$/ -> com.swiftra.app:id/menu_item_text
+[15:26:20] captured 13_bookmarks (30 labelled nodes, fg=com.swiftra.app)
+[15:26:30] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:26:36] tap OK  /^Downloads$/ -> com.swiftra.app:id/menu_item_text
+[15:26:42] captured 14_downloads (16 labelled nodes, fg=com.swiftra.app)
+[15:27:00] captured 15_dark_page (29 labelled nodes, fg=com.swiftra.app)
+[15:27:04] tap OK  /menu_button/ -> com.swiftra.app:id/menu_button
+[15:27:08] captured 15b_dark_menu (62 labelled nodes, fg=com.swiftra.app)
+[15:27:19] captured 16_landscape (18 labelled nodes, fg=com.android.permissioncontroller)
+[15:27:19] landscape screenshot 2400x1080 rotated=True
+[15:27:33] tap MISS /menu_button/
+[15:28:27] timings: {'cold_ms': [772, 720, 697, 706, 696, 701, 731, 709, 685, 682], 'warm_ms': [179, 185, 187, 185, 185, 185, 188, 189, 184, 187], 'activity': 'com.swiftra.app/com.google.android.apps.chrome.IntentDispatcher', 'landing_activities': ['com.swiftra.app/org.chromium.chrome.browser.ChromeTabbedActivity'], 'cold_ms_median': 703.5, 'cold_ms_p95': 772, 'warm_ms_median': 185.0, 'warm_ms_p95': 189, 'comparable': True}
+[15:28:27] branding scan: 0 leaks
+[15:28:27] truth scan: 2 false claims, expected found ['copyright_chromium_authors', 'sb_enhanced_honest_summary', 'sb_standard_local_summary']
+[15:28:27] done
+ui_capture exit=0
+apk_audit exit=0
+devtools sockets: chrome_devtools_remote ; using: chrome_devtools_remote
+chat_fixture exit=0
+shield_e2e exit=0
+startup_netlog exit=0
+advanced_e2e exit=0
+update_e2e exit=0
+safety_update_e2e exit=0
+speed_e2e exit=0
+repeat_e2e exit=0
+startup_trace exit=0
+art_startup exit=0
+keystore_e2e exit=0

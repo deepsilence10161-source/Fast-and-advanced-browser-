@@ -1,0 +1,10 @@
+2026-10-19T15:37:02.1888420Z SAFETY_PREPARE FRE/promo button: Stay signed out
+2026-10-19T15:38:17.0658378Z SAFETY_CASE bad_fresh PASS state=unavailable
+2026-10-19T15:39:16.9049019Z SAFETY_CASE good_production PASS state=current
+2026-10-19T15:40:15.4822091Z SAFETY_CASE bad_recent PASS state=current
+2026-10-19T15:41:07.8748312Z SAFETY_CASE bad_stale PASS state=unavailable
+2026-10-19T15:42:00.9287187Z SAFETY_CASE bad_future PASS state=unavailable
+2026-10-19T15:42:02.1478115Z SAFETY_UPDATE_E2E PASS cases=5/5 restored=True stage=done
+2026-10-19T15:42:02.1612206Z safety_update_e2e exit=0
+2026-10-19T15:42:29.2087049Z KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True
+2026-10-19T15:42:29.2544097Z keystore_e2e exit=0

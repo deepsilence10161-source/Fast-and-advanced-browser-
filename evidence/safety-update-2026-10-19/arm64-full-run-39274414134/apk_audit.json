@@ -1,0 +1,25 @@
+{
+ "checks": {
+  "not_debuggable": true,
+  "not_test_only": true,
+  "allow_backup_false": true,
+  "signed_v2_v3": true,
+  "signer_cert_expected": true,
+  "no_new_exported_entry_points": true,
+  "no_google_chrome_logo_images": true
+ },
+ "info": {
+  "package": "com.swiftra.app",
+  "target_sdk": "37",
+  "sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "signer_cert_sha256": [
+   "029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06"
+  ],
+  "exported_unprotected": 23,
+  "exported_new": [],
+  "exported_gone": [],
+  "brand_images": [],
+  "resource_names_scanned": 86750,
+  "network_security_config": "@7F180031"
+ }
+}

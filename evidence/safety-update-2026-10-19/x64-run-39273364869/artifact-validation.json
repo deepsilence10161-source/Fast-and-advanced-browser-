@@ -1,0 +1,47 @@
+{
+  "bad_fresh": {
+    "ui_xml_matches_json": true,
+    "case_pass_recomputed": true,
+    "png_size": [
+      1080,
+      2400
+    ]
+  },
+  "good_production": {
+    "ui_xml_matches_json": true,
+    "case_pass_recomputed": true,
+    "png_size": [
+      1080,
+      2400
+    ]
+  },
+  "bad_recent": {
+    "ui_xml_matches_json": true,
+    "case_pass_recomputed": true,
+    "png_size": [
+      1080,
+      2400
+    ]
+  },
+  "bad_stale": {
+    "ui_xml_matches_json": true,
+    "case_pass_recomputed": true,
+    "png_size": [
+      1080,
+      2400
+    ]
+  },
+  "bad_future": {
+    "ui_xml_matches_json": true,
+    "case_pass_recomputed": true,
+    "png_size": [
+      1080,
+      2400
+    ]
+  },
+  "focused_release_gate": {
+    "accepted": false,
+    "exit_code": 1,
+    "reason": "actual focused artifact lacks required full-regression markers, as designed"
+  }
+}

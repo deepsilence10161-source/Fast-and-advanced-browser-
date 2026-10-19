@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-10-19T16:32:03.835257+00:00",
+  "run_id": 39274414134,
+  "job_id": 118134867368,
+  "artifact_id": 12202138617,
+  "driver_commit": "ff4944e1d1470e2a6517d303014e770f3ccb3c6f",
+  "source_fork_commit": "9d2446ff0452353f9e915fbba8f0984d9f1a2656",
+  "apk_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "platform": "native ARM64 Redroid Android 14 container, not a physical phone",
+  "gate_original_artifact": "PASS, exit 0",
+  "gate_curated_subset": "PASS, exit 0",
+  "device_checks": {
+    "passed": 9,
+    "failed": 0
+  },
+  "safety_cases": {
+    "passed": 5,
+    "total": 5,
+    "restored": true
+  },
+  "keystore_cookie": "PASS sw1/no plaintext/wrapped-pref/restart-cookie/Keystore2",
+  "performance_acceptance": "mixed metrics; uniform no-regression NOT passed; see performance-caveats.json",
+  "physical_device": "NOT RUN",
+  "Google_Arena_user_accounts": "NOT RUN",
+  "whole_project": "NOT FINISHED"
+}

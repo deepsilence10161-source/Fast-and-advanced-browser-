@@ -7,18 +7,20 @@
 | Android पर store backend | `chrome/browser/password_manager/factories/password_store_backend_factory.cc` | `IsPasswordManagerAvailable()` false हो तो `PasswordStoreEmptyBackend`, यानी कुछ save नहीं होता |
 | उपलब्धता की शर्त | `chrome/browser/password_manager/android/password_manager_android_util.cc` | Google का internal (downstream) backend **और** GMS का न्यूनतम version, दोनों चाहिए। Swiftra (upstream) में internal backend नहीं है |
 | Local database | `components/password_manager/core/browser/password_store/BUILD.gn` | `login_database*`, `password_store_built_in_backend*`, `insecure_credentials_table`, `password_notes_table`, `statistics_table` केवल `!is_android` में compile होते हैं |
-| Encryption | `chrome/browser/browser_process_impl.cc`, `components/os_crypt/async/browser/posix_key_provider.cc` | Android (`IS_POSIX`) पर केवल `PosixKeyProvider` जुड़ता है, जिसकी key (`kV10Key`, AES-128-CBC) source में सबके सामने लिखी है। यह छिपाना है, असली encryption नहीं। `login_database_posix.cc` encryptor न होने पर save नहीं करता (fail-closed) |
+| Encryption (unpatched upstream baseline) | `chrome/browser/browser_process_impl.cc`, `components/os_crypt/async/browser/posix_key_provider.cc` | Unpatched upstream Android (`IS_POSIX`) का basic provider सार्वजनिक fixed `kV10Key` (AES-128-CBC) लेता है; ज्ञात key के विरुद्ध secret-key confidentiality नहीं मिलती। **Current Swiftra 0021 यह baseline बदल चुका है**, नीचे उसका अलग प्रमाण है। `login_database_posix.cc` encryptor न होने पर save नहीं करता (fail-closed); vault नई writes में उपलब्ध public-key fallback को भी स्वीकार नहीं करेगा |
 
 Status: Swiftra में password save **नहीं** होता (static, code से पक्का)। Device पर NOT RUN।
 दूसरे password manager (Android Autofill service, जैसे Bitwarden) से login का रास्ता upstream जैसा खुला है; उसका E2E PLAN 12 में है।
 
-## पहला कदम अलग से फ़ायदेमंद: Keystore key provider (0021)
+## 0021 लागू है; 0022 vault अभी बाकी है
 
-`components/autofill/core/browser/webdata/payments/payments_autofill_table.cc` card/IBAN के fields को `encryptor` से encrypt करता है, और `chrome/browser/webdata_services/web_data_service_factory.cc` वह encryptor `g_browser_process->os_crypt_async()` से लेता है। Android पर उसमें केवल सार्वजनिक fixed key (`kV10Key`) है। इसलिए Chrome Android और आज का Swiftra, दोनों local card/IBAN data उसी सार्वजनिक key से "encrypt" करते हैं (static, code से)।
-**Cookies भी:** `chrome/browser/net/system_network_context_manager.cc` हर profile को `CookieEncryptionProviderImpl(os_crypt_async)` देता है, `enable_encrypted_cookies` का default true है, और `services/network/network_context.cc` का `CookieOSCryptAsyncDelegate` हर cookie value को उसी encryptor से encrypt करता है। यानी Android पर login-session cookies भी सार्वजनिक key से "encrypted" हैं (static, code से)।
-**गति का जोखिम:** `CookieOSCryptAsyncDelegate::Init()` encryptor तैयार होने तक cookie load रोकता है, इसलिए Keystore वाला कदम startup पर असर डाल सकता है। इसलिए Keystore का काम background thread पर हो, OSCryptAsync init (जो startup में पहले ही शुरू होता है) के साथ ही चले, और 0021 तभी release होगा जब SPEED_E2E / STARTUP_TRACE A/B में कोई गिरावट न दिखे।
+`components/autofill/core/browser/webdata/payments/payments_autofill_table.cc` card/IBAN के fields को `encryptor` से encrypt करता है, और `chrome/browser/webdata_services/web_data_service_factory.cc` वह encryptor `g_browser_process->os_crypt_async()` से लेता है। ऊपर का fixed-key निष्कर्ष **unpatched upstream baseline** का है। Current Swiftra में 0021 Android Keystore-wrapped per-install key provider जोड़ चुका है। Card/IBAN callers का निरीक्षण static है; cookies वाले runtime PASS को card/IBAN का अलग E2E PASS न कहें।
 
-Keystore वाला provider (नीचे कदम 3) vault से पहले भी Swiftra को Chrome से ज़्यादा सुरक्षित बनाएगा। cookies, cards और IBAN, तीनों के लिए। यह एक मापने लायक "Chrome से आगे" बिंदु है, जो device E2E के बाद ही PASS माना जाएगा।
+**Cookies:** `chrome/browser/net/system_network_context_manager.cc` profile को `CookieEncryptionProviderImpl(os_crypt_async)` देता है; `enable_encrypted_cookies` का default true है। `services/network/network_context.cc` का delegate उसी encryptor का उपयोग करता है। Swiftra के source-built x64 APK `b1ea03ea…aa11ff` पर `sw1`, no plaintext और restart-cookie recovery का ऐतिहासिक वास्तविक emulator प्रमाण नीचे है। इसका अर्थ यह नहीं कि आज का patched Swiftra अभी भी केवल fixed v10 key इस्तेमाल कर रहा है। Keystore unavailable/fallback, key-loss और नए vault writes की fail-closed policy फिर भी अलग acceptance हैं।
+
+**गति का जोखिम:** `CookieOSCryptAsyncDelegate::Init()` encryptor तैयार होने तक cookie load रोकता है। Background work और measured startup/no-regression अभी भी आवश्यक हैं। तीन पुराने APKs/hosts के noisy startup आँकड़ों से Keystore का causal regression या लाभ सिद्ध नहीं हुआ (`docs/startup-keystore-followup.md`); crypto को कमजोर करके गति न दिखाएँ।
+
+Public-key upstream baseline के मुकाबले नई random wrapped-key scheme बेहतर key isolation का स्रोत-समर्थित लक्ष्य है। **वर्तमान installed Google Chrome APK/downstream और physical phone पर सीधी तुलना NOT RUN** है; केवल upstream code से सभी आधिकारिक Chrome builds या hardware security के बारे में दावा न करें।
 
 ## Patch योजना (0021 provider, फिर 0022 vault; बड़ा काम)
 
@@ -57,4 +59,8 @@ Keystore वाला provider (नीचे कदम 3) vault से पहल
 5. Cold/warm startup और same-APK page/download benchmarks से नया synchronous startup/IO bottleneck न आए; UI thread पर database/Keystore काम न हो।
 6. दोनों ABI source builds, x64 emulator तथा native arm64 Redroid E2E; physical Android smoke और G1/G5 gates अलग बने रहें।
 
-प्रमाण सूची: `evidence/password-vault-research-2026-10-19.json` में fetched primary-source hashes। इनमें से किसी निरीक्षण को `PASS (actual Android device)` न कहा जाए।
+प्रमाण सूची: `evidence/password-vault-research-2026-10-19.json` में 23 core primary-source hashes। इनमें से किसी निरीक्षण को `PASS (actual Android device)` न कहा जाए।
+
+### Native authentication की अतिरिक्त जाँच
+
+`password-vault-auth.md` और `evidence/password-vault-auth-research-2026-10-19.json` में नौ अतिरिक्त auth sources हैं (पहले से पढ़ा client अलग से संदर्भित)। महत्वपूर्ण integration traps: Android `AuthenticateWithMessage()` **nonempty message पर CHECK-crash** करता है; stock controller **BIOMETRIC_WEAK** भी स्वीकार करता है, इसलिए उसे strong-only सुरक्षा न कहें; native client का 60-second reuse और zero-period fresh authentication अलग policies हैं। Factory का Android **FragmentActivity overload** settings UI के लिए मौजूद है। Availability/cancellation/UI lifetime guards, strong-only compatibility और असली OS re-auth E2E अभी लागू/परीक्षित नहीं हैं। 0022 अभी unimplemented ही है।
