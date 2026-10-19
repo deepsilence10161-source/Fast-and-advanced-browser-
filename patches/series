@@ -29,5 +29,7 @@
 0018-swiftra-no-webview-pgo-toolchain.patch
 # 0020: Swiftra update channel - signed manifest in the public release drives the upstream "Update Swiftra" menu item/badge (no Omaha/Play)
 0020-swiftra-update-channel.patch
+# 0021: OSCrypt key from the Android Keystore (cookies, card/IBAN data; upstream Android uses the public constant "v10" key)
+0021-swiftra-keystore-oscrypt.patch
 # 0014: search engine choice for every user (Java only; docs/search-choice-design.md). Enabled after the 0012 build:
 # 0014-swiftra-search-choice.patch

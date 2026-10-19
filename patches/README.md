@@ -297,3 +297,10 @@ Note (2026-10-19): the upstream study `HttpsFirstModeV2ForTypicallySecureUsers` 
 `Enabled` -> feature of the same name) auto-enables HTTPS-First only for users who rarely visit HTTP sites. 0010 already
 turns HTTPS-First balanced on for every user (ADVANCED_E2E PASS hfm=warning_dialog, emulator x64 + arm64 Redroid), so the study is a subset of
 Swiftra's default; it stays out of the Speed Pack (tests/test_speedpack.py `banned`).
+
+## 0021-swiftra-keystore-oscrypt.patch
+Upstream Chrome Android encrypts cookie values (`CookieOSCryptAsyncDelegate`, `services/network/network_context.cc`) and local card/IBAN fields (`payments_autofill_table.cc`) through OSCryptAsync, whose only Android provider is `PosixKeyProvider`: the "v10" key is a constant in the public source (`posix_key_provider.cc`), so this is obfuscation, not encryption (static, @155).
+0021 adds `SwiftraKeystoreKeyProvider` (in `browser_process_impl.cc`, precedence 10 > v10's 5, tag `sw1`, AES-256-GCM): a random per-install 32-byte key that exists on disk only wrapped (AES-256-GCM) by a non-exportable Android Keystore key (`PlayServicesVersionInfo.swiftraOsCryptKey()`, JNI). The Keystore call runs on a ThreadPool thread. On any failure the provider reports `kTemporarilyUnavailable`, v10 keeps being used for new data and nothing is dropped; an existing wrapped key is never replaced. v10 data stays readable.
+Tests: wrap format round-trip + 1-bit tamper (JCE, 3/3); `tests/test_keystore_e2e.py`; series apply on @155 after 0012.
+Device: `scripts/ci/keystore_e2e.py` (KEYSTORE_E2E: Cookies DB `encrypted_value` starts with `sw1`, no plaintext token, cookie sent again after force-stop). `e2e_gate` requires KEYSTORE_E2E PASS for builds that contain 0021. Release also requires no startup regression (STARTUP_TRACE / SPEED_E2E vs the previous run): cookie loading waits for the encryptor.
+

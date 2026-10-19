@@ -17,7 +17,8 @@ import sys
 
 REQUIRED = ["SHIELD_E2E", "DOWNLOAD_SHIELD_E2E", "ADVANCED_E2E", "FINGERPRINT_E2E", "CREDITS_E2E", "ADBLOCK_E2E"]
 # feature markers required only when the tested build contains the patch (BUILD_INFO "--- patches")
-BY_PATCH = {"0020-swiftra-update-channel.patch": "UPDATE_E2E"}
+BY_PATCH = {"0020-swiftra-update-channel.patch": "UPDATE_E2E",
+            "0021-swiftra-keystore-oscrypt.patch": "KEYSTORE_E2E"}
 
 
 def build_info(d):
