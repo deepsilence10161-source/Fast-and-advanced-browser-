@@ -15,7 +15,12 @@ on:
       - "UI capture (Chrome reference vs Chromium artifact, Android emulator)"
       - "ARM64 device E2E (Redroid, native arm64 Android on free arm runner)"
     types: [completed]
-  workflow_dispatch: {}
+  # E2E workflows dispatch this at their end (their own run id): runs started by GITHUB_TOKEN (after-build) do not
+  # fire workflow_run, so without this a passing arm64 E2E was never published (39240241640, 2026-10-19).
+  workflow_dispatch:
+    inputs:
+      e2e_run: { description: "E2E run id (empty: scan recent runs of both ABIs)", required: false, default: "" }
+      e2e_wf: { description: "ui-capture.yml | arm64-device-e2e.yml", required: false, default: "" }
 permissions:
   contents: write
   actions: read
@@ -29,11 +34,19 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       R: ${{ github.repository }}
-      EV_WF: ${{ github.event.workflow_run.path }}
-      EV_RUN: ${{ github.event.workflow_run.id }}
+      EV_WF: ${{ github.event.workflow_run.path || inputs.e2e_wf }}
+      EV_RUN: ${{ github.event.workflow_run.id || inputs.e2e_run }}
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
+      - name: Wait for the dispatching E2E run to finish
+        if: github.event_name == 'workflow_dispatch' && inputs.e2e_run != ''
+        run: |
+          for i in $(seq 1 80); do
+            S=$(gh api "repos/$R/actions/runs/$EV_RUN" -q .status); echo "run $EV_RUN: $S"
+            [ "$S" = completed ] && exit 0; sleep 30
+          done
+          echo "::error::E2E run $EV_RUN not completed after 40 min"; exit 1
       - name: Tools
         run: pip install -q androguard
       - name: Fetch, test-match and gate each ABI

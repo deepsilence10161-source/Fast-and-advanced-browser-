@@ -97,3 +97,17 @@ jobs:
         with:
           name: arm64-device-e2e-${{ inputs.source_variant || 'b1' }}
           path: out/
+  publish:
+    # GITHUB_TOKEN-started runs (after-build) do not fire workflow_run, so start publish-latest explicitly.
+    # It waits for this run to complete, then gates the APK; a duplicate (also via workflow_run) only finds "already published".
+    needs: e2e
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - run: gh workflow run publish-latest.yml -R "${{ github.repository }}" --ref main -f e2e_run="${{ github.run_id }}" -f e2e_wf=arm64-device-e2e.yml
+        env:
+          GH_TOKEN: ${{ github.token }}
+
