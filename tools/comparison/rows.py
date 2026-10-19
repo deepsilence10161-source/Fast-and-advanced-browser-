@@ -33,11 +33,14 @@ row(A, "Engine version",
     "अगले Chrome stable पर 48 घंटे में delta patch; tag-आधारित पूरा rebuild (version label सहित) अलग से")
 row(A, "Security update पहुँचना",
     "Play Store से अपने-आप, हर 1-2 हफ़्ते",
-    "कोई update channel नहीं; Safety check सच बताता है कि version जाँच नहीं सकता",
-    "static + emulator (Safety check text); S1",
-    "कमी", "Chrome",
-    "Swiftra user को नया security fix अपने-आप नहीं मिलता",
-    "अपना signed in-app update channel (APK signature + version pin) + हर Chrome stable पर 48 घंटे में rebuild")
+    "स्थायी link (releases/latest/download/Swiftra-<abi>.apk) पर केवल E2E-PASS + audit वाला APK (publish-latest.yml, "
+    "LIVE: x64); patch 0020: signed manifest से app में upstream \"Update Swiftra\" menu/badge (24 घंटे में 1 बार); "
+    "install खुद user करता है (Android installer वही Swiftra certificate माँगता है)",
+    "x64 link: public download का SHA-256 = 2bd84b64 (मिलान); manifest: app का Java code + असली key से verify=true, "
+    "1 byte बदलने पर false (javac 11 + org.json); 0020 वाला APK build queued, UPDATE_E2E NOT RUN",
+    "आंशिक (link LIVE; 0020 static/unit PASS, device NOT RUN)", "Chrome",
+    "Chrome Play Store से अपने-आप install करता है; Swiftra बताता है पर install user के tap से होता है",
+    "0020 वाला APK + UPDATE_E2E (x64 + arm64); हर Chrome stable पर जल्दी rebuild")
 row(A, "Build पारदर्शिता",
     "बंद (closed) build; Google की internal सेटिंग्स",
     "हर बदलाव खुला patch (0001-0009), BUILD_INFO में patch hash, signer cert प्रकाशित",
@@ -592,7 +595,7 @@ PLAN = [
     ("5", "built-in ad/tracker blocker (licence-साफ़ सूची)", "Chrome से सीधे आगे", "Ad / tracker blocking", "मध्यम"),
     ("6", "पहली बार search engine चुनाव screen", "privacy में आगे", "Default search engine", "कम"),
     ("7", "Shield में malware/UwS + heuristics", "Standard coverage में बराबरी, privacy में आगे", "Safe Browsing", "ज़्यादा"),
-    ("8", "signed in-app update channel", "update में बराबर", "Security update", "ज़्यादा"),
+    ("8", "चल रहा (19-10): स्थायी latest link LIVE (x64) + patch 0020 signed update channel लिखा, build queued", "update में लगभग बराबर", "Security update", "ज़्यादा"),
     ("9", "on-device पढ़कर सुनाना (Android TTS)", "Chrome की कमी पूरी, निजता में आगे", "Listen to this page", "मध्यम"),
     ("10", "phone पर extensions (desktop-android)", "Chrome Android से सीधे आगे", "Extensions", "ज़्यादा"),
     ("11", "एक ही असली फ़ोन पर Chrome 155 बनाम Swiftra: start, memory, Speedometer, battery", "speed का सच्चा फ़ैसला", "Performance", "मध्यम"),
