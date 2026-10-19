@@ -1,0 +1,30 @@
+{
+  "checked_utc": "2026-10-19T14:25:16.980826+00:00",
+  "type": "primary-source research for CI harness only; not native app acceptance",
+  "sources": [
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-16.0.0_r1/core/java/android/app/SharedPreferencesImpl.java",
+      "sha256": "a1daeb52d3211428131f08ae236709059b3c46ab8d050a59d09a935e5ca6f8cd"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-16.0.0_r1/core/java/com/android/internal/util/XmlUtils.java",
+      "sha256": "0aa274e52ddcd15b6dab6a5f3a1d189972555e8671b201876dd304dfaff8efa9"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-16.0.0_r1/core/java/android/util/Xml.java",
+      "sha256": "39b96ee9c08eac71a3d9e4174552a8751ad2f2028c77529857609130970c7db0"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/libs/modules-utils/+/refs/tags/android-16.0.0_r1/java/com/android/internal/util/FastXmlSerializer.java",
+      "sha256": "31cc98dc533653efd249292c43507803633c1636f399455289782b80c1c85787"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/packages/modules/adb/+/refs/tags/android-16.0.0_r1/client/commandline.cpp",
+      "sha256": "39a1e79fe4706ae007d49922f23b4d745b3a23484d9196c5d3923ca9227b5093"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/packages/modules/adb/+/refs/tags/android-16.0.0_r1/docs/user/adb.1.md",
+      "sha256": "571c12a434845ef1efbd513f32dea0fb7264e95b28923dbcdee8b44e8899228d"
+    }
+  ]
+}

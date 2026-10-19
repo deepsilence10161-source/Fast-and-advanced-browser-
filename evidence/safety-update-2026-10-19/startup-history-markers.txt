@@ -1,0 +1,17 @@
+Run: 39218924046
+Source: https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39218924046/job/117949356320
+2026-10-19T08:59:10.3855582Z STARTUP_TRACE CAPTURED span_ms=10584.7 am_start={'TotalTime': 819, 'WaitTime': 822}
+2026-10-19T09:02:05.4636151Z ART_STARTUP MEASURED medians_ms={'install': 1842, 'profile': 1854, 'speed': 1746} gain_vs_install_pct={'profile': -0.7, 'speed': 5.2} status_changed=True
+
+Run: 39234628268
+Source: https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39234628268/job/118000622212
+2026-10-19T11:17:55.1768485Z STARTUP_TRACE CAPTURED span_ms=10735.3 am_start={'TotalTime': 1061, 'WaitTime': 1063}
+2026-10-19T11:20:59.2044582Z ART_STARTUP MEASURED medians_ms={'install': 2196, 'profile': 2138, 'speed': 2228} gain_vs_install_pct={'profile': 2.6, 'speed': -1.5} status_changed=True
+2026-10-19T11:21:27.5535501Z KEYSTORE_E2E NOT_RUN prefix=v10 plain_value=False token_in_db=False wrapped_pref=False cookie_after_restart=True keystore2=True 
+
+Run: 39249911374
+Source: https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39249911374/job/118050897372
+2026-10-19T13:18:53.4643367Z STARTUP_TRACE CAPTURED span_ms=10684.9 am_start={'TotalTime': 966, 'WaitTime': 967}
+2026-10-19T13:21:56.3595067Z ART_STARTUP MEASURED medians_ms={'install': 2224, 'profile': 2144, 'speed': 2065} gain_vs_install_pct={'profile': 3.6, 'speed': 7.1} status_changed=True
+2026-10-19T13:22:25.0330671Z KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True 
+

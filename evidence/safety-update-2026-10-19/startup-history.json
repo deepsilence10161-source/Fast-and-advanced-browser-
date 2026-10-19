@@ -1,0 +1,67 @@
+{
+  "checked_utc": "2026-10-19T14:07:20.903449+00:00",
+  "new_device_runs": false,
+  "type": "historical cross-run diagnostic, not a same-device paired performance claim",
+  "records": [
+    {
+      "run": 39218924046,
+      "job_url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39218924046/job/117949356320",
+      "apk_sha256": "2bd84b64401f43a981d0fffae555c035db5ea145f027d4a1bb134d2989b2c942",
+      "markers": [
+        "2026-10-19T08:59:10.3855582Z STARTUP_TRACE CAPTURED span_ms=10584.7 am_start={'TotalTime': 819, 'WaitTime': 822}",
+        "2026-10-19T09:02:05.4636151Z ART_STARTUP MEASURED medians_ms={'install': 1842, 'profile': 1854, 'speed': 1746} gain_vs_install_pct={'profile': -0.7, 'speed': 5.2} status_changed=True"
+      ],
+      "trace_am_start_ms": 819,
+      "art_medians_ms": {
+        "install": 1842,
+        "profile": 1854,
+        "speed": 1746
+      }
+    },
+    {
+      "run": 39234628268,
+      "job_url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39234628268/job/118000622212",
+      "apk_sha256": "b8f6a934ebe9cee986c7172f985e8eaf6428442207ab443b1345f6d0094eee05",
+      "markers": [
+        "2026-10-19T11:17:55.1768485Z STARTUP_TRACE CAPTURED span_ms=10735.3 am_start={'TotalTime': 1061, 'WaitTime': 1063}",
+        "2026-10-19T11:20:59.2044582Z ART_STARTUP MEASURED medians_ms={'install': 2196, 'profile': 2138, 'speed': 2228} gain_vs_install_pct={'profile': 2.6, 'speed': -1.5} status_changed=True",
+        "2026-10-19T11:21:27.5535501Z KEYSTORE_E2E NOT_RUN prefix=v10 plain_value=False token_in_db=False wrapped_pref=False cookie_after_restart=True keystore2=True "
+      ],
+      "trace_am_start_ms": 1061,
+      "art_medians_ms": {
+        "install": 2196,
+        "profile": 2138,
+        "speed": 2228
+      }
+    },
+    {
+      "run": 39249911374,
+      "job_url": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39249911374/job/118050897372",
+      "apk_sha256": "b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+      "markers": [
+        "2026-10-19T13:18:53.4643367Z STARTUP_TRACE CAPTURED span_ms=10684.9 am_start={'TotalTime': 966, 'WaitTime': 967}",
+        "2026-10-19T13:21:56.3595067Z ART_STARTUP MEASURED medians_ms={'install': 2224, 'profile': 2144, 'speed': 2065} gain_vs_install_pct={'profile': 3.6, 'speed': 7.1} status_changed=True",
+        "2026-10-19T13:22:25.0330671Z KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True "
+      ],
+      "trace_am_start_ms": 966,
+      "art_medians_ms": {
+        "install": 2224,
+        "profile": 2144,
+        "speed": 2065
+      }
+    }
+  ],
+  "limitations": [
+    "startup trace is one sample; ART install is a later five-launch median after compile --reset",
+    "shared CI hosts and scheduling differ; a ratio is not a causal correction",
+    "no new arm64 0021 result yet; no physical Android device or installed-current-Chrome comparison"
+  ],
+  "last_pair_diagnostic": {
+    "old_run": 39234628268,
+    "new_run": 39249911374,
+    "trace_ratio": 0.9105,
+    "art_install_ratio": 1.0128,
+    "ratio_of_ratios": 0.899,
+    "conclusion": "cannot establish Keystore startup regression or improvement from these cross-run observations"
+  }
+}
