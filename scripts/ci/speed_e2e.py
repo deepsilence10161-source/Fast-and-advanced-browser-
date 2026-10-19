@@ -51,6 +51,7 @@ H2DL = "h2dl.example.com"
 ADS = ("ib.adnxs.com", "www.google-analytics.com", "sb.scorecardresearch.com")   # real list entries (0012 E2E)
 HOSTS = (SITE, CDN, DL) + ADS
 RULES = ",".join([f"MAP {h} 127.0.0.1:{PORT}" for h in HOSTS] + [f"MAP {H2DL} 127.0.0.1:{H2PORT}"])
+MODE_BUDGET_S = 330          # per mode and cycle: 2 cycles x 2 modes stay inside run_capture's 1500 s
 MODES = {
     "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnections",
     "swiftra": "",
@@ -365,6 +366,11 @@ def restart(pkg, comp, mode, socket, attempts=3):
     flags = f'_ --host-resolver-rules="{RULES}" --ignore-certificate-errors {MODES[mode]}'.rstrip()
     tries = []
     for attempt in range(attempts):
+        stage(f"restart {mode} attempt {attempt}")
+        if attempt and not adb("get-state", timeout=10).strip():
+            stage("adb not answering: adb reconnect")
+            adb("reconnect", timeout=20)
+            adb("wait-for-device", timeout=60)
         old = pid_of(pkg)
         adb("shell", "am", "force-stop", pkg)
         t0 = time.time()
@@ -398,6 +404,7 @@ def restart(pkg, comp, mode, socket, attempts=3):
         ok = flags_ok(cl, mode)
         tries.append({"attempt": attempt, "old_pid": old, "pid": pid, "ready": ready,
                       "seconds": round(time.time() - t0, 1), "ok": ok})
+        stage(f"restart {mode} attempt {attempt}: pid {pid or '-'} ready {ready} flags {ok}")
         if ok:
             return {"flags_applied": True, "cmdline": cl[:400], "pid": pid, "tries": tries}
     return {"flags_applied": False, "cmdline": cl[:400], "tries": tries}
@@ -424,26 +431,60 @@ def close_targets(substr):
 
 
 SOCKET, OUT, PKG, RECOVERY = "chrome_devtools_remote", ".", "", []
+_clock = time                 # progress timestamps keep the real clock even where tests replace `time`
+T_START = _clock.time()
+
+
+def stage(msg):
+    """Timestamped progress line, flushed at once: a run killed by `timeout` still shows where it stopped
+    (2026-10-19 runs 39185114548/39185979151: speed_e2e.txt was empty after exit 124)."""
+    print(f"[{_clock.strftime('%H:%M:%S')} +{_clock.time() - T_START:.0f}s] {msg}", flush=True)
+
+
+def adb_health():
+    return {"state": adb("get-state", timeout=10).strip(), "devices": adb("devices", timeout=10).strip()[:300]}
+
+
+def thread_stacks(pid, tag):
+    """Java + native stacks of every browser thread (adbd is root on the emulator after startup_netlog's
+    `adb root`), saved as stacks_<tag>.txt: shows where the UI/IO thread is stuck when DevTools stops answering."""
+    if not pid:
+        return False
+    whoami = adb("shell", "id", "-u", timeout=10).strip()
+    java = adb("shell", "debuggerd", "-j", pid, timeout=60)
+    native = adb("shell", "debuggerd", "-b", pid, timeout=90)
+    try:
+        with open(os.path.join(OUT, f"stacks_{tag}.txt"), "w") as f:
+            f.write(f"uid={whoami} pid={pid}\n===== JAVA (debuggerd -j)\n{java}\n===== NATIVE (debuggerd -b)\n{native}\n")
+    except OSError:
+        return False
+    return bool(java.strip() or native.strip())
 
 
 def devtools_diag(tag):
     """Why is the browser DevTools endpoint gone? (a248fde runs 39143906198/39143911192: every swiftra-mode load got
     "no browser websocket" right after a verified restart and the 1200 s budget ran out). Saved as diag_<tag>.txt."""
+    health = adb_health()
+    stage(f"devtools diag {tag}: adb {health['state'] or 'NO-ANSWER'}")
     pid = pid_of(PKG) if PKG else ""
+    stacks = thread_stacks(pid, tag) if len([r for r in RECOVERY if r.get("diag", {}).get("stacks")]) < 2 else False
     fwd = adb("forward", "--list", timeout=10)
     focus = "\n".join(l.strip() for l in adb("shell", "dumpsys", "window", timeout=20).splitlines()
                       if "mCurrentFocus" in l or "mFocusedApp" in l)
-    log = adb("logcat", "-d", "-t", "600", timeout=30)
+    log = adb("logcat", "-b", "all", "-d", "-t", "4000", timeout=40)
     keys = ("ANR in", "am_anr", "Application Not Responding", "FATAL", "Fatal signal", "DevTools", "has died",
             "chrome_devtools_remote")
     hits = [l for l in log.splitlines() if any(k in l for k in keys)][-60:]
     anr = "Not Responding" in focus or any("ANR in" in l or "am_anr" in l for l in hits)
     try:
         with open(os.path.join(OUT, f"diag_{tag}.txt"), "w") as f:
-            f.write(f"pid={pid}\nforward:\n{fwd}\nfocus:\n{focus}\nlogcat hits:\n" + "\n".join(hits) + "\n")
+            f.write(f"pid={pid}\nadb={health}\nforward:\n{fwd}\nfocus:\n{focus}\nlogcat hits:\n" + "\n".join(hits) + "\n")
+        with open(os.path.join(OUT, f"logcat_{tag}.txt"), "w") as f:
+            f.write(log)
     except OSError:
         pass
-    return {"pid": pid, "anr": anr, "forwarded": SOCKET in fwd, "focus": focus[:200]}
+    return {"pid": pid, "anr": anr, "forwarded": SOCKET in fwd, "focus": focus[:200], "adb": health["state"],
+            "stacks": stacks}
 
 
 def open_tab(url, tag):
@@ -635,15 +676,29 @@ def main():
         adb("shell", "am", "set-debug-app", "--persistent", pkg)
         adb("reverse", f"tcp:{PORT}", f"tcp:{PORT}")
         adb("reverse", f"tcp:{H2PORT}", f"tcp:{H2PORT}")
+        order = list(MODES)
         for c in range(a.cycles):
             cyc = {}
-            for mode in MODES:
+            # alternate the order per cycle (cycle 0 starts with swiftra): order effects cancel, and a mode that
+            # breaks the device cannot hide every other mode's numbers
+            for mode in (order[::-1] if c % 2 == 0 else order):
                 rec = cyc[mode] = {"restart": {"flags_applied": False}, "loads": []}
+                t_mode = time.time()
+
+                def over(step):
+                    if time.time() - t_mode > MODE_BUDGET_S:
+                        rec.setdefault("skipped", []).append(step)
+                        stage(f"cycle {c} {mode}: mode budget {MODE_BUDGET_S}s used, skipping {step}")
+                        return True
+                    stage(f"cycle {c} {mode}: {step}")
+                    return False
                 try:
                     st = rec["restart"] = restart(pkg, comp, mode, a.socket)
-                    if st["flags_applied"]:
+                    if st["flags_applied"] and not over("warm-up"):
                         load_page(f"w{c}{mode[0]}")    # warm-up (renderer, TLS session, ruleset), not counted
                         for i in range(a.loads):
+                            if over(f"load {i}"):
+                                break
                             shot = os.path.join(a.out, f"page_{mode}_{c}.png") if i == a.loads - 1 else None
                             x = load_page(f"c{c}{mode[0]}{i}", shot)
                             if x["open"] != "ok" and "recovery_restart" not in rec:
@@ -652,10 +707,13 @@ def main():
                                 if rec["recovery_restart"]["flags_applied"]:
                                     x = load_page(f"c{c}{mode[0]}{i}r", shot)
                             rec["loads"].append(x)
-                        rec["download"] = run_download(f"d{c}{mode[0]}")
-                        screenshot(os.path.join(a.out, f"download_{mode}_{c}.png"))
-                        rec["download_h2"] = run_download_h2(f"h{c}{mode[0]}")
-                        rec["bench"] = run_bench(f"b{c}{mode[0]}")
+                        if not over("download"):
+                            rec["download"] = run_download(f"d{c}{mode[0]}")
+                            screenshot(os.path.join(a.out, f"download_{mode}_{c}.png"))
+                        if not over("download_h2"):
+                            rec["download_h2"] = run_download_h2(f"h{c}{mode[0]}")
+                        if not over("bench"):
+                            rec["bench"] = run_bench(f"b{c}{mode[0]}")
                 except Exception as e:  # noqa: BLE001 - keep every other measurement
                     rec["error"] = f"{type(e).__name__}: {e}"[:400]
                 st = rec["restart"]
@@ -676,6 +734,8 @@ def main():
     some = {m: any(c[m]["restart"]["flags_applied"] for c in res["cycles"]) for m in MODES}
     res["summary"] = summarize(res) if all(some.values()) else None
     res["devtools_recovery"] = RECOVERY
+    res["skipped"] = {f"c{i}_{m}": c[m]["skipped"] for i, c in enumerate(res["cycles"]) for m in MODES
+                      if c[m].get("skipped")}
     json.dump(res, open(os.path.join(a.out, "speed_e2e.json"), "w"), indent=1, ensure_ascii=False)
     if not res["summary"]:
         print("SPEED_E2E NOT_RUN flags not applied in some mode:", some)
@@ -683,13 +743,14 @@ def main():
     s = res["summary"]
     print("speed summary:", json.dumps(s, ensure_ascii=False))
     d, w = s["chromium_defaults"], s["swiftra"]
-    print(f"SPEED_E2E {'MEASURED' if res['all_flags_applied'] else 'PARTIAL'} load_ms {d['load_ms']}->{w['load_ms']} lcp_ms {d['lcp_ms']}->{w['lcp_ms']} "
+    complete = res["all_flags_applied"] and not res["skipped"]
+    print(f"SPEED_E2E {'MEASURED' if complete else 'PARTIAL'} load_ms {d['load_ms']}->{w['load_ms']} lcp_ms {d['lcp_ms']}->{w['lcp_ms']} "
           f"kib {d['kib']}->{w['kib']} requests {d['requests']}->{w['requests']} "
           f"download_s {d['download_s']}->{w['download_s']} conns {d['download_conns']}->{w['download_conns']} "
           f"h2_download_s {d.get('h2_download_s')}->{w.get('h2_download_s')} "
           f"h2_conns {d.get('h2_connections')}->{w.get('h2_connections')} "
           f"bench_ms {d.get('bench_ms')}->{w.get('bench_ms')} "
-          f"speedup {s['speedup']} devtools_recoveries {len(RECOVERY)}")
+          f"speedup {s['speedup']} devtools_recoveries {len(RECOVERY)} skipped {res['skipped'] or 'none'}")
     return 0
 
 

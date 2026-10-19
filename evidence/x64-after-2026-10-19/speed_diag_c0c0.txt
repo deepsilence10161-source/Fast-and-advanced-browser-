@@ -1,0 +1,10 @@
+pid=21397
+forward:
+emulator-5554 tcp:9222 localabstract:chrome_devtools_remote
+
+
+focus:
+mCurrentFocus=Window{c477414 u0 com.swiftra.app/com.google.android.apps.chrome.Main}
+mFocusedApp=ActivityRecord{229384038 u0 com.swiftra.app/com.google.android.apps.chrome.Main t72}
+logcat hits:
+

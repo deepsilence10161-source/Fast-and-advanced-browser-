@@ -34,6 +34,7 @@ import speed_e2e as se  # noqa: E402
 
 LCPP_FEATURES = ("LCPCriticalPathPredictor,LCPPFontURLPredictor,LCPPAutoPreconnectLcpOrigin,"
                  "LCPPPrefetchSubresource,HttpDiskCachePrewarming")
+MODE_BUDGET_S = 130          # per mode and cycle: 2 cycles x 3 modes inside run_capture's 900 s
 MODES = {
     "chromium_defaults": se.MODES["chromium_defaults"],
     "swiftra": "",
@@ -205,8 +206,11 @@ def main():
         se.adb("reverse", f"tcp:{se.PORT}", f"tcp:{se.PORT}")
         for c in range(a.cycles):
             cyc = {}
-            for mode in (order if c % 2 == 0 else order[::-1]):
+            # cycle 0 starts with the Swiftra modes: a mode that breaks the device cannot hide the others
+            for mode in (order[::-1] if c % 2 == 0 else order):
                 rec = cyc[mode] = {"cold": [], "warm": [], "train": []}
+                t_mode = time.time()
+                se.stage(f"repeat cycle {c} {mode}")
                 try:
                     st = se.restart(pkg, comp, mode, a.socket)
                     rec["flags_applied"] = st["flags_applied"]
@@ -215,6 +219,10 @@ def main():
                     for i in range(3):
                         rec["train"].append(load_spa(f"t{c}{mode[:2]}{mode[-2:]}{i}"))
                     for i in range(a.visits):
+                        if time.time() - t_mode > MODE_BUDGET_S:
+                            rec["skipped_visits"] = a.visits - i
+                            se.stage(f"repeat cycle {c} {mode}: mode budget {MODE_BUDGET_S}s used")
+                            break
                         st = se.restart(pkg, comp, mode, a.socket)
                         if not st["flags_applied"]:
                             rec.setdefault("restart_failures", 0)

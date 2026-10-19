@@ -41,11 +41,13 @@ if [ "$T" != chrome_ref ]; then
   timeout 240 python3 scripts/ci/advanced_e2e.py --package "$PKG" --out "$OUT/advanced" 2>&1 | tee "$OUT/advanced_e2e.txt"
   echo "advanced_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
   # Speed (0016 Speed Pack + 0012 ad blocker): same APK, chromium_defaults vs swiftra, alternated; local mapped hosts
-  timeout 1200 python3 scripts/ci/speed_e2e.py --package "$PKG" --out "$OUT/speed" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/speed_e2e.txt"
+  timeout 1500 python3 -u scripts/ci/speed_e2e.py --package "$PKG" --out "$OUT/speed" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/speed_e2e.txt"
   echo "speed_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  timeout 90 adb logcat -b all -d 2>/dev/null | gzip -6 > "$OUT/logcat_speed_e2e.txt.gz"   # kept before any later logcat -c
   # repeat visits (SPA with cached assets; cold restart + warm): chromium_defaults / swiftra / swiftra_lcpp candidate
-  timeout 900 python3 scripts/ci/repeat_e2e.py --package "$PKG" --out "$OUT/repeat" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/repeat_e2e.txt"
+  timeout 900 python3 -u scripts/ci/repeat_e2e.py --package "$PKG" --out "$OUT/repeat" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/repeat_e2e.txt"
   echo "repeat_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  timeout 90 adb logcat -b all -d 2>/dev/null | gzip -6 > "$OUT/logcat_repeat_e2e.txt.gz"   # kept before any later logcat -c
   # cold-start trace (diagnostic for startup speed work; never fails the job)
   timeout 240 python3 scripts/ci/startup_trace.py --package "$PKG" --out "$OUT/startup_trace" 2>&1 | tee "$OUT/startup_trace.txt"
   echo "startup_trace exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"

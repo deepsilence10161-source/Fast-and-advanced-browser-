@@ -1,0 +1,2 @@
+startup trace: {'package': 'com.swiftra.app', 'categories': 'startup,toplevel,browser,content,loading,navigation,Java,android,ui,v8,base,sql,net,gpu,viz,blink', 'duration_s': 10, 'scenario': 'close all tabs -> cold start (am start -W) -> trace N s -> read file', 'tabs_closed': {'closed': 0, 'pages': 8}, 'am_start': {}, 'flags_applied': False, 'read_via': 'cat: /data/user/0/com.swiftra.app/cache/swiftra_startup_trace.json: No such file or directory\n', 'captured': False}
+STARTUP_TRACE NOT_CAPTURED
