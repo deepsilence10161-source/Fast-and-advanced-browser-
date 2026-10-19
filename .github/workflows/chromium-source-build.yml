@@ -1,4 +1,5 @@
 name: Chromium source build (staged, free standard runners)
+run-name: "Chromium source build ${{ inputs.tag }} ${{ inputs.cpu }} ${{ inputs.variant }}"
 # Chromium Android (chrome_public_apk) का असली source build, Chrome Stable tag पर।
 # 6 घंटे की job-सीमा के कारण chained stages; state इसी repo के draft release में।
 # दोबारा चलाने पर जहाँ रुका था वहीं से आगे बढ़ता है (state सुरक्षित रहती है)।

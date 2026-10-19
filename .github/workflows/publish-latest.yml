@@ -1,58 +1,84 @@
-name: Publish latest Swiftra APK (gated, fixed download link)
-# Stable links (always the newest APK that passed the gate):
+name: Publish latest Swiftra APK (tested + gated, fixed download link)
+# Stable links (always the newest APK that passed every gate):
 #   https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/releases/latest/download/Swiftra-arm64.apk
 #   https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/releases/latest/download/Swiftra-x64.apk
-# One rolling public release (tag "swiftra", marked latest); assets keep fixed names and are replaced in place.
-# Gate per ABI (scripts/release/release_gate.py): every patch in release/required_patches.txt is in the build,
-# signer cert == patches/signing_cert_sha256.txt (apksigner + apk_audit), apk_audit 7/7. An ABI that fails keeps
-# its previously published APK; nothing older or unverified replaces it.
+# Chain: Chromium source build -> after-build.yml dispatches the E2E -> this workflow (on E2E completion).
+# Gate per ABI, all must hold:
+#   1. E2E (scripts/release/e2e_gate.py): the E2E artifact's tested APK SHA-256 == the APK to publish, all feature/security
+#      E2E markers PASS, DEVICE_CHECKS 0 failures, no FAIL line.
+#   2. scripts/release/release_gate.py: every patch in release/required_patches.txt, package com.swiftra.app, apk_audit 7/7.
+#   3. apksigner: every signer certificate == patches/signing_cert_sha256.txt.
+# An ABI that fails keeps its previously published APK; nothing untested, older or unverified replaces it.
 on:
   workflow_run:
-    workflows: ["Chromium source build (staged, free standard runners)"]
+    workflows:
+      - "UI capture (Chrome reference vs Chromium artifact, Android emulator)"
+      - "ARM64 device E2E (Redroid, native arm64 Android on free arm runner)"
     types: [completed]
   workflow_dispatch: {}
 permissions:
   contents: write
+  actions: read
 concurrency:
   group: publish-latest
   cancel-in-progress: false
 jobs:
   publish:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
       R: ${{ github.repository }}
+      EV_WF: ${{ github.event.workflow_run.path }}
+      EV_RUN: ${{ github.event.workflow_run.id }}
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
       - name: Tools
         run: pip install -q androguard
-      - name: Fetch, verify and gate each ABI
+      - name: Fetch, test-match and gate each ABI
         run: |
           set -u
-          mkdir -p pub
+          mkdir -p pub; : > pub/gate.txt
           BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
           WANT=$(grep -v '^#' patches/signing_cert_sha256.txt | grep -oE '[0-9a-f]{64}' | head -1)
-          : > pub/gate.txt
+          PUBLISHED=$(gh release download swiftra -R "$R" -p SHA256SUMS.txt -O - 2>/dev/null || true)
           for ABI in arm64 x64; do
+            if [ "$ABI" = x64 ]; then WF=ui-capture.yml; ART=ui-chromium_source_x64; else WF=arm64-device-e2e.yml; ART=arm64-device-e2e-b1; fi
+            # triggered by the other ABI's E2E -> leave this ABI as it is
+            if [ -n "$EV_RUN" ] && [ "${EV_WF##*/}" != "$WF" ]; then echo "$ABI: not part of this E2E run; unchanged"; continue; fi
             TAG="crstate-155.0.8059.80-${ABI}-b1"
             RID=$(gh api "repos/$R/releases?per_page=50" -q ".[] | select(.tag_name==\"$TAG\") | .id" | head -1)
             [ -n "$RID" ] || { echo "$ABI: no state release" | tee -a pub/gate.txt; continue; }
             for N in "ChromePublic-155.0.8059.80-${ABI}.apk" BUILD_INFO.txt; do
               AID=$(gh api "repos/$R/releases/$RID/assets?per_page=100" -q ".[] | select(.name==\"$N\") | .id")
-              [ -n "$AID" ] && curl -sS -L --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/octet-stream" -o "pub/$ABI-$N" "https://api.github.com/repos/$R/releases/assets/$AID"
+              [ -n "$AID" ] && curl -sS -L --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/octet-stream" \
+                -o "pub/$ABI-$N" "https://api.github.com/repos/$R/releases/assets/$AID"
             done
             APK="pub/$ABI-ChromePublic-155.0.8059.80-${ABI}.apk"; BI="pub/$ABI-BUILD_INFO.txt"
             [ -s "$APK" ] && [ -s "$BI" ] || { echo "$ABI: APK/BUILD_INFO missing" | tee -a pub/gate.txt; continue; }
-            ls -la "$APK" "$BI"; file "$APK"
+            SHA=$(sha256sum "$APK" | cut -c1-64)
+            if echo "$PUBLISHED" | grep -q "^$SHA  Swiftra-$ABI.apk"; then echo "$ABI: already published ($SHA)" | tee -a pub/gate.txt; rm -f "$APK"; continue; fi
+            # 1. E2E evidence for exactly this APK
+            if [ -n "$EV_RUN" ]; then RUNS="$EV_RUN"; else
+              RUNS=$(gh api "repos/$R/actions/workflows/$WF/runs?status=completed&per_page=6" -q '.workflow_runs[].id'); fi
+            E2E=""
+            for RUN in $RUNS; do
+              rm -rf "e2e-$RUN"; gh run download "$RUN" -R "$R" -n "$ART" -D "e2e-$RUN" >/dev/null 2>&1 || continue
+              if python3 scripts/release/e2e_gate.py --dir "e2e-$RUN" --apk-sha "$SHA" > "pub/$ABI-e2e-$RUN.log"; then E2E=$RUN; break; fi
+              echo "$ABI: run $RUN $(tail -1 "pub/$ABI-e2e-$RUN.log")"
+              rm -rf "e2e-$RUN"
+            done
+            [ -n "$E2E" ] || { echo "$ABI: GATE FAIL no passing E2E run for sha ${SHA:0:12}" | tee -a pub/gate.txt; continue; }
+            rm -rf "e2e-$E2E"
+            # 3. signer certificate
             "$BT/apksigner" verify --print-certs "$APK" > "pub/$ABI-apksigner.txt" 2>&1 || true
             CERT=$(grep -E 'certificate SHA-256 digest' "pub/$ABI-apksigner.txt" | awk '{print $NF}' | sort -u | tr '\n' ' ' | sed 's/ $//')
             if [ "$CERT" != "$WANT" ]; then echo "$ABI: GATE FAIL apksigner cert '${CERT:-none}'" | tee -a pub/gate.txt; head -5 "pub/$ABI-apksigner.txt"; continue; fi
+            # 2. patches + package + apk_audit
             if python3 scripts/release/release_gate.py --apk "$APK" --build-info "$BI" --abi "$ABI" > "pub/$ABI-gate.log" 2>&1; then
               mv "$APK" "pub/Swiftra-$ABI.apk"; mv "$BI" "pub/BUILD_INFO-$ABI.txt"
-              echo "$ABI: GATE PASS sha256=$(sha256sum "pub/Swiftra-$ABI.apk" | cut -c1-64)" | tee -a pub/gate.txt
+              echo "$ABI: GATE PASS sha256=$SHA e2e_run=https://github.com/$R/actions/runs/$E2E" | tee -a pub/gate.txt
             else
               echo "$ABI: $(tail -1 "pub/$ABI-gate.log")" | tee -a pub/gate.txt
             fi
@@ -60,7 +86,8 @@ jobs:
       - name: Update the rolling "swiftra" release
         run: |
           set -u
-          ls pub/Swiftra-*.apk >/dev/null 2>&1 || { echo "no ABI passed the gate; release unchanged"; cat pub/gate.txt; exit 0; }
+          cat pub/gate.txt
+          ls pub/Swiftra-*.apk >/dev/null 2>&1 || { echo "no new APK passed the gate; release unchanged"; exit 0; }
           if ! gh release view swiftra -R "$R" >/dev/null 2>&1; then
             gh release create swiftra -R "$R" --target "$GITHUB_SHA" --latest --title "Swiftra (latest)" \
               --notes "Rolling release. Updated automatically by .github/workflows/publish-latest.yml."
@@ -68,11 +95,13 @@ jobs:
           for f in pub/Swiftra-*.apk pub/BUILD_INFO-*.txt; do
             for i in 1 2 3 4; do gh release upload swiftra -R "$R" --clobber "$f" && break; sleep $((i*15)); done
           done
-          # checksums of what the release holds now (an ABI that failed today keeps its earlier APK)
+          rm -f pub/Swiftra-*.apk
+          # checksums of what the release holds now (an ABI not updated today keeps its earlier APK)
           mkdir -p cur && cd cur
           for a in arm64 x64; do gh release download swiftra -R "$R" -p "Swiftra-$a.apk" 2>/dev/null || true; done
-          sha256sum Swiftra-*.apk > SHA256SUMS.txt; cd ..
+          sha256sum Swiftra-*.apk > SHA256SUMS.txt; rm -f Swiftra-*.apk; cd ..
           gh release upload swiftra -R "$R" --clobber cur/SHA256SUMS.txt
+          OLD=$(gh release view swiftra -R "$R" --json body -q .body | sed -n '/^History:/,$p' | tail -n +2 | head -20)
           {
             echo "Swiftra browser (Chromium 155 engine with security fixes up to 155.0.8059.84) - updated $(date -u +%Y-%m-%dT%H:%MZ)"
             echo
@@ -80,10 +109,12 @@ jobs:
             echo "Fixed links: https://github.com/$R/releases/latest/download/Swiftra-arm64.apk"
             echo "             https://github.com/$R/releases/latest/download/Swiftra-x64.apk"
             echo
-            echo "Gate (this update):"; sed 's/^/  /' pub/gate.txt
-            echo; echo "SHA-256:"; sed 's/^/  /' cur/SHA256SUMS.txt
+            echo "Every APK here was E2E-tested byte-for-byte (security/feature checks PASS) and audited before publishing."
+            echo
+            echo "SHA-256:"; sed 's/^/  /' cur/SHA256SUMS.txt
             echo; echo "Signer certificate SHA-256: $(grep -v '^#' patches/signing_cert_sha256.txt | grep -oE '[0-9a-f]{64}' | head -1)"
             echo "Licences: chrome://credits in the app; Shield feed notice: shield-db release NOTICE.txt."
+            echo; echo "History:"; grep "GATE PASS" pub/gate.txt | sed "s/^/  $(date -u +%F) /"; [ -n "$OLD" ] && echo "$OLD"
           } > notes.txt
           gh release edit swiftra -R "$R" --latest --notes-file notes.txt
           gh release view swiftra -R "$R" --json assets -q '.assets[] | "\(.name) \(.size)"'

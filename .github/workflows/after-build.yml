@@ -1,0 +1,56 @@
+name: After build -> start E2E automatically
+# No waiting for a human: when a Chromium source build succeeds, start the device E2E for the ABI it produced.
+# publish-latest.yml then runs on E2E completion and publishes only a byte-identical, E2E-passing, audited APK.
+on:
+  workflow_run:
+    workflows: ["Chromium source build (staged, free standard runners)"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      cpu: { description: "arm64 | x64", required: true }
+permissions:
+  contents: read
+  actions: write
+jobs:
+  e2e:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      R: ${{ github.repository }}
+      TITLE: ${{ github.event.workflow_run.display_title }}
+      T0: ${{ github.event.workflow_run.run_started_at }}
+      CPU_IN: ${{ inputs.cpu }}
+      # same-device A/B baseline for arm64 (draft release with the previous arm64 APK)
+      AB_BASELINE: apk-b1-0011-arm64
+    steps:
+      - name: Which ABI did the build produce?
+        id: abi
+        run: |
+          set -u
+          CPUS="${CPU_IN:-}"
+          if [ -z "$CPUS" ]; then
+            # run-name "Chromium source build <tag> <cpu> <variant>" (newer runs); else: state BUILD_INFO updated by this run
+            case "$TITLE" in *" b1"*) for c in arm64 x64; do case "$TITLE" in *" $c "*) CPUS=$c;; esac; done;; esac
+          fi
+          if [ -z "$CPUS" ]; then
+            for c in arm64 x64; do
+              U=$(gh api "repos/$R/releases?per_page=50" -q ".[] | select(.tag_name==\"crstate-155.0.8059.80-$c-b1\") | .assets[] | select(.name==\"BUILD_INFO.txt\") | .updated_at" | head -1)
+              [ -n "$U" ] && [ -n "$T0" ] && [[ "$U" > "$T0" ]] && CPUS="$CPUS $c"
+            done
+          fi
+          echo "build=$TITLE started=$T0 -> cpus='$CPUS'"
+          echo "cpus=$CPUS" >> "$GITHUB_OUTPUT"
+      - name: Dispatch E2E
+        run: |
+          set -u
+          for c in ${{ steps.abi.outputs.cpus }}; do
+            if [ "$c" = x64 ]; then
+              gh workflow run ui-capture.yml -R "$R" --ref main -f targets='["chromium_source_x64"]' -f source_variant=b1
+            else
+              gh workflow run arm64-device-e2e.yml -R "$R" --ref main -f source_tag=155.0.8059.80 -f source_variant=b1 \
+                -f ab_baseline_release="$AB_BASELINE"
+            fi
+            echo "E2E dispatched for $c"
+          done
