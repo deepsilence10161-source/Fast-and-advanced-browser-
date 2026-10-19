@@ -144,3 +144,22 @@ jobs:
           openssl dgst -sha256 -verify pub.pem -signature swiftra-update.json.sig signed-bytes
           gh release upload swiftra -R "$R" --clobber swiftra-update.json swiftra-update.json.sig
           cat swiftra-update.json
+      - name: Signed E2E manifest for scripts/ci/update_e2e.py (published 2100; real APK links only)
+        env:
+          SWIFTRA_SHIELD_KEY: ${{ secrets.SWIFTRA_SHIELD_KEY }}
+        run: |
+          set -u
+          gh release view swiftra -R "$R" >/dev/null 2>&1 || exit 0
+          gh release view swiftra -R "$R" --json assets -q '.assets[].name' | grep -qx swiftra-update-e2e.json.sig && { echo "present"; exit 0; }
+          mkdir -p e2e && cd e2e
+          python3 - <<'PYEOF2'
+          import json
+          u = "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/releases/latest/download/Swiftra-%s.apk"
+          m = {"v": 1, "apks": {a: {"url": u % a, "sha256": "0" * 64, "published_ms": 4102444800000} for a in ("arm64", "x64")}}
+          open("swiftra-update-e2e.json", "w").write(json.dumps(m, indent=1, sort_keys=True) + "\n")
+          PYEOF2
+          K="$RUNNER_TEMP/k.pem"; umask 077
+          printf '%s' "$SWIFTRA_SHIELD_KEY" | base64 -d > "$K"
+          { printf 'swiftra-update-v1\n'; cat swiftra-update-e2e.json; } | openssl dgst -sha256 -sign "$K" -out swiftra-update-e2e.json.sig
+          rm -f "$K"
+          gh release upload swiftra -R "$R" --clobber swiftra-update-e2e.json swiftra-update-e2e.json.sig

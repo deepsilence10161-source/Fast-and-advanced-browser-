@@ -36,3 +36,25 @@ def test_patch_ascii_and_in_series():
     assert all(ord(c) < 128 for c in _patch())
     series = open(os.path.join(ROOT, "patches", "series")).read().split()
     assert "0020-swiftra-update-channel.patch" in series
+
+
+sys.path.insert(0, os.path.join(ROOT, "scripts", "ci"))
+
+
+def test_update_e2e_verdict_and_tamper():
+    import update_e2e as ue
+    m = b'{\n "apks": {\n  "arm64": {\n   "published_ms": 4102444800000\n  }\n }\n}\n'
+    t = ue.tamper(m)
+    assert t != m and len(t) == len(m) and b"published_ms" in t
+    ok = {"fetched": True, "item": True, "badge": True}
+    no = {"fetched": True, "item": False, "badge": False}
+    assert ue.verdict({"cases": {"bad": no, "good": ok}}) == "pass"
+    assert ue.verdict({"cases": {"bad": ok, "good": ok}}) == "fail"          # tampered manifest accepted
+    assert ue.verdict({"cases": {"bad": no, "good": dict(ok, badge=False)}}) == "fail"
+    assert ue.verdict({"cases": {"bad": {"fetched": False}, "good": {"fetched": False}}}) == "not_run"
+    assert ue.verdict({}) == "not_run"
+
+
+def test_run_capture_runs_update_e2e():
+    s = open(os.path.join(ROOT, "scripts", "ci", "run_capture.sh")).read()
+    assert "scripts/ci/update_e2e.py" in s

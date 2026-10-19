@@ -46,6 +46,9 @@ if [ "$T" != chrome_ref ]; then
   # patches/0010: HTTPS-First (balanced) + third-party cookies blocked, checked by behaviour (local mapped hosts)
   timeout 240 python3 scripts/ci/advanced_e2e.py --package "$PKG" --out "$OUT/advanced" 2>&1 | tee "$OUT/advanced_e2e.txt"
   echo "advanced_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  # patches/0020: signed update channel -> upstream "Update Swiftra" menu item/badge (signed vs tampered manifest)
+  timeout 300 python3 scripts/ci/update_e2e.py --package "$PKG" --out "$OUT/update" 2>&1 | tee "$OUT/update_e2e.txt"
+  echo "update_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
   # Speed (0016 Speed Pack + 0012 ad blocker): same APK, chromium_defaults vs swiftra, alternated; local mapped hosts
   timeout 1500 python3 -u scripts/ci/speed_e2e.py --package "$PKG" --out "$OUT/speed" --socket "${SOCK:-chrome_devtools_remote}" 2>&1 | tee "$OUT/speed_e2e.txt"
   echo "speed_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
