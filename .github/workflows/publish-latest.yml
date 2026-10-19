@@ -48,7 +48,7 @@ jobs:
             [ -s "$APK" ] && [ -s "$BI" ] || { echo "$ABI: APK/BUILD_INFO missing" | tee -a pub/gate.txt; continue; }
             ls -la "$APK" "$BI"; file "$APK"
             "$BT/apksigner" verify --print-certs "$APK" > "pub/$ABI-apksigner.txt" 2>&1 || true
-            CERT=$(grep -m1 'Signer #1 certificate SHA-256' "pub/$ABI-apksigner.txt" | awk '{print $NF}')
+            CERT=$(grep -E 'certificate SHA-256 digest' "pub/$ABI-apksigner.txt" | awk '{print $NF}' | sort -u | tr '\n' ' ' | sed 's/ $//')
             if [ "$CERT" != "$WANT" ]; then echo "$ABI: GATE FAIL apksigner cert '${CERT:-none}'" | tee -a pub/gate.txt; head -5 "pub/$ABI-apksigner.txt"; continue; fi
             if python3 scripts/release/release_gate.py --apk "$APK" --build-info "$BI" --abi "$ABI" > "pub/$ABI-gate.log" 2>&1; then
               mv "$APK" "pub/Swiftra-$ABI.apk"; mv "$BI" "pub/BUILD_INFO-$ABI.txt"
