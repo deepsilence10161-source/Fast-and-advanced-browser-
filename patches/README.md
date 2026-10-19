@@ -295,5 +295,5 @@ with a manifest signed by the real key (10/10, 2026-10-19). Safety Hub keeps 000
 
 Note (2026-10-19): the upstream study `HttpsFirstModeV2ForTypicallySecureUsers` (fieldtrial_testing_config @155:
 `Enabled` -> feature of the same name) auto-enables HTTPS-First only for users who rarely visit HTTP sites. 0010 already
-turns HTTPS-First balanced on for every user (ADVANCED_E2E hfm=warn on x64 + arm64), so the study is a subset of
+turns HTTPS-First balanced on for every user (ADVANCED_E2E PASS hfm=warning_dialog, emulator x64 + arm64 Redroid), so the study is a subset of
 Swiftra's default; it stays out of the Speed Pack (tests/test_speedpack.py `banned`).
