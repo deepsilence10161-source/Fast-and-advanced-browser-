@@ -283,3 +283,21 @@ Harness `scripts/ci/repeat_e2e.py` (reuses the speed_e2e server):
 
 Decision rule: a SWIFTRA study for these features is added to patch 0016 only if `swiftra_lcpp` beats `swiftra` on
 cold LCP medians in both cycles on the device. Otherwise the result is recorded here and nothing ships.
+
+### Result, run 39202833756 (x64 emulator, APK 2bd84b64, 2026-10-19), first complete A/B with all speed patches
+Same binary; "chromium_defaults" = Swiftra's additions off (testing config, ad blocker, slice connections).
+Medians; 6/6 loads each. SPEED_E2E is PARTIAL only because the JS bench was skipped in chromium_defaults (mode budget).
+
+| Metric | chromium_defaults | Swiftra | Factor |
+|---|---|---|---|
+| Page load | 2102 ms | 1203.5 ms | 1.75x |
+| LCP | 1010 ms | 964 ms | 1.05x |
+| Bytes / requests | 887.1 KiB / 47 | 609.4 KiB / 32 | 1.46x less / 1.47x fewer (ads blocked: 15 -> 0) |
+| Download, HTTP/1.1 | 9.4 s (3 conns) | 6.4 s (5 conns) | 1.47x |
+| Download, HTTP/2 | 24.1 s (1 conn) | 5.3 s (5 conns) | 4.55x (patch 0017) |
+| Repeat visit LCP, cold / warm | 810 / 786 ms | 816 / 740 ms | same / 1.06x |
+| JS bench | skipped | 354.4 ms | earlier A/A: no difference |
+
+Repeat-visit candidate: `swiftra_lcpp` was slower (cold LCP 886 ms vs 816, warm 824 vs 740). Decision: **not shipped**.
+Harness note: restarts into chromium_defaults still stall adb (recovered by `adb reconnect`; stacks_c0s0.txt saved);
+Swiftra-mode restarts did not stall.

@@ -1,0 +1,61 @@
+[06:00:33 +0s] repeat cycle 0 swiftra_lcpp
+[06:00:33 +0s] restart swiftra_lcpp attempt 0
+[06:00:39 +6s] restart swiftra_lcpp attempt 0: pid 23832 ready True flags True
+[06:00:51 +18s] restart swiftra_lcpp attempt 0
+[06:00:58 +25s] restart swiftra_lcpp attempt 0: pid 24079 ready True flags True
+[06:01:05 +32s] restart swiftra_lcpp attempt 0
+[06:01:14 +41s] restart swiftra_lcpp attempt 0: pid 24308 ready True flags True
+[06:01:21 +48s] restart swiftra_lcpp attempt 0
+[06:01:29 +56s] restart swiftra_lcpp attempt 0: pid 24534 ready True flags True
+cycle 0 swiftra_lcpp: {"flags": true, "cold": [1032, 876, 1004], "warm": [648, 780, 936], "net_cold": [0, 0, 0]}
+[06:01:36 +63s] repeat cycle 0 swiftra
+[06:01:36 +63s] restart swiftra attempt 0
+[06:01:43 +70s] restart swiftra attempt 0: pid 24762 ready True flags True
+[06:01:54 +81s] restart swiftra attempt 0
+[06:02:01 +87s] restart swiftra attempt 0: pid 25018 ready True flags True
+[06:02:08 +95s] restart swiftra attempt 0
+[06:02:16 +103s] restart swiftra attempt 0: pid 25248 ready True flags True
+[06:02:23 +110s] restart swiftra attempt 0
+[06:02:30 +117s] restart swiftra attempt 0: pid 25474 ready True flags True
+cycle 0 swiftra: {"flags": true, "cold": [1164, 764, 692], "warm": [760, 580, 904], "net_cold": [0, 0, 0]}
+[06:02:37 +124s] repeat cycle 0 chromium_defaults
+[06:02:37 +124s] restart chromium_defaults attempt 0
+[06:02:45 +132s] restart chromium_defaults attempt 0: pid 25702 ready True flags True
+[06:02:56 +143s] restart chromium_defaults attempt 0
+[06:03:03 +150s] restart chromium_defaults attempt 0: pid 25919 ready True flags True
+[06:03:10 +157s] restart chromium_defaults attempt 0
+[06:03:17 +164s] restart chromium_defaults attempt 0: pid 26116 ready True flags True
+[06:03:24 +171s] restart chromium_defaults attempt 0
+[06:03:31 +178s] restart chromium_defaults attempt 0: pid 26311 ready True flags True
+cycle 0 chromium_defaults: {"flags": true, "cold": [696, 728, 892], "warm": [804, 856, 868], "net_cold": [0, 0, 0]}
+[06:03:38 +185s] repeat cycle 1 chromium_defaults
+[06:03:38 +185s] restart chromium_defaults attempt 0
+[06:03:45 +192s] restart chromium_defaults attempt 0: pid 26505 ready True flags True
+[06:03:57 +204s] restart chromium_defaults attempt 0
+[06:04:03 +210s] restart chromium_defaults attempt 0: pid 26718 ready True flags True
+[06:04:11 +218s] restart chromium_defaults attempt 0
+[06:04:17 +224s] restart chromium_defaults attempt 0: pid 26912 ready True flags True
+[06:04:25 +232s] restart chromium_defaults attempt 0
+[06:04:31 +238s] restart chromium_defaults attempt 0: pid 27107 ready True flags True
+cycle 1 chromium_defaults: {"flags": true, "cold": [1284, 628, 900], "warm": [580, 768, 648], "net_cold": [0, 0, 0]}
+[06:04:38 +245s] repeat cycle 1 swiftra
+[06:04:38 +245s] restart swiftra attempt 0
+[06:04:45 +251s] restart swiftra attempt 0: pid 27299 ready True flags True
+[06:04:55 +262s] restart swiftra attempt 0
+[06:05:02 +269s] restart swiftra attempt 0: pid 27539 ready True flags True
+[06:05:09 +276s] restart swiftra attempt 0
+[06:05:16 +283s] restart swiftra attempt 0: pid 27771 ready True flags True
+[06:05:23 +290s] restart swiftra attempt 0
+[06:05:30 +297s] restart swiftra attempt 0: pid 28002 ready True flags True
+cycle 1 swiftra: {"flags": true, "cold": [868, 964, 656], "warm": [672, 720, 924], "net_cold": [0, 0, 0]}
+[06:05:37 +304s] repeat cycle 1 swiftra_lcpp
+[06:05:37 +304s] restart swiftra_lcpp attempt 0
+[06:05:45 +312s] restart swiftra_lcpp attempt 0: pid 28227 ready True flags True
+[06:05:56 +323s] restart swiftra_lcpp attempt 0
+[06:06:03 +330s] restart swiftra_lcpp attempt 0: pid 28469 ready True flags True
+[06:06:10 +337s] restart swiftra_lcpp attempt 0
+[06:06:17 +344s] restart swiftra_lcpp attempt 0: pid 28697 ready True flags True
+[06:06:24 +351s] restart swiftra_lcpp attempt 0
+[06:06:31 +358s] restart swiftra_lcpp attempt 0: pid 28920 ready True flags True
+cycle 1 swiftra_lcpp: {"flags": true, "cold": [896, 552, 852], "warm": [832, 816, 932], "net_cold": [0, 0, 0]}
+REPEAT_E2E MEASURED chromium_defaults:cold_lcp=810.0,cold_load=550.0,warm_lcp=786.0,warm_load=588.5,net=0.0 swiftra:cold_lcp=816.0,cold_load=550.0,warm_lcp=740.0,warm_load=583.0,net=0.0 swiftra_lcpp:cold_lcp=886.0,cold_load=584.5,warm_lcp=824.0,warm_load=540.5,net=0.0 page_cache_dropped=False devtools_recoveries=0

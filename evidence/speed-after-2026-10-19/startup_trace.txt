@@ -1,0 +1,74 @@
+startup trace: {"package": "com.swiftra.app", "categories": "startup,toplevel,browser,content,loading,navigation,Java,android,ui,v8,base,sql,net,gpu,viz,blink", "duration_s": 10, "scenario": "close all tabs -> cold start (am start -W) -> trace N s -> read file", "tabs_closed": {"closed": 0, "pages": 0}, "am_start": {"TotalTime": 1027, "WaitTime": 1032}, "flags_applied": true, "read_via": "exec-out su 0", "bytes": 7066829, "events": 30978, "captured": true}
+== Browser/CrBrowserMain: busy 2504.8 ms, 5404 slices
+   top-level: [["Looper.dispatch: android.view.Choreographer$FrameHandler(android.view.Choreographer$FrameDisplayEventReceiver@ce6e764)", 1092.5, 8], ["ThreadControllerImpl::RunTask", 829.0, 1626], ["Looper.dispatch: android.app.ActivityThread$H(null)", 196.7, 9], ["Activity.initializeState", 159.7, 1], ["Navigator::Navigate", 105.7, 1], ["ChromeMainDelegateAndroid::RunProcess", 60.0, 1], ["SimpleWatcher::OnHandleReady", 14.9, 36], ["Looper.dispatch: android.net.ConnectivityManager$CallbackHandler(null)", 13.9, 6], ["Looper.dispatch: android.view.ViewRootImpl$ViewRootHandler(null)", 10.3, 14], ["Looper.dispatch: android.os.Handler(android.hardware.display.DisplayManagerGlobal$DisplayListenerDelegate$$ExternalSyntheticLambda0@a01a8d6)", 4.5, 1]]
+   self: [["Looper.dispatch: android.view.Choreographer$FrameHandler(android.view.Choreographer$FrameDisplayEventReceiver@ce6e764)", 1008.6, 8], ["ThreadControllerImpl::RunTask", 298.5, 1626], ["Receive mojo message", 122.0, 390], ["KeyedServiceFactory::GetServiceForContext", 60.3, 1459], ["LocationBarPhone.onMeasure", 57.4, 7], ["RenderFrameHostManager::CreateSpeculativeRenderFrameHost", 52.0, 2], ["chrome::RegisterProfilePrefs", 49.4, 1], ["ChromeTab.initWebContents", 45.2, 1], ["AsyncInitializationActivity.onCreate()", 43.7, 1], ["Looper.dispatch: android.app.ActivityThread$H(null)", 41.3, 9], ["ScopedBlockingCallWithBaseSyncPrimitives", 38.8, 7], ["RenderWidgetHostViewAndroid::ShowWithVisibility", 38.6, 4], ["ToolbarControlContainer.initWithToolbar", 31.4, 1], ["ChromeBrowserInitializer.preInflationStartup", 30.4, 1], ["ChainedTask.run", 30.1, 8], ["ChromeTabbedActivity.finishNativeInitialization", 27.1, 1], ["NavigationThrottleRegistryImpl::RegisterNavigationThrottles", 26.9, 2], ["RenderFrameHostImpl::DidCommitNavigation", 19.9, 2], ["SimpleWatcher::OnHandleReady", 16.9, 346], ["WebContentsObserverProxy::DidStartNavigation", 16.7, 2]]
+   milestones: [["AsyncInitializationActivity.onCreate()", 44.0, 153.5], ["ProcessInitializationHandler.initializePreNative()", 87.1, 0.5], ["ProcessInitializationHandler.initializePreNativeLibraryLoad()", 87.6, 2.0], ["ChromeBrowserInitializer.preInflationStartup", 89.7, 30.4], ["ChromeActivity.performPostInflationStartup", 166.7, 4.6], ["ChromeTabbedActivity.onStart", 198.1, 0.5], ["ChromeTabbedActivity.onResume", 199.2, 1.4], ["BrowserMainRunnerImpl::Initialize", 706.3, 59.9], ["BrowserMainLoop::Init", 706.4, 0.1], ["BrowserMainLoop::EarlyInitialization", 706.5, 52.6], ["ChromeBrowserMainPartsAndroid::PreEarlyInitialization", 706.5, 52.6], ["ChromeBrowserMainParts::PreEarlyInitialization", 706.6, 52.6], ["chrome_prefs::CreateProfilePrefs", 758.0, 0.9], ["ChromeBrowserMainParts::PostEarlyInitialization", 759.1, 0.0], ["BrowserMainLoop::InitializeToolkit", 759.1, 6.6], ["ChromeBrowserMainParts::ToolkitInitialized", 765.6, 0.1], ["BrowserMainLoop::CreateMainMessageLoop:PreCreateMainMessageLoop", 765.7, 0.0], ["ChromeBrowserMainParts::PreCreateMainMessageLoop", 765.7, 0.0], ["BrowserMainLoop::CreateMainMessageLoop", 765.8, 0.0], ["BrowserMainLoop::PostCreateMainMessageLoop", 765.8, 0.4], ["BrowserMainLoop::Subsystem:SystemMonitor", 765.9, 0.0], ["BrowserMainLoop::Subsystem:PowerMonitor", 765.9, 0.0], ["BrowserMainLoop::Subsystem:HighResTimerManager", 765.9, 0.0], ["BrowserMainLoop::Subsystem:NetLog", 765.9, 0.0], ["BrowserMainLoop::Subsystem:NetworkChangeNotifier", 765.9, 0.0]]
+== Browser/PerfettoTrace: busy 56.2 ms, 222 slices
+   top-level: [["ThreadController active", 56.0, 58], ["ThreadControllerImpl::RunTask", 0.3, 5], ["EpollEvent", 0.0, 1]]
+   self: [["SimpleWatcher::OnHandleReady", 46.0, 34], ["ThreadControllerImpl::RunTask", 7.7, 80], ["Receive mojo message", 1.3, 27], ["ThreadController active", 1.1, 58], ["Receive mojo reply", 0.1, 11], ["EpollEvent", 0.0, 6], ["MessagePumpEpoll::WatchFileDescriptor", 0.0, 6]]
+   milestones: []
+== Browser/ThreadPoolForegroundWorker: busy 40.9 ms, 133 slices
+   top-level: [["WorkerThread active", 40.9, 3]]
+   self: [["Database::ExecuteAndReturnErrorCode", 29.1, 3], ["ThreadPool_RunTask", 7.7, 36], ["ScopedBlockingCall", 3.6, 67], ["WorkerThread active", 0.1, 3], ["Receive mojo message", 0.1, 2], ["Database::BeginTransaction", 0.1, 4], ["Database::OpenInternal sqlite3_open_v2", 0.1, 1], ["SimpleWatcher::OnHandleReady", 0.0, 2], ["Database::ExecuteWithTimeout", 0.0, 3], ["Database::Open", 0.0, 1], ["Database::CommitTransaction", 0.0, 3], ["Closed mojo endpoint", 0.0, 1], ["Database::DoRollback", 0.0, 1], ["Database::Execute", 0.0, 2], ["SQLitePersistentCookieStoreBackendBase::InitializeDatabase", 0.0, 2], ["Database::OpenInternal", 0.0, 1], ["Database::RollbackTransaction", 0.0, 1]]
+   milestones: []
+== Browser/Chrome_ProcessL: busy 212.0 ms, 76 slices
+   top-level: [["ThreadControllerImpl::RunTask", 197.0, 23], ["ChildProcessConnection.ChildServiceConnection.onServiceConnected", 13.0, 5], ["ChildProcessConnection.start", 2.0, 1]]
+   self: [["ChildServiceConnectionImpl.bindServiceConnection", 91.6, 10], ["ChildProcessLauncherHelper::SetRenderProcessPriorityOnLauncherThread", 41.9, 18], ["ChildProcessConnection.doConnectionSetup", 30.6, 5], ["ThreadControllerImpl::RunTask", 15.7, 23], ["ChildProcessLauncher.start", 10.9, 5], ["ChildProcessConnection.start", 10.9, 5], ["ChildProcessConnection.ChildServiceConnection.onServiceConnected", 10.3, 5], ["ChildProcessConnection.setupConnection", 0.0, 5]]
+   milestones: []
+== Browser/ThreadPoolServiceThread: busy 67.0 ms, 101 slices
+   top-level: [["ThreadController active", 67.0, 50]]
+   self: [["ThreadController active", 65.7, 50], ["ThreadControllerImpl::RunTask", 1.3, 51]]
+   milestones: []
+== Browser/Chrome_IOThread: busy 119.5 ms, 2581 slices
+   top-level: [["ThreadController active", 119.5, 609]]
+   self: [["EpollEvent", 38.7, 372], ["ThreadControllerImpl::RunTask", 36.8, 1229], ["ThreadController active", 24.5, 609], ["SimpleWatcher::OnHandleReady", 15.5, 221], ["Receive mojo message", 3.6, 105], ["Closed mojo endpoint", 0.2, 22], ["MessagePumpEpoll::WatchFileDescriptor", 0.2, 21], ["Receive mojo reply", 0.0, 2]]
+   milestones: []
+== Browser/MemoryInfra: busy 1.8 ms, 22 slices
+   top-level: [["ThreadController active", 1.8, 9]]
+   self: [["ThreadController active", 1.5, 9], ["InitializeBrowserMemoryInstrumentationClient", 0.1, 1], ["ThreadControllerImpl::RunTask", 0.1, 8], ["SimpleWatcher::OnHandleReady", 0.0, 2], ["Closed mojo endpoint", 0.0, 2]]
+   milestones: []
+== Browser/ThreadPoolSingleThreadSharedForegroundBlocking: busy 0.1 ms, 4 slices
+   top-level: [["WorkerThread active", 0.1, 2]]
+   self: [["WorkerThread active", 0.0, 2], ["ScopedBlockingCall", 0.0, 1], ["ThreadPool_RunTask", 0.0, 1]]
+   milestones: []
+== Browser/NetworkService: busy 361.8 ms, 896 slices
+   top-level: [["ThreadController active", 361.8, 95]]
+   self: [["EpollEvent", 125.5, 42], ["Receive mojo message", 98.9, 100], ["ThreadControllerImpl::RunTask", 61.1, 280], ["ThreadController active", 29.6, 95], ["CloseSocketUDP", 22.5, 79], ["HttpNetworkTransaction::CreateStream", 8.6, 3], ["MessagePumpEpoll::WatchFileDescriptor", 3.4, 47], ["Closed mojo endpoint", 2.9, 8], ["CloseSocketTCP", 2.7, 20], ["SimpleWatcher::OnHandleReady", 1.6, 84], ["NetworkContext::NetworkContext", 1.6, 2], ["HttpNetworkTransaction::SendRequest", 0.3, 2], ["HttpNetworkTransaction::CreateStreamComplete", 0.3, 3], ["NetworkService::Initialize", 0.2, 1], ["CorsURLLoader::StartNetworkRequest", 0.2, 3], ["CorsURLLoader::HandleComplete", 0.2, 3], ["URLLoader::ScheduleStart", 0.2, 3], ["network::URLLoader::SendResponseToClient", 0.2, 2], ["CookieMonster::GetCookieListWithOptions", 0.1, 5], ["CorsURLLoaderFactory::CreateLoaderAndStart", 0.1, 3]]
+   milestones: []
+== Browser/AudioThread: busy 63.9 ms, 11 slices
+   top-level: [["ThreadController active", 63.9, 6]]
+   self: [["ThreadControllerImpl::RunTask", 59.9, 5], ["ThreadController active", 4.0, 6]]
+   milestones: []
+== Browser/VideoCaptureThread: busy 0.0 ms, 1 slices
+   top-level: [["ThreadController active", 0.0, 1]]
+   self: [["ThreadController active", 0.0, 1]]
+   milestones: []
+== Browser/ThreadPoolSingleThreadSharedForeground: busy 1.9 ms, 63 slices
+   top-level: [["WorkerThread active", 1.9, 20]]
+   self: [["ThreadPool_RunTask", 1.4, 29], ["WorkerThread active", 0.3, 20], ["SimpleWatcher::OnHandleReady", 0.1, 7], ["Receive mojo message", 0.1, 3], ["Closed mojo endpoint", 0.0, 4]]
+   milestones: []
+== Browser/ThreadPoolSingleThreadForegroundBlocking: busy 28.6 ms, 13 slices
+   top-level: [["WorkerThread active", 28.6, 2]]
+   self: [["Receive mojo message", 25.1, 2], ["Closed mojo endpoint", 1.8, 1], ["ThreadPool_RunTask", 1.6, 5], ["SimpleWatcher::OnHandleReady", 0.0, 3], ["WorkerThread active", 0.0, 2]]
+   milestones: []
+== GPU Process/CrGpuMain: busy 1514.8 ms, 759 slices
+   top-level: [["ThreadController active", 1245.2, 38], ["gpu::GpuInit::InitializeAndStartSandbox", 251.8, 1], ["LibraryLoader.loadAlreadyLocked", 10.2, 1], ["ChildThreadImpl::Init", 6.9, 1], ["ScopedAllowBaseSyncPrimitivesOutsideBlockingScope", 0.6, 1], ["gpu_main::InitializeSkia", 0.1, 1], ["ChromeMainDelegateAndroid::RunProcess", 0.0, 1]]
+   self: [["RasterDecoderImpl::DoEndRasterCHROMIUM::Flush", 681.5, 5], ["RasterDecoderImpl::DoEndRasterCHROMIUM", 351.6, 5], ["eglInitializeFn display", 135.8, 1], ["ThreadControllerImpl::RunTask", 102.3, 145], ["gpu::GpuInit::InitializeVulkan", 89.4, 1], ["RasterDecoderImpl::DoRasterCHROMIUM::Deserializing", 25.0, 5], ["GpuChannel::ExecuteDeferredRequest", 23.5, 33], ["SharedImageStub::OnCreateSharedImage", 19.0, 5], ["gpu::GpuInit::InitializeAndStartSandbox", 15.3, 1], ["DriverGL::InitializeStaticBindings", 12.8, 2], ["LibraryLoader.loadAlreadyLocked", 10.2, 1], ["ScopedBlockingCallWithBaseSyncPrimitives", 8.3, 8], ["InitializeMojoIPCChannel", 6.7, 1], ["GLContextEGL::MakeCurrent", 5.5, 2], ["SharedImageStub::OnCreateSharedImageWithData", 5.3, 4], ["GpuPersistentCache::LoadImpl", 4.8, 24], ["gpu_util::ComputeGpuFeatureInfo", 4.4, 1], ["gl::init::CreateOffscreenGLSurface", 1.5, 2], ["ThreadController active", 1.4, 38], ["Scheduler::RunTask", 1.1, 63]]
+   milestones: [["LibraryLoader.loadAlreadyLocked", 1050.0, 10.2], ["SharedImageStub::OnCreateSharedImage", 1915.2, 1.0], ["SharedImageStub::OnCreateSharedImage", 2418.4, 0.5], ["SharedImageStub::OnCreateSharedImage", 3110.0, 13.0], ["SharedImageStub::OnCreateSharedImage", 3396.0, 4.2], ["SharedImageStub::OnCreateSharedImage", 3477.9, 0.3], ["SharedImageStub::OnCreateSharedImageWithData", 5347.9, 2.5], ["SharedImageStub::OnCreateSharedImageWithData", 5350.4, 1.2], ["SharedImageStub::OnCreateSharedImageWithData", 5351.8, 1.1], ["SharedImageStub::OnCreateSharedImageWithData", 5352.9, 0.4]]
+== Renderer/CrRendererMain: busy 40.0 ms, 233 slices
+   top-level: [["RenderThreadImpl::Create", 24.3, 1], ["ThreadController active", 9.5, 17], ["ChildThreadImpl::Init", 4.7, 1], ["RendererMainPlatformDelegate::EnableSandbox", 1.4, 1], ["ChromeMainDelegateAndroid::RunProcess", 0.0, 1]]
+   self: [["RenderThreadImpl::Init", 13.0, 1], ["Receive mojo message", 5.8, 22], ["CSSParserImpl::parseStyleSheet.parse", 4.7, 2], ["ChildThreadImpl::Init", 4.7, 1], ["DecompressIfNeeded::BrotliDecompress", 3.2, 5], ["V8PerIsolateData::Initialize", 1.7, 1], ["ThreadController active", 1.4, 17], ["RendererMainPlatformDelegate::EnableSandbox", 1.4, 1], ["BlinkScheduler_PerformMicrotaskCheckpoint", 0.7, 63], ["ThreadControllerImpl::RunTask", 0.7, 71], ["V8.SnapshotDecompress", 0.7, 3], ["RuleSet::addRulesFromSheet", 0.6, 2], ["V8.DeserializeIsolate", 0.4, 1], ["Receive mojo reply", 0.3, 5], ["SimpleWatcher::OnHandleReady", 0.2, 18], ["ScopedBlockingCallWithBaseSyncPrimitives", 0.1, 1], ["TimerBase::run", 0.1, 1], ["InitializeMojoIPCChannel", 0.1, 1], ["Closed mojo endpoint", 0.0, 11], ["CSSParserImpl::parseStyleSheet", 0.0, 2]]
+   milestones: [["RuleSet::addRulesFromSheet", 2504.9, 0.6], ["RuleSet::addRulesFromSheet", 2505.6, 0.0]]
+== GPU Process/VizCompositorThread: busy 244.5 ms, 1006 slices
+   top-level: [["SimpleWatcher::OnHandleReady", 99.1, 134], ["Extend_VSync", 96.3, 142], ["ThreadControllerImpl::RunTask", 48.9, 45], ["MessagePumpAndroid::IOWatcher::WatchFileDescriptor", 0.1, 9]]
+   self: [["Extend_VSync", 91.0, 142], ["ScopedBlockingCallWithBaseSyncPrimitives", 61.3, 6], ["ThreadControllerImpl::RunTask", 39.6, 45], ["SimpleWatcher::OnHandleReady", 15.3, 137], ["Graphics.Pipeline", 11.1, 154], ["Surface::ActivateFrame", 10.2, 9], ["Receive mojo message", 5.1, 124], ["FrameSinkManagerImpl::UnregisterFrameSinkHierarchy", 3.0, 4], ["InputManager::OnCreateCompositorFrameSink", 1.6, 4], ["DirectRenderer::DrawFrame", 1.4, 6], ["ExternalBeginFrameSource::OnBeginFrame", 0.7, 42], ["DirectRenderer::DrawRenderPass", 0.5, 6], ["Closed mojo endpoint", 0.4, 10], ["ScopedBlockingCall", 0.4, 1], ["DisplayScheduler::BeginFrame", 0.3, 18], ["DisplayScheduler::ScheduleBeginFrameDeadline", 0.3, 40], ["FrameSinkManagerImpl::InvalidateFrameSinkId", 0.3, 2], ["FrameSinkManagerImpl::CreateCompositorFrameSink", 0.2, 3], ["SendBeginFrameDecision", 0.2, 62], ["InputManager::OnDestroyedCompositorFrameSink", 0.2, 2]]
+   milestones: [["InputManager::OnCreateCompositorFrameSink", 1493.7, 0.0], ["InputManager::OnCreateCompositorFrameSink", 1494.8, 1.2], ["InputManager::OnCreateCompositorFrameSink", 1696.8, 0.3], ["InputManager::OnCreateCompositorFrameSink", 2430.6, 0.1]]
+== Browser/NetworkStatusLi: busy 24.7 ms, 4 slices
+   top-level: [["NetworkChangeNotifierCallback::onAvailable", 24.7, 2], ["NetworkChangeNotifierCallback::onCapabilitiesChanged", 0.0, 2]]
+   self: [["NetworkChangeNotifierCallback::onAvailable", 24.7, 2], ["NetworkChangeNotifierCallback::onCapabilitiesChanged", 0.0, 2]]
+   milestones: []
+== Browser/Chrome_DevToolsHandlerThread: busy 0.1 ms, 4 slices
+   top-level: [["ThreadController active", 0.1, 1]]
+   self: [["ThreadControllerImpl::RunTask", 0.1, 2], ["ThreadController active", 0.0, 1], ["MessagePumpEpoll::WatchFileDescriptor", 0.0, 1]]
+   milestones: []
+STARTUP_TRACE CAPTURED span_ms=10925.5 am_start={'TotalTime': 1027, 'WaitTime': 1032}

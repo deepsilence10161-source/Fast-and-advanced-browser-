@@ -1,0 +1,1278 @@
+{
+ "package": "com.swiftra.app",
+ "modes": {
+  "chromium_defaults": "--disable-field-trial-config --disable-features=SwiftraAdBlock,SwiftraSliceConnections",
+  "swiftra": "",
+  "swiftra_lcpp": "--enable-features=LCPCriticalPathPredictor,LCPPFontURLPredictor,LCPPAutoPreconnectLcpOrigin,LCPPPrefetchSubresource,HttpDiskCachePrewarming"
+ },
+ "lat_ms": 60,
+ "page_rate": 256000,
+ "cycles": [
+  {
+   "swiftra_lcpp": {
+    "cold": [
+     {
+      "rid": "c0swpp0",
+      "open": "ok",
+      "page": {
+       "load": 460,
+       "dcl": 447,
+       "ttfb": 263,
+       "fcp": 1032,
+       "lcp": 1032,
+       "app_ran": 446,
+       "hero_start": 447,
+       "hero_end": 459,
+       "hero_transfer": 0,
+       "app_end": 432,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0swpp1",
+      "open": "ok",
+      "page": {
+       "load": 596,
+       "dcl": 563,
+       "ttfb": 114,
+       "fcp": 876,
+       "lcp": 876,
+       "app_ran": 561,
+       "hero_start": 563,
+       "hero_end": 594,
+       "hero_transfer": 0,
+       "app_end": 558,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0swpp2",
+      "open": "ok",
+      "page": {
+       "load": 787,
+       "dcl": 725,
+       "ttfb": 189,
+       "fcp": 792,
+       "lcp": 1004,
+       "app_ran": 708,
+       "hero_start": 710,
+       "hero_end": 731,
+       "hero_transfer": 0,
+       "app_end": 640,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w0swpp0",
+      "open": "ok",
+      "page": {
+       "load": 329,
+       "dcl": 299,
+       "ttfb": 125,
+       "fcp": 648,
+       "lcp": 648,
+       "app_ran": 296,
+       "hero_start": 298,
+       "hero_end": 311,
+       "hero_transfer": 0,
+       "app_end": 290,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swpp1",
+      "open": "ok",
+      "page": {
+       "load": 544,
+       "dcl": 481,
+       "ttfb": 266,
+       "fcp": 676,
+       "lcp": 780,
+       "app_ran": 477,
+       "hero_start": 478,
+       "hero_end": 515,
+       "hero_transfer": 0,
+       "app_end": 438,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swpp2",
+      "open": "ok",
+      "page": {
+       "load": 537,
+       "dcl": 522,
+       "ttfb": 96,
+       "fcp": 936,
+       "lcp": 936,
+       "app_ran": 521,
+       "hero_start": 522,
+       "hero_end": 527,
+       "hero_transfer": 0,
+       "app_end": 510,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t0swpp0",
+      "open": "ok",
+      "page": {
+       "load": 1659,
+       "dcl": 1388,
+       "ttfb": 415,
+       "fcp": 1032,
+       "lcp": 1480,
+       "app_ran": 1386,
+       "hero_start": 1387,
+       "hero_end": 1657,
+       "hero_transfer": 64190,
+       "app_end": 1384,
+       "app_transfer": 200674,
+       "resources": 3,
+       "transfer": 296916
+      },
+      "network": [
+       "spa-app.8b2e4d.js",
+       "spa-hero.c71d0e.png",
+       "spa.3f9a1c.css"
+      ],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swpp1",
+      "open": "ok",
+      "page": {
+       "load": 463,
+       "dcl": 444,
+       "ttfb": 179,
+       "fcp": 884,
+       "lcp": 884,
+       "app_ran": 442,
+       "hero_start": 443,
+       "hero_end": 462,
+       "hero_transfer": 0,
+       "app_end": 373,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swpp2",
+      "open": "ok",
+      "page": {
+       "load": 650,
+       "dcl": 649,
+       "ttfb": 103,
+       "fcp": 692,
+       "lcp": 840,
+       "app_ran": 612,
+       "hero_start": 613,
+       "hero_end": 637,
+       "hero_transfer": 0,
+       "app_end": 594,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra": {
+    "cold": [
+     {
+      "rid": "c0swra0",
+      "open": "ok",
+      "page": {
+       "load": 598,
+       "dcl": 590,
+       "ttfb": 365,
+       "fcp": 1164,
+       "lcp": 1164,
+       "app_ran": 585,
+       "hero_start": 586,
+       "hero_end": 596,
+       "hero_transfer": 0,
+       "app_end": 562,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0swra1",
+      "open": "ok",
+      "page": {
+       "load": 571,
+       "dcl": 551,
+       "ttfb": 175,
+       "fcp": 644,
+       "lcp": 764,
+       "app_ran": 545,
+       "hero_start": 551,
+       "hero_end": 564,
+       "hero_transfer": 0,
+       "app_end": 533,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0swra2",
+      "open": "ok",
+      "page": {
+       "load": 531,
+       "dcl": 526,
+       "ttfb": 104,
+       "fcp": 692,
+       "lcp": 692,
+       "app_ran": 525,
+       "hero_start": 526,
+       "hero_end": 530,
+       "hero_transfer": 0,
+       "app_end": 523,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w0swra0",
+      "open": "ok",
+      "page": {
+       "load": 633,
+       "dcl": 620,
+       "ttfb": 135,
+       "fcp": 760,
+       "lcp": 760,
+       "app_ran": 618,
+       "hero_start": 619,
+       "hero_end": 626,
+       "hero_transfer": 0,
+       "app_end": 616,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swra1",
+      "open": "ok",
+      "page": {
+       "load": 386,
+       "dcl": 385,
+       "ttfb": 84,
+       "fcp": 580,
+       "lcp": 580,
+       "app_ran": 335,
+       "hero_start": 351,
+       "hero_end": 354,
+       "hero_transfer": 0,
+       "app_end": 298,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0swra2",
+      "open": "ok",
+      "page": {
+       "load": 597,
+       "dcl": 582,
+       "ttfb": 139,
+       "fcp": 904,
+       "lcp": 904,
+       "app_ran": 581,
+       "hero_start": 582,
+       "hero_end": 595,
+       "hero_transfer": 0,
+       "app_end": 454,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t0swra0",
+      "open": "ok",
+      "page": {
+       "load": 647,
+       "dcl": 624,
+       "ttfb": 218,
+       "fcp": 752,
+       "lcp": 752,
+       "app_ran": 604,
+       "hero_start": 605,
+       "hero_end": 608,
+       "hero_transfer": 0,
+       "app_end": 575,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swra1",
+      "open": "ok",
+      "page": {
+       "load": 642,
+       "dcl": 557,
+       "ttfb": 142,
+       "fcp": 900,
+       "lcp": 900,
+       "app_ran": 555,
+       "hero_start": 556,
+       "hero_end": 602,
+       "hero_transfer": 0,
+       "app_end": 483,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0swra2",
+      "open": "ok",
+      "page": {
+       "load": 709,
+       "dcl": 708,
+       "ttfb": 144,
+       "fcp": 896,
+       "lcp": 896,
+       "app_ran": 672,
+       "hero_start": 674,
+       "hero_end": 675,
+       "hero_transfer": 0,
+       "app_end": 516,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "chromium_defaults": {
+    "cold": [
+     {
+      "rid": "c0chts0",
+      "open": "ok",
+      "page": {
+       "load": 572,
+       "dcl": 543,
+       "ttfb": 103,
+       "fcp": 696,
+       "lcp": 696,
+       "app_ran": 542,
+       "hero_start": 543,
+       "hero_end": 561,
+       "hero_transfer": 0,
+       "app_end": 532,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0chts1",
+      "open": "ok",
+      "page": {
+       "load": 528,
+       "dcl": 517,
+       "ttfb": 319,
+       "fcp": 728,
+       "lcp": 728,
+       "app_ran": 516,
+       "hero_start": 517,
+       "hero_end": 523,
+       "hero_transfer": 0,
+       "app_end": 449,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c0chts2",
+      "open": "ok",
+      "page": {
+       "load": 761,
+       "dcl": 686,
+       "ttfb": 106,
+       "fcp": 892,
+       "lcp": 892,
+       "app_ran": 685,
+       "hero_start": 685,
+       "hero_end": 704,
+       "hero_transfer": 0,
+       "app_end": 669,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w0chts0",
+      "open": "ok",
+      "page": {
+       "load": 652,
+       "dcl": 631,
+       "ttfb": 123,
+       "fcp": 804,
+       "lcp": 804,
+       "app_ran": 630,
+       "hero_start": 630,
+       "hero_end": 633,
+       "hero_transfer": 0,
+       "app_end": 580,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0chts1",
+      "open": "ok",
+      "page": {
+       "load": 589,
+       "dcl": 567,
+       "ttfb": 145,
+       "fcp": 856,
+       "lcp": 856,
+       "app_ran": 564,
+       "hero_start": 565,
+       "hero_end": 566,
+       "hero_transfer": 0,
+       "app_end": 428,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w0chts2",
+      "open": "ok",
+      "page": {
+       "load": 614,
+       "dcl": 585,
+       "ttfb": 157,
+       "fcp": 868,
+       "lcp": 868,
+       "app_ran": 581,
+       "hero_start": 584,
+       "hero_end": 613,
+       "hero_transfer": 0,
+       "app_end": 535,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t0chts0",
+      "open": "ok",
+      "page": {
+       "load": 577,
+       "dcl": 576,
+       "ttfb": 171,
+       "fcp": 904,
+       "lcp": 904,
+       "app_ran": 546,
+       "hero_start": 549,
+       "hero_end": 550,
+       "hero_transfer": 0,
+       "app_end": 544,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0chts1",
+      "open": "ok",
+      "page": {
+       "load": 583,
+       "dcl": 559,
+       "ttfb": 128,
+       "fcp": 824,
+       "lcp": 884,
+       "app_ran": 537,
+       "hero_start": 556,
+       "hero_end": 579,
+       "hero_transfer": 0,
+       "app_end": 487,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t0chts2",
+      "open": "ok",
+      "page": {
+       "load": 583,
+       "dcl": 517,
+       "ttfb": 165,
+       "fcp": 836,
+       "lcp": 836,
+       "app_ran": 516,
+       "hero_start": 517,
+       "hero_end": 536,
+       "hero_transfer": 0,
+       "app_end": 505,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   }
+  },
+  {
+   "chromium_defaults": {
+    "cold": [
+     {
+      "rid": "c1chts0",
+      "open": "ok",
+      "page": {
+       "load": 379,
+       "dcl": 368,
+       "ttfb": 90,
+       "fcp": 1284,
+       "lcp": 1284,
+       "app_ran": 367,
+       "hero_start": 368,
+       "hero_end": 374,
+       "hero_transfer": 0,
+       "app_end": 366,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1chts1",
+      "open": "ok",
+      "page": {
+       "load": 491,
+       "dcl": 426,
+       "ttfb": 143,
+       "fcp": 628,
+       "lcp": 628,
+       "app_ran": 404,
+       "hero_start": 412,
+       "hero_end": 486,
+       "hero_transfer": 0,
+       "app_end": 403,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1chts2",
+      "open": "ok",
+      "page": {
+       "load": 641,
+       "dcl": 636,
+       "ttfb": 103,
+       "fcp": 900,
+       "lcp": 900,
+       "app_ran": 635,
+       "hero_start": 636,
+       "hero_end": 639,
+       "hero_transfer": 0,
+       "app_end": 622,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w1chts0",
+      "open": "ok",
+      "page": {
+       "load": 493,
+       "dcl": 431,
+       "ttfb": 183,
+       "fcp": 580,
+       "lcp": 580,
+       "app_ran": 386,
+       "hero_start": 407,
+       "hero_end": 479,
+       "hero_transfer": 0,
+       "app_end": 360,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1chts1",
+      "open": "ok",
+      "page": {
+       "load": 588,
+       "dcl": 583,
+       "ttfb": 153,
+       "fcp": 768,
+       "lcp": 768,
+       "app_ran": 567,
+       "hero_start": 568,
+       "hero_end": 587,
+       "hero_transfer": 0,
+       "app_end": 516,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1chts2",
+      "open": "ok",
+      "page": {
+       "load": 425,
+       "dcl": 410,
+       "ttfb": 107,
+       "fcp": 648,
+       "lcp": 648,
+       "app_ran": 409,
+       "hero_start": 410,
+       "hero_end": 421,
+       "hero_transfer": 0,
+       "app_end": 395,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t1chts0",
+      "open": "ok",
+      "page": {
+       "load": 1127,
+       "dcl": 1112,
+       "ttfb": 215,
+       "fcp": 1364,
+       "lcp": 1364,
+       "app_ran": 1110,
+       "hero_start": 1111,
+       "hero_end": 1121,
+       "hero_transfer": 0,
+       "app_end": 490,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1chts1",
+      "open": "ok",
+      "page": {
+       "load": 545,
+       "dcl": 497,
+       "ttfb": 139,
+       "fcp": 620,
+       "lcp": 844,
+       "app_ran": 496,
+       "hero_start": 497,
+       "hero_end": 510,
+       "hero_transfer": 0,
+       "app_end": 488,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1chts2",
+      "open": "ok",
+      "page": {
+       "load": 491,
+       "dcl": 463,
+       "ttfb": 233,
+       "fcp": 700,
+       "lcp": 700,
+       "app_ran": 455,
+       "hero_start": 460,
+       "hero_end": 463,
+       "hero_transfer": 0,
+       "app_end": 327,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra": {
+    "cold": [
+     {
+      "rid": "c1swra0",
+      "open": "ok",
+      "page": {
+       "load": 562,
+       "dcl": 506,
+       "ttfb": 116,
+       "fcp": 868,
+       "lcp": 868,
+       "app_ran": 504,
+       "hero_start": 506,
+       "hero_end": 525,
+       "hero_transfer": 0,
+       "app_end": 493,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swra1",
+      "open": "ok",
+      "page": {
+       "load": 538,
+       "dcl": 476,
+       "ttfb": 147,
+       "fcp": 868,
+       "lcp": 964,
+       "app_ran": 452,
+       "hero_start": 458,
+       "hero_end": 492,
+       "hero_transfer": 0,
+       "app_end": 379,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swra2",
+      "open": "ok",
+      "page": {
+       "load": 432,
+       "dcl": 388,
+       "ttfb": 159,
+       "fcp": 520,
+       "lcp": 656,
+       "app_ran": 384,
+       "hero_start": 387,
+       "hero_end": 394,
+       "hero_transfer": 0,
+       "app_end": 359,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w1swra0",
+      "open": "ok",
+      "page": {
+       "load": 537,
+       "dcl": 494,
+       "ttfb": 90,
+       "fcp": 584,
+       "lcp": 672,
+       "app_ran": 463,
+       "hero_start": 475,
+       "hero_end": 534,
+       "hero_transfer": 0,
+       "app_end": 405,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swra1",
+      "open": "ok",
+      "page": {
+       "load": 569,
+       "dcl": 542,
+       "ttfb": 181,
+       "fcp": 720,
+       "lcp": 720,
+       "app_ran": 539,
+       "hero_start": 541,
+       "hero_end": 544,
+       "hero_transfer": 0,
+       "app_end": 446,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swra2",
+      "open": "ok",
+      "page": {
+       "load": 713,
+       "dcl": 643,
+       "ttfb": 100,
+       "fcp": 764,
+       "lcp": 924,
+       "app_ran": 642,
+       "hero_start": 643,
+       "hero_end": 659,
+       "hero_transfer": 0,
+       "app_end": 562,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t1swra0",
+      "open": "ok",
+      "page": {
+       "load": 307,
+       "dcl": 303,
+       "ttfb": 93,
+       "fcp": 580,
+       "lcp": 580,
+       "app_ran": 297,
+       "hero_start": 298,
+       "hero_end": 306,
+       "hero_transfer": 0,
+       "app_end": 285,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swra1",
+      "open": "ok",
+      "page": {
+       "load": 556,
+       "dcl": 514,
+       "ttfb": 143,
+       "fcp": 508,
+       "lcp": 792,
+       "app_ran": 474,
+       "hero_start": 476,
+       "hero_end": 532,
+       "hero_transfer": 0,
+       "app_end": 448,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swra2",
+      "open": "ok",
+      "page": {
+       "load": 588,
+       "dcl": 566,
+       "ttfb": 163,
+       "fcp": 632,
+       "lcp": 980,
+       "app_ran": 565,
+       "hero_start": 566,
+       "hero_end": 583,
+       "hero_transfer": 0,
+       "app_end": 486,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   },
+   "swiftra_lcpp": {
+    "cold": [
+     {
+      "rid": "c1swpp0",
+      "open": "ok",
+      "page": {
+       "load": 573,
+       "dcl": 567,
+       "ttfb": 218,
+       "fcp": 896,
+       "lcp": 896,
+       "app_ran": 566,
+       "hero_start": 567,
+       "hero_end": 572,
+       "hero_transfer": 0,
+       "app_end": 552,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swpp1",
+      "open": "ok",
+      "page": {
+       "load": 459,
+       "dcl": 390,
+       "ttfb": 84,
+       "fcp": 552,
+       "lcp": 552,
+       "app_ran": 377,
+       "hero_start": 378,
+       "hero_end": 446,
+       "hero_transfer": 0,
+       "app_end": 375,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "c1swpp2",
+      "open": "ok",
+      "page": {
+       "load": 598,
+       "dcl": 528,
+       "ttfb": 83,
+       "fcp": 700,
+       "lcp": 852,
+       "app_ran": 486,
+       "hero_start": 488,
+       "hero_end": 573,
+       "hero_transfer": 0,
+       "app_end": 443,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "warm": [
+     {
+      "rid": "w1swpp0",
+      "open": "ok",
+      "page": {
+       "load": 641,
+       "dcl": 636,
+       "ttfb": 126,
+       "fcp": 832,
+       "lcp": 832,
+       "app_ran": 568,
+       "hero_start": 577,
+       "hero_end": 638,
+       "hero_transfer": 0,
+       "app_end": 533,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swpp1",
+      "open": "ok",
+      "page": {
+       "load": 497,
+       "dcl": 492,
+       "ttfb": 140,
+       "fcp": 816,
+       "lcp": 816,
+       "app_ran": 480,
+       "hero_start": 481,
+       "hero_end": 490,
+       "hero_transfer": 0,
+       "app_end": 425,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "w1swpp2",
+      "open": "ok",
+      "page": {
+       "load": 681,
+       "dcl": 657,
+       "ttfb": 121,
+       "fcp": 748,
+       "lcp": 932,
+       "app_ran": 637,
+       "hero_start": 641,
+       "hero_end": 670,
+       "hero_transfer": 0,
+       "app_end": 512,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "train": [
+     {
+      "rid": "t1swpp0",
+      "open": "ok",
+      "page": {
+       "load": 647,
+       "dcl": 570,
+       "ttfb": 100,
+       "fcp": 908,
+       "lcp": 964,
+       "app_ran": 567,
+       "hero_start": 569,
+       "hero_end": 644,
+       "hero_transfer": 0,
+       "app_end": 554,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swpp1",
+      "open": "ok",
+      "page": {
+       "load": 678,
+       "dcl": 621,
+       "ttfb": 119,
+       "fcp": 808,
+       "lcp": 988,
+       "app_ran": 599,
+       "hero_start": 600,
+       "hero_end": 665,
+       "hero_transfer": 0,
+       "app_end": 551,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     },
+     {
+      "rid": "t1swpp2",
+      "open": "ok",
+      "page": {
+       "load": 614,
+       "dcl": 597,
+       "ttfb": 129,
+       "fcp": 696,
+       "lcp": 696,
+       "app_ran": 542,
+       "hero_start": 548,
+       "hero_end": 602,
+       "hero_transfer": 0,
+       "app_end": 541,
+       "app_transfer": 0,
+       "resources": 3,
+       "transfer": 1706
+      },
+      "network": [],
+      "closed_tabs": 1
+     }
+    ],
+    "flags_applied": true
+   }
+  }
+ ],
+ "page_cache_dropped": false,
+ "devtools_recovery": [],
+ "summary": {
+  "chromium_defaults": {
+   "cold": {
+    "n": 6,
+    "of": 6,
+    "load_ms": 550.0,
+    "lcp_ms": 810.0,
+    "fcp_ms": 810.0,
+    "app_ran_ms": 529.0,
+    "hero_end_ms": 542.0,
+    "network_hits": 0.0
+   },
+   "warm": {
+    "n": 6,
+    "of": 6,
+    "load_ms": 588.5,
+    "lcp_ms": 786.0,
+    "fcp_ms": 786.0,
+    "app_ran_ms": 565.5,
+    "hero_end_ms": 576.5,
+    "network_hits": 0.0
+   }
+  },
+  "swiftra": {
+   "cold": {
+    "n": 6,
+    "of": 6,
+    "load_ms": 550.0,
+    "lcp_ms": 816.0,
+    "fcp_ms": 780.0,
+    "app_ran_ms": 514.5,
+    "hero_end_ms": 527.5,
+    "network_hits": 0.0
+   },
+   "warm": {
+    "n": 6,
+    "of": 6,
+    "load_ms": 583.0,
+    "lcp_ms": 740.0,
+    "fcp_ms": 740.0,
+    "app_ran_ms": 560.0,
+    "hero_end_ms": 569.5,
+    "network_hits": 0.0
+   }
+  },
+  "swiftra_lcpp": {
+   "cold": {
+    "n": 6,
+    "of": 6,
+    "load_ms": 584.5,
+    "lcp_ms": 886.0,
+    "fcp_ms": 834.0,
+    "app_ran_ms": 523.5,
+    "hero_end_ms": 572.5,
+    "network_hits": 0.0
+   },
+   "warm": {
+    "n": 6,
+    "of": 6,
+    "load_ms": 540.5,
+    "lcp_ms": 824.0,
+    "fcp_ms": 782.0,
+    "app_ran_ms": 500.5,
+    "hero_end_ms": 521.0,
+    "network_hits": 0.0
+   }
+  }
+ }
+}

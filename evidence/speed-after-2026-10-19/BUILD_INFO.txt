@@ -1,0 +1,112 @@
+tag=155.0.8059.80
+commit=43a195105613ac83c21d3f14de279f4a045c7da0
+cpu=x64
+built_on=github ubuntu-24.04 standard runner (staged, stage 0)
+build_tools=37.0.0
+patch_hash=c36a1cf71cdb0f4b0adca475f027372592332324c1a60afac9d596f4c7653be4 build_key=1fe3b74753027f2d
+signing=release signer_cert_sha256=029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06 expected_cert_sha256=029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06
+--- patches
+0000-upstream-155.0.8059.84.patch
+0001-swiftra-app-name.patch
+0002-swiftra-strings.py
+0003-fre-no-false-uma-claim.patch
+0004-google-services-no-false-metrics-toggle.patch
+0005-safety-hub-no-false-up-to-date.patch
+0006-swiftra-shield.patch
+0007-swiftra-shield-honest-interstitial.patch
+0008-swiftra-standard-local-and-esb-honest.patch
+0009-swiftra-quiet-start.patch
+0010-swiftra-advanced-defaults.patch
+0011-swiftra-fingerprint-shield.patch
+0012-swiftra-adblock.patch
+0013-swiftra-adblock-ruleset.py
+0016-swiftra-speedpack.py
+0015-swiftra-download-shield.patch
+0017-swiftra-turbo-download.patch
+overlay: chrome/android/java/res/drawable/blue_google_shield.xml
+overlay: chrome/android/java/res_chromium_base/drawable/themed_app_icon.xml
+overlay: chrome/android/java/res_chromium_base/mipmap-hdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-hdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-hdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-mdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-mdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-mdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xhdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xhdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xhdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxhdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxhdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxhdpi/layered_app_icon_background.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxxhdpi/app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon.png
+overlay: chrome/android/java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-hdpi/fre_product_logo.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-hdpi/product_logo_name.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-mdpi/fre_product_logo.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-mdpi/product_logo_name.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-xhdpi/fre_product_logo.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-xhdpi/product_logo_name.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-xxhdpi/fre_product_logo.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-xxhdpi/product_logo_name.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-xxxhdpi/fre_product_logo.png
+overlay: components/browser_ui/styles/android/java/res_chromium/drawable-xxxhdpi/product_logo_name.png
+overlay: components/browser_ui/styles/android/java/res_chromium/raw/signin_spin.json
+overlay: components/ntp_tiles/resources/default_popular_sites.json
+--- args.gn
+target_os = "android"
+target_cpu = "x64"
+is_debug = false
+is_official_build = false
+is_component_build = false
+symbol_level = 0
+blink_symbol_level = 0
+v8_symbol_level = 0
+dcheck_always_on = false
+use_siso = false
+use_remoteexec = false
+treat_warnings_as_errors = false
+android_static_analysis = "off"
+chrome_public_manifest_package = "com.swiftra.app"
+debuggable_apks = false
+# c2c: Chromium testing/variations/README.md: "Non-developer builds of Chromium (for example,
+# non-Chrome browsers ...) should disable the testing config". Without this an unbranded build
+# applies all ~1128 experimental studies by default (incl. MaliciousApkDownloadCheck = APK download
+# pings to Google in Standard protection, CSD skip-scoring pings). ungoogled-chromium/Thorium do the same.
+# 0016 (2026-10-18, Swiftra Speed Pack): the testing config is ON again, but patches/0016-swiftra-speedpack.py
+# rewrites it to ONLY audited performance studies (no Google contact, no UI change) + Swiftra's own
+# (SwiftraParallelDownloading). Compiled in, applied at startup instead of a seed -- nothing is downloaded.
+# Device check: scripts/ci/speedpack_check.py via shield_e2e (chrome://version/?show-variations-cmd).
+disable_fieldtrial_testing_config = false
+# 0012/0013 (2026-10-18): non-official builds otherwise ship components/resources/sample_credits.html instead of the
+# real third-party notices (components/resources/BUILD.gn: generate_about_credits = is_official_build). Swiftra must
+# carry the Chromium third-party licence notices and the ad-block list attribution (chrome://credits).
+generate_about_credits = true
+--- sha256
+2bd84b64401f43a981d0fffae555c035db5ea145f027d4a1bb134d2989b2c942
+--- bytes
+398886255
+--- clang
+llvmorg-24-init-7747-g62397f8b-27
+--- apksigner verify (rc=0)
+
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): false
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+V3.0 Signer: certificate DN: CN=Swiftra, O=Swiftra, C=IN
+V3.0 Signer: certificate SHA-256 digest: 029de0fab8f35ee0990ced814d38ab47d6a1be9bc49ffea9bbf4dc190010fe06
+V3.0 Signer: certificate SHA-1 digest: 56d9b5b2ad23243cd16f0f2e6164384ba8faeb02
+V3.0 Signer: certificate MD5 digest: afe4fa2488c3b5c81348219a3533e3bf
+V3.0 Signer: key algorithm: RSA
+V3.0 Signer: key size (bits): 4096
+--- aapt2 badging (rc=0)
+package: name='com.swiftra.app' versionCode='805908008' versionName='155.0.8059.80' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+minSdkVersion:'29'
+targetSdkVersion:'37'
+application-label:'Swiftra'
+native-code: 'x86_64'
