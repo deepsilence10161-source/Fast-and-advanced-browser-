@@ -292,3 +292,8 @@ Swiftra signing certificate. The manifest is written and signed by `.github/work
 (`scripts/release/update_manifest.py`) only for APKs that passed the E2E + audit gates.
 Tests: `tests/test_update_channel.py`; Java logic compiled with javac 11 against stubs + real org.json and checked
 with a manifest signed by the real key (10/10, 2026-10-19). Safety Hub keeps 0005's "can't check" wording.
+
+Note (2026-10-19): the upstream study `HttpsFirstModeV2ForTypicallySecureUsers` (fieldtrial_testing_config @155:
+`Enabled` -> feature of the same name) auto-enables HTTPS-First only for users who rarely visit HTTP sites. 0010 already
+turns HTTPS-First balanced on for every user (ADVANCED_E2E hfm=warn on x64 + arm64), so the study is a subset of
+Swiftra's default; it stays out of the Speed Pack (tests/test_speedpack.py `banned`).
