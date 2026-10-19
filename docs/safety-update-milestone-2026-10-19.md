@@ -2,6 +2,8 @@
 
 **यह पूरे प्रोजेक्ट के पूरा होने का दावा नहीं है।** `MASTER_PROMPT.md` §15 का पूरा मूल दायरा अपरिवर्तित है। Current installed Chrome/physical phone तुलना, user-owned Google/Arena खाते, read-aloud, extensions और शेष parity/security gates अलग रहते हैं।
 
+Publication अलग जाँची गई: public `Swiftra-arm64.apk` asset **656808306**, updated **16:37:12 UTC**, अब परीक्षण वाले `a3df4cf7…248f02` digest से मेल खाता है; x64 public digest `b1ea03ea…aa11ff` अपरिवर्तित है। उस निरीक्षण में publisher workflow **39284394628** अभी चल रहा था—APK की उपलब्धता को अंतिम signed-manifest/workflow completion न कहें। `publication-observed.json` में snapshot है। Rolling `--clobber` uploads atomic नहीं हैं; transient availability की अलग policy improvement शेष है।
+
 ## अब वास्तविक दोनों-ABI प्रमाण
 
 | वातावरण | source APK SHA-256 | native Safety | fixtures के बाद उसी profile पर Keystore cookie | प्रमाण |
@@ -61,6 +63,7 @@ Positive case वास्तविक HTTPS + app signature verifier इस्�
 ## स्रोत / सुरक्षा सीमा
 
 - Real native Chromium source fork; WebView mockup / APK relabel नहीं। Signing keys/store दोबारा नहीं बनाए गए। कोई secret/private prefs artifacts में नहीं डाले गए।
+- Commit guard ने `keystore` filename से जुड़े public file-checksums को पहले generic-key false positive माना और commit रोका। हर value वास्तविक file digest से सत्यापित करके checksum manifest को file/sha256 records में बदला गया; scanner/rules/allowlist को ढीला नहीं किया। बाद में staged और range scans साफ़ रहे। Readable log copies केवल trailing whitespace normalize करती हैं; exact originals `original-text-logs.json` में सुरक्षित हैं।
 - केवल public repository के standard free runners उपयोग हुए। क्षणिक API queue/status/step snapshots को test outcome नहीं माना गया; actual downloaded artifacts निर्णायक हैं।
 - Auth audit ने Android nonempty-message CHECK-crash और stock controller में BIOMETRIC_WEAK की अनुमति पकड़ी। इसे strong-only vault समझकर कॉपी न करें; 0022 अभी unimplemented है।
 - `PASS (Android emulator)` ≠ `PASS (actual Android device)`। Google/Arena user-account validation और native update-button download अभी अलग हैं। पूर्ण सुरक्षा या अप्रमाणित “100x” तेज़ी का दावा नहीं है।

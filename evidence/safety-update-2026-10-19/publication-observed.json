@@ -1,0 +1,25 @@
+{
+  "checked_utc": "2026-10-19T16:39:51.899992+00:00",
+  "publish_run_id": 39284394628,
+  "workflow_status": "in_progress",
+  "workflow_conclusion": null,
+  "release_id": 417019857,
+  "observed_public_apk_assets": [
+    {
+      "id": 656808306,
+      "name": "Swiftra-arm64.apk",
+      "size": 367006055,
+      "digest": "sha256:a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+      "updated_at": "2026-10-19T16:37:12Z"
+    },
+    {
+      "id": 656351306,
+      "name": "Swiftra-x64.apk",
+      "size": 398885843,
+      "digest": "sha256:b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+      "updated_at": "2026-10-19T13:25:46Z"
+    }
+  ],
+  "tested_new_arm_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "limits": "Native tests and E2E gate are PASS independently of publication. Do not claim latest public ARM download is the tested new APK until its digest is present. Rolling --clobber uploads are non-atomic; transient absence/availability risk is separate from binary integrity. No HTTP download outage is inferred solely from this asset list."
+}
