@@ -49,10 +49,52 @@ TITLES = {
 
 
 def pref_root(raw):
-    root = ET.fromstring(raw)
+    # AOSP FastXmlSerializer writes &#0; .. &#31; for controls inside Java strings.
+    # Android can read these, but Expat/ElementTree rejects the XML-1.0-forbidden ones (error 14).
+    # Decode ONLY those references losslessly in memory; do not strip/sanitize unrelated values.
+    text = raw.decode("utf-8")
+    if any(mark in text for mark in ("<!DOCTYPE", "<!ENTITY", "<![CDATA[")):
+        raise RuntimeError("unsupported SharedPreferences XML construct")
+    prefix = "__SWIFTRA_XML_CONTROL_"
+    while prefix in text:
+        prefix += "_"
+    controls = {}
+
+    def substitute(match):
+        value = match.group(1)
+        point = int(value[1:], 16) if value.startswith("x") else int(value)
+        if not (0 <= point < 32 and point not in (9, 10, 13)):
+            return match.group(0)
+        token = prefix + str(len(controls)) + "__"
+        controls[token] = chr(point)
+        return token
+
+    escaped = re.sub(r"&#(x[0-9A-Fa-f]+|[0-9]+);", substitute, text)
+    root = ET.fromstring(escaped)
     if root.tag != "map":
         raise ValueError("unexpected SharedPreferences root")
+
+    def restore(value):
+        if value is not None:
+            for token, char in controls.items():
+                value = value.replace(token, char)
+        return value
+
+    for node in root.iter():
+        if prefix in node.tag or any(prefix in key for key in node.attrib):
+            raise RuntimeError("control reference outside SharedPreferences values")
+        node.text, node.tail = restore(node.text), restore(node.tail)
+        for key, value in node.attrib.items():
+            node.set(key, restore(value))
     return root
+
+
+def prefs_bytes(root):
+    # ElementTree can hold controls in Python strings but emits raw invalid XML. Put them back
+    # in Android's numeric-reference form before any bytes reach disk. This also preserves NULs.
+    text = ET.tostring(root, encoding="unicode", xml_declaration=True)
+    text = re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f]", lambda m: "&#%d;" % ord(m.group(0)), text)
+    return text.encode("utf-8")
 
 
 def update_nodes(raw):
@@ -65,7 +107,7 @@ def replace_update_nodes(raw, nodes):
         if n.get("name", "").startswith(PREFIX):
             root.remove(n)
     root.extend(copy.deepcopy(nodes))
-    return ET.tostring(root, encoding="utf-8", xml_declaration=True)
+    return prefs_bytes(root)
 
 
 def with_last_ok(raw, timestamp):

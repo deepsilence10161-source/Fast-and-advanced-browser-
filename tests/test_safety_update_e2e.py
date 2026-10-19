@@ -60,6 +60,46 @@ def test_reset_only_update_prefs_and_restore_original_nodes():
     assert mapping(s.replace_update_nodes(reset, s.update_nodes(PREFS))) == mapping(PREFS)
 
 
+@pytest.mark.parametrize("point", [n for n in range(32) if n not in (9, 10, 13)])
+def test_android_control_references_preserved_losslessly(point):
+    raw = ('<map><string name="unrelated">A&#%d;B</string>'
+           '<string name="swiftra_update_test">U&#x%x;V</string>'
+           '<string name="swiftra_oscrypt_wrapped_v1">wrapped-fixture</string>'
+           '<long name="swiftra_update_last_ok_ms" value="123" /></map>' % (point, point)).encode()
+    before = s.pref_root(raw)
+    assert before.find("string").text == "A" + chr(point) + "B"
+    original = s.update_nodes(raw)
+    reset = s.replace_update_nodes(raw, [])
+    assert s.pref_root(reset).find("string").text == "A" + chr(point) + "B"
+    assert ("&#%d;" % point).encode() in reset
+    assert bytes([point]) not in reset
+    restored = s.replace_update_nodes(reset, original)
+    def data(blob):
+        return {n.get("name"): (n.tag, dict(n.attrib), n.text) for n in s.pref_root(blob)}
+    assert data(restored) == data(raw)
+    assert data(reset)["swiftra_oscrypt_wrapped_v1"] == data(raw)["swiftra_oscrypt_wrapped_v1"]
+
+
+def test_control_codec_keeps_literal_references_unicode_and_marker_collisions():
+    raw = ('<map><string name="unrelated">नमस्ते __SWIFTRA_XML_CONTROL_0__ &amp;#0; &#0;</string>'
+           '<string name="attribute&#1;key">value</string></map>').encode()
+    a = s.pref_root(raw)
+    b = s.pref_root(s.replace_update_nodes(raw, []))
+    assert a.find("string").text == b.find("string").text
+    assert "&amp;#0;" in s.prefs_bytes(b).decode()
+    assert list(a)[1].get("name") == list(b)[1].get("name") == "attribute" + chr(1) + "key"
+
+
+def test_control_codec_does_not_repair_unsupported_xml_constructs():
+    for raw in (b'<!DOCTYPE map [<!ENTITY x "value">]><map />',
+                b'<map><string name="x"><![CDATA[&#0;]]></string></map>',
+                b'<map><str&#1;ing name="x">value</str&#1;ing></map>'):
+        with pytest.raises((RuntimeError, ET.ParseError)):
+            s.pref_root(raw)
+    with pytest.raises(ET.ParseError):
+        s.pref_root(b'<map><string name="x">&#x110000;</string></map>')
+
+
 def test_expiry_fixture_does_not_change_manifest_or_wrapped_key():
     changed = s.with_last_ok(PREFS, 999)
     before, after = mapping(PREFS), mapping(changed)

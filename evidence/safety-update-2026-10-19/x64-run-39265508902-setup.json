@@ -1,0 +1,8 @@
+{
+ "package": "com.swiftra.app",
+ "cases": {},
+ "restored": false,
+ "stage": "read_original_prefs",
+ "setup_error": "prefs parse refused: bytes=43894 format=xml code=14 position=(23, 66) controls=0",
+ "verdict": "not_run"
+}
