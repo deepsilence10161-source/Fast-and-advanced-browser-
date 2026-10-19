@@ -36,7 +36,14 @@ def tested_sha(d):
 
 def required_for(d):
     t = build_info(d)
-    return REQUIRED + [mk for patch, mk in BY_PATCH.items() if re.search(r"^" + re.escape(patch) + r"\s*$", t, re.M)]
+    def has_patch(patch):
+        return bool(re.search(r"^" + re.escape(patch) + r"\s*$", t, re.M))
+    markers = REQUIRED + [mk for patch, mk in BY_PATCH.items() if has_patch(patch)]
+    # Safety check's recent-verified state requires both the mediator and the signed channel.
+    # Older builds without the channel must not acquire an impossible feature requirement.
+    if has_patch("0005-safety-hub-no-false-up-to-date.patch") and has_patch("0020-swiftra-update-channel.patch"):
+        markers.append("SAFETY_UPDATE_E2E")
+    return markers
 
 
 def gate(d, apk_sha):

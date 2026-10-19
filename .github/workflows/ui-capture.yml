@@ -14,6 +14,11 @@ on:
       source_variant:
         description: "chromium_source_* के लिए: state variant (a1 = baseline; branded/patched builds अलग variant में)"
         default: "a1"
+      checks:
+        description: "full = whole regression and publish gates; safety_update = focused native acceptance only (never publishes)"
+        type: choice
+        options: [full, safety_update]
+        default: full
 permissions:
   contents: write   # chromium_source_*: APK draft build-state release में है (drafts केवल write-access को दिखते हैं)। कुछ upload नहीं होता।
 jobs:
@@ -50,7 +55,7 @@ jobs:
         if: startsWith(matrix.target, 'chromium_source_')
         with: { distribution: temurin, java-version: "17" }
       - name: Throwaway-key re-signed copy (negative update test)
-        if: startsWith(matrix.target, 'chromium_source_')
+        if: startsWith(matrix.target, 'chromium_source_') && inputs.checks != 'safety_update'
         run: bash scripts/ci/make_foreign_apk.sh dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
       - name: Harness deps
         run: pip install -q websocket-client h2 androguard
@@ -70,7 +75,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
           disable-animations: true
           script: |
-            bash scripts/ci/run_capture.sh ${{ matrix.target }}
+            bash scripts/ci/run_capture.sh ${{ matrix.target }} "${{ inputs.checks || 'full' }}"
             if [ -f dl/ChromePublic.apk ] && [ -f "$RUNNER_TEMP/foreign.apk" ]; then bash scripts/ci/device_checks.sh ${{ matrix.target }} dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"; fi
             if [ -f dl/ChromePublic.apk ]; then bash scripts/ci/diag_dump.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4
@@ -82,7 +87,7 @@ jobs:
     # GITHUB_TOKEN-started runs (after-build) do not fire workflow_run, so start publish-latest explicitly.
     # It waits for this run to complete, then gates the APK; a duplicate (also via workflow_run) only finds "already published".
     needs: capture
-    if: always()
+    if: always() && inputs.checks != 'safety_update'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

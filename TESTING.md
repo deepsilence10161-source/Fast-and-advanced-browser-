@@ -196,6 +196,14 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 | 12 | 38704128045 (#7) | ARM64: journey 21/21, 0 ANR; पर chat fixture tab में "Aw, Snap!", harness `WebSocketTimeoutException` | Renderer process ARM translation में SIGSEGV (`libndk_translation.so`); यही crash runs 38699920976 और 38701948978 के logcat में भी (11–12 बार); x86_64 और Chrome 133 में 0 | Emulator पर ठीक नहीं हो सकता। ARM64 web-rendering परिणाम **केवल असली ARM64 फ़ोन** से |
 | 11 | पुराना (पिछली chat) | synthetic chat प्रयोग की मूल फ़ाइलें इस workspace में मौजूद नहीं थीं | handoff में बताए paths (`/home/user/android-browser/…`) उपलब्ध नहीं | प्रयोग **नए सिरे से बनाया** (`experiments/chat-rendering/`)। पिछली रिपोर्ट के 30/30 और उसकी विफलताओं (≈9647 px ऊँचाई, 139 px scroll shift, fractional CSS) को यहाँ दोबारा सत्यापित नहीं किया गया |
 
+### 3.1 Safety check update-state harness (19-10-2026, next session)
+
+- Handoff §9.2: `scripts/ci/safety_update_e2e.py` adds native Safety check acceptance for a real production signature check, rejected signature with no prior success, genuine recent success, stale success and future-clock timestamp. Only update preferences change temporarily; wrapped OSCrypt key and unrelated prefs are preserved and update entries are restored.
+- Both existing x64 emulator/arm64 Redroid workflows support `checks=safety_update` for focused unchanged-APK acceptance; focused jobs cannot dispatch publish. Full release E2E requires `SAFETY_UPDATE_E2E PASS` when both 0005 and 0020 are present.
+- First full local run: **2 failed, 197 passed, 8 skipped**. Caught a missing ARM focused-publish guard and an A/B test's stale exact-condition assertion. Both fixed before pushing or dispatching.
+- Final local run: **199 passed, 8 skipped in 123.33s**; both workflow YAML parses, shell syntax, `git diff --check`, and pristine @155 patch 0005/0020 dry-runs (fuzz 0) passed. **PASS (static only)**, not Android evidence.
+- Android focused results: pending, **NOT RUN / BLOCKED** until actual artifacts are inspected. Research, acceptance conditions and separate update-button intent risk: `docs/safety-update-e2e.md`.
+
 ## 4. चलाया नहीं गया / blocked
 | क्या | क्यों | क्या चाहिए |
 |---|---|---|

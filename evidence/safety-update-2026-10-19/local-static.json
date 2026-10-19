@@ -1,0 +1,58 @@
+{
+  "checked_utc": "2026-10-19T13:53:46.036036+00:00",
+  "layer": "static/unit only; not Android runtime",
+  "chromium_tag": "155.0.8059.80",
+  "baseline_pytest": {
+    "passed": 183,
+    "skipped": 8
+  },
+  "first_changed_suite": {
+    "passed": 197,
+    "failed": 2,
+    "skipped": 8,
+    "failures": [
+      "missing focused ARM publish guard",
+      "stale A/B workflow condition assertion"
+    ]
+  },
+  "corrected_suite": {
+    "passed": 199,
+    "failed": 0,
+    "skipped": 8,
+    "seconds": 123.33
+  },
+  "checks": {
+    "workflow_yaml_parse": [
+      "ui-capture.yml",
+      "arm64-device-e2e.yml"
+    ],
+    "shell_syntax": "scripts/ci/run_capture.sh",
+    "patch_dry_run_fuzz_0": [
+      "0005-safety-hub-no-false-up-to-date.patch",
+      "0020-swiftra-update-channel.patch"
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/safety_hub/android/java/src/org/chromium/chrome/browser/safety_hub/SafetyHubUpdateCheckModuleMediator.java",
+      "sha256": "67ac601da44acd4015929d8f51c1543919f0ed9c7a088784e6feaacde57346f2"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/safety_hub/android/java/src/org/chromium/chrome/browser/safety_hub/SafetyHubFetchService.java",
+      "sha256": "522b252fc68294ab2652f22d50d520820f2aeada14b08dba1ec6ecb63167c39f"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/UpdateStatusProvider.java",
+      "sha256": "7157255e3d4a2ce162c34f83a48318a6b1f2c176a9aea5190df0757ff42c172a"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/safety_hub/android/java/src/org/chromium/chrome/browser/safety_hub/SafetyHubFragment.java",
+      "sha256": "d7adc370de41029c2c7cbf5bf19738f670198f136ae5faf2dc49576f4728ec12"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/strings/android_chrome_strings.grd",
+      "sha256": "064cff0fd772e3e49462684888d37fc0f7d0283d632b1cf697d24118e304aa6f"
+    }
+  ],
+  "android_results": "NOT RUN / BLOCKED pending inspected run evidence"
+}

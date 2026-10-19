@@ -16,6 +16,11 @@ on:
       ab_baseline_release:
         description: "optional: release tag with a baseline APK; then A/B (new,base,new,base) bench + cold start on this device"
         default: ""
+      checks:
+        description: "full = whole regression and publish gates; safety_update = focused native acceptance only (never publishes)"
+        type: choice
+        options: [full, safety_update]
+        default: full
 permissions:
   contents: write   # draft state release पढ़ना (drafts केवल write-access को दिखते हैं)
 jobs:
@@ -65,13 +70,14 @@ jobs:
           test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/$T/BUILD_INFO.txt | tail -1)"
           echo "sha256 OK"; grep -E "^(package|application-label|native-code)" out/$T/BUILD_INFO.txt
       - name: Throwaway-key re-signed copy (negative update test)
+        if: inputs.checks != 'safety_update'
         run: bash scripts/ci/make_foreign_apk.sh dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
       - name: Harness deps
         run: pip install -q websocket-client pillow h2 androguard
       - name: UI journey + long-chat fixture
-        run: bash scripts/ci/run_capture.sh "$T"
+        run: bash scripts/ci/run_capture.sh "$T" "${{ inputs.checks || 'full' }}"
       - name: A/B same device (new vs baseline APK, alternated; scripts/ci/ab_bench.py)
-        if: ${{ inputs.ab_baseline_release != '' }}
+        if: ${{ inputs.ab_baseline_release != '' && inputs.checks != 'safety_update' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -81,6 +87,7 @@ jobs:
           timeout 2400 python3 scripts/ci/ab_bench.py --package "${PKG:-com.swiftra.app}" --new dl/ChromePublic.apk \
             --base dl/base.apk --base-label "${{ inputs.ab_baseline_release }}" --out out/$T/ab 2>&1 | tee out/$T/ab_bench.txt || true
       - name: Device checks (launcher, non-debuggable, same-key update, foreign-key rejected, scroll jank, reinstall)
+        if: inputs.checks != 'safety_update'
         run: bash scripts/ci/device_checks.sh "$T" dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"
       - name: Crash/exit diagnostics (launch probe, ApplicationExitInfo, tombstones, full logcat)
         if: always()
@@ -101,7 +108,7 @@ jobs:
     # GITHUB_TOKEN-started runs (after-build) do not fire workflow_run, so start publish-latest explicitly.
     # It waits for this run to complete, then gates the APK; a duplicate (also via workflow_run) only finds "already published".
     needs: e2e
-    if: always()
+    if: always() && inputs.checks != 'safety_update'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:

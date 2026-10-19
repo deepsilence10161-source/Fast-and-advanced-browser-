@@ -36,3 +36,28 @@ def test_update_e2e_required_only_with_0020(tmp_path):
     assert any("UPDATE_E2E" in r for r in g.gate(str(d), SHA))
     (d / "e.txt").write_text("\n".join(ALL) + "\nUPDATE_E2E PASS\nDEVICE_CHECKS: 9 pass, 0 fail\n")
     assert g.gate(str(d), SHA) == []
+
+
+def test_safety_update_required_when_mediator_and_channel_present(tmp_path):
+    d = tmp_path / "safety"; d.mkdir()
+    (d / "BUILD_INFO.txt").write_text(
+        "--- patches\n0005-safety-hub-no-false-up-to-date.patch\n0020-swiftra-update-channel.patch\n"
+        f"--- sha256\n{SHA}\n")
+    text = "\n".join(ALL) + "\nUPDATE_E2E PASS\nDEVICE_CHECKS: 9 pass, 0 fail\n"
+    (d / "e.txt").write_text(text)
+    assert any("SAFETY_UPDATE_E2E" in r for r in g.gate(str(d), SHA))
+    (d / "e.txt").write_text(text + "SAFETY_UPDATE_E2E NOT_RUN\n")
+    assert g.gate(str(d), SHA)
+    (d / "e.txt").write_text(text + "SAFETY_UPDATE_E2E PASS\n")
+    assert g.gate(str(d), SHA) == []
+    (d / "e.txt").write_text(text + "SAFETY_UPDATE_E2E PASS\nSAFETY_UPDATE_E2E FAIL\n")
+    assert g.gate(str(d), SHA)
+
+
+def test_old_safety_patch_without_channel_does_not_require_new_case(tmp_path):
+    d = tmp_path / "old_safety"; d.mkdir()
+    (d / "BUILD_INFO.txt").write_text(
+        f"--- patches\n0005-safety-hub-no-false-up-to-date.patch\n--- sha256\n{SHA}\n")
+    (d / "e.txt").write_text("\n".join(ALL) + "\nDEVICE_CHECKS: 9 pass, 0 fail\n")
+    assert "SAFETY_UPDATE_E2E" not in g.required_for(str(d))
+    assert g.gate(str(d), SHA) == []
