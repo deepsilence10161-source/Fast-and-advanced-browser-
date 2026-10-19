@@ -301,3 +301,22 @@ Medians; 6/6 loads each. SPEED_E2E is PARTIAL only because the JS bench was skip
 Repeat-visit candidate: `swiftra_lcpp` was slower (cold LCP 886 ms vs 816, warm 824 vs 740). Decision: **not shipped**.
 Harness note: restarts into chromium_defaults still stall adb (recovered by `adb reconnect`; stacks_c0s0.txt saved);
 Swiftra-mode restarts did not stall.
+
+## Levers checked on 2026-10-19 (gitiles @155.0.8059.80) — not added, with reasons
+
+| Lever | Finding | Decision |
+|---|---|---|
+| `optimize_for_size` | `is_high_end_android` is true for arm64/x64, so `optimize_for_size = false`: we already build at -O2 for speed (`build/config/compiler/compiler.gni`, `chrome_build.gni`) | nothing to gain |
+| `exclude_unwind_tables` | false on Android even for official Chrome (debuggerd needs `.eh_frame`); 36 MB size only, no speed | keep |
+| ThinLTO | only with `is_official_build`; not feasible on 4-core free runners | no |
+| HappyEyeballsV2 | `FEATURE_ENABLED_BY_DEFAULT` in `net/base/features.cc` @155 | already on |
+| RendererProcessLimitOnAndroid | caps renderer processes (memory), not a speed feature | no |
+| PreconnectCreateNewTab (`PreconnectOnTabCreation`) | connects to the search engine on every new tab (third-party request) | no (privacy rule) |
+| HttpCacheZstdCompression | smaller cache entries, extra CPU per hit; no measured speed gain | no |
+| ART baseline profile | `enable_baseline_profiles` / `art_profile_path` are declared in `config.gni` but not wired in `rules.gni` @155; and our ART_STARTUP shows a fully AOT ("speed") start is not faster than an install-time start (x64: install 2079 / profile 2024 / speed 2163 ms) | no gain |
+| PGO + orderfile (arm64) | Google's own arm64 profile + orderfile (CIPD), as in official Chrome | **in progress** (build 39185097028) |
+
+Harness fix (8c52f62): in chromium_defaults mode the harness forwarded `tcp:9222` before the DevTools socket existed
+(`adbd: failed to connect to socket 'localabstract:chrome_devtools_remote'`), after which the host adb server stopped
+answering for ~60 s while the browser UI was up (logcat 05:47:58-05:48:59, run 39202833756). `restart()` now forwards
+only once `/proc/net/unix` lists the socket. Verification run: 39218924046.
