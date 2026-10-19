@@ -1,0 +1,7 @@
+Source: https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/39249911374/job/118050897372
+Run: 39249911374 (historical, not a new Android run)
+2026-10-19T12:48:55.3858177Z UPDATE_E2E PASS bad:fetched=True,item=False,badge=False good:fetched=True,item=True,badge=True 
+2026-10-19T13:18:53.4643367Z STARTUP_TRACE CAPTURED span_ms=10684.9 am_start={'TotalTime': 966, 'WaitTime': 967}
+2026-10-19T13:21:56.3595067Z ART_STARTUP MEASURED medians_ms={'install': 2224, 'profile': 2144, 'speed': 2065} gain_vs_install_pct={'profile': 3.6, 'speed': 7.1} status_changed=True
+2026-10-19T13:22:25.0330671Z KEYSTORE_E2E PASS prefix=sw1 plain_value=False token_in_db=False wrapped_pref=True cookie_after_restart=True keystore2=True 
+2026-10-19T13:23:02.8368410Z DEVICE_CHECKS: 9 पास, 0 विफल

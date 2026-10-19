@@ -202,7 +202,8 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - Both existing x64 emulator/arm64 Redroid workflows support `checks=safety_update` for focused unchanged-APK acceptance; focused jobs cannot dispatch publish. Full release E2E requires `SAFETY_UPDATE_E2E PASS` when both 0005 and 0020 are present.
 - First full local run: **2 failed, 197 passed, 8 skipped**. Caught a missing ARM focused-publish guard and an A/B test's stale exact-condition assertion. Both fixed before pushing or dispatching.
 - Final local run: **199 passed, 8 skipped in 123.33s**; both workflow YAML parses, shell syntax, `git diff --check`, and pristine @155 patch 0005/0020 dry-runs (fuzz 0) passed. **PASS (static only)**, not Android evidence.
-- Android focused results: pending, **NOT RUN / BLOCKED** until actual artifacts are inspected. Research, acceptance conditions and separate update-button intent risk: `docs/safety-update-e2e.md`.
+- First focused x64 run **39264127317** (`acf1bf0`): `SAFETY_UPDATE_E2E NOT_RUN cases=0/5 restored=False ParseError (private details withheld)`; failed before any update prefs were changed. The setup result artifact was inspected. Added metadata-only parse diagnostics and Activity backgrounding before force-stop (asynchronous SharedPreferences writes); the precise parse cause is not yet established. This is a harness blocker, not a reproduced app failure. No private prefs were emitted or retained in artifacts.
+- Android focused results remain **NOT RUN / BLOCKED** until corrected-run artifacts are inspected. Research, acceptance conditions and separate update-button intent risk: `docs/safety-update-e2e.md`.
 
 ## 4. चलाया नहीं गया / blocked
 | क्या | क्यों | क्या चाहिए |

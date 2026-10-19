@@ -152,9 +152,24 @@ def root_device():
         raise RuntimeError("rooted disposable CI Android device required")
 
 
+def stop_browser(package):
+    # SharedPreferences.apply() is asynchronous. Android flushes queued writes on Activity stop;
+    # do not kill immediately after first-run preference updates (AOSP SharedPreferencesImpl).
+    adb("shell", "input", "keyevent", "KEYCODE_HOME")
+    time.sleep(2)
+    checked_adb("shell", "am", "force-stop", package)
+
+
 def read_prefs(path):
     raw = checked_adb("exec-out", "cat", path)
-    pref_root(raw)
+    try:
+        pref_root(raw)
+    except ET.ParseError as e:
+        # Metadata only. Never dump the malformed private file, an error excerpt, or key values.
+        kind = "empty" if not raw else "abx" if raw.startswith(b"ABX\x00") else "xml" if raw.lstrip().startswith(b"<?xml") else "other"
+        controls = len(re.findall(rb"[\x00-\x08\x0b\x0c\x0e-\x1f]", raw))
+        raise RuntimeError("prefs parse refused: bytes=%d format=%s code=%s position=%s controls=%d" %
+                           (len(raw), kind, e.code, e.position, controls)) from None
     return raw
 
 
@@ -248,7 +263,7 @@ def prepare_browser(package, apk, out):
     launch(d)
     if not wait_ready(d, seconds=180):
         raise RuntimeError("no-account first run did not reach the browser")
-    adb("shell", "am", "force-stop", package)
+    stop_browser(package)
 
 
 def main():
@@ -270,7 +285,8 @@ def main():
             prepare_browser(a.package, a.apk, a.out)
         # CommandLineInitUtil also checks ADB_ENABLED (fresh Redroid differs from a prepared full run).
         adb("shell", "settings", "put", "global", "adb_enabled", "1")
-        adb("shell", "am", "force-stop", a.package)
+        stop_browser(a.package)
+        result["stage"] = "read_original_prefs"
         original = update_nodes(read_prefs(path))
         comp = resolve_launcher(a.package)
         if not comp:
@@ -280,6 +296,7 @@ def main():
         if not m:
             raise RuntimeError("installed version not found")
         version = m.group(1)
+        result["stage"] = "fetch_fixture"
         good, sig = fetch(REL + "swiftra-update-e2e.json"), fetch(REL + "swiftra-update-e2e.json.sig")
         bad = tamper(good)
         if not bad:
@@ -304,7 +321,8 @@ def main():
         adb("reverse", "tcp:%d" % PORT, "tcp:%d" % PORT)
         adb("shell", "am", "set-debug-app", "--persistent", a.package)
         for name in EXPECTED:
-            adb("shell", "am", "force-stop", a.package)
+            result["stage"] = name + ":prepare"
+            stop_browser(a.package)
             raw = read_prefs(path)
             if name in ("bad_fresh", "good_production"):
                 raw = replace_update_nodes(raw, [])
@@ -313,7 +331,9 @@ def main():
             elif name == "bad_future":
                 raw = with_last_ok(raw, device_ms() + 3600000)
             write_prefs(path, raw)
+            result["stage"] = name + ":run"
             result["cases"][name] = run_case(a.package, comp, path, name, a.out, version, hits)
+        result["stage"] = "done"
     except Exception as e:  # noqa: BLE001
         # Only our own fixed RuntimeError messages are safe; parser/third-party errors may expose private prefs.
         key = "error" if result["cases"] else "setup_error"
@@ -338,7 +358,7 @@ def main():
         json.dump(result, f, indent=1)
     passed = sum(case_pass(n, c) for n, c in result["cases"].items())
     print("SAFETY_UPDATE_E2E", {"pass": "PASS", "fail": "FAIL"}.get(result["verdict"], "NOT_RUN"),
-          "cases=%d/%d restored=%s" % (passed, len(EXPECTED), result["restored"]),
+          "cases=%d/%d restored=%s stage=%s" % (passed, len(EXPECTED), result["restored"], result.get("stage")),
           result.get("error", result.get("setup_error", "")), flush=True)
     return {"pass": 0, "fail": 1, "not_run": 2}[result["verdict"]]
 

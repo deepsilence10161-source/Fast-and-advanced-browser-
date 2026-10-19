@@ -156,6 +156,36 @@ def test_focused_mode_uses_same_harness_but_never_dispatches_publish():
         assert '${{ inputs.checks || \'full\' }}' in text
 
 
+def test_private_parse_error_has_metadata_not_content(monkeypatch):
+    private = b"not-xml private-sentinel-do-not-print"
+    monkeypatch.setattr(s, "checked_adb", lambda *args, **kwargs: private)
+    with pytest.raises(RuntimeError) as error:
+        s.read_prefs("/private/test.xml")
+    message = str(error.value)
+    assert "prefs parse refused" in message and "bytes=" in message and "position=" in message
+    assert "private-sentinel" not in message and "not-xml" not in message
+
+
+@pytest.mark.parametrize("raw,kind,controls", [(b"ABX\x00", "abx", 1), (b"", "empty", 0),
+                                               (b"<?xml broken\x01", "xml", 1)])
+def test_parse_metadata_classifies_without_dumping_content(monkeypatch, raw, kind, controls):
+    monkeypatch.setattr(s, "checked_adb", lambda *args, **kwargs: raw)
+    with pytest.raises(RuntimeError) as error:
+        s.read_prefs("/private/test.xml")
+    assert "format=" + kind in str(error.value)
+    assert "controls=" + str(controls) in str(error.value)
+
+
+def test_stop_flushes_activity_before_force_stop(monkeypatch):
+    calls = []
+    monkeypatch.setattr(s, "adb", lambda *args, **kwargs: calls.append(args))
+    monkeypatch.setattr(s, "checked_adb", lambda *args, **kwargs: calls.append(args))
+    monkeypatch.setattr(s.time, "sleep", lambda seconds: calls.append(("sleep", seconds)))
+    s.stop_browser(PKG)
+    assert calls == [("shell", "input", "keyevent", "KEYCODE_HOME"), ("sleep", 2),
+                     ("shell", "am", "force-stop", PKG)]
+
+
 def test_focused_safety_marker_alone_is_not_full_release_evidence(tmp_path):
     sys.path.insert(0, os.path.join(ROOT, "scripts", "release"))
     import e2e_gate
