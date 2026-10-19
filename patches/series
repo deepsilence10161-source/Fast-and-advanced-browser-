@@ -27,5 +27,7 @@
 0017-swiftra-turbo-download.patch
 # 0018: arm64 PGO build - no separate standalone-WebView PGO toolchain (gn gen fix; Swiftra ships no WebView)
 0018-swiftra-no-webview-pgo-toolchain.patch
+# 0020: Swiftra update channel - signed manifest in the public release drives the upstream "Update Swiftra" menu item/badge (no Omaha/Play)
+0020-swiftra-update-channel.patch
 # 0014: search engine choice for every user (Java only; docs/search-choice-design.md). Enabled after the 0012 build:
 # 0014-swiftra-search-choice.patch

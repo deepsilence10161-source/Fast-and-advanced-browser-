@@ -277,3 +277,18 @@ meta `false_claims`/`expected_texts_found` + `truth_scan.json` लिखता �
 - Transform: `third_party/swiftra_shield_feeds/{README.chromium,LICENSE}` लिखता है, जिससे chrome://credits में entry
   बनती है (0013 वाला तरीका)। वही text `scripts/shield/build_shield_db.py` `NOTICE.txt` के रूप में release में डालता है।
 - Gate: `tests/test_licences.py`। Status: WRITTEN; build और CREDITS E2E बाकी। Tranco केवल build-time guard है, बाँटा नहीं जाता।
+
+## 0020 — Swiftra update channel (`0020-swiftra-update-channel.patch`)
+
+Chromium's own update UI (menu badge + "Update Swiftra" item, `UpdateMenuItemHelper`) is driven by
+`UpdateStatusProvider.getRealStatus()`, which upstream asks Omaha/Play Store (internal in public builds; never fires).
+0020 replaces only that source: `SwiftraUpdate` fetches `swiftra-update.json` + `.sig` from the rolling public
+release (`releases/latest/download/`), at most once per 24 h (1 h after a failure), plain HTTPS GET without cookies.
+It accepts the manifest only if the ECDSA P-256 signature over `"swiftra-update-v1\n" + bytes` verifies with the
+embedded public key (Shield list key; domain prefix keeps shield.swz signatures from passing as manifests), the URL
+is inside this project's GitHub releases, and the entry for the device ABI was published after this APK was
+installed. Tapping the item opens the fixed download link; Android's installer only accepts an APK with the same
+Swiftra signing certificate. The manifest is written and signed by `.github/workflows/publish-latest.yml`
+(`scripts/release/update_manifest.py`) only for APKs that passed the E2E + audit gates.
+Tests: `tests/test_update_channel.py`; Java logic compiled with javac 11 against stubs + real org.json and checked
+with a manifest signed by the real key (10/10, 2026-10-19). Safety Hub keeps 0005's "can't check" wording.

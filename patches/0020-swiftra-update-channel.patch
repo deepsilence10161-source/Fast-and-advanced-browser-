@@ -1,0 +1,224 @@
+--- a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/UpdateStatusProvider.java
++++ b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/UpdateStatusProvider.java
+@@ -9,20 +9,23 @@
+ import android.content.ActivityNotFoundException;
+ import android.content.Context;
+ import android.content.Intent;
++import android.content.SharedPreferences;
++import android.content.pm.PackageInfo;
++import android.content.pm.PackageManager;
+ import android.net.Uri;
++import android.os.Build;
+ import android.os.Environment;
+ import android.os.StatFs;
+ import android.text.TextUtils;
+ 
+ import androidx.annotation.IntDef;
+ 
+-import com.google.android.gms.common.GooglePlayServicesUtil;
+-
+ import org.chromium.base.ApkInfo;
+ import org.chromium.base.Callback;
++import org.chromium.base.ContextUtils;
+ import org.chromium.base.DeviceInfo;
++import org.chromium.base.Log;
+ import org.chromium.base.ObserverList;
+-import org.chromium.base.PackageUtils;
+ import org.chromium.base.ThreadUtils;
+ import org.chromium.base.task.AsyncTask;
+ import org.chromium.base.task.AsyncTask.Status;
+@@ -36,9 +39,24 @@
+ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+ import org.chromium.components.browser_ui.util.ConversionUtils;
+ 
++import org.json.JSONException;
++import org.json.JSONObject;
++
++import java.io.ByteArrayOutputStream;
+ import java.io.File;
++import java.io.IOException;
++import java.io.InputStream;
+ import java.lang.annotation.Retention;
+ import java.lang.annotation.RetentionPolicy;
++import java.net.HttpURLConnection;
++import java.net.URL;
++import java.nio.charset.StandardCharsets;
++import java.security.GeneralSecurityException;
++import java.security.KeyFactory;
++import java.security.PublicKey;
++import java.security.Signature;
++import java.security.spec.X509EncodedKeySpec;
++import java.util.Base64;
+ 
+ /**
+  * Provides the current update state for Chrome.  This update state is asynchronously determined and
+@@ -292,16 +310,14 @@
+         private UpdateStatus getRealStatus() {
+             UpdateStatus status = new UpdateStatus();
+ 
+-            if (VersionNumberGetter.isNewerVersionAvailable()) {
+-                status.updateUrl = MarketURLGetter.getMarketUrl();
+-                status.latestVersion = VersionNumberGetter.getInstance().getLatestKnownVersion();
+-
+-                boolean allowedToUpdate =
+-                        checkForSufficientStorage()
+-                                // Disable the version update check for automotive. See b/297925838.
+-                                && !DeviceInfo.isAutomotive()
+-                                && PackageUtils.isPackageInstalled(
+-                                        GooglePlayServicesUtil.GOOGLE_PLAY_STORE_PACKAGE);
++            // Swiftra: no Omaha / Play Store. A signed manifest in the project's public release says
++            // which APK is the newest tested build (see SwiftraUpdate below).
++            @Nullable SwiftraOffer offer = SwiftraUpdate.check();
++            if (offer != null) {
++                status.updateUrl = offer.url;
++                status.latestVersion = offer.id;
++
++                boolean allowedToUpdate = checkForSufficientStorage() && !DeviceInfo.isAutomotive();
+                 status.updateState =
+                         allowedToUpdate ? UpdateState.UPDATE_AVAILABLE : UpdateState.NONE;
+ 
+@@ -336,4 +352,144 @@
+             return ConversionUtils.bytesToMegabytes(statFs.getAvailableBytes());
+         }
+     }
++
++    /**
++     * Swiftra update channel (patch 0020). Reads swiftra-update.json + .sig from the project's rolling
++     * public release, at most once per 24 h (1 h after a failure), from a background thread.
++     * The manifest is accepted only if its ECDSA P-256 signature over "swiftra-update-v1\n" + bytes
++     * verifies with the embedded public key (the Swiftra Shield list key; private key never in source).
++     * An update is offered when the manifest entry for this device's ABI was published after this APK
++     * was installed. The URL must point into the project's GitHub releases; Android's package
++     * installer then only accepts an APK signed with the same Swiftra certificate.
++     * Plain HTTPS GET, no cookies or identifiers.
++     */
++    /** An update offer from the signed Swiftra manifest (patch 0020). */
++    static final class SwiftraOffer {
++        final String url;
++        final String id;
++
++        SwiftraOffer(String url, String id) {
++            this.url = url;
++            this.id = id;
++        }
++    }
++
++    static final class SwiftraUpdate {
++        private static final String TAG = "SwiftraUpdate";
++        static final String RELEASES =
++                "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/releases/";
++        static final String MANIFEST_URL = RELEASES + "latest/download/swiftra-update.json";
++        static final String SIG_URL = MANIFEST_URL + ".sig";
++        static final String PUBLIC_KEY =
++                "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEbVLbrurOPDexJAjk35SxmUID+BH6Z1ECuzPWudrdCg2UJKB832p2zBMi3Z59GsMOpMmjWv5z9YAt3Qdigb6ZTA==";
++        static final byte[] DOMAIN = "swiftra-update-v1\n".getBytes(StandardCharsets.US_ASCII);
++        private static final long CHECK_EVERY_MS = 24L * 3600 * 1000;
++        private static final long RETRY_AFTER_FAILURE_MS = 3600L * 1000;
++        private static final int MAX_BYTES = 64 * 1024;
++        private static final String PREF_LAST_TRY = "swiftra_update_last_try_ms";
++        private static final String PREF_MANIFEST = "swiftra_update_manifest";
++
++        static @Nullable SwiftraOffer check() {
++            SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
++            long now = System.currentTimeMillis();
++            long last = prefs.getLong(PREF_LAST_TRY, 0);
++            if (now - last >= CHECK_EVERY_MS || now < last) {
++                prefs.edit().putLong(PREF_LAST_TRY, now - CHECK_EVERY_MS + RETRY_AFTER_FAILURE_MS).apply();
++                try {
++                    byte[] json = download(MANIFEST_URL);
++                    byte[] sig = download(SIG_URL);
++                    if (!verify(json, sig)) throw new IOException("bad signature");
++                    prefs.edit()
++                            .putString(PREF_MANIFEST, new String(json, StandardCharsets.UTF_8))
++                            .putLong(PREF_LAST_TRY, now)
++                            .apply();
++                } catch (IOException e) {
++                    Log.w(TAG, "update check failed: %s", e.getMessage());
++                }
++            }
++            String cached = prefs.getString(PREF_MANIFEST, null);
++            return cached == null ? null : offerFrom(cached, abi(), installTimeMs());
++        }
++
++        /** Pure decision: offer only a signed, newer, in-project HTTPS APK for this ABI. */
++        static @Nullable SwiftraOffer offerFrom(String manifest, @Nullable String abi, long installedMs) {
++            if (abi == null || installedMs <= 0) return null;
++            try {
++                JSONObject m = new JSONObject(manifest);
++                if (m.optInt("v") != 1) return null;
++                @Nullable JSONObject apks = m.optJSONObject("apks");
++                @Nullable JSONObject e = apks == null ? null : apks.optJSONObject(abi);
++                if (e == null) return null;
++                String url = e.optString("url");
++                String sha = e.optString("sha256");
++                long published = e.optLong("published_ms");
++                if (!url.startsWith(RELEASES) || url.contains("..") || sha.length() != 64) return null;
++                if (published <= installedMs) return null;
++                return new SwiftraOffer(url, sha.substring(0, 12));
++            } catch (JSONException ex) {
++                return null;
++            }
++        }
++
++        static @Nullable String abi() {
++            String[] abis = Build.SUPPORTED_64_BIT_ABIS;
++            if (abis.length == 0) return null;
++            if ("arm64-v8a".equals(abis[0])) return "arm64";
++            if ("x86_64".equals(abis[0])) return "x64";
++            return null;
++        }
++
++        static long installTimeMs() {
++            try {
++                Context c = ContextUtils.getApplicationContext();
++                PackageInfo pi = c.getPackageManager().getPackageInfo(c.getPackageName(), 0);
++                return pi.lastUpdateTime;
++            } catch (PackageManager.NameNotFoundException e) {
++                return 0;
++            }
++        }
++
++        static boolean verify(byte[] json, byte[] derSig) {
++            try {
++                PublicKey key =
++                        KeyFactory.getInstance("EC")
++                                .generatePublic(
++                                        new X509EncodedKeySpec(
++                                                Base64.getDecoder().decode(PUBLIC_KEY)));
++                Signature v = Signature.getInstance("SHA256withECDSA");
++                v.initVerify(key);
++                v.update(DOMAIN);
++                v.update(json);
++                return v.verify(derSig);
++            } catch (GeneralSecurityException | IllegalArgumentException e) {
++                return false;
++            }
++        }
++
++        private static byte[] download(String url) throws IOException {
++            HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
++            try {
++                c.setConnectTimeout(15000);
++                c.setReadTimeout(30000);
++                c.setInstanceFollowRedirects(true);
++                c.setUseCaches(false);
++                c.setRequestProperty("User-Agent", "SwiftraUpdate/1");
++                int code = c.getResponseCode();
++                if (code != 200) throw new IOException("HTTP " + code);
++                if (!"https".equals(c.getURL().getProtocol())) throw new IOException("non-https");
++                try (InputStream in = c.getInputStream()) {
++                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
++                    byte[] buf = new byte[8192];
++                    int r;
++                    while ((r = in.read(buf)) >= 0) {
++                        bo.write(buf, 0, r);
++                        if (bo.size() > MAX_BYTES) throw new IOException("too large");
++                    }
++                    return bo.toByteArray();
++                }
++            } finally {
++                c.disconnect();
++            }
++        }
++    }
+ }

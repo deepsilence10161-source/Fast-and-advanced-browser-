@@ -118,3 +118,29 @@ jobs:
           } > notes.txt
           gh release edit swiftra -R "$R" --latest --notes-file notes.txt
           gh release view swiftra -R "$R" --json assets -q '.assets[] | "\(.name) \(.size)"'
+      - name: Signed in-app update manifest (patch 0020)
+        env:
+          SWIFTRA_SHIELD_KEY: ${{ secrets.SWIFTRA_SHIELD_KEY }}
+        run: |
+          set -u
+          gh release view swiftra -R "$R" >/dev/null 2>&1 || { echo "no rolling release yet"; exit 0; }
+          mkdir -p man && cd man
+          gh release download swiftra -R "$R" -p SHA256SUMS.txt --clobber
+          gh release download swiftra -R "$R" -p swiftra-update.json --clobber 2>/dev/null || echo '{}' > swiftra-update.json
+          mv swiftra-update.json old.json
+          TIMES=$(gh api "repos/$R/releases/tags/swiftra" -q '[.assets[] | select(.name|test("^Swiftra-(arm64|x64)\\.apk$")) | {key: (.name|capture("Swiftra-(?<a>[a-z0-9]+)").a), value: (.updated_at|fromdateiso8601*1000)}] | from_entries')
+          python3 ../scripts/release/update_manifest.py --sums SHA256SUMS.txt --times "$TIMES" --old old.json --out swiftra-update.json
+          if cmp -s old.json swiftra-update.json && gh release view swiftra -R "$R" --json assets -q '.assets[].name' | grep -qx swiftra-update.json.sig; then
+            echo "manifest unchanged"; exit 0
+          fi
+          K="$RUNNER_TEMP/k.pem"; umask 077
+          printf '%s' "$SWIFTRA_SHIELD_KEY" | base64 -d > "$K"
+          { printf 'swiftra-update-v1\n'; cat swiftra-update.json; } > signed-bytes
+          openssl dgst -sha256 -sign "$K" -out swiftra-update.json.sig signed-bytes
+          openssl pkey -in "$K" -pubout -outform DER 2>/dev/null | base64 -w0 > pub.b64; rm -f "$K"
+          EMBED=$(grep -A1 'static final String PUBLIC_KEY =' ../patches/0020-swiftra-update-channel.patch | grep -oE '"[A-Za-z0-9+/=]+"' | tr -d '"')
+          [ -n "$EMBED" ] && [ "$EMBED" = "$(cat pub.b64)" ] || { echo "signing key != key embedded in patch 0020"; exit 1; }
+          base64 -d pub.b64 | openssl pkey -pubin -inform DER -out pub.pem
+          openssl dgst -sha256 -verify pub.pem -signature swiftra-update.json.sig signed-bytes
+          gh release upload swiftra -R "$R" --clobber swiftra-update.json swiftra-update.json.sig
+          cat swiftra-update.json
