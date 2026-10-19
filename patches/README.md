@@ -291,7 +291,7 @@ installed. Tapping the item opens the fixed download link; Android's installer o
 Swiftra signing certificate. The manifest is written and signed by `.github/workflows/publish-latest.yml`
 (`scripts/release/update_manifest.py`) only for APKs that passed the E2E + audit gates.
 Tests: `tests/test_update_channel.py`; Java logic compiled with javac 11 against stubs + real org.json and checked
-with a manifest signed by the real key (10/10, 2026-10-19). Safety Hub keeps 0005's "can't check" wording.
+with a manifest signed by the real key (10/10, 2026-10-19). Safety check (0005, updated): "up to date" only after a signed manifest was verified in the last 48 h (`swiftraCheckedRecently()`), "update available" with an Update button that opens the same signed-channel link; otherwise the existing "can't check version" state.
 
 Note (2026-10-19): the upstream study `HttpsFirstModeV2ForTypicallySecureUsers` (fieldtrial_testing_config @155:
 `Enabled` -> feature of the same name) auto-enables HTTPS-First only for users who rarely visit HTTP sites. 0010 already

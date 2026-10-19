@@ -8,19 +8,30 @@
  import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
  import org.chromium.chrome.browser.omaha.UpdateStatusProvider;
-@@ -115,6 +116,11 @@
+@@ -115,7 +116,21 @@
      }
  
      public UpdateStatusProvider.@Nullable UpdateStatus getUpdateStatus() {
-+        // Swiftra: non-Google-branded builds have no Omaha RequestGenerator
-+        // (OmahaService.createRequestGenerator() -> ServiceLoaderUtil, internal only), so no update
-+        // check ever runs and UpdateState.NONE would falsely read "<app> is up to date". Report the
-+        // existing "can't check version" (unavailable) state instead.
-+        if (!BuildConfig.IS_CHROME_BRANDED) return null;
-         return mSafetyHubFetchService.getUpdateStatus();
+-        return mSafetyHubFetchService.getUpdateStatus();
++        UpdateStatusProvider.@Nullable UpdateStatus status = mSafetyHubFetchService.getUpdateStatus();
++        if (!BuildConfig.IS_CHROME_BRANDED) {
++            // Swiftra: no Omaha. The only source is the signed update channel (patch 0020).
++            // UpdateState.NONE reads "<app> is up to date", so it is shown only after a signed
++            // manifest was verified in the last 48 h; otherwise the existing "can't check version"
++            // (unavailable) state. An available update is always shown.
++            if (status == null) return null;
++            if (status.updateState == UpdateStatusProvider.UpdateState.UPDATE_AVAILABLE) return status;
++            if (status.updateState == UpdateStatusProvider.UpdateState.NONE
++                    && UpdateStatusProvider.swiftraCheckedRecently()) {
++                return status;
++            }
++            return null;
++        }
++        return status;
      }
  
-@@ -137,6 +143,16 @@
+     private String getTitle() {
+@@ -137,6 +152,16 @@
  
      private @Nullable String getSummary() {
          if (mUpdateStatus == null) {
@@ -37,7 +48,21 @@
              return mPreference.getContext().getString(R.string.safety_hub_unavailable_summary);
          }
  
-@@ -198,6 +214,9 @@
+@@ -185,6 +210,13 @@
+ 
+         switch (mUpdateStatus.updateState) {
+             case UpdateStatusProvider.UpdateState.UPDATE_AVAILABLE:
++                if (!BuildConfig.IS_CHROME_BRANDED) {
++                    // Swiftra: openGooglePlayStore() is a no-op here; open the signed channel's
++                    // download link (same action as the "Update Swiftra" menu item).
++                    return v ->
++                            UpdateStatusProvider.getInstance()
++                                    .startIntentUpdate(mPreference.getContext(), /* newTask= */ false);
++                }
+                 return v -> {
+                     mModuleDelegate.openGooglePlayStore(mPreference.getContext());
+                     recordDashboardInteractions(DashboardInteractions.OPEN_PLAY_STORE);
+@@ -198,6 +230,9 @@
      }
  
      private @Nullable String getSecondaryButtonText() {
@@ -47,7 +72,7 @@
          if (mUpdateStatus == null) {
              return mPreference.getContext().getString(R.string.safety_hub_go_to_google_play_button);
          }
-@@ -216,6 +235,7 @@
+@@ -216,6 +251,7 @@
      }
  
      private View.@Nullable OnClickListener getSecondaryButtonListener() {

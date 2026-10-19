@@ -58,3 +58,13 @@ def test_update_e2e_verdict_and_tamper():
 def test_run_capture_runs_update_e2e():
     s = open(os.path.join(ROOT, "scripts", "ci", "run_capture.sh")).read()
     assert "scripts/ci/update_e2e.py" in s
+
+
+def test_safety_check_uses_update_channel_honestly():
+    p = open(os.path.join(ROOT, "patches", "0005-safety-hub-no-false-up-to-date.patch")).read()
+    added = "\n".join(l for l in p.splitlines() if l.startswith("+"))
+    assert "UpdateStatusProvider.swiftraCheckedRecently()" in added          # "up to date" only after a recent signed check
+    assert "startIntentUpdate(mPreference.getContext()" in added             # Update button -> signed channel link
+    assert "if (!BuildConfig.IS_CHROME_BRANDED) return null;\n" not in p.split("getSecondaryButtonText")[0].split("getUpdateStatus")[1]
+    q = open(os.path.join(ROOT, "patches", "0020-swiftra-update-channel.patch")).read()
+    assert "public static boolean swiftraCheckedRecently()" in q and ".putLong(PREF_LAST_OK, now)" in q

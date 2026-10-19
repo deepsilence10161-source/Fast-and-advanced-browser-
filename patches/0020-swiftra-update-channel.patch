@@ -78,7 +78,7 @@
                  status.updateState =
                          allowedToUpdate ? UpdateState.UPDATE_AVAILABLE : UpdateState.NONE;
  
-@@ -336,4 +353,169 @@
+@@ -336,4 +353,182 @@
              return ConversionUtils.bytesToMegabytes(statFs.getAvailableBytes());
          }
      }
@@ -93,6 +93,16 @@
 +     * installer then only accepts an APK signed with the same Swiftra certificate.
 +     * Plain HTTPS GET, no cookies or identifiers.
 +     */
++    /**
++     * Swiftra (patch 0020): a signed update manifest was fetched and verified in the last 48 h, so
++     * "no update available" is a real answer (used by Safety check, patch 0005).
++     */
++    public static boolean swiftraCheckedRecently() {
++        long ok = ContextUtils.getAppSharedPreferences().getLong(SwiftraUpdate.PREF_LAST_OK, 0);
++        long now = System.currentTimeMillis();
++        return ok > 0 && ok <= now && now - ok < SwiftraUpdate.RECENT_MS;
++    }
++
 +    /** An update offer from the signed Swiftra manifest (patch 0020). */
 +    static final class SwiftraOffer {
 +        final String url;
@@ -118,6 +128,8 @@
 +        private static final int MAX_BYTES = 64 * 1024;
 +        private static final String PREF_LAST_TRY = "swiftra_update_last_try_ms";
 +        private static final String PREF_MANIFEST = "swiftra_update_manifest";
++        static final String PREF_LAST_OK = "swiftra_update_last_ok_ms";
++        static final long RECENT_MS = 48L * 3600 * 1000;
 +        static final String TEST_SWITCH = "swiftra-update-manifest-url";
 +
 +        /** Test-only manifest location (E2E): honoured only from the command-line file, which needs adb/root. */
@@ -155,6 +167,7 @@
 +                    prefs.edit()
 +                            .putString(PREF_MANIFEST, new String(json, StandardCharsets.UTF_8))
 +                            .putLong(PREF_LAST_TRY, now)
++                            .putLong(PREF_LAST_OK, now)
 +                            .apply();
 +                } catch (IOException e) {
 +                    Log.w(TAG, "update check failed: %s", e.getMessage());
