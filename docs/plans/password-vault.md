@@ -15,7 +15,10 @@ Status: Swiftra में password save **नहीं** होता (static, c
 ## पहला कदम अलग से फ़ायदेमंद: Keystore key provider (0021)
 
 `components/autofill/core/browser/webdata/payments/payments_autofill_table.cc` card/IBAN के fields को `encryptor` से encrypt करता है, और `chrome/browser/webdata_services/web_data_service_factory.cc` वह encryptor `g_browser_process->os_crypt_async()` से लेता है। Android पर उसमें केवल सार्वजनिक fixed key (`kV10Key`) है। इसलिए Chrome Android और आज का Swiftra, दोनों local card/IBAN data उसी सार्वजनिक key से "encrypt" करते हैं (static, code से)।
-Keystore वाला provider (नीचे कदम 3) vault से पहले भी Swiftra को Chrome से ज़्यादा सुरक्षित बनाएगा। यह एक मापने लायक "Chrome से आगे" बिंदु है, जो device E2E के बाद ही PASS माना जाएगा।
+**Cookies भी:** `chrome/browser/net/system_network_context_manager.cc` हर profile को `CookieEncryptionProviderImpl(os_crypt_async)` देता है, `enable_encrypted_cookies` का default true है, और `services/network/network_context.cc` का `CookieOSCryptAsyncDelegate` हर cookie value को उसी encryptor से encrypt करता है। यानी Android पर login-session cookies भी सार्वजनिक key से "encrypted" हैं (static, code से)।
+**गति का जोखिम:** `CookieOSCryptAsyncDelegate::Init()` encryptor तैयार होने तक cookie load रोकता है, इसलिए Keystore वाला कदम startup पर असर डाल सकता है। इसलिए Keystore का काम background thread पर हो, OSCryptAsync init (जो startup में पहले ही शुरू होता है) के साथ ही चले, और 0021 तभी release होगा जब SPEED_E2E / STARTUP_TRACE A/B में कोई गिरावट न दिखे।
+
+Keystore वाला provider (नीचे कदम 3) vault से पहले भी Swiftra को Chrome से ज़्यादा सुरक्षित बनाएगा। cookies, cards और IBAN, तीनों के लिए। यह एक मापने लायक "Chrome से आगे" बिंदु है, जो device E2E के बाद ही PASS माना जाएगा।
 
 ## Patch योजना (0021 provider, फिर 0022 vault; बड़ा काम)
 
