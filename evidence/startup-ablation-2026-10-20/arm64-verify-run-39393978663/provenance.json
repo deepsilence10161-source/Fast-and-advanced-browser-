@@ -1,0 +1,19 @@
+{
+  "checked_utc": "2026-10-20T09:07:55.007616+00:00",
+  "run_id": 39393978663,
+  "artifact_id": 12252725100,
+  "driver_commit": "86f908191422bfdbd9edc3ff049266cecb9effea",
+  "apk_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "device": {
+    "ro.hardware": "redroid",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.build.version.sdk": "34"
+  },
+  "compilation": "verify",
+  "valid_cold_samples": 84,
+  "original_flags_restored": true,
+  "shipped_cache_reprimed": true,
+  "post_keystore": "PASS sw1/no plaintext/wrapped/restart/Keystore2",
+  "candidate_promoted": false,
+  "limits": "same-APK process-cold diagnostic; all intervals cross zero; no physical/current-Chrome/LCP acceptance"
+}

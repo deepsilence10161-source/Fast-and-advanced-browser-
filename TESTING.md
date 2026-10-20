@@ -278,3 +278,10 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - Added `update_download_e2e.py`: untrusted manifest must not expose an offer; trusted existing public fixture opens the actual native menu item, taps it and waits for a newly downloaded own-repo APK whose complete SHA matches the signed entry. Never installs payload; no post-navigation screenshots/XML artifacts, only allowlisted file metadata. Original command-line restored.
 - Existing `update_e2e.run_case` optional good-offer callback leaves default visibility-only behavior intact. New focused `update_download` mode never publishes; new full source regressions also run it. Release gate now requires **UPDATE_DOWNLOAD_E2E PASS** for 0020, so an item/badge alone cannot promote the changed source APK.
 - Host tests cover URL/ABI/hash allowlist, exact native item bounds, missing/partial/wrong-hash result refusal, private/unrelated download exclusion and no install/post-tap capture. Full local **299 passed, 8 skipped in 126.05s**; this remains static/host evidence, actual tap/download NOT RUN until new source APKs exist.
+
+
+### 20-10 actual pre-fix update tap negative baseline
+
+- x64 **39398358892** / ARM64 **39398363688**, driver `e124fa6`, पुराने source APKs: bad item=False; good item/badge=True; actual tap=True; complete=False; sha_match=False, consent_buttons=[]। **UPDATE_DOWNLOAD_E2E FAIL**, original flags restore=True। Download absent को केवल network/Intent के अकेले causal proof की तरह नहीं लिखा; official/pinned REQUIRE_NON_BROWSER source routing diagnosis का आधार है।
+- यह नए own-package source fix का runtime result नहीं। New builds **39395797864 / 39395800290** से बनी APKs पर positive actual tap/download और full gates अभी आवश्यक हैं; failing baseline हटाया नहीं गया।
+- Verify-state startup Android **39393973670 / 39393978663**: दोनों 84/84 valid, unchanged APK, Java cache/compile receipts, flags restore, Keystore PASS। AOT+verify कुल336 samples; अभी कोई निर्णायक common lever winner नहीं।

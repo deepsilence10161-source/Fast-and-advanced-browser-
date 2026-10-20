@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "file": "BUILD_INFO.txt",
+      "sha256": "f59bb8f9abad681f5cc9b6ac5f488fae7cf2b7e2cbec45ea737d0908516e9ad1"
+    },
+    {
+      "file": "bad_menu.png",
+      "sha256": "cad79c7a191da71967f19bc2d42ac295c95f83b57e90584cf3dad3040b4b0b02"
+    },
+    {
+      "file": "bad_menu.xml",
+      "sha256": "c241eb2d8bbfc58fa0cdb466400d78d208e83a4ab450268f29e71dc861e299a9"
+    },
+    {
+      "file": "bad_toolbar.xml",
+      "sha256": "0ce18c0720f014efc00fe044ebfc4680837c727fde7e1a3a086ef15d24d9020b"
+    },
+    {
+      "file": "good_menu.png",
+      "sha256": "e827cf97495dbca488bffe9dc60c04263a6692349deb0d918be515353f279790"
+    },
+    {
+      "file": "good_menu.xml",
+      "sha256": "7a615ad270fae4083b1eff67991e89f78dccc6b2dbfd6748a2b4f13bd0c04283"
+    },
+    {
+      "file": "good_toolbar.xml",
+      "sha256": "8a71d6de8975f019c943c98fb561b6f16761dc0ba7c657838e5a91db337f569f"
+    },
+    {
+      "file": "provenance.json",
+      "sha256": "4b890fba5e5514209ca32b0cce5cdaab17928db925769414319622b0ed8afc22"
+    },
+    {
+      "file": "update_download_e2e.json",
+      "sha256": "55123cc3557174e7260b328dfe2b6c3280e0cecb88cb2d6baefffb2c5ad024be"
+    }
+  ]
+}

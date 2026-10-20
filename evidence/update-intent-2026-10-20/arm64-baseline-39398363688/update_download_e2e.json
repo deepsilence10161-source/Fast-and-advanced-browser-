@@ -1,0 +1,51 @@
+{
+ "package": "com.swiftra.app",
+ "cases": {
+  "bad": {
+   "tap_download": null,
+   "fetched": true,
+   "hits": [
+    "/bad.json",
+    "/bad.json.sig"
+   ],
+   "menu_button": true,
+   "menu_desc": "Customize and control Swiftra",
+   "badge": false,
+   "item": false,
+   "log": [
+    "10-20 09:09:21.179  2258  2283 W cr_SwiftraUpdate: test manifest rejected: bad signature"
+   ]
+  },
+  "good": {
+   "tap_download": {
+    "tapped": true,
+    "expected_basename": "Swiftra-arm64.apk",
+    "expected_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "completed": false,
+    "sha_matches": false,
+    "consent_buttons": [],
+    "post_tap_captures_saved": false,
+    "reason": "no newly completed matching APK after native tap (intent/consent/network not inferred)"
+   },
+   "fetched": true,
+   "hits": [
+    "/good.json",
+    "/good.json.sig"
+   ],
+   "menu_button": true,
+   "menu_desc": "Update available. More options",
+   "badge": true,
+   "item": true,
+   "log": [
+    "10-20 09:09:34.245  2535  2560 W cr_SwiftraUpdate: test manifest verified"
+   ]
+  }
+ },
+ "flags_restored": true,
+ "downloaded_payload_installed": false,
+ "payload": {
+  "basename": "Swiftra-arm64.apk",
+  "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+ },
+ "verdict": "fail"
+}

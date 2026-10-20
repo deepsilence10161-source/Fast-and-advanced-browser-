@@ -1,0 +1,10 @@
+{
+  "run_id": 39398363688,
+  "artifact_id": 12254755412,
+  "driver_commit": "e124fa6ed5677111aa88bf2d464c5bd9f77d4952",
+  "type": "old source-built APK negative/native baseline, NOT the new fix",
+  "result": "FAIL: trusted menu and badge visible, real tap performed, no new complete matching APK",
+  "flags_restored": true,
+  "new_source_fix_runtime": "NOT RUN until new APKs build",
+  "limits": "absence of download alone does not isolate network vs Intent; official/pinned non-browser flag source supports routing cause; no post-tap screenshots or payload install"
+}
