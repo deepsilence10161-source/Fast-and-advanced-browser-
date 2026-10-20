@@ -1,7 +1,10 @@
 #!/bin/bash
 # emulator-runner के अंदर एक line में चलाने हेतु wrapper
 set -u
-T=$1; OUT=out/$T; mkdir -p "$OUT"; timeout 120 adb wait-for-device; timeout 20 adb logcat -G 16M >/dev/null 2>&1; timeout 30 adb logcat -c
+T=$1; MODE=${2:-full}
+case "$MODE" in full|safety_update|startup_ablation) ;; *) echo 'E2E NOT_RUN unsupported checks mode'; exit 2;; esac
+OUT=out/$T; mkdir -p "$OUT"; printf '%s\n' "$MODE" > "$OUT/checks_mode.txt"
+timeout 120 adb wait-for-device; timeout 20 adb logcat -G 16M >/dev/null 2>&1; timeout 30 adb logcat -c
 # source build (branding patch के बाद package बदल सकता है): package BUILD_INFO के aapt2 badging से
 ART_PKG=$(sed -n "s/^package: name='\([^']*\)'.*/\1/p" "$OUT/BUILD_INFO.txt" 2>/dev/null | head -1); ART_PKG=${ART_PKG:-org.chromium.chrome}
 # A baseline/older APK without the feature must be NOT_RUN, not a false browser FAIL.
@@ -15,7 +18,23 @@ keystore_probe_passed() {
 }
 # Focused acceptance on the same already-built APK. Not a replacement for full release E2E:
 # workflows explicitly skip publish in this mode; e2e_gate also rejects its missing full-suite markers.
-if [ "${2:-full}" = safety_update ]; then
+if [ "$MODE" = startup_ablation ]; then
+  grep -Eq '^[[:space:]]*0016-swiftra-speedpack[.]py[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null &&
+    grep -Eq '^[[:space:]]*0021-swiftra-keystore-oscrypt[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null || {
+      echo 'STARTUP_ABLATION NOT_RUN source build lacks 0016+0021'; exit 2; }
+  APK_FILE=$(find dl -name ChromePublic.apk 2>/dev/null | head -1)
+  [ -n "$APK_FILE" ] || { echo 'STARTUP_ABLATION NOT_RUN no source APK'; exit 2; }
+  timeout 2700 python3 -u scripts/ci/startup_ablation.py --package "$ART_PKG" --apk "$APK_FILE" \
+    --build-info "$OUT/BUILD_INFO.txt" --out "$OUT/startup_ablation" 2>&1 | tee "$OUT/startup_ablation.txt"
+  rc=${PIPESTATUS[0]}; echo "startup_ablation exit=$rc" | tee -a "$OUT/journey.log"
+  if [ "$rc" -eq 0 ]; then
+    timeout 240 python3 -u scripts/ci/keystore_e2e.py --package "$ART_PKG" --out "$OUT/keystore" 2>&1 | tee "$OUT/keystore_e2e.txt"
+    kr=${PIPESTATUS[0]}; echo "keystore_e2e exit=$kr" | tee -a "$OUT/journey.log"
+    keystore_probe_passed "$kr" "$OUT/keystore_e2e.txt" || rc=1
+  fi
+  exit "$rc"
+fi
+if [ "$MODE" = safety_update ]; then
   safety_update_supported || { echo 'SAFETY_UPDATE_E2E NOT_RUN build lacks 0005+0020'; exit 2; }
   APK_FILE=$(find dl -name ChromePublic.apk 2>/dev/null | head -1)
   [ -n "$APK_FILE" ] || { echo 'SAFETY_UPDATE_E2E NOT_RUN no source APK'; exit 2; }

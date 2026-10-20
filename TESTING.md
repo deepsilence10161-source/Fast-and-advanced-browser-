@@ -240,3 +240,13 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - (v) composer में अधूरा draft + selection + पुराने संदेश पर scroll: update के बाद सब वैसा ही रहा?
 - (vi) कोई संदेश दो बार गया या दिखा?
 परिणाम हाँ/नहीं और समय के रूप में भेजें। यह test **Google website login**, **Chrome Sync**, **Arena session** और **live transport** को अलग-अलग दर्ज करता है।
+
+
+## 20-10-2026: सुरक्षा-समान startup ablation (पहला pass)
+
+- Same installed source APK, सात modes (shipped + छह एकल performance-flag ablations), 4 counterbalanced blocks × 3 cold launches = 12/mode। Keystore/Safe Browsing/ad blocking/TLS/site isolation नहीं बदले जाते। केवल native launcher, about:blank और internal version receipt; कोई cert exception नहीं।
+- Pinned CachedFlag source ने next-run Java cache trap बताया: native CLI बदलकर उसी startup को changed Java flag मानना गलत। Warm-up, selected cached booleans और crash/safe-mode counters की पुष्टि के बाद ही sample; private prefs में सीधा edit नहीं।
+- Fixed `speed` AOT diagnostic state, installed SHA before/after, process-cold/PID proof; flags original bytes/mode restore, shipped cache re-prime, ART reset। यह TTFD/LCP/current-Chrome/phone acceptance नहीं।
+- नया `startup_ablation` workflow mode publish/foreign-APK/A-B-baseline/device-check dispatch से बाहर है; केवल full mode publish कर सकता है। उसी profile पर strict existing Keystore postcondition जोड़ी गई।
+- पहले focused local run में **2 failed / 113 passed**: पुराने tests केवल safety_update विकल्प/if-string अपेक्षित करते थे। Full-only mode guards के लिए assertions सुधारी गईं। फिर full collection में snapshot environment का protobuf dependency गायब था; आवश्यक workflow dependencies restore की गईं, test assertions नहीं हटाईं।
+- अंतिम local full: **289 passed, 8 skipped in 126.06s**; shell syntax/py_compile/YAML full-only publication checks PASS (static only)। Actual दोनों-ABI Android runs pending हैं; runtime/feature-speed PASS का दावा नहीं। Protocol: `docs/startup-ablation.md`।

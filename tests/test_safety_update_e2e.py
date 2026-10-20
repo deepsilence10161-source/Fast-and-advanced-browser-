@@ -219,13 +219,13 @@ def test_focused_mode_uses_same_harness_but_never_dispatches_publish():
     from pathlib import Path
     root = Path(ROOT)
     wrapper = (root / "scripts/ci/run_capture.sh").read_text()
-    assert 'if [ "${2:-full}" = safety_update ]; then' in wrapper
+    assert 'if [ "$MODE" = safety_update ]; then' in wrapper
     assert 'safety_update_e2e.py --package "$ART_PKG" --apk "$APK_FILE"' in wrapper
     assert 'safety_update_e2e.py --package "$PKG"' in wrapper  # full regression path too
     for name, need in (("ui-capture.yml", "capture"), ("arm64-device-e2e.yml", "e2e")):
         text = (root / ".github/workflows" / name).read_text()
-        assert "options: [full, safety_update]" in text
-        assert "needs: " + need + "\n    if: always() && inputs.checks != 'safety_update'" in text
+        assert "options: [full, safety_update, startup_ablation]" in text
+        assert "needs: " + need + "\n    if: always() && (inputs.checks == 'full' || inputs.checks == '')" in text
         assert '${{ inputs.checks || \'full\' }}' in text
 
 

@@ -43,5 +43,5 @@ def test_ratio():
 def test_workflow_step_is_optional_and_before_device_checks():
     wf = open(os.path.join(ROOT, ".github", "workflows", "arm64-device-e2e.yml")).read()
     assert "ab_baseline_release:" in wf
-    assert "if: ${{ inputs.ab_baseline_release != '' && inputs.checks != 'safety_update' }}" in wf
+    assert "if: ${{ inputs.ab_baseline_release != '' && (inputs.checks == 'full' || inputs.checks == '') }}" in wf
     assert wf.index("scripts/ci/ab_bench.py") < wf.index("bash scripts/ci/device_checks.sh")

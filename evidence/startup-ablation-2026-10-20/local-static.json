@@ -1,0 +1,18 @@
+{
+  "layer": "static/host functional only; not Android performance acceptance",
+  "first_relevant_run": {
+    "passed": 113,
+    "failed": 2,
+    "cause": "stale safety-only workflow assertion strings, corrected to full-only publish predicates"
+  },
+  "collection_environment_failure": "protobuf absent after snapshot; restored workflow dependencies",
+  "final_full": {
+    "passed": 289,
+    "skipped": 8,
+    "seconds": 126.06
+  },
+  "shell_syntax": true,
+  "py_compile": true,
+  "yaml_full_only_publish": true,
+  "runtime": "NOT RUN; no product flag promoted"
+}
