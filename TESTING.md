@@ -264,3 +264,10 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - सभी छह ablations के block-bootstrap intervals दोनों ABI पर zero काटते हैं। किसी product flag को नहीं हटाया/promote किया गया। Per-mode raw medians और block-normalized deltas अलग रखे हैं; एक point estimate का उपयोग नहीं किया गया।
 - Pinned AOT driver CI **39387937287**, unit job **118512225309**: **296 passed, 1 skipped in 125.47s**। बाद के helper/control/compile-selection changes का full local **293 passed, 8 skipped in 128.40s**; relevant **121 passed**।
 - अब `ablation_compilation=verify` वाला अगला Android pass तैयार है: वही APK/सुरक्षा/cached-flag receipts, लेकिन install-like reset state; AOT data को sideload-default signal का निष्कर्ष नहीं बनाया गया। Actual verify outcomes अभी NOT RUN हैं।
+
+
+## 20-10: native update Intent source fix (runtime not claimed)
+
+- Official Android API docs + pinned155 provider confirmed inherited REQUIRE_NON_BROWSER rejects browser-only handlers. New 0020 hunk routes the already verified project HTTPS URL to own package instead; no TLS/Download Shield/installer bypass, NEW_TASK/catch preserved.
+- Pristine155 fuzz=0 dry-run PASS, source guard test PASS; full local **294 passed, 8 skipped in 125.74s**. A new unified-diff context blank line was caught by whitespace check, then the new hunk was narrowed (n=1) and fuzz=0 rechecked; no whitespace rule was disabled.
+- Menu/badge/Safety history is not retroactively download PASS. New builds and actual tap/download both ABI pending. Native offers compare signed published_ms against lastUpdateTime, NOT versionCode; no guessed version-code policy change was made.

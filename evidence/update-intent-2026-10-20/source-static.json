@@ -1,0 +1,17 @@
+{
+  "checked_utc": "2026-10-20T08:46:10.446417+00:00",
+  "layer": "source/static only; native tap/download NOT RUN",
+  "pinned_tag": "155.0.8059.80",
+  "provider_url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/UpdateStatusProvider.java",
+  "provider_sha256": "7157255e3d4a2ce162c34f83a48318a6b1f2c176a9aea5190df0757ff42c172a",
+  "official_android_flag": "https://developer.android.com/reference/android/content/Intent#FLAG_ACTIVITY_REQUIRE_NON_BROWSER",
+  "finding": "upstream non-browser-only flag is incompatible with the derived HTTPS browser-download path when no non-browser handler exists",
+  "source_change": "remove REQUIRE_NON_BROWSER; setPackage to own browser; normal download/security and NEW_TASK handling preserved",
+  "pristine_fuzz0_dry_run": true,
+  "full_local_tests": {
+    "passed": 294,
+    "skipped": 8,
+    "seconds": 125.74
+  },
+  "native_status": "NOT RUN; source build + actual menu tap/download and both-ABI regressions still required"
+}

@@ -32,6 +32,18 @@ def test_patch_pins_project_and_key():
     assert '"swiftra-update-v1\\n".getBytes' in p   # domain separation from shield.swz signatures
     assert "GooglePlayServicesUtil" not in "".join(l for l in p.splitlines() if l.startswith("+"))
 
+def test_https_update_uses_own_browser_not_a_nonbrowser_only_handler():
+    p = _patch()
+    added = '\n'.join(l[1:] for l in p.splitlines() if l.startswith('+') and not l.startswith('+++'))
+    removed = '\n'.join(l[1:] for l in p.splitlines() if l.startswith('-') and not l.startswith('---'))
+    assert 'intent.setPackage(context.getPackageName());' in added
+    assert 'intent.addFlags(Intent.FLAG_ACTIVITY_REQUIRE_NON_BROWSER);' in removed
+    assert 'FLAG_ACTIVITY_REQUIRE_NON_BROWSER' not in added
+    assert 'if (newTask) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);' in p
+    # Still the normal browser download/security path, no certificate or installer bypass.
+    assert 'ignore-certificate-errors' not in added and 'ACTION_INSTALL_PACKAGE' not in added
+
+
 def test_patch_ascii_and_in_series():
     assert all(ord(c) < 128 for c in _patch())
     series = open(os.path.join(ROOT, "patches", "series")).read().split()

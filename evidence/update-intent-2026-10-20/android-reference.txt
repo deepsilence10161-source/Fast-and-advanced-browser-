@@ -1,0 +1,6 @@
+FLAG_ACTIVITY_REQUIRE_NON_BROWSER Added in API level 30 public static final int FLAG_ACTIVITY_REQUIRE_NON_BROWSER If set in an intent passed to Context.startActivity() , this
+flag will only launch the intent if it resolves to a result that is not a browser. If no such
+result exists, an ActivityNotFoundException will be thrown. Constant Value:
+      
+          1024
+          (0x00000400)
