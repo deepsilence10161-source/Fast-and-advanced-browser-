@@ -21,3 +21,6 @@ Manifest ECDSA/domain separation/ABI/URL allowlist नहीं बदले। 
 - Full x64 emulator/native ARM64 Redroid regression, Safety/Keystore/Shield; physical/account/Google legal gates अलग।
 
 स्थिति: source fix तैयार; नए source builds और वास्तविक tap/download runtime validation अभी NOT RUN। इस दस्तावेज़ से working download या पूरा browser दावा नहीं किया जा रहा।
+
+
+Actual acceptance harness is now implemented separately: `update_download_e2e.py`, `checks=update_download`; same-package/native menu must lead to full matching bytes. Full release gate requires its PASS for 0020. Full local 299/8; native results remain pending. Source build runs: x64 **39395797864**, ARM64 **39395800290**, fork `f6a04f7`, tag155.0.8059.80/b1/seed a1. No duplicate build dispatched. No published source fix is claimed yet.

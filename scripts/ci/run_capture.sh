@@ -2,7 +2,7 @@
 # emulator-runner के अंदर एक line में चलाने हेतु wrapper
 set -u
 T=$1; MODE=${2:-full}
-case "$MODE" in full|safety_update|startup_ablation) ;; *) echo 'E2E NOT_RUN unsupported checks mode'; exit 2;; esac
+case "$MODE" in full|safety_update|startup_ablation|update_download) ;; *) echo 'E2E NOT_RUN unsupported checks mode'; exit 2;; esac
 OUT=out/$T; mkdir -p "$OUT"; printf '%s\n' "$MODE" > "$OUT/checks_mode.txt"
 timeout 120 adb wait-for-device; timeout 20 adb logcat -G 16M >/dev/null 2>&1; timeout 30 adb logcat -c
 # source build (branding patch के बाद package बदल सकता है): package BUILD_INFO के aapt2 badging से
@@ -18,6 +18,15 @@ keystore_probe_passed() {
 }
 # Focused acceptance on the same already-built APK. Not a replacement for full release E2E:
 # workflows explicitly skip publish in this mode; e2e_gate also rejects its missing full-suite markers.
+if [ "$MODE" = update_download ]; then
+  grep -Eq '^[[:space:]]*0020-swiftra-update-channel[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null || {
+    echo 'UPDATE_DOWNLOAD_E2E NOT_RUN no signed native channel'; exit 2; }
+  APK_FILE=$(find dl -name ChromePublic.apk 2>/dev/null | head -1)
+  [ -n "$APK_FILE" ] || { echo 'UPDATE_DOWNLOAD_E2E NOT_RUN no source APK'; exit 2; }
+  timeout 750 python3 -u scripts/ci/update_download_e2e.py --package "$ART_PKG" --apk "$APK_FILE" --out "$OUT/update_download" 2>&1 | tee "$OUT/update_download_e2e.txt"
+  rc=${PIPESTATUS[0]}; echo "update_download_e2e exit=$rc" | tee -a "$OUT/journey.log"
+  exit "$rc"
+fi
 if [ "$MODE" = startup_ablation ]; then
   grep -Eq '^[[:space:]]*0016-swiftra-speedpack[.]py[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null &&
     grep -Eq '^[[:space:]]*0021-swiftra-keystore-oscrypt[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt" 2>/dev/null || {
@@ -93,6 +102,11 @@ if [ "$T" != chrome_ref ]; then
   # patches/0020: signed update channel -> upstream "Update Swiftra" menu item/badge (signed vs tampered manifest)
   timeout 300 python3 scripts/ci/update_e2e.py --package "$PKG" --out "$OUT/update" 2>&1 | tee "$OUT/update_e2e.txt"
   echo "update_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  # Actual signed-offer tap/download proof; never install the downloaded payload or save post-tap screens.
+  if grep -Eq '^[[:space:]]*0020-swiftra-update-channel[.]patch[[:space:]]*$' "$OUT/BUILD_INFO.txt"; then
+    timeout 750 python3 -u scripts/ci/update_download_e2e.py --package "$PKG" --apk "$APK_FILE" --out "$OUT/update_download" 2>&1 | tee "$OUT/update_download_e2e.txt"
+    echo "update_download_e2e exit=${PIPESTATUS[0]}" | tee -a "$OUT/journey.log"
+  fi
   # 0005 v2 + 0020: native Safety check, actual production signature check + rejected/stale/future fixtures.
   # Only update prefs are temporarily changed; the wrapped OSCrypt key and unrelated prefs are preserved.
   if safety_update_supported; then

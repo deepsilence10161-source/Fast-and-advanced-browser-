@@ -271,3 +271,10 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - Official Android API docs + pinned155 provider confirmed inherited REQUIRE_NON_BROWSER rejects browser-only handlers. New 0020 hunk routes the already verified project HTTPS URL to own package instead; no TLS/Download Shield/installer bypass, NEW_TASK/catch preserved.
 - Pristine155 fuzz=0 dry-run PASS, source guard test PASS; full local **294 passed, 8 skipped in 125.74s**. A new unified-diff context blank line was caught by whitespace check, then the new hunk was narrowed (n=1) and fuzz=0 rechecked; no whitespace rule was disabled.
 - Menu/badge/Safety history is not retroactively download PASS. New builds and actual tap/download both ABI pending. Native offers compare signed published_ms against lastUpdateTime, NOT versionCode; no guessed version-code policy change was made.
+
+
+### Native update download acceptance, no visibility-only release proof
+
+- Added `update_download_e2e.py`: untrusted manifest must not expose an offer; trusted existing public fixture opens the actual native menu item, taps it and waits for a newly downloaded own-repo APK whose complete SHA matches the signed entry. Never installs payload; no post-navigation screenshots/XML artifacts, only allowlisted file metadata. Original command-line restored.
+- Existing `update_e2e.run_case` optional good-offer callback leaves default visibility-only behavior intact. New focused `update_download` mode never publishes; new full source regressions also run it. Release gate now requires **UPDATE_DOWNLOAD_E2E PASS** for 0020, so an item/badge alone cannot promote the changed source APK.
+- Host tests cover URL/ABI/hash allowlist, exact native item bounds, missing/partial/wrong-hash result refusal, private/unrelated download exclusion and no install/post-tap capture. Full local **299 passed, 8 skipped in 126.05s**; this remains static/host evidence, actual tap/download NOT RUN until new source APKs exist.

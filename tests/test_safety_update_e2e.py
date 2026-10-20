@@ -224,7 +224,7 @@ def test_focused_mode_uses_same_harness_but_never_dispatches_publish():
     assert 'safety_update_e2e.py --package "$PKG"' in wrapper  # full regression path too
     for name, need in (("ui-capture.yml", "capture"), ("arm64-device-e2e.yml", "e2e")):
         text = (root / ".github/workflows" / name).read_text()
-        assert "options: [full, safety_update, startup_ablation]" in text
+        assert "options: [full, safety_update, startup_ablation, update_download]" in text
         assert "needs: " + need + "\n    if: always() && (inputs.checks == 'full' || inputs.checks == '')" in text
         assert '${{ inputs.checks || \'full\' }}' in text
 

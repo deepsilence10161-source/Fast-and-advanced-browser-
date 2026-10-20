@@ -22,9 +22,9 @@ on:
         options: [speed, verify]
         default: speed
       checks:
-        description: "full = regression/publish; safety_update or startup_ablation = focused native diagnostics, NEVER publish"
+        description: "full = regression/publish; other checks = focused native diagnostics/download validation, NEVER publish"
         type: choice
-        options: [full, safety_update, startup_ablation]
+        options: [full, safety_update, startup_ablation, update_download]
         default: full
 permissions:
   contents: write   # draft state release पढ़ना (drafts केवल write-access को दिखते हैं)

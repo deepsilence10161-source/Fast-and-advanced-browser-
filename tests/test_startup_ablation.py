@@ -213,7 +213,7 @@ def test_focused_workflows_are_full_only_for_publish_foreign_apk_and_baseline():
         wf=yaml.safe_load((root/'.github/workflows'/name).read_text())
         assert wf['jobs']['publish']['if']=="always() && (inputs.checks == 'full' || inputs.checks == '')"
         text=(root/'.github/workflows'/name).read_text()
-        assert 'startup_ablation]' in text
+        assert 'startup_ablation, update_download]' in text
         assert "inputs.checks != 'safety_update'" not in text
     wrapper=(root/'scripts/ci/run_capture.sh').read_text()
     section=wrapper.split('if [ "$MODE" = startup_ablation ]; then',1)[1].split('if [ "$MODE" = safety_update ]; then',1)[0]

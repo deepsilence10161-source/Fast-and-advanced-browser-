@@ -39,6 +39,9 @@ def required_for(d):
     def has_patch(patch):
         return bool(re.search(r"^" + re.escape(patch) + r"\s*$", t, re.M))
     markers = REQUIRED + [mk for patch, mk in BY_PATCH.items() if has_patch(patch)]
+    # A visible offer/badge is insufficient: the native intent must lead to a complete matching download.
+    if has_patch("0020-swiftra-update-channel.patch"):
+        markers.append("UPDATE_DOWNLOAD_E2E")
     # Safety check's recent-verified state requires both the mediator and the signed channel.
     # Older builds without the channel must not acquire an impossible feature requirement.
     if has_patch("0005-safety-hub-no-false-up-to-date.patch") and has_patch("0020-swiftra-update-channel.patch"):

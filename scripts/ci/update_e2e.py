@@ -95,7 +95,7 @@ def verdict(res):
     return "pass" if (good.get("item") and good.get("badge")) else "fail"
 
 
-def run_case(pkg, comp, name, out):
+def run_case(pkg, comp, name, out, on_good_offer=None):
     flags = f"_ --swiftra-update-manifest-url=http://127.0.0.1:{PORT}/{name}.json"
     adb("shell", "am", "force-stop", pkg)
     adb("shell", f"echo '{flags}' > {CMDLINE_FILE} && chmod 644 {CMDLINE_FILE}")
@@ -112,15 +112,20 @@ def run_case(pkg, comp, name, out):
     xml = ui_xml(f"{name}_toolbar", out)
     mb = node_bounds(xml, ":id/menu_button")
     badge = bool(mb and BADGE_DESC in mb[2].lower())
-    item = False
+    item, tap_result = False, None
     if mb:
         adb("shell", "input", "tap", str(mb[0]), str(mb[1]))
         time.sleep(2.5)
-        item = ITEM_TEXT in ui_xml(f"{name}_menu", out).lower()
+        menu_xml = ui_xml(f"{name}_menu", out)
+        item = ITEM_TEXT in menu_xml.lower()
         screenshot(os.path.join(out, f"{name}_menu.png"))
-        adb("shell", "input", "keyevent", "KEYCODE_BACK")
+        if name == "good" and item and on_good_offer is not None:
+            # Callback owns the trusted-download operation. No screenshot/XML is saved after the tap.
+            tap_result = on_good_offer(menu_xml)
+        else:
+            adb("shell", "input", "keyevent", "KEYCODE_BACK")
     log = adb("logcat", "-d", "-s", "SwiftraUpdate:*", "cr_SwiftraUpdate:*", timeout=30) or ""
-    return {"fetched": fetched, "hits": HITS[n0:], "menu_button": bool(mb),
+    return {"tap_download": tap_result, "fetched": fetched, "hits": HITS[n0:], "menu_button": bool(mb),
             "menu_desc": mb[2] if mb else None, "badge": badge, "item": item,
             "log": [l for l in log.splitlines() if "SwiftraUpdate" in l][-5:]}
 
