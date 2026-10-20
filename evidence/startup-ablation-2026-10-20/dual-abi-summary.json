@@ -1,0 +1,240 @@
+{
+  "results": {
+    "arm64": {
+      "shipped": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1033.5,
+        "min_ms": 994,
+        "max_ms": 1338
+      },
+      "without_AndroidStartupImprovements": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1035.5,
+        "min_ms": 978,
+        "max_ms": 1100,
+        "block_delta_pct": [
+          -4.5543,
+          0.9709,
+          -6.6485,
+          5.7971
+        ],
+        "median_block_delta_pct": -1.79,
+        "block_bootstrap_95_pct": [
+          -6.649,
+          5.797
+        ]
+      },
+      "without_AndroidSystemFontPrewarming": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1032.5,
+        "min_ms": 976,
+        "max_ms": 1100,
+        "block_delta_pct": [
+          -4.845,
+          1.3592,
+          -6.2842,
+          0.0966
+        ],
+        "median_block_delta_pct": -2.37,
+        "block_bootstrap_95_pct": [
+          -6.284,
+          1.359
+        ]
+      },
+      "without_TweakApplicationPreloadMoveWarmUp": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1093.0,
+        "min_ms": 989,
+        "max_ms": 1100,
+        "block_delta_pct": [
+          0.4845,
+          5.8252,
+          -0.1821,
+          5.8937
+        ],
+        "median_block_delta_pct": 3.15,
+        "block_bootstrap_95_pct": [
+          -0.182,
+          5.894
+        ]
+      },
+      "without_AndroidWarmUpSpareRendererWithTimeout": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1063.0,
+        "min_ms": 1015,
+        "max_ms": 1107,
+        "block_delta_pct": [
+          6.686,
+          0.5825,
+          -6.102,
+          5.2174
+        ],
+        "median_block_delta_pct": 2.9,
+        "block_bootstrap_95_pct": [
+          -6.102,
+          6.686
+        ]
+      },
+      "without_SQLitePersistentCookieStoreEarlyInit": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1037.0,
+        "min_ms": 980,
+        "max_ms": 1097,
+        "block_delta_pct": [
+          -0.5814,
+          0.5825,
+          -0.6375,
+          5.5072
+        ],
+        "median_block_delta_pct": 0.0,
+        "block_bootstrap_95_pct": [
+          -0.637,
+          5.507
+        ]
+      },
+      "without_EarlyCookieLoadOnPreconnect": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 1083.5,
+        "min_ms": 1013,
+        "max_ms": 1100,
+        "block_delta_pct": [
+          0.6783,
+          4.9515,
+          -1.0929,
+          5.4106
+        ],
+        "median_block_delta_pct": 2.81,
+        "block_bootstrap_95_pct": [
+          -1.093,
+          5.411
+        ]
+      }
+    },
+    "x64": {
+      "shipped": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2086.5,
+        "min_ms": 1946,
+        "max_ms": 3520
+      },
+      "without_AndroidStartupImprovements": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2167.0,
+        "min_ms": 2056,
+        "max_ms": 2454,
+        "block_delta_pct": [
+          -4.8035,
+          5.7855,
+          6.5517,
+          1.5103
+        ],
+        "median_block_delta_pct": 3.65,
+        "block_bootstrap_95_pct": [
+          -4.803,
+          6.552
+        ]
+      },
+      "without_AndroidSystemFontPrewarming": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2142.5,
+        "min_ms": 1929,
+        "max_ms": 2481,
+        "block_delta_pct": [
+          -3.4934,
+          5.6858,
+          -0.4926,
+          -1.2815
+        ],
+        "median_block_delta_pct": -0.89,
+        "block_bootstrap_95_pct": [
+          -3.493,
+          5.686
+        ]
+      },
+      "without_TweakApplicationPreloadMoveWarmUp": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2091.0,
+        "min_ms": 1944,
+        "max_ms": 2332,
+        "block_delta_pct": [
+          -3.4498,
+          3.4913,
+          -2.7586,
+          1.3272
+        ],
+        "median_block_delta_pct": -0.72,
+        "block_bootstrap_95_pct": [
+          -3.45,
+          3.491
+        ]
+      },
+      "without_AndroidWarmUpSpareRendererWithTimeout": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2100.5,
+        "min_ms": 1939,
+        "max_ms": 2409,
+        "block_delta_pct": [
+          -7.7729,
+          3.5411,
+          4.1872,
+          -4.3936
+        ],
+        "median_block_delta_pct": -0.43,
+        "block_bootstrap_95_pct": [
+          -7.773,
+          4.187
+        ]
+      },
+      "without_SQLitePersistentCookieStoreEarlyInit": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2105.0,
+        "min_ms": 1939,
+        "max_ms": 2389,
+        "block_delta_pct": [
+          -14.2358,
+          5.985,
+          -0.0493,
+          -1.6934
+        ],
+        "median_block_delta_pct": -0.87,
+        "block_bootstrap_95_pct": [
+          -14.236,
+          5.985
+        ]
+      },
+      "without_EarlyCookieLoadOnPreconnect": {
+        "valid_n": 12,
+        "expected_n": 12,
+        "median_ms": 2111.5,
+        "min_ms": 1953,
+        "max_ms": 2464,
+        "block_delta_pct": [
+          -12.1834,
+          7.4813,
+          4.2857,
+          -4.119
+        ],
+        "median_block_delta_pct": 0.08,
+        "block_bootstrap_95_pct": [
+          -12.183,
+          7.481
+        ]
+      }
+    }
+  },
+  "selection": "NONE: no ablation has a clearly negative complete block interval on both ABIs; no automatic product change",
+  "status": "actual Android process-cold measurement, not a speedup PASS"
+}

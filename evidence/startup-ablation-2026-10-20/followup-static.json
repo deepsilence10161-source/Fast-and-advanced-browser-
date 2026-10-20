@@ -1,0 +1,16 @@
+{
+  "layer": "host/static/API only, not Android verify-mode acceptance",
+  "full_local": {
+    "passed": 293,
+    "skipped": 8,
+    "seconds": 128.4
+  },
+  "relevant_passed": 121,
+  "api_helper_audit": "20/20, zero leaks",
+  "api_negative_control": {
+    "before_exit": 0,
+    "after_exit": 22
+  },
+  "next_android_protocol": "fixed verify state, same APK/security, no product flag promoted",
+  "status": "verify Android pending"
+}

@@ -25,7 +25,7 @@ if [ "$MODE" = startup_ablation ]; then
   APK_FILE=$(find dl -name ChromePublic.apk 2>/dev/null | head -1)
   [ -n "$APK_FILE" ] || { echo 'STARTUP_ABLATION NOT_RUN no source APK'; exit 2; }
   timeout 2700 python3 -u scripts/ci/startup_ablation.py --package "$ART_PKG" --apk "$APK_FILE" \
-    --build-info "$OUT/BUILD_INFO.txt" --out "$OUT/startup_ablation" 2>&1 | tee "$OUT/startup_ablation.txt"
+    --build-info "$OUT/BUILD_INFO.txt" --out "$OUT/startup_ablation" --compilation "${3:-speed}" 2>&1 | tee "$OUT/startup_ablation.txt"
   rc=${PIPESTATUS[0]}; echo "startup_ablation exit=$rc" | tee -a "$OUT/journey.log"
   if [ "$rc" -eq 0 ]; then
     timeout 240 python3 -u scripts/ci/keystore_e2e.py --package "$ART_PKG" --out "$OUT/keystore" 2>&1 | tee "$OUT/keystore_e2e.txt"

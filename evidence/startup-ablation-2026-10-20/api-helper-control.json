@@ -1,0 +1,18 @@
+{
+  "layer": "host/API adapter only, not Android feature or performance acceptance",
+  "before_fix": {
+    "expected_http404_nonzero": true,
+    "actual_exit": 0,
+    "reason": "redactor pipeline masked curl failure"
+  },
+  "fix": "pipefail + curl --fail-with-body; token still config stdin and output still redacted",
+  "after_fix": {
+    "expected_missing_repo_path_exit": 22,
+    "authorized_own_repo_read_exit": 0
+  },
+  "hermetic_tests": {
+    "passed": 3,
+    "seconds": 0.07,
+    "no_network_or_real_token_in_test_fixtures": true
+  }
+}

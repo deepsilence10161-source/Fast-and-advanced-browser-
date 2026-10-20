@@ -74,6 +74,26 @@ def test_native_cli_is_not_enough_for_java_cached_flags():
     assert not a.cache_ok(a.cache_receipt(cache_xml("shipped")), mode)
 
 
+def test_activate_rewarms_until_the_next_run_java_cache_matches(monkeypatch):
+    mode='without_AndroidStartupImprovements';writes=[]
+    monkeypatch.setattr(a,'stop_browser',lambda *x:None)
+    monkeypatch.setattr(a,'write_flags',lambda b:writes.append(b))
+    monkeypatch.setattr(a,'launch',lambda *x:'')
+    monkeypatch.setattr(a,'pid_of',lambda *x:'17')
+    monkeypatch.setattr(a,'socket_up',lambda *x:True)
+    monkeypatch.setattr(a,'checked_adb',lambda *x,**kw:b'')
+    monkeypatch.setattr(a,'targets',lambda *x:[{'id':'1'}])
+    monkeypatch.setattr(a,'open_internal',lambda *x:True)
+    monkeypatch.setattr(a,'page_text',lambda *x:writes[-1].decode())
+    monkeypatch.setattr(a,'close_all_tabs',lambda *x:{'closed':1,'pages':1})
+    receipts=iter([a.cache_receipt(cache_xml('shipped')),a.cache_receipt(cache_xml(mode))])
+    monkeypatch.setattr(a,'receipt',lambda *x:next(receipts))
+    monkeypatch.setattr(a.time,'sleep',lambda *x:None)
+    got=a.activate('com.swiftra.app','com.swiftra.app/Main',mode,'n','socket',6)
+    assert got['receipt_verified'] and len(got['attempts'])==2
+    assert len(writes)==2 and all(x==a.mode_flags(mode,'n') for x in writes)
+
+
 def test_cold_result_must_not_be_warm_pid_stale_or_zero():
     text = 'Status: ok\nLaunchState: COLD\nTotalTime: 750\nWaitTime: 751\nComplete\n'
     assert a.parse_launch(text)["total_ms"] == 750
@@ -94,7 +114,7 @@ def full_result():
                          "samples": [valid_sample(100 if mode == "shipped" else 90) for _ in range(3)]})
     return {"blocks": 4, "runs": 3, "rows": rows, "flags_restored": True,
             "shipped_cache_reprimed": True, "compile_reset": True, "same_apk": True, "compile_ok": True,
-            "dexopt_before": ["speed"], "dexopt_after": ["speed"], "apk_sha256": "a" * 64,
+            "compilation": "speed", "dexopt_before": ["speed"], "dexopt_after": ["speed"], "apk_sha256": "a" * 64,
             "installed_sha_before": "a" * 64, "installed_sha_after": "a" * 64}
 
 
@@ -114,6 +134,9 @@ def test_statistics_keep_raw_counts_block_effect_and_do_not_promote():
     x = copy.deepcopy(r);x['installed_sha_after'] = 'b' * 64;assert not a.complete(x)
     x = copy.deepcopy(r);x['dexopt_after'] = ['verify'];assert not a.complete(x)
     x = copy.deepcopy(r);x['rows'][0] = copy.deepcopy(x['rows'][1]);assert not a.complete(x)
+    x = copy.deepcopy(r);x.update(compilation='verify',dexopt_before=['verify'],dexopt_after=['verify']);assert a.complete(x)
+    x['dexopt_after']=['speed-profile'];assert not a.complete(x)
+    x = copy.deepcopy(r);x['compilation']='unknown';assert not a.complete(x)
 
 
 def host_transport(monkeypatch, drop=False):

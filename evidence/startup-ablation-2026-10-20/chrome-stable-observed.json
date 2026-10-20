@@ -1,0 +1,21 @@
+{
+  "checked_utc": "2026-10-20T08:00:53.739735+00:00",
+  "source": "https://versionhistory.googleapis.com/v1/chrome/platforms/android/channels/stable/versions/all/releases?filter=endtime=none&orderBy=version%20desc&pageSize=5",
+  "response": {
+    "releases": [
+      {
+        "name": "chrome/platforms/android/channels/stable/versions/155.0.8059.84/releases/1792445748",
+        "serving": {
+          "startTime": "2026-10-19T21:35:48.978350Z"
+        },
+        "fraction": 1,
+        "version": "155.0.8059.84",
+        "fractionGroup": "61",
+        "pinnable": true,
+        "rolloutData": []
+      }
+    ],
+    "nextPageToken": ""
+  },
+  "limit": "official serving-version reference only, NOT same-device Chrome UI/performance/account validation"
+}

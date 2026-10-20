@@ -24,3 +24,27 @@ Candidates: `AndroidStartupImprovements`, `AndroidSystemFontPrewarming`, `TweakA
 - Medians, raw samples, block differences और interval **MEASURED** हैं। कोई feature अपने-आप disable/promote नहीं होगा। Startup candidate बेहतर हो तो अगला चरण समान privacy वाले LCP/page/JS measurements तथा verify-ART confirmation होगा; पूरे product/current Chrome/physical-device PASS का दावा नहीं।
 
 स्थिति: न्यूनतम harness और unit/host functional tests लागू हैं; full local suite **289 passed, 8 skipped (126.06s)**। Actual Android ablation outcomes अभी NOT RUN, इसलिए कोई product flag बदला/promote नहीं किया गया। स्रोत hashes `evidence/startup-ablation-2026-10-20/research.json` में हैं। मूल `MASTER_PROMPT.md` §15 तथा कानूनी/account/physical gates अपरिवर्तित हैं।
+
+
+## पहला वास्तविक run: AOT, दोनों ABI — 20-10
+
+Driver `18b60ad`: x64 **39387937370**, ARM64 **39387941069**। दोनों में **84/84 valid process-cold samples**, 28/28 mode-blocks; हर mode के 12 samples। CLI/next-run cache/safe-mode receipts, समान installed SHA, fixed speed-AOT state तथा original flag bytes/mode बहाली पुष्ट। उसके बाद उसी profile का **KEYSTORE_E2E PASS sw1**। यह diagnostic protocol का सफल execution है, performance improvement PASS नहीं।
+
+| ablation | x64 median block delta | ARM64 median block delta | निष्कर्ष |
+|---|---:|---:|---|
+| बिना AndroidStartupImprovements | +3.65% | −1.79% | दिशा भी अलग |
+| बिना system-font prewarming | −0.89% | −2.37% | intervals दोनों में zero को काटते हैं |
+| बिना preload move-warmup | −0.72% | +3.15% | दिशा अलग |
+| बिना spare renderer warmup | −0.43% | +2.90% | दिशा अलग |
+| बिना cookie-store early init | −0.87% | 0.00% | निर्णायक लाभ नहीं |
+| बिना early cookie preconnect | +0.08% | +2.81% | निर्णायक लाभ नहीं |
+
+Positive delta = flag हटाने पर धीमा। **सभी छह block-bootstrap intervals में zero शामिल है; कोई flag product में बदला नहीं गया।** केवल point estimate देखकर startup fix घोषित नहीं किया गया। Raw samples, summaries और device/hash metadata evidence में हैं।
+
+## अगला निर्धारित pass: install-like verify ART
+
+AOT Java की interpreter/JIT लागत को हटा देता है; पुराने sideload-default cold signal को इससे निर्दोष/दोषी नहीं कहा जा सकता। इसलिए वही protocol अब दोनों ABI पर fixed **verify (`cmd package compile --reset`)** में भी चलेगा। हर mode और start/end status verify होना आवश्यक है; background dexopt से state बदली तो partial/NOT_RUN। `ablation_compilation` input केवल speed/verify allowlist है; browser/security settings समान रहती हैं। Results लंबित हैं; no automatic flag promotion।
+
+## पुराने वास्तविक trace का सीमित अतिरिक्त निरीक्षण
+
+ARM full run 39274414134 के startup trace में provider location `browser_process_impl.cc::GetKey` worker **9.526 ms** और reply task **0.070 ms** मिला। Worker Activity.onCreate से **355.188 ms** पर शुरू हुआ; profile creation **355.128–373.411 ms** में चल रहा था। Reply **379.993 ms** पर हुआ। यह एक sample का whole-task duration है—पूर्ण crypto cost/queue wait, causal 8% regression या हर device का खर्च नहीं। Key/value bytes या preference contents inspect/print नहीं किए गए।

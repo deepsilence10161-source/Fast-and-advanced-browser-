@@ -16,6 +16,11 @@ on:
       ab_baseline_release:
         description: "optional: release tag with a baseline APK; then A/B (new,base,new,base) bench + cold start on this device"
         default: ""
+      ablation_compilation:
+        description: "startup_ablation only: fixed ART state; verify is install-like, speed is full AOT diagnostic"
+        type: choice
+        options: [speed, verify]
+        default: speed
       checks:
         description: "full = regression/publish; safety_update or startup_ablation = focused native diagnostics, NEVER publish"
         type: choice
@@ -75,7 +80,7 @@ jobs:
       - name: Harness deps
         run: pip install -q websocket-client pillow h2 androguard
       - name: UI journey + long-chat fixture
-        run: bash scripts/ci/run_capture.sh "$T" "${{ inputs.checks || 'full' }}"
+        run: bash scripts/ci/run_capture.sh "$T" "${{ inputs.checks || 'full' }}" "${{ inputs.ablation_compilation || 'speed' }}"
       - name: A/B same device (new vs baseline APK, alternated; scripts/ci/ab_bench.py)
         if: ${{ inputs.ab_baseline_release != '' && (inputs.checks == 'full' || inputs.checks == '') }}
         env:

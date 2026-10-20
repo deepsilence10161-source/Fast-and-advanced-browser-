@@ -1,0 +1,18 @@
+{
+  "type": "historical one-sample trace observation; NOT crypto-cost attribution or new speed acceptance",
+  "source_run": 39274414134,
+  "source_artifact": 12202138617,
+  "source_apk_sha256": "a3df4cf79519ce8b3cbcda0bdfb54b8bb5e88be0c78c7e309c30254caf248f02",
+  "worker_source": "chrome/browser/browser_process_impl.cc::GetKey",
+  "worker_duration_ms": 9.526,
+  "worker_start_ms_from_activity": 355.188,
+  "reply_duration_ms": 0.07,
+  "reply_start_ms_from_activity": 379.993,
+  "profile_create_start_ms": 355.128,
+  "profile_create_duration_ms": 18.283,
+  "limits": [
+    "does not include demonstrated post-to-run queue latency",
+    "whole worker includes JNI; not a separated Keystore/Cipher metric",
+    "one software-container sample, no key data/URLs inspected"
+  ]
+}

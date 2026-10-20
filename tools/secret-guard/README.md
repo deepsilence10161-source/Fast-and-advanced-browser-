@@ -26,6 +26,10 @@
 - repo history scan: `~/tools/secret-guard/scan.sh repo <repo>`
 - पूरा E2E परीक्षण: `~/tools/secret-guard/test-e2e.sh <repo>` (साफ़ working tree ज़रूरी; यह reset/clean करता है) (असली token केवल local commit-परीक्षण में; push-परीक्षण केवल नकली token से)
 
+## API failure भी fail-closed (20-10-2026)
+
+एक सुरक्षित, अपने repo के expected-404 negative control में पुराने helper का exit 0 मिला: curl की failure redaction pipeline के आखिरी successful process से छिप रही थी। अब `pipefail` और default `curl --fail-with-body` हैं। वही expected 404 exit **22**, authorized repo read exit **0**; output अब भी redacted, token अब भी config stdin से। Hermetic tests fake NON-credential/no-network fixture पर HTTP failure, success और गलत-host refusal जाँचते हैं। यह host/API-adapter प्रमाण है, Android feature/speed PASS नहीं।
+
 ## Snapshot से हुई कमज़ोरी और उसका सुधार (16-10-2026)
 Workspace snapshot/restore के बाद मापा गया: token फ़ाइल 600→**644**, vault 700→755, `.git/config` (remote + hooksPath) और `.git/hooks` गायब, `~/.cache/gitleaks` और `~/tools` symlink गायब। यानी pre-commit/pre-push सुरक्षा **चुपचाप बंद** थी (कोई commit इस बीच नहीं हुआ)।
 सुधार: (1) hooks अब repo में tracked हैं और `core.hooksPath` से चलते हैं। `gitx` यह path हर बार `-c` से भी देता है। (2) `lib.sh::sg_heal` हर `gitx`/bootstrap से पहले सब कुछ फिर से बनाता है। (3) `gh.sh` और `git-cred.sh` खुद भी perms ठीक करते हैं। (4) `test-e2e.sh` का test 14 यही नुकसान जानबूझकर पैदा करके self-heal जाँचता है।

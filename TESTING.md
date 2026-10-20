@@ -250,3 +250,17 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - नया `startup_ablation` workflow mode publish/foreign-APK/A-B-baseline/device-check dispatch से बाहर है; केवल full mode publish कर सकता है। उसी profile पर strict existing Keystore postcondition जोड़ी गई।
 - पहले focused local run में **2 failed / 113 passed**: पुराने tests केवल safety_update विकल्प/if-string अपेक्षित करते थे। Full-only mode guards के लिए assertions सुधारी गईं। फिर full collection में snapshot environment का protobuf dependency गायब था; आवश्यक workflow dependencies restore की गईं, test assertions नहीं हटाईं।
 - अंतिम local full: **289 passed, 8 skipped in 126.06s**; shell syntax/py_compile/YAML full-only publication checks PASS (static only)। Actual दोनों-ABI Android runs pending हैं; runtime/feature-speed PASS का दावा नहीं। Protocol: `docs/startup-ablation.md`।
+
+
+### 20-10: API helper exit-status negative control
+
+- Host-only expected HTTP404 under this own repo returned exit **0** before fix: redactor hid curl failure. Added `pipefail` + default `--fail-with-body`; same safe negative control now **22**, authorized own-repo read **0**. Token/header never printed or put in argv. Hermetic no-network NON-credential tests **3 passed**. Scope: API adapter only, not Android product acceptance.
+- Added host control proving startup activation repeats an unmeasured launch until the next-run Java cache actually matches; native CLI receipt alone is deliberately insufficient. Actual Android runs retain the pinned earlier driver; no product flags promoted yet.
+
+
+### AOT Android outcomes + verify confirmation queued next (20-10)
+
+- Driver `18b60ad`: x64 run **39387937370**, ARM64 **39387941069** दोनों completed success। Actual artifacts में 28 blocks/modes और **84/84 valid cold samples per ABI**, flags original bytes/mode restored, shipped cache re-primed, identical installed SHA before/after, post-Keystore PASS sw1/no plaintext/wrapped/restart/Keystore2। यह protocol execution MEASURED है, speedup PASS नहीं।
+- सभी छह ablations के block-bootstrap intervals दोनों ABI पर zero काटते हैं। किसी product flag को नहीं हटाया/promote किया गया। Per-mode raw medians और block-normalized deltas अलग रखे हैं; एक point estimate का उपयोग नहीं किया गया।
+- Pinned AOT driver CI **39387937287**, unit job **118512225309**: **296 passed, 1 skipped in 125.47s**। बाद के helper/control/compile-selection changes का full local **293 passed, 8 skipped in 128.40s**; relevant **121 passed**।
+- अब `ablation_compilation=verify` वाला अगला Android pass तैयार है: वही APK/सुरक्षा/cached-flag receipts, लेकिन install-like reset state; AOT data को sideload-default signal का निष्कर्ष नहीं बनाया गया। Actual verify outcomes अभी NOT RUN हैं।

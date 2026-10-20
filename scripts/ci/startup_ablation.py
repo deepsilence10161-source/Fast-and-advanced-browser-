@@ -282,7 +282,8 @@ def complete(result):
     rows = result.get("rows", [])
     return (not result.get("error") and result.get("flags_restored") and result.get("shipped_cache_reprimed")
             and result.get("compile_reset") and result.get("same_apk") and result.get("compile_ok")
-            and "speed" in result.get("dexopt_before", [])
+            and result.get("compilation") in ("speed", "verify")
+            and result["compilation"] in result.get("dexopt_before", [])
             and result.get("dexopt_before") == result.get("dexopt_after")
             and re.fullmatch(r"[a-f0-9]{64}", result.get("apk_sha256", ""))
             and result.get("installed_sha_before") == result.get("installed_sha_after") == result.get("apk_sha256")
@@ -300,6 +301,8 @@ def main():
     ap.add_argument("--blocks", type=int, default=4)
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--settle", type=float, default=6)
+    ap.add_argument("--compilation", choices=("speed", "verify"), default="speed",
+                    help="Fixed ART state for all modes. speed=AOT diagnostic; verify=reset/install-like state.")
     ap.add_argument("--socket", default="chrome_devtools_remote")
     a = ap.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+", a.package):
@@ -316,7 +319,9 @@ def main():
     os.makedirs(a.out, exist_ok=True)
     res = {"package": a.package, "blocks": a.blocks, "runs": a.runs, "settle_s": a.settle, "modes": MODES,
            "metric": "am start -W TotalTime; process-cold, not TTFD/LCP/physical/current-Chrome proof",
-           "compile_mode": "speed AOT; diagnostic, not install-default verify", "apk_sha256": apk_sha,
+           "compilation": a.compilation,
+           "compile_mode": "speed AOT diagnostic" if a.compilation == "speed" else "verify reset/install-like diagnostic",
+           "apk_sha256": apk_sha,
            "driver_commit": os.environ.get("GITHUB_SHA"),
            "rows": [], "no_direct_preference_edits": True, "security_settings": "unchanged, performance-only allowlist",
            "flags_restored": False, "shipped_cache_reprimed": False, "compile_reset": False}
@@ -338,11 +343,12 @@ def main():
         if res["installed_sha_before"] != apk_sha:
             raise RuntimeError("installed APK hash mismatch")
         stop_browser(a.package)
-        out = checked_adb("shell", "cmd", "package", "compile", "-m", "speed", "-f", a.package, timeout=900)
+        compile_args = ("-m", "speed", "-f") if a.compilation == "speed" else ("--reset",)
+        out = checked_adb("shell", "cmd", "package", "compile", *compile_args, a.package, timeout=900)
         res["compile_ok"] = out.strip() == b"Success"
         res["dexopt_before"] = dexopt_status(a.package)
-        if not res["compile_ok"] or "speed" not in res["dexopt_before"]:
-            raise RuntimeError("fixed AOT compilation state not verified")
+        if not res["compile_ok"] or a.compilation not in res["dexopt_before"]:
+            raise RuntimeError("fixed compilation state not verified")
         for block in range(a.blocks):
             for i, mode in enumerate(block_order(block)):
                 nonce = "b%dm%d" % (block, i)

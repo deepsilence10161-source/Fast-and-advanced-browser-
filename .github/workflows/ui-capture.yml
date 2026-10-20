@@ -14,6 +14,11 @@ on:
       source_variant:
         description: "chromium_source_* के लिए: state variant (a1 = baseline; branded/patched builds अलग variant में)"
         default: "a1"
+      ablation_compilation:
+        description: "startup_ablation only: fixed ART state; verify is install-like, speed is full AOT diagnostic"
+        type: choice
+        options: [speed, verify]
+        default: speed
       checks:
         description: "full = regression/publish; safety_update or startup_ablation = focused native diagnostics, NEVER publish"
         type: choice
@@ -75,7 +80,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
           disable-animations: true
           script: |
-            bash scripts/ci/run_capture.sh ${{ matrix.target }} "${{ inputs.checks || 'full' }}"
+            bash scripts/ci/run_capture.sh ${{ matrix.target }} "${{ inputs.checks || 'full' }}" "${{ inputs.ablation_compilation || 'speed' }}"
             if [ -f dl/ChromePublic.apk ] && [ -f "$RUNNER_TEMP/foreign.apk" ]; then bash scripts/ci/device_checks.sh ${{ matrix.target }} dl/ChromePublic.apk "$RUNNER_TEMP/foreign.apk"; fi
             if [ -f dl/ChromePublic.apk ]; then bash scripts/ci/diag_dump.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4

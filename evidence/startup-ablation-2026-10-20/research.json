@@ -35,6 +35,11 @@
       "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/testing/variations/fieldtrial_testing_config.json",
       "sha256": "dd7959d46b5e63ed43e67708dd42ad0f7dd463ddd1829a3e6fccc4d228a8b5a8",
       "cache": "pinned upstream config already stored in repo, not re-downloaded"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/third_party/blink/common/features.cc",
+      "sha256": "d3ebefd203e649ccbd3c146fb2d8fe579e1511a321b6fd8c96a1db811dbef56e",
+      "finding": "AndroidSystemFontPrewarming is a background system-font prewarming feature, disabled in unmodified default"
     }
   ],
   "current_official_doc": "https://developer.android.com/topic/performance/benchmarking/macrobenchmark-metrics#startup-timing",

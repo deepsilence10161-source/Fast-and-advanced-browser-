@@ -1,0 +1,20 @@
+{
+  "checked_utc": "2026-10-20T08:16:49.768670+00:00",
+  "run_id": 39387937370,
+  "artifact_id": 12249796532,
+  "driver_commit": "18b60ad90804c198419b42c1724f2e78ce437bc6",
+  "apk_sha256": "b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+  "device": {
+    "ro.hardware": "ranchu",
+    "ro.product.cpu.abi": "x86_64",
+    "ro.build.version.sdk": "36"
+  },
+  "metric": "am start -W TotalTime; process-cold, not TTFD/LCP/physical/current-Chrome proof",
+  "compile_mode": "speed AOT; diagnostic, not install-default verify",
+  "samples_per_mode": 12,
+  "same_apk": true,
+  "original_flags_restored": true,
+  "post_keystore": "PASS sw1/no plaintext/wrapped/restart/Keystore2",
+  "product_flag_promoted": false,
+  "limits": "4 blocks; all intervals cross zero; no physical/current-Chrome/LCP proof"
+}

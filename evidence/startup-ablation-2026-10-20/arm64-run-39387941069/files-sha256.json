@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "file": "BUILD_INFO.txt",
+      "sha256": "f59bb8f9abad681f5cc9b6ac5f488fae7cf2b7e2cbec45ea737d0908516e9ad1"
+    },
+    {
+      "file": "keystore_e2e.json",
+      "sha256": "d5cdabe0c6bddd020e0b0858cf9ae39ad3c1cfbcfeba7c3be92c68fa8431afde"
+    },
+    {
+      "file": "provenance.json",
+      "sha256": "21fa19778110d62a81365ba626d1f5fc38354cdecb9b3256152b98040f8d833f"
+    },
+    {
+      "file": "startup_ablation.json",
+      "sha256": "202a5a04e629e144e497d411297896e75868d47315fc50dd6e66b77aa63115ae"
+    }
+  ]
+}

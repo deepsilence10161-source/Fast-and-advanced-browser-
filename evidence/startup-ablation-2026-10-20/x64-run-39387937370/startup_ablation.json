@@ -1,0 +1,2372 @@
+{
+ "package": "com.swiftra.app",
+ "blocks": 4,
+ "runs": 3,
+ "settle_s": 6,
+ "modes": {
+  "shipped": null,
+  "without_AndroidStartupImprovements": "AndroidStartupImprovements",
+  "without_AndroidSystemFontPrewarming": "AndroidSystemFontPrewarming",
+  "without_TweakApplicationPreloadMoveWarmUp": "TweakApplicationPreloadMoveWarmUp",
+  "without_AndroidWarmUpSpareRendererWithTimeout": "AndroidWarmUpSpareRendererWithTimeout",
+  "without_SQLitePersistentCookieStoreEarlyInit": "SQLitePersistentCookieStoreEarlyInit",
+  "without_EarlyCookieLoadOnPreconnect": "EarlyCookieLoadOnPreconnect"
+ },
+ "metric": "am start -W TotalTime; process-cold, not TTFD/LCP/physical/current-Chrome proof",
+ "compile_mode": "speed AOT; diagnostic, not install-default verify",
+ "apk_sha256": "b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+ "driver_commit": "18b60ad90804c198419b42c1724f2e78ce437bc6",
+ "rows": [
+  {
+   "block": 0,
+   "position": 0,
+   "mode": "shipped",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 3520,
+     "wait_ms": 3604,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "5184",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2216,
+     "wait_ms": 2226,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "5423",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2290,
+     "wait_ms": 2293,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "5575",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 0,
+   "position": 1,
+   "mode": "without_AndroidStartupImprovements",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": false,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2180,
+     "wait_ms": 2187,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "5989",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2143,
+     "wait_ms": 2219,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "6157",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2276,
+     "wait_ms": 2277,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "6334",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 0,
+   "position": 2,
+   "mode": "without_AndroidSystemFontPrewarming",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2481,
+     "wait_ms": 2511,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "6726",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1929,
+     "wait_ms": 1933,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "6895",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2210,
+     "wait_ms": 2219,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "7047",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 0,
+   "position": 3,
+   "mode": "without_TweakApplicationPreloadMoveWarmUp",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": false,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2057,
+     "wait_ms": 2063,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "7395",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2215,
+     "wait_ms": 2233,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "7559",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2211,
+     "wait_ms": 2214,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "7759",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 0,
+   "position": 4,
+   "mode": "without_AndroidWarmUpSpareRendererWithTimeout",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2007,
+     "wait_ms": 2014,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "8103",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2286,
+     "wait_ms": 2310,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "8267",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2112,
+     "wait_ms": 2115,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "8434",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 0,
+   "position": 5,
+   "mode": "without_SQLitePersistentCookieStoreEarlyInit",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2216,
+     "wait_ms": 2222,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "8789",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1964,
+     "wait_ms": 1966,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "8953",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1939,
+     "wait_ms": 1947,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "9106",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 0,
+   "position": 6,
+   "mode": "without_EarlyCookieLoadOnPreconnect",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2011,
+     "wait_ms": 2022,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "9451",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1953,
+     "wait_ms": 1965,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "9617",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2106,
+     "wait_ms": 2158,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "9767",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 0,
+   "mode": "without_EarlyCookieLoadOnPreconnect",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2309,
+     "wait_ms": 2342,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "10116",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2130,
+     "wait_ms": 2135,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "10283",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2155,
+     "wait_ms": 2247,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "10434",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 1,
+   "mode": "without_SQLitePersistentCookieStoreEarlyInit",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2140,
+     "wait_ms": 2143,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "10789",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2085,
+     "wait_ms": 2086,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "10953",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2125,
+     "wait_ms": 2127,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "11102",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 2,
+   "mode": "without_AndroidWarmUpSpareRendererWithTimeout",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2175,
+     "wait_ms": 2176,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "11442",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1996,
+     "wait_ms": 2005,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "11604",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2076,
+     "wait_ms": 2079,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "11757",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 3,
+   "mode": "without_TweakApplicationPreloadMoveWarmUp",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": false,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 1944,
+     "wait_ms": 1946,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "12111",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2107,
+     "wait_ms": 2109,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "12276",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2075,
+     "wait_ms": 2099,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "12425",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 4,
+   "mode": "without_AndroidSystemFontPrewarming",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2318,
+     "wait_ms": 2323,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "12766",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2119,
+     "wait_ms": 2137,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "12935",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2044,
+     "wait_ms": 2049,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "13084",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 5,
+   "mode": "without_AndroidStartupImprovements",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": false,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2243,
+     "wait_ms": 2251,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "13423",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2056,
+     "wait_ms": 2057,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "13587",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2121,
+     "wait_ms": 2130,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "13737",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 1,
+   "position": 6,
+   "mode": "shipped",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2083,
+     "wait_ms": 2086,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "14075",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2005,
+     "wait_ms": 2008,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "14240",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1993,
+     "wait_ms": 1995,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "14391",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 0,
+   "mode": "without_TweakApplicationPreloadMoveWarmUp",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": false,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 1974,
+     "wait_ms": 2006,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "14730",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2183,
+     "wait_ms": 2199,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "14897",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1970,
+     "wait_ms": 1975,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "15044",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 1,
+   "mode": "without_AndroidWarmUpSpareRendererWithTimeout",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2115,
+     "wait_ms": 2119,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "15380",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2146,
+     "wait_ms": 2152,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "15543",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1939,
+     "wait_ms": 1950,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "15695",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 2,
+   "mode": "without_SQLitePersistentCookieStoreEarlyInit",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2389,
+     "wait_ms": 2391,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "16043",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2029,
+     "wait_ms": 2038,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "16210",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1989,
+     "wait_ms": 1994,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "16360",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 3,
+   "mode": "without_EarlyCookieLoadOnPreconnect",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2464,
+     "wait_ms": 2498,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "16720",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2035,
+     "wait_ms": 2053,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "16886",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2117,
+     "wait_ms": 2134,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "17035",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 4,
+   "mode": "shipped",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2033,
+     "wait_ms": 2050,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "17378",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2030,
+     "wait_ms": 2044,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "17541",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1946,
+     "wait_ms": 1947,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "17689",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 5,
+   "mode": "without_AndroidStartupImprovements",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": false,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2163,
+     "wait_ms": 2167,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "18048",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2171,
+     "wait_ms": 2174,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "18209",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2081,
+     "wait_ms": 2106,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "18356",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 2,
+   "position": 6,
+   "mode": "without_AndroidSystemFontPrewarming",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2020,
+     "wait_ms": 2022,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "18695",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 1981,
+     "wait_ms": 1991,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "18868",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2195,
+     "wait_ms": 2200,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "19015",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 0,
+   "mode": "without_AndroidSystemFontPrewarming",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2128,
+     "wait_ms": 2144,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "19366",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2184,
+     "wait_ms": 2208,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "19528",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2157,
+     "wait_ms": 2158,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "19678",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 1,
+   "mode": "without_AndroidStartupImprovements",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": false,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2218,
+     "wait_ms": 2242,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "20035",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2454,
+     "wait_ms": 2592,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "20197",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2154,
+     "wait_ms": 2156,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "20348",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": false,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 2,
+   "mode": "shipped",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2185,
+     "wait_ms": 2192,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "20688",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2246,
+     "wait_ms": 2267,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "20854",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2090,
+     "wait_ms": 2093,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "21003",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 3,
+   "mode": "without_EarlyCookieLoadOnPreconnect",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2095,
+     "wait_ms": 2114,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "21340",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2269,
+     "wait_ms": 2271,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "21505",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2026,
+     "wait_ms": 2037,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "21655",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 4,
+   "mode": "without_SQLitePersistentCookieStoreEarlyInit",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2336,
+     "wait_ms": 2345,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "21995",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2148,
+     "wait_ms": 2152,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "22163",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2078,
+     "wait_ms": 2083,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "22313",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 5,
+   "mode": "without_AndroidWarmUpSpareRendererWithTimeout",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": true,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2409,
+     "wait_ms": 2413,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "22650",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2089,
+     "wait_ms": 2097,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "22812",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2076,
+     "wait_ms": 2103,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "22962",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": true,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  },
+  {
+   "block": 3,
+   "position": 6,
+   "mode": "without_TweakApplicationPreloadMoveWarmUp",
+   "warmup": {
+    "attempts": [
+     {
+      "cli_verified": true,
+      "cached": {
+       "AndroidStartupImprovements": true,
+       "TweakApplicationPreloadMoveWarmUp": false,
+       "crash_streak": 0,
+       "safe_runs_left": 0
+      },
+      "closed_tabs": 2
+     }
+    ],
+    "receipt_verified": true
+   },
+   "samples": [
+    {
+     "total_ms": 2332,
+     "wait_ms": 2334,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "23306",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2214,
+     "wait_ms": 2222,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "23471",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    },
+    {
+     "total_ms": 2020,
+     "wait_ms": 2022,
+     "launch_state": "COLD",
+     "status_ok": true,
+     "old_pid": null,
+     "pid_gone_before": true,
+     "pid": "23619",
+     "flags_file_matches": true,
+     "cache_before_ok": true,
+     "cached_after": {
+      "AndroidStartupImprovements": true,
+      "TweakApplicationPreloadMoveWarmUp": false,
+      "crash_streak": 0,
+      "safe_runs_left": 0
+     },
+     "cache_after_ok": true,
+     "valid": true
+    }
+   ]
+  }
+ ],
+ "no_direct_preference_edits": true,
+ "security_settings": "unchanged, performance-only allowlist",
+ "flags_restored": true,
+ "shipped_cache_reprimed": true,
+ "compile_reset": true,
+ "device": {
+  "ro.hardware": "ranchu",
+  "ro.product.cpu.abi": "x86_64",
+  "ro.build.version.sdk": "36"
+ },
+ "installed_sha_before": "b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+ "compile_ok": true,
+ "dexopt_before": [
+  "speed"
+ ],
+ "dexopt_after": [
+  "speed"
+ ],
+ "installed_sha_after": "b1ea03ea9e77da9573ef5ad96c2078135acfe678c7ad1abee6feb4fddcaa11ff",
+ "same_apk": true,
+ "summary": {
+  "shipped": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2086.5,
+   "min_ms": 1946,
+   "max_ms": 3520
+  },
+  "without_AndroidStartupImprovements": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2167.0,
+   "min_ms": 2056,
+   "max_ms": 2454,
+   "block_delta_pct": [
+    -4.8035,
+    5.7855,
+    6.5517,
+    1.5103
+   ],
+   "median_block_delta_pct": 3.65,
+   "block_bootstrap_95_pct": [
+    -4.803,
+    6.552
+   ]
+  },
+  "without_AndroidSystemFontPrewarming": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2142.5,
+   "min_ms": 1929,
+   "max_ms": 2481,
+   "block_delta_pct": [
+    -3.4934,
+    5.6858,
+    -0.4926,
+    -1.2815
+   ],
+   "median_block_delta_pct": -0.89,
+   "block_bootstrap_95_pct": [
+    -3.493,
+    5.686
+   ]
+  },
+  "without_TweakApplicationPreloadMoveWarmUp": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2091.0,
+   "min_ms": 1944,
+   "max_ms": 2332,
+   "block_delta_pct": [
+    -3.4498,
+    3.4913,
+    -2.7586,
+    1.3272
+   ],
+   "median_block_delta_pct": -0.72,
+   "block_bootstrap_95_pct": [
+    -3.45,
+    3.491
+   ]
+  },
+  "without_AndroidWarmUpSpareRendererWithTimeout": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2100.5,
+   "min_ms": 1939,
+   "max_ms": 2409,
+   "block_delta_pct": [
+    -7.7729,
+    3.5411,
+    4.1872,
+    -4.3936
+   ],
+   "median_block_delta_pct": -0.43,
+   "block_bootstrap_95_pct": [
+    -7.773,
+    4.187
+   ]
+  },
+  "without_SQLitePersistentCookieStoreEarlyInit": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2105.0,
+   "min_ms": 1939,
+   "max_ms": 2389,
+   "block_delta_pct": [
+    -14.2358,
+    5.985,
+    -0.0493,
+    -1.6934
+   ],
+   "median_block_delta_pct": -0.87,
+   "block_bootstrap_95_pct": [
+    -14.236,
+    5.985
+   ]
+  },
+  "without_EarlyCookieLoadOnPreconnect": {
+   "valid_n": 12,
+   "expected_n": 12,
+   "median_ms": 2111.5,
+   "min_ms": 1953,
+   "max_ms": 2464,
+   "block_delta_pct": [
+    -12.1834,
+    7.4813,
+    4.2857,
+    -4.119
+   ],
+   "median_block_delta_pct": 0.08,
+   "block_bootstrap_95_pct": [
+    -12.183,
+    7.481
+   ]
+  }
+ },
+ "candidate_promoted": false,
+ "verdict": "measured"
+}
