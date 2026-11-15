@@ -1,0 +1,213 @@
+{
+  "effective_date": "2026-10-19",
+  "pinned_tag": "155.0.8059.80",
+  "files": [
+    {
+      "path": "chrome/android/java/AndroidManifest.xml",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/AndroidManifest.xml",
+      "status": "READ",
+      "sha256": "06c7dac54cdc5fc67e7ee6ae542ddf5cad7e1b598263563a205eccf2e217d68a",
+      "bytes": 81777,
+      "lines": 1563
+    },
+    {
+      "path": "chrome/android/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/BUILD.gn",
+      "status": "READ",
+      "sha256": "5b4fe0217f8f67fce9190eb002cb90dbc85cc77465b1bc80f9d553e159c77b54",
+      "bytes": 174430,
+      "lines": 3568
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/backup/ChromeBackupAgent.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/backup/ChromeBackupAgent.java",
+      "status": "READ",
+      "sha256": "c0f24640bde9b423e83c70b779c3c8081895ecc10bb35119ad465062bec7c73e",
+      "bytes": 777,
+      "lines": 21
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/ChromeActivity.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/ChromeActivity.java",
+      "status": 404
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeImpl.java",
+      "status": "READ",
+      "sha256": "eb35f4144e35844e9af9e4fa9802dc78b3a4d1e24a38627ba109e56c62f0161f",
+      "bytes": 34839,
+      "lines": 861
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java",
+      "status": "READ",
+      "sha256": "d55d8a8e7760c69f8a74e96d7cc501d8cbfc7cfc76e4ffb35b4e011030bd8690",
+      "bytes": 1916,
+      "lines": 61
+    },
+    {
+      "path": "chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManager.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManager.java",
+      "status": "READ",
+      "sha256": "682ee158be0d40e70facc36d59399861073593907dbdc5be6bb95a3cf41278e5",
+      "bytes": 7821,
+      "lines": 204
+    },
+    {
+      "path": "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+      "status": "READ",
+      "sha256": "508639af0abf800f1fd3ffb26c307b44413df9461eeba75b61cb6b68087502b9",
+      "bytes": 139938,
+      "lines": 3105
+    },
+    {
+      "path": "content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java",
+      "status": "READ",
+      "sha256": "7d81c27d19922b828a7dce07bde0abc0192b651fceeffb7f35f061308212cc39",
+      "bytes": 95190,
+      "lines": 2236
+    }
+  ],
+  "scope": "Persistent native Android personal-browser containment; no automatic wipe. Privacy first, AI deferred.",
+  "user_correction": {
+    "platform": "Android app",
+    "preserve_data": true,
+    "no_auto_wipe": true,
+    "prevent_automatic_platform_account_linkage_and_local_exports": true,
+    "ai_deferred": true
+  },
+  "implementation": {
+    "chromium_runtime_changed": false,
+    "apk_built": false,
+    "existing_app_profile_touched": false,
+    "static_audit": "tools/security/personal_container_manifest.py",
+    "unit_tests": "tests/test_personal_container_manifest.py",
+    "apk_binding_verified": false,
+    "release_gate_changed": false
+  },
+  "primary_docs": [
+    {
+      "url": "https://source.android.com/docs/security/app-sandbox",
+      "finding": "per-app UID/internal sandbox; OS compromise not covered"
+    },
+    {
+      "url": "https://developer.android.com/privacy-and-security/security-tips",
+      "finding": "internal versus external storage, content providers and explicit IPC surfaces"
+    },
+    {
+      "url": "https://developer.android.com/identity/data/autobackup",
+      "finding": "legacy/cloud/D2D/cross-platform transfer controls and missing-mode default inclusion"
+    },
+    {
+      "url": "https://developer.android.com/about/versions/12/backup-restore",
+      "finding": "some OEM D2D transfer behavior differs even when allowBackup=false"
+    },
+    {
+      "url": "https://support.google.com/chrome/answer/185277?hl=en&co=GENIE.Platform%3DAndroid",
+      "finding": "browser-profile sign-in and cross-device data features distinct from website cookie login"
+    }
+  ],
+  "source_findings": [
+    {
+      "topic": "backup",
+      "finding": "manifest template is conditional on backup_key: true plus BackupAgent versus false. Existing project APK audit requires allowBackup=false. No claim current APK has backups enabled."
+    },
+    {
+      "topic": "platform permissions",
+      "finding": "template contains account, storage and credential candidate permissions. Declarations are potential surfaces, not proof of runtime exfiltration."
+    },
+    {
+      "topic": "account bridge",
+      "finding": "AccountManagerFacadeImpl.createAddAccountIntent delegates a device-account-add intent; actual website signup linkage is not tested."
+    },
+    {
+      "topic": "provider grants",
+      "finding": "ChromeFileProvider/DownloadFileProvider have exported=false and grantUriPermissions=true; non-exported alone is not a never-share proof."
+    },
+    {
+      "topic": "IME",
+      "finding": "normal non-incognito WebContents permits keyboard learning; no-learning hint is set when allowKeyboardLearning=false. Keyboard enforcement not guaranteed."
+    },
+    {
+      "topic": "external navigation",
+      "finding": "ExternalNavigationHandler contains external intent, Play Store and WebAPK paths; actual personal-mode blocking not implemented."
+    },
+    {
+      "topic": "encryption",
+      "finding": "existing 0021 OSCrypt wrapping and historical cookie proof do not certify full-profile encryption; v10 fallback must not be accepted as new private-vault fail-closed writes."
+    }
+  ],
+  "local_tests": [
+    {
+      "scope": "initial static utility",
+      "result": "59 passed in 0.13s"
+    },
+    {
+      "scope": "new unresolved permission negative controls before fix",
+      "result": "3 failed, 59 deselected in 0.07s",
+      "problem": "missing, @string and placeholder permission names incorrectly permitted a static pass"
+    },
+    {
+      "scope": "corrected utility plus existing APK-audit unit tests",
+      "result": "64 passed in 0.14s",
+      "new_tests": 62,
+      "existing_tests": 2,
+      "type": "host synthetic decoded-XML unit tests only"
+    },
+    {
+      "scope": "py_compile new utility/tests",
+      "result": "PASS syntax only"
+    },
+    {
+      "scope": "full host suite",
+      "result": "361 passed, 8 skipped in 121.98s (before UTF-16 DTD guard tests)"
+    },
+    {
+      "scope": "UTF-16 LE/BE DTD negative controls before parser-level fix",
+      "result": "2 failed, 62 deselected in 0.06s",
+      "problem": "raw byte scan did not reject UTF-16 DOCTYPE declarations",
+      "fix": "ET parser target rejects doctype independent of UTF-16 byte layout; tests retained"
+    },
+    {
+      "scope": "final focused/full host rerun after parser-level fix",
+      "result": "focused 66 passed in 0.15s; full 363 passed, 8 skipped in 120.54s; py_compile PASS",
+      "new_unit_cases": 64,
+      "test_type": "host synthetic XML/manifest and existing host regression suite; no Android/browser runtime"
+    }
+  ],
+  "not_tested": [
+    "new privacy APK",
+    "Android x64 emulator",
+    "native ARM64 Redroid",
+    "physical phone",
+    "real Google account",
+    "backup restore or OEM migration",
+    "whole-profile encryption",
+    "runtime intents/providers/clipboard/IME/autofill",
+    "network containment",
+    "actual retention after restart"
+  ],
+  "environment": {
+    "bootstrap_passed": 18,
+    "bootstrap_remote_checks_unverified": 2,
+    "remote_http_status": 401,
+    "local_leak_count": 0,
+    "github_connector": "unsupported",
+    "rg": "missing; used Python/grep instead",
+    "first_activity_source_path": "404; not used as evidence"
+  },
+  "github_publication": "BLOCKED / NOT CLAIMED",
+  "cost_or_private_data_access": {
+    "paid_resource": false,
+    "google_credentials_or_cookies": false,
+    "unrelated_connected_app_data": false
+  },
+  "component_sha256": {
+    "tools/security/personal_container_manifest.py": "a0032c32dfeebf66f0e0f203cc53ca3d7f2e036865a1fb946322a5655ec20a25",
+    "tests/test_personal_container_manifest.py": "45396b22b011151fb5bb6e7f73c8669f806f70ffa3a803e343be0b1409adcd7b"
+  }
+}
