@@ -1,0 +1,337 @@
+--- a/chrome/android/java/AndroidManifest.xml
++++ b/chrome/android/java/AndroidManifest.xml
+@@ -87 +87,23 @@
+-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
++
++    <!-- Personal source variant: do not merge account/credential/shared-storage bridges. -->
++    <uses-permission android:name="android.permission.GET_ACCOUNTS" tools:node="remove" />
++    <uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" tools:node="remove" />
++    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" tools:node="remove" />
++    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" tools:node="remove" />
++    <uses-permission android:name="android.permission.USE_CREDENTIALS" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" tools:node="remove" />
++    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_SYNC_STATS" tools:node="remove" />
++    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS" tools:node="remove" />
++    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ALLOWED_PROVIDERS" tools:node="remove" />
++    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ORIGIN" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" tools:node="remove" />
++    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:node="remove" />
++    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:node="remove" />
++    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" tools:node="remove" />
++    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" tools:node="remove" />
++    <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" tools:node="remove" />
++
+@@ -89 +110,0 @@
+-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+@@ -99 +119,0 @@
+-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+@@ -109 +128,0 @@
+-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+@@ -114 +132,0 @@
+-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+@@ -117,3 +134,0 @@
+-    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
+-    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ALLOWED_PROVIDERS"/>
+-    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ORIGIN"/>
+@@ -176 +190,0 @@
+-    <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
+@@ -230,6 +243,0 @@
+-        {% if backup_key is defined %}
+-        android:allowBackup="true"
+-        android:backupAgent="org.chromium.chrome.browser.backup.ChromeBackupAgent"
+-        android:fullBackupOnly="false"
+-        android:restoreAnyVersion="true"
+-        {% else %}
+@@ -237 +245,4 @@
+-        {% endif %}
++        android:fullBackupContent="false"
++        android:dataExtractionRules="@xml/personal_no_data_transfer"
++        android:restoreAnyVersion="false"
++        tools:remove="android:backupAgent"
+@@ -245 +256 @@
+-        <profileable android:shell="true"/>
++        <profileable android:shell="false"/>
+@@ -1427,5 +1438 @@
+-      {% if backup_key is defined %}
+-      <!-- Backup keys are channel dependent -->
+-      <meta-data android:name="com.google.android.backup.api_key"
+-          android:value="{{ backup_key }}" />
+-      {% endif %}
++
+@@ -1470 +1477 @@
+-          android:grantUriPermissions="true">
++          android:grantUriPermissions="false">
+@@ -1478 +1485 @@
+-          android:grantUriPermissions="true">
++          android:grantUriPermissions="false">
+@@ -1487 +1494 @@
+-          android:grantUriPermissions="true">
++          android:grantUriPermissions="false">
+@@ -1494 +1501 @@
+-          android:grantUriPermissions="true">
++          android:grantUriPermissions="false">
+@@ -1501 +1508 @@
+-          android:grantUriPermissions="true">
++          android:grantUriPermissions="false">
+@@ -1529 +1536 @@
+-          android:exported="true">
++          android:exported="false">
+@@ -1538 +1545 @@
+-            android:grantUriPermissions="true">
++            android:grantUriPermissions="false">
+@@ -1546 +1553 @@
+-            android:grantUriPermissions="true">
++            android:grantUriPermissions="false">
+@@ -1552 +1559 @@
+-          android:exported="true"
++          android:exported="false"
+--- a/chrome/android/BUILD.gn
++++ b/chrome/android/BUILD.gn
+@@ -144,0 +145 @@
++      "java/res_base/xml/personal_no_data_transfer.xml",
+--- a/components/signin/public/android/BUILD.gn
++++ b/components/signin/public/android/BUILD.gn
+@@ -41,0 +42 @@
++    "java/src/org/chromium/components/signin/BrowserContainedAccountManagerFacade.java",
+--- a/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java
++++ b/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java
+@@ -12 +11,0 @@
+-import org.chromium.base.ServiceLoaderUtil;
+@@ -27,6 +26,2 @@
+-            AccountManagerDelegate delegate =
+-                    ServiceLoaderUtil.maybeCreate(AccountManagerDelegate.class);
+-            if (delegate == null) {
+-                delegate = new NullAccountManagerDelegate();
+-            }
+-            INSTANCE = new AccountManagerFacadeImpl(delegate);
++            // Personal source variant: never initialize a platform account delegate.
++            INSTANCE = new BrowserContainedAccountManagerFacade();
+--- a/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java
++++ b/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java
+@@ -17,2 +16,0 @@
+-import org.chromium.base.CallbackUtils;
+-import org.chromium.base.ContextUtils;
+@@ -30 +27,0 @@
+-import org.chromium.components.externalauth.ExternalAuthUtils;
+@@ -223,4 +220,2 @@
+-        return mSignInState == null
+-                && mPrefService.getBoolean(Pref.SIGNIN_ALLOWED)
+-                && mIdentityManager.getPrimaryAccountInfo() == null
+-                && isSigninSupported(/* requireUpdatedPlayServices= */ false);
++        // This build retains website cookies, not a Chrome/Android signed-in profile.
++        return false;
+@@ -239,5 +234 @@
+-        if (requireUpdatedPlayServices) {
+-            return ExternalAuthUtils.getInstance().canUseGooglePlayServices();
+-        }
+-        return !ExternalAuthUtils.getInstance()
+-                .isGooglePlayServicesMissing(ContextUtils.getApplicationContext());
++        return false;
+@@ -248,4 +239 @@
+-        return mSignInState == null
+-                && mPrefService.getBoolean(Pref.SIGNIN_ALLOWED)
+-                && isSigninSupported(/* requireUpdatedPlayServices= */ false)
+-                && isSignOutAllowed();
++        return false;
+@@ -289 +277,2 @@
+-        signinInternal(SignInState.createForSignin(accessPoint, coreAccountInfo, callback));
++        // Reject without account lookup, native sign-in, sign-out or profile deletion.
++        PostTask.postTask(TaskTraits.UI_DEFAULT, callback::onSignInAborted);
+@@ -295,9 +284 @@
+-        AccountInfo primaryAccountInfo = mIdentityManager.getPrimaryAccountInfo();
+-        assert primaryAccountInfo != null && primaryAccountInfo.equals(coreAccountInfo)
+-                : "Must be signed-in to turn on sync ";
+-        @PrimaryAccountError
+-        int primaryAccountError =
+-                mIdentityMutator.setPrimaryAccountWithSyncConsentForTesting(
+-                        coreAccountInfo.getId(), accessPoint, CallbackUtils.emptyRunnable());
+-        assert primaryAccountError == PrimaryAccountError.NO_ERROR
+-                : "Encountered error: " + primaryAccountError;
++        throw new UnsupportedOperationException("Browser-contained build has no platform Sync");
+--- a/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java
++++ b/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java
+@@ -367,2 +367,2 @@
+-        boolean allowKeyboardLearning = mWebContents != null && !mWebContents.isIncognito();
+-        InputConnection inputConnection = onCreateInputConnection(outAttrs, allowKeyboardLearning);
++        // Keep a normal persistent profile; do not use incognito to request IME privacy.
++        InputConnection inputConnection = onCreateInputConnection(outAttrs, false);
+@@ -536,3 +536,3 @@
+-        if (!allowKeyboardLearning) {
+-            outAttrs.imeOptions |= EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING;
+-        }
++        // Enforce the hint even for callers of this overload that pass true.
++        // This is a request to the IME, not an offline-keyboard guarantee.
++        outAttrs.imeOptions |= EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING;
+--- /dev/null
++++ b/components/signin/public/android/java/src/org/chromium/components/signin/BrowserContainedAccountManagerFacade.java
+@@ -0,0 +1,123 @@
++// Copyright 2026 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++package org.chromium.components.signin;
++
++import android.app.Activity;
++import android.content.Intent;
++import android.os.Bundle;
++
++import org.chromium.base.Callback;
++import org.chromium.base.Promise;
++import org.chromium.base.ThreadUtils;
++import org.chromium.base.task.PostTask;
++import org.chromium.base.task.TaskTraits;
++import org.chromium.build.annotations.NullMarked;
++import org.chromium.build.annotations.Nullable;
++import org.chromium.components.signin.base.AccountCapabilities;
++import org.chromium.components.signin.base.AccountInfo;
++import org.chromium.components.signin.base.CoreAccountInfo;
++import org.chromium.google_apis.gaia.CoreAccountId;
++import org.chromium.google_apis.gaia.GoogleServiceAuthError;
++import org.chromium.google_apis.gaia.GoogleServiceAuthErrorState;
++
++import java.util.Collections;
++import java.util.List;
++
++/**
++ * No-platform-account backend for the separate persistent personal source variant.
++ *
++ * <p>No delegate, device account, token service, observer receiver, profile or file is accessed.
++ * Website sessions remain in the normal browser profile; no sign-out or deletion is performed.
++ * This boundary does not disable every credential, autofill, intent or network surface.
++ */
++@NullMarked
++public final class BrowserContainedAccountManagerFacade implements AccountManagerFacade {
++    @Override
++    public void addObserver(AccountsChangeObserver observer) {
++        ThreadUtils.assertOnUiThread();
++        // The immutable empty local roster never changes; do not register an OS observer.
++    }
++
++    @Override
++    public void removeObserver(AccountsChangeObserver observer) {
++        ThreadUtils.assertOnUiThread();
++    }
++
++    @Override
++    public Promise<List<AccountInfo>> getAccounts() {
++        ThreadUtils.assertOnUiThread();
++        return Promise.fulfilled(Collections.emptyList());
++    }
++
++    @Override
++    public void getAccessToken(
++            CoreAccountInfo account, String scope, GetAccessTokenCallback callback) {
++        ThreadUtils.assertOnUiThread();
++        callback.onGetTokenFailure(
++                new GoogleServiceAuthError(GoogleServiceAuthErrorState.REQUEST_CANCELED));
++    }
++
++    @Override
++    public void invalidateAccessToken(String token, @Nullable Runnable completedRunnable) {
++        ThreadUtils.assertOnUiThread();
++        // There is no external token to revoke. Do not forward the supplied value anywhere.
++        if (completedRunnable != null) completedRunnable.run();
++    }
++
++    @Override
++    public void waitForPendingTokenRequestsToComplete(Runnable callback) {
++        ThreadUtils.assertOnUiThread();
++        callback.run();
++    }
++
++    @Override
++    public void checkIsSubjectToParentalControls(
++            CoreAccountInfo account, ChildAccountStatusListener listener) {
++        ThreadUtils.assertOnUiThread();
++        // No platform account exists in this backend; do not classify the supplied account.
++        listener.onStatusReady(false, null);
++    }
++
++    @Override
++    public Promise<AccountCapabilities> getAccountCapabilities(CoreAccountInfo account) {
++        ThreadUtils.assertOnUiThread();
++        // Empty means unknown, not a fabricated affirmative capability or hanging request.
++        return Promise.fulfilled(new AccountCapabilities(new String[0], new boolean[0]));
++    }
++
++    @Override
++    public void createAddAccountIntent(
++            @Nullable String prefilledEmail, Callback<@Nullable Intent> callback) {
++        // This entry point is AnyThread. Preserve its main-thread callback contract.
++        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> callback.onResult(null));
++    }
++
++    @Override
++    public void updateCredentials(
++            CoreAccountId accountId, Activity activity, @Nullable Callback<Boolean> callback) {
++        ThreadUtils.assertOnUiThread();
++        if (callback != null) callback.onResult(false);
++    }
++
++    @Override
++    public void confirmCredentials(
++            CoreAccountId accountId, @Nullable Activity activity,
++            Callback<@Nullable Bundle> callback) {
++        ThreadUtils.assertOnUiThread();
++        callback.onResult(null);
++    }
++
++    @Override
++    public boolean didAccountFetchSucceed() {
++        // The local empty roster is complete; no platform fetch was attempted or succeeded.
++        return true;
++    }
++
++    @Override
++    public void disallowTokenRequestsForTesting() {
++        ThreadUtils.assertOnUiThread();
++        // Already disallowed for the entire lifetime of this source variant.
++    }
++}
+--- /dev/null
++++ b/chrome/android/java/res_base/xml/personal_no_data_transfer.xml
+@@ -0,0 +1,40 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!-- Copyright 2026 The Chromium Authors
++     Use of this source code is governed by a BSD-style license that can be
++     found in the LICENSE file. -->
++<!-- Exclusions do not delete local files. No matching iOS app is registered. -->
++<data-extraction-rules>
++    <cloud-backup>
++        <exclude domain="root" path="." />
++        <exclude domain="file" path="." />
++        <exclude domain="database" path="." />
++        <exclude domain="sharedpref" path="." />
++        <exclude domain="external" path="." />
++        <exclude domain="device_root" path="." />
++        <exclude domain="device_file" path="." />
++        <exclude domain="device_database" path="." />
++        <exclude domain="device_sharedpref" path="." />
++    </cloud-backup>
++    <device-transfer>
++        <exclude domain="root" path="." />
++        <exclude domain="file" path="." />
++        <exclude domain="database" path="." />
++        <exclude domain="sharedpref" path="." />
++        <exclude domain="external" path="." />
++        <exclude domain="device_root" path="." />
++        <exclude domain="device_file" path="." />
++        <exclude domain="device_database" path="." />
++        <exclude domain="device_sharedpref" path="." />
++    </device-transfer>
++    <cross-platform-transfer platform="ios">
++        <exclude domain="root" path="." />
++        <exclude domain="file" path="." />
++        <exclude domain="database" path="." />
++        <exclude domain="sharedpref" path="." />
++        <exclude domain="external" path="." />
++        <exclude domain="device_root" path="." />
++        <exclude domain="device_file" path="." />
++        <exclude domain="device_database" path="." />
++        <exclude domain="device_sharedpref" path="." />
++    </cross-platform-transfer>
++</data-extraction-rules>

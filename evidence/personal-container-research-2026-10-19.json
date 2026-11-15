@@ -1,5 +1,7 @@
 {
   "effective_date": "2026-10-19",
+  "record_scope": "Historical first requirements/static-preflight snapshot at local commit 0989aa4. Component hashes below refer to that snapshot, not later revisions.",
+  "continuation_evidence": "evidence/personal-native-source-2026-10-19.json",
   "pinned_tag": "155.0.8059.80",
   "files": [
     {

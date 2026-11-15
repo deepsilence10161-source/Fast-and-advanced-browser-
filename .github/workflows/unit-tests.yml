@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
-      - run: pip install -q pillow ninja pyyaml pytest protobuf h2
+      - run: pip install -q pillow ninja pyyaml pytest protobuf h2 jinja2
       - name: Chromium grit (155.0.8059.80) — b2 string-rebrand tests असली grit पर
         run: |
           mkdir -p "$RUNNER_TEMP/grit"

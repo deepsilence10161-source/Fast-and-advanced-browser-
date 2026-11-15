@@ -103,6 +103,12 @@ def test_unresolved_permission_cannot_hide_a_forbidden_name(fixture, permission)
     assert not all(result(fixture)["checks"].values())
 
 
+def test_google_current_account_permission_cannot_bypass_the_policy(fixture):
+    modify_manifest(fixture, lambda root, _: ET.SubElement(
+        root, "uses-permission", {pc.NS + "name": "com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS"}))
+    assert not result(fixture)["checks"]["no_platform_account_or_shared_storage_permissions"]
+
+
 def test_internet_permission_not_misrepresented_as_zero_network(fixture):
     modify_manifest(fixture, lambda root, _: ET.SubElement(
         root, "uses-permission", {pc.NS + "name": "android.permission.INTERNET"}))

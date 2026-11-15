@@ -1,0 +1,224 @@
+{
+  "pin": "155.0.8059.80",
+  "files": [
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacade.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacade.java",
+      "status": "READ",
+      "sha256": "e47833b895e8069af479edbd5bafce6eb813d682614a8dd04d8a2f1dc4055ba8",
+      "bytes": 7410,
+      "lines": 182
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeImpl.java",
+      "status": "READ",
+      "sha256": "eb35f4144e35844e9af9e4fa9802dc78b3a4d1e24a38627ba109e56c62f0161f",
+      "bytes": 34839,
+      "lines": 861
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java",
+      "status": "READ",
+      "sha256": "d55d8a8e7760c69f8a74e96d7cc501d8cbfc7cfc76e4ffb35b4e011030bd8690",
+      "bytes": 1916,
+      "lines": 61
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerDelegate.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerDelegate.java",
+      "status": "READ",
+      "sha256": "7ad0e33b9f5f10242c97e277af5755eb3452db65e03166e4838ef6a64f9141b6",
+      "bytes": 7581,
+      "lines": 194
+    },
+    {
+      "path": "components/signin/public/android/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/BUILD.gn",
+      "status": "READ",
+      "sha256": "318035a3ef18d6cc802433bd69cae45a22a5ca6056699dee274c2a9aeb2c3a5d",
+      "bytes": 10017,
+      "lines": 220
+    },
+    {
+      "path": "components/signin/public/android/java_sources.gni",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java_sources.gni",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManager.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManager.java",
+      "status": "READ",
+      "sha256": "682ee158be0d40e70facc36d59399861073593907dbdc5be6bb95a3cf41278e5",
+      "bytes": 7821,
+      "lines": 204
+    },
+    {
+      "path": "chrome/android/java/AndroidManifest.xml",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/AndroidManifest.xml",
+      "status": "READ",
+      "sha256": "06c7dac54cdc5fc67e7ee6ae542ddf5cad7e1b598263563a205eccf2e217d68a",
+      "bytes": 81777,
+      "lines": 1563
+    },
+    {
+      "path": "chrome/android/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/BUILD.gn",
+      "status": "READ",
+      "sha256": "5b4fe0217f8f67fce9190eb002cb90dbc85cc77465b1bc80f9d553e159c77b54",
+      "bytes": 174430,
+      "lines": 3568
+    },
+    {
+      "path": "content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java",
+      "status": "READ",
+      "sha256": "7d81c27d19922b828a7dce07bde0abc0192b651fceeffb7f35f061308212cc39",
+      "bytes": 95190,
+      "lines": 2236
+    },
+    {
+      "path": "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+      "status": "READ",
+      "sha256": "508639af0abf800f1fd3ffb26c307b44413df9461eeba75b61cb6b68087502b9",
+      "bytes": 139938,
+      "lines": 3105
+    },
+    {
+      "path": "base/android/java/src/org/chromium/base/Promise.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/Promise.java",
+      "status": "READ",
+      "sha256": "6b28d58e10f7a27af28809b7d5fdc67f4bec25fc4429dd641fe4dc017fb94a76",
+      "bytes": 12377,
+      "lines": 319
+    },
+    {
+      "path": "base/android/java/src/org/chromium/base/supplier/PromiseImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/supplier/PromiseImpl.java",
+      "status": 404
+    },
+    {
+      "path": "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/DisplayStyleObserver.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/DisplayStyleObserver.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeActivity.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeActivity.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/android/java_sources.gni",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java_sources.gni",
+      "status": "READ",
+      "sha256": "555191ea9825daaa49c8c9367ec9dd51b674b89320b9bfaf83a9f230801b1f5f",
+      "bytes": 1046,
+      "lines": 28
+    },
+    {
+      "path": "chrome/android/chrome_java_resources.gni",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/chrome_java_resources.gni",
+      "status": "READ",
+      "sha256": "c79e8ee6adf0e00aad67d7d37cbe617f449a646662072b6265af8e6b1b6e1262",
+      "bytes": 35060,
+      "lines": 686
+    },
+    {
+      "path": "chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java",
+      "status": "READ",
+      "sha256": "ed9fe948e2be17b6f9a0d7dd6515503cd397520517c4e1227dc5714c7b75f73a",
+      "bytes": 27659,
+      "lines": 681
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/NullAccountManagerDelegate.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/NullAccountManagerDelegate.java",
+      "status": "READ",
+      "sha256": "add06fd34e11906f980abae66c786e8996d82bb3b4cb065a9387db3cdb28c32c",
+      "bytes": 2667,
+      "lines": 76
+    },
+    {
+      "path": "components/signin/public/android/java/src/org/chromium/components/signin/base/AccountCapabilities.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/base/AccountCapabilities.java",
+      "status": "READ",
+      "sha256": "f7edbe0c0fa9f8ffcd1a3c6139d7b3671905bc001b1f619c119a171937f37c44",
+      "bytes": 10108,
+      "lines": 274
+    },
+    {
+      "path": "base/android/java/src/org/chromium/base/task/PostTask.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/task/PostTask.java",
+      "status": "READ",
+      "sha256": "5979ad465a9220fb870ae0253e85f561abd4be62b807da6db514bed08400672c",
+      "bytes": 19873,
+      "lines": 489
+    },
+    {
+      "path": "base/android/java/src/org/chromium/base/task/TaskTraits.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/task/TaskTraits.java",
+      "status": 404
+    },
+    {
+      "path": "components/omnibox/browser/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/omnibox/browser/BUILD.gn",
+      "status": "READ",
+      "sha256": "419a51befaeb57ef7e7e05e24b095940fcdfea659b51d7f0c8c8798825634dcb",
+      "bytes": 39550,
+      "lines": 1190
+    },
+    {
+      "path": "components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBar.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBar.java",
+      "status": 404
+    },
+    {
+      "path": "components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBarApi26.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBarApi26.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/android/chrome_java_sources.gni",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/chrome_java_sources.gni",
+      "status": "READ",
+      "sha256": "0a377b23450f37279d289220a50d1cbfa5ccd6872e54743ca52ff0fa90ab5720",
+      "bytes": 120692,
+      "lines": 1408
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+      "status": "READ",
+      "sha256": "115b949478561bfecc2230d8f26a5bfd4d184b3f18742954055c046d32f0d778",
+      "bytes": 36815,
+      "lines": 852
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/LICENSE",
+      "status": "READ",
+      "sha256": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+      "bytes": 1536,
+      "lines": 27
+    }
+  ],
+  "fixture_paths": [
+    "chrome/android/BUILD.gn",
+    "chrome/android/java/AndroidManifest.xml",
+    "chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java",
+    "components/signin/public/android/BUILD.gn",
+    "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacade.java",
+    "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java",
+    "content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java"
+  ],
+  "fixture_gzip_sha256": "1b0d7340b302542ffe1308246d6441488585a156d1436cfdf2d1d7bcc4646814",
+  "purpose": "Pinned public source fixture/provenance; not a Chromium checkout or Android runtime test."
+}

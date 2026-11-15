@@ -1,6 +1,6 @@
 # व्यक्तिगत Android browser: डेटा रहे, browser के बाहर स्वतः न पहुँचे
 
-**प्रभावी तिथि:** 19 अक्तूबर 2026। **स्थिति:** requirements/source audit और static preflight का प्रथम चरण; नया privacy APK या actual-device acceptance नहीं।
+**प्रभावी तिथि:** 19 अक्तूबर 2026। **स्थिति:** requirements/source audit, static preflight और अलग **opt-in native source layer** तैयार; नया privacy APK या actual-device acceptance नहीं। प्रथम चरण का इतिहास सुरक्षित है; आगे का implementation/test evidence §8 में है।
 
 ## उपयोगकर्ता का निर्णायक सुधार
 
@@ -23,7 +23,7 @@ App का internal private storage भी भौतिक रूप से devi
 
 **Google website login ≠ Chrome profile sign-in ≠ Android system account.** Website account को browser cookies में रखना और Android में account जोड़ना अलग workflows हैं। केवल Gmail signup को system account creation मान लेना सही diagnosis नहीं; actual user flow अलग जाँचा जाएगा।
 
-## 2. प्रस्तावित personal-variant policy — अभी implementation नहीं
+## 2. Personal-variant लक्ष्य-नीति — आंशिक source implementation, Android पर अप्रमाणित
 
 | क्षेत्र | अपेक्षित व्यवहार | स्पष्ट सीमा / trade-off |
 |---|---|---|
@@ -58,7 +58,7 @@ Pinned public reference: **Chromium 155.0.8059.80**, source provenance `evidence
 | ExternalNavigationHandler में बाहरी intents/Play Store/WebAPK paths | सिर्फ browser sign-in toggle बदलना complete containment नहीं |
 | existing 0021 Keystore provider | cookies पर historical runtime evidence है; पूरे profile की encryption अथवा key-failure fail-closed policy का प्रमाण नहीं। Existing v10 fallback को private-variant acceptance नहीं मानना |
 
-एक अनुमानित `chrome/android/java/src/.../ChromeActivity.java` path **404** आया; उसे source proof नहीं माना। Window/recents hardening के वास्तविक modularized activity sources अगली source pass में resolve होंगे।
+प्रथम अनुमानित `chrome/android/java/src/.../ChromeActivity.java` path **404** आया; उसे source proof नहीं माना। अगली source pass में pinned `chrome/android/chrome_java_sources.gni` और directory listing ने वास्तविक `chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java` path resolve किया। `ChromeBaseAppCompatActivity.java` का सही पुराना-root path भी fetched/reviewed है। यह path discovery है—window/recents protection अभी लागू या runtime-tested नहीं।
 
 ## 4. इस चरण में वास्तव में क्या बनाया गया
 
@@ -111,10 +111,10 @@ python3 tools/security/personal_container_manifest.py \
 |---|---|---|---|---|
 | Data रहे, auto-wipe न हो | corrected contract; product code untouched | user clarification | यह दस्तावेज़ | requirements दर्ज; runtime NOT RUN |
 | native source का containment audit | आठ fetched files + failed path सुरक्षित | pinned public source/static | research JSON | static observation only |
-| static manifest utility | नई host-side utility और unit tests | decoded synthetic XML/host tests | tests + testing history | अंतिम focused **66 passed in 0.15s** (64 नए + 2 existing); actual APK NOT RUN |
-| unknown permission / encoded DTD | negative controls पहले fail, validation सुधरी | host unit negative tests | TESTING.md/research JSON | पहले 3 permission और फिर 2 UTF-16 DTD failures सुरक्षित; corrected guard tests PASS |
-| full local regression | पूरे host suite का वास्तविक run | host suite, Android नहीं | TESTING.md/research JSON | **363 passed, 8 skipped in 120.54s**; device/feature PASS नहीं |
-| persistent private browser feature | अभी Chromium runtime patch नहीं | कोई नया native build नहीं | कोई privacy APK नहीं | NOT RUN / NOT IMPLEMENTED |
+| static manifest utility | strict policy + Google CURRENT_ACCOUNT_ACCESS denial | decoded synthetic XML/host tests | tests + §8/testing history | current focused **134 passed in 4.79s**, इसमें 66 static-manifest cases; actual APK NOT RUN |
+| negative controls | unresolved permission/UTF-16 history + नया Google bridge/debug override guard | host negative/mutation tests | TESTING.md + दोनों evidence JSON | पहले के सभी failures सुरक्षित; corrected host guards PASS |
+| full local regression | पूरे host suite का वास्तविक run | host suite, Android नहीं | TESTING.md + native-source evidence | current **431 passed, 8 skipped in 128.41s**; device/feature PASS नहीं |
+| persistent private browser feature | आठ-file opt-in native source patch और separate bundle tool | source apply + facade/provider host JVM with stubs | §8; नया native-source evidence | partial source implementation; APK/full containment NOT RUN |
 | x64 और native ARM64 CI | कोई dispatch नहीं | GitHub access | authenticated HTTP401 | BLOCKED; पुराने APK को नया mode नहीं कहा जाएगा |
 | physical/account/OEM behavior | कोई private account access नहीं | actual device required | उपलब्ध नहीं | NOT RUN |
 | GitHub publication | स्थानीय clone में files | credential-safe git | remote auth HTTP401 | BLOCKED; published दावा नहीं |
@@ -132,4 +132,46 @@ Session bootstrap 18/20: दो remote protection/log checks 401 के का�
 - Account bridge @155: <https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeImpl.java>
 - IME bridge @155: <https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java>
 
-**निष्कर्ष:** माँग persistent app-contained browser की है, incognito या self-deleting browser की नहीं। दिशा feasible है, लेकिन complete containment/whole-profile encryption/all-web compatibility/actual Android PASS अभी सिद्ध नहीं हैं।
+## 8. जारी काम: opt-in native source layer और वास्तविक host execution
+
+उपयोगकर्ता के “काम जारी रखो” निर्देश पर केवल योजना नहीं दोहराई गई: `patches/personal/` में **आठ-file native source patch**, उसका pinned-source guard और `tools/personal_browser/` में अलग development-bundle tool/Java host probe बनाए गए। Ordinary Swiftra series/package, signer, production build workflows और existing profiles नहीं बदले। Unit-test workflow में सिर्फ़ `jinja2` dependency जोड़ी गई।
+
+### Source में लागू होने वाले बदलाव
+
+1. **Accounts backend:** `AccountManagerFacadeProvider` अब personal layer में service-loader/platform delegate आरम्भ ही नहीं करता; नया `BrowserContainedAccountManagerFacade` local immutable empty roster देता है। Token requests cancelled, Add Account callback null, credential update false/confirmation null। Completion callbacks पूरे होते हैं; AnyThread Add Account callback UI queue पर post होता है। Device account या profile delete/sign-out नहीं करता।
+2. **Java sign-in entry points:** `SigninManagerImpl` के support/allow/switch gates false; `signin()` abort callback देता है, internal native sign-in शुरू नहीं करता। Legacy Sync test entry rejects। **पूरे native IdentityManager/Sync/credential codebase के हर दूसरे रास्ते का isolation इससे सिद्ध नहीं होता।**
+3. **Manifest/backup/providers:** library merge से forbidden account/storage/credential permissions वापस न जुड़ें, इसलिए `tools:node=remove` tombstones। `allowBackup=false`, legacy full backup false, no BackupAgent, shell profiling false, और तीन transfer modes के सभी नौ domains exclude। मौजूद browser providers के exports/URI grants false। Plain clipboard/external intents/system credential APIs अलग runtime work हैं।
+4. **Persistent web-form input:** `ImeAdapterImpl` के दोनों overloads में no-personalized-learning hint; normal retained profile के लिए Incognito आवश्यक नहीं। यह omnibox/native editors या keyboard की offline compliance का proof नहीं।
+5. **सुरक्षित अलग तैयारी:** explicit अलग development package और `personal-...` state label, existing output overwrite नहीं, base patch inputs byte-for-byte, existing public signer pin unchanged, no new keys। Final user package/migration अभी नहीं चुना गया। यह source bundle है, APK नहीं।
+
+`0100` guard छह unchanged source-file hashes जाँचता है; दो नए outputs पहले से मौजूद हों तो भी refuse। Patch zero-context unified diff है: पहले exact hash prerequisite, फिर application; tests में **fuzz=0/offset=0**। इससे formatting gate को ढीला किए बिना diff-context blank lines की whitespace समस्या ठीक हुई। Existing patch engine की touched-file/epoch integration भी host पर चली है।
+
+### Backup source का अतिरिक्त सत्यापन
+
+Android Auto Backup documentation में cloud/D2D/cross-platform modes अलग हैं। Corresponding iOS app को register करने वाले `platform-specific-params` और data exclusions अलग भूमिकाएँ हैं। Official AOSP `android-16.0.0_r4` `FullBackup.java` में platform map entry support opt-in है; parser excludes को अलग पढ़ता है। इस source layer में नौ domains exclude हैं और कोई matching iOS app/registering identifier invent नहीं किया गया। Main branch को हर Android release का समान parser नहीं माना। **Actual Android/OEM restore/transfer फिर भी NOT RUN है।**
+
+- Source: <https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-16.0.0_r4/core/java/android/app/backup/FullBackup.java>
+- Exact source hashes, branch/tag distinction और unsuccessful Chromium paths: `evidence/personal-native-source-2026-10-19.json` तथा `tools/personal_browser/upstream-index.json`। Chromium pin अब भी 155.0.8059.80 है—current-latest का दावा नहीं।
+
+### Evidence और acceptance matrix
+
+| Requirement | Changes | Provenance | Test type | Evidence | Status | Blockers / सीमा |
+|---|---|---|---|---|---|---|
+| सामान्य profile टिके, auto-wipe न हो | Incognito/wipe/sign-out/deletion नहीं जोड़े | user correction; added-source audit | static source only | native patch + no-deletion test | PASS (static/signature/format only) | वास्तविक cookie/IndexedDB/draft restart retention NOT RUN |
+| Platform account facade deny | नया no-delegate backend/provider; empty roster और completed denial callbacks | pinned real interface/provider + नया Java | host `javac` + JVM, dependencies stubs | host probe; **29 assertions**, 3 rejected mutations | PASS (host component with stubs) | Android Binder/GMS/native paths का proof नहीं |
+| Browser Java sign-in entry reject | support/allow/switch false, abort callback | pinned SigninManagerImpl | source inspection/unit guards | native patch tests | PASS (static/signature/format only) | पूरी class/Chromium Android compile और other native sign-in paths NOT RUN |
+| Backup/providers declaration policy | explicit opt-out/exclusions, merge tombstones, provider grants off | Chromium template + official docs/AOSP parser | **20 synthetic Jinja configurations** + static audit | manifest source tests | PASS (static/signature/format only) | Android merger/dependency manifests/APK binding/backup/OEM runtime NOT RUN |
+| Web-form keyboard privacy request | unconditional no-learning hint in both overloads | pinned ImeAdapterImpl | source inspection/unit guard | IME source test | PASS (static/signature/format only) | full Android compile, omnibox/native fields/keyboard behavior NOT RUN |
+| अलग package/build inputs | non-overwriting deterministic opt-in source bundle | existing base patch engine/signer pin | host bundle/negative tests | prepare.py + source-engine test | PASS (static/signature/format only) | CI wiring, final package/label/update-channel decisions अभी बाकी |
+| सभी outward data paths / whole-profile encryption | acceptance scope सुरक्षित, कोई false completion नहीं | §2/§5 | actual Android आवश्यक | no runtime artifact | NOT RUN / BLOCKED | private downloads, external intents/Share/clipboard/system autofill, encryption/key failure, screen/network/perf बाकी |
+| दोनों native ABI + phone/account | कोई APK/dispatch/install नहीं | current environment | required native E2E | bootstrap authenticated HTTP401 | NOT RUN / BLOCKED | GitHub authentication; फिर x64 Actions + native ARM64, अलग physical/user-present account acceptance |
+
+**वास्तविक final local results:** focused **134 passed in 4.79s** (66 native-source/host + 66 static-manifest + 2 existing APK-audit), Python syntax compilation PASS, full host suite **431 passed, 8 skipped in 128.41s**। Skips पुराने optional-fixture tests हैं; नए tests skipped नहीं। ये Android, retention, full encryption या speed results नहीं हैं।
+
+प्रथम draft की तीन host-test failures, फिर Google CURRENT_ACCOUNT_ACCESS और duplicate-debug assignment के दो negative-control failures, तथा staged whitespace failure का इतिहास `TESTING.md`/नए evidence JSON में सुरक्षित है। Google permission और late-debug bypass बन्द किए; tests/format policy कमज़ोर नहीं की।
+
+**अभी source-only क्यों:** final merged APK और native acceptance के बिना isolation का दावा गलत होगा। अलग package को ordinary Swiftra update feed का offer देना भी unresolved है; personal label, secure update policy और dedicated release gate के बिना इसे publisher में स्वतः नहीं लगाया गया। `prepare.py` receipt में `release_ready=false`, `apk_built=false`, `ci_wired_or_dispatched=false`, `product_containment=NOT RUN / NOT CERTIFIED` स्पष्ट हैं।
+
+अगले implementation gates: external-intent/Share/clipboard/credential sinks, app-private download/viewer pipeline, complete storage/encryption/key-failure coverage, window/recents और बाकी input paths; फिर merged-APK binding और दोनों ABI पर वास्तविक retention/IPC/backup/network/performance tests। GitHub में सुरक्षित authentication फिर उपलब्ध होने तक CI/publication blocked हैं; किसी token को chat में भेजने की आवश्यकता नहीं।
+
+**निष्कर्ष:** माँग persistent app-contained browser की है, incognito या self-deleting browser की नहीं। अब isolated native source implementation का पहला हिस्सा मौजूद है; complete containment/whole-profile encryption/all-web compatibility/actual Android PASS अभी सिद्ध नहीं हैं।

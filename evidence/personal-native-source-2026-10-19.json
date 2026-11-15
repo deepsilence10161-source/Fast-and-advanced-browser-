@@ -1,0 +1,230 @@
+{
+  "effective_date": "2026-10-19",
+  "scope": "Opt-in persistent personal-browser native source layer; no automatic wipe; privacy first, AI deferred.",
+  "status": "PARTIAL SOURCE IMPLEMENTATION / ANDROID NOT RUN",
+  "base_local_commit": "0989aa4235019eec1f3b7e477516c949fd3bb513",
+  "previous_static_evidence": "evidence/personal-container-research-2026-10-19.json (historical commit 0989aa4)",
+  "pinned_chromium": "155.0.8059.80; ordinary patch series retains its existing security deltas; not a current-latest assertion",
+  "source_layer": {
+    "directory": "patches/personal",
+    "ordinary_series_or_package_changed": false,
+    "ordinary_build_workflow_changed": false,
+    "host_unit_workflow_change": "jinja2 dependency only",
+    "changed_or_added_native_files": 8,
+    "prerequisite_source_sha256_checks": 6,
+    "new_outputs_must_be_absent": 2,
+    "unified_diff_context_lines": 0,
+    "source_guard_before_native_layer_writes": true,
+    "actual_runtime_or_profile_modified": false,
+    "new_apk_built": false,
+    "ci_dispatched": false,
+    "final_user_package_selected": false,
+    "migration_performed": false,
+    "implemented_source_boundaries": [
+      "new no-platform AccountManagerFacade and provider without initializing service-loader/delegate",
+      "Java sign-in support/allow/switch gates false; signin abort callback; Sync test entry rejects",
+      "manifest removal tombstones for account/system credential/shared-storage permissions, including Google CURRENT_ACCOUNT_ACCESS",
+      "explicit no BackupAgent, allowBackup=false, legacy false, three transfer modes/all nine domain exclusions",
+      "existing browser providers non-exported/non-grantable; shell profiling false",
+      "both web-content IME entry points request no personalized learning without forcing incognito"
+    ],
+    "source_only_bundle": "explicit distinct package/personal-... label; no existing-output overwrite; public signer pin and base inputs preserved; relative adblock dependency included; no keys copied/generated",
+    "not_a_release_gate": "Bundle receipt is descriptive; no personal production workflow/publisher integration exists yet."
+  },
+  "source_provenance": {
+    "chromium_index": "tools/personal_browser/upstream-index.json",
+    "retrieved_public_chromium_files": 21,
+    "unsuccessful_paths": [
+      {
+        "path": "components/signin/public/android/java_sources.gni",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/signin/public/android/java_sources.gni",
+        "status": 404
+      },
+      {
+        "path": "base/android/java/src/org/chromium/base/supplier/PromiseImpl.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/supplier/PromiseImpl.java",
+        "status": 404
+      },
+      {
+        "path": "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/DisplayStyleObserver.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/DisplayStyleObserver.java",
+        "status": 404
+      },
+      {
+        "path": "chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeActivity.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeActivity.java",
+        "status": 404
+      },
+      {
+        "path": "chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/app/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+        "status": 404
+      },
+      {
+        "path": "base/android/java/src/org/chromium/base/task/TaskTraits.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/task/TaskTraits.java",
+        "status": 404
+      },
+      {
+        "path": "components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBar.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBar.java",
+        "status": 404
+      },
+      {
+        "path": "components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBarApi26.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/omnibox/browser/android/java/src/org/chromium/components/omnibox/UrlBarApi26.java",
+        "status": 404
+      }
+    ],
+    "READ_semantics": "Public file fetched and hashed; does not imply every line audited or executed.",
+    "persisted_test_inputs": 7,
+    "fixture_sha256": "1b0d7340b302542ffe1308246d6441488585a156d1436cfdf2d1d7bcc4646814",
+    "licence_file": "tools/personal_browser/UPSTREAM_LICENSE",
+    "aosp_backup_parser_references": [
+      {
+        "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/core/java/android/app/backup/FullBackup.java",
+        "ref_type": "moving main reference; content hash pinned in this evidence, not an Android device build",
+        "sha256": "aa8b04c03fa974d05211e4801b1c71676b3fb71937cb82dd3062ca16920be38e",
+        "bytes": 46591
+      },
+      {
+        "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android16-qpr2-release/core/java/android/app/backup/FullBackup.java",
+        "status": "READ",
+        "sha256": "ec60723acc6e2df5713e6a744763cad9515a843e739cb973438687520f85af73",
+        "bytes": 54689,
+        "path": "aosp/FullBackup-android16-qpr2-release.java"
+      },
+      {
+        "url": "https://android.googlesource.com/platform/frameworks/base/+/refs/tags/android-16.0.0_r4/core/java/android/app/backup/FullBackup.java",
+        "status": "READ",
+        "sha256": "ec60723acc6e2df5713e6a744763cad9515a843e739cb973438687520f85af73",
+        "bytes": 54689,
+        "path": "aosp/FullBackup-android-16.0.0_r4.java"
+      }
+    ],
+    "backup_parser_finding": "At android-16.0.0_r4, data exclusions and platform-specific support-map registration are separate. Deny-all transfer sections register no corresponding iOS app. No fabricated target identifiers; no device/OEM acceptance.",
+    "activity_path_discovery": "Pinned chrome/android/chrome_java_sources.gni and directory listing resolve chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java. Path discovery only; window hardening NOT IMPLEMENTED."
+  },
+  "host_tests": {
+    "test_type": "PINNED SOURCE APPLICATION / SYNTHETIC MANIFEST / HOST JAVA WITH DEPENDENCY STUBS, NOT ANDROID",
+    "source_patch": "dry-run and apply on seven pinned test inputs; fuzz=0 and offset=0",
+    "template_configs": 20,
+    "template_model_limit": "Five channels x backup_key absent/present x definitions_in_split false/true. Host strips tools:node=remove tombstones. NOT Android manifest merger/dependency manifests/APK binding.",
+    "java_probe": {
+      "compiled_real_sources": {
+        "AccountManagerFacade.java": "e47833b895e8069af479edbd5bafce6eb813d682614a8dd04d8a2f1dc4055ba8",
+        "AccountManagerFacadeProvider.java": "9a7d480adf74729a1d9db63ad52f84991eb070d62f60a9e9ef23d0d6351e77e2",
+        "BrowserContainedAccountManagerFacade.java": "e684b1f95bc3b5abe812c4b39b0ca40df054f8cda9d42382aa88a79f58b9092d"
+      },
+      "dependency_stubs": true,
+      "observation": "Successful pytest test_actual_facade_and_provider_compile_and_execute_on_host checks actual run_probe output; source hashes read from its retained synthetic tree after the final run.",
+      "javac_command": "javac -Xlint:all -Werror",
+      "javac_exit": 0,
+      "java_exit": 0,
+      "assertions": 29,
+      "not_compiled": "Full Chromium, SigninManagerImpl, ImeAdapterImpl, Android resources/manifest or native C++",
+      "mutation_controls_rejected": [
+        "attempted Intent construction",
+        "wrong token auth error",
+        "dropped completion callback"
+      ]
+    },
+    "progression": [
+      {
+        "scope": "first combined native/static host run",
+        "result": "3 failed, 123 passed in 4.84s",
+        "failures": [
+          "test expected 31 rather than actual 29 assertions",
+          "Intent mutation also changed the separate Bundle callback, causing a compile rejection instead of intended runtime control",
+          "bundle signer-pin validator rejected the existing provenance comment lines"
+        ],
+        "fixes": [
+          "correct exact assertion expectation to 29",
+          "mutate first callback occurrence only; retain runtime rejection test",
+          "accept comment lines but require exactly one valid existing public digest; never change signer"
+        ]
+      },
+      {
+        "scope": "corrected first focused host run",
+        "result": "126 passed in 4.71s"
+      },
+      {
+        "scope": "new source-bundle/static policy negative controls before fix",
+        "result": "2 failed, 126 deselected in 0.15s",
+        "failures": [
+          "late debuggable_apks=true assignment accepted by bundle validator",
+          "Google CURRENT_ACCOUNT_ACCESS permission accepted by the original Android-only deny list"
+        ],
+        "fixes": [
+          "require exactly one debug assignment and false",
+          "add source-backed Google permission denial; both tests retained"
+        ]
+      },
+      {
+        "scope": "after those fixes, before three final integration/signer test cases",
+        "result": "131 passed in 4.70s"
+      },
+      {
+        "scope": "first complete focused/full host run before diff formatting correction",
+        "result": "focused 134 passed in 4.70s; full 431 passed, 8 skipped in 128.77s; Python compilation PASS"
+      },
+      {
+        "scope": "first staged whitespace check",
+        "result": "FAIL exit 2; 12 single-space unified-diff context lines",
+        "fix": "Regenerate zero-context diff guarded by exact prerequisite hashes; keep whitespace policy; same staged check exit 0; full tests rerun."
+      },
+      {
+        "scope": "FINAL current patch and code",
+        "result": "focused 134 passed in 4.79s; full 431 passed, 8 skipped in 128.41s; Python compilation PASS",
+        "native_source_or_host_test_cases": 66,
+        "static_manifest_test_cases": 66,
+        "existing_apk_audit_cases": 2,
+        "new_tests_skipped": 0
+      }
+    ]
+  },
+  "unimplemented_or_not_tested": [
+    "personal production CI/build/release wiring, reviewed package/label and separate secure update channel",
+    "full Android compilation, APK signature/binary manifest/resource binding, install/launch",
+    "x64 Actions emulator and native ARM64 Redroid",
+    "persistent cookies/localStorage/IndexedDB/drafts after background/lock/crash/force-stop/restart",
+    "Android account/Binder/Play services and other native sign-in/Sync paths",
+    "external navigation/share/print/cast/plain clipboard/system autofill/credential/passkey runtime paths",
+    "private download/viewer/storage path inventory",
+    "whole-profile/SQLite/WAL/LevelDB/cache encryption and fail-closed writes/key-failure preservation",
+    "screen/recents/native-editor/omnibox IME behavior and actual keyboard compliance",
+    "cloud backup/restore/D2D/OEM/cross-platform actual behavior",
+    "network/TLS/security/compatibility/performance and same-APK measurements for the personal variant",
+    "physical Android and user-present real account/Arena acceptance",
+    "AI integrations (explicitly deferred)"
+  ],
+  "environment": {
+    "bootstrap_result": "18 passed, 2 remote checks unverified; authenticated HTTP401",
+    "protection_disabled_claim": false,
+    "remote_CI_logs_readable": false,
+    "bootstrap_local_scan": "1048 files, 14 secret needles, 0 leaks",
+    "full_source_checkout_or_local_android_build_attempted": false,
+    "available_disk_at_start": "20 GiB free, not a full Chromium build host",
+    "unrelated_connected_apps_accessed": false,
+    "real_credentials_or_accounts_accessed": false,
+    "paid_resources_used": false,
+    "production_data_deleted": false,
+    "secret_solicited_or_printed": false
+  },
+  "github_publication": "BLOCKED / NOT CLAIMED",
+  "product_containment": "NOT RUN / NOT CERTIFIED",
+  "component_sha256": {
+    "patches/personal/series": "d607cdcd2368e03b557316ae5444c3915362741cbb292a444df7a6807a8bbfab",
+    "patches/personal/0100-personal-source-guard.py": "141b8db9bc5072da9c9aaedecbf9de2908588022222f15fc95c44bd16aa7ba55",
+    "patches/personal/0101-persistent-account-boundary.patch": "9b0f9e9bfd08bcd9a685e2a47f8de2064656bc0835c399dd0420e87b215ee30c",
+    "tools/personal_browser/prepare.py": "de94ef9fb5ce037bf3521c5d937e873725ff73237133b121f344aaa0f895cf29",
+    "tools/personal_browser/host_probe.py": "ab1c46fd787bee90af30a4ebcc2e887ee6d9d3e7cfe69c8d8108e3ea3897b9a1",
+    "tools/personal_browser/upstream-155.0.8059.80.json.gz": "1b0d7340b302542ffe1308246d6441488585a156d1436cfdf2d1d7bcc4646814",
+    "tools/personal_browser/upstream-index.json": "78aabfc2924f88631805edc20bee621b58125cf34d15cc0a5b3eb19546674404",
+    "tools/personal_browser/UPSTREAM_LICENSE": "368cca1106be99d39ecd32a38d8305585d802a475effb66380b91ffc9bcf709b",
+    "tools/security/personal_container_manifest.py": "b8260dba34e7a4fb8d4d6d359273292ee9db13cca8c1bef39e9f2c1291ffc48b",
+    "tests/test_personal_container_manifest.py": "317d1bbf6700f0244f4d68a0dafcfb32c4999ca625d316fbe9116e0833918303",
+    "tests/test_personal_native_source.py": "9b0dd89a58c5281fb3e24a996f1d61dd6dbe59280f5533a2d6a004589fb15e45",
+    ".github/workflows/unit-tests.yml": "1af7bbc729fdff9e20927e88d6d056cb633a52f47695612281748218205ca757"
+  }
+}

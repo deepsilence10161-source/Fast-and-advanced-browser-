@@ -36,7 +36,7 @@ DENIED_PERMISSIONS = frozenset("android.permission." + name for name in (
     "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE", "MANAGE_EXTERNAL_STORAGE",
     "ACCESS_MEDIA_LOCATION", "READ_MEDIA_IMAGES", "READ_MEDIA_VIDEO",
     "READ_MEDIA_AUDIO", "READ_MEDIA_VISUAL_USER_SELECTED",
-))
+)) | frozenset({"com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS"})
 RESOURCE = re.compile(r"@xml/([a-z][a-z0-9_]*)\Z")
 MAX_XML_BYTES = 2 * 1024 * 1024
 
