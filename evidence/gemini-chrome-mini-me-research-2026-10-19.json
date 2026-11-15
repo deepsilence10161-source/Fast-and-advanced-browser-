@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "effective_research_date": "2026-10-19",
+  "timezone": "Asia/Calcutta",
+  "scope": "Research reusing the actual Gemini in Google Chrome as a personal operator for the user's own website, not substituting a separate API chatbot.",
+  "report": "docs/plans/gemini-in-chrome-mini-me.md",
+  "implementation_changed": false,
+  "site_url_received": false,
+  "device_chrome_version_received": false,
+  "account_eligibility_verified": false,
+  "live_gemini_session_used": false,
+  "gemini_inference_requested": false,
+  "website_actions_executed": false,
+  "google_credentials_or_cookies_accessed": false,
+  "paid_resource_started": false,
+  "deployment_performed": false,
+  "conclusions": [
+    {
+      "id": "user_directed_site_operator",
+      "finding": "Official Chrome auto browse documentation describes user-invoked, plan-reviewed multi-step website tasks, including on websites without a dedicated Gemini Connected App.",
+      "qualification": "Subject to real account/device/region/plan/rollout eligibility and confirmation. No test on the user's site occurred.",
+      "sources": ["auto_browse_desktop", "auto_browse_android"],
+      "status": "DOCUMENTED; RUNTIME NOT RUN"
+    },
+    {
+      "id": "website_direct_consumer_inference",
+      "finding": "No public supported contract was found for an ordinary website to programmatically invoke the consumer Gemini in Chrome and receive arbitrary inference responses under its browser session entitlement.",
+      "qualification": "A documentation/source-research negative finding, not a mathematical impossibility proof or claim that every private interface was enumerated.",
+      "sources": ["extensions_ai", "glic_features_pin", "glic_api_pin", "webmcp"],
+      "status": "NOT ESTABLISHED"
+    },
+    {
+      "id": "custom_mcp_bridge",
+      "finding": "Gemini Apps Help documents connecting a personal/third-party app using its MCP server URL, then using it in the Gemini web and mobile apps.",
+      "qualification": "Help explicitly lists US, age 18+, personal account, English and Keep Activity. It does not establish India or Gemini-in-Chrome support. This is the agent invoking website tools, not the website invoking model inference.",
+      "sources": ["custom_apps"],
+      "status": "DOCUMENTED WITH SURFACE/REGION LIMITS; NOT RUN"
+    },
+    {
+      "id": "webmcp_bridge",
+      "finding": "WebMCP exposes page-side structured tools to WebMCP-aware agents; Chrome documentation describes origin-trial/local-development availability and testing clients.",
+      "qualification": "The primary I/O announcement says Gemini in Chrome will soon support it. Built-in consumer Gemini tool consumption was not live-verified, and inspector/API-key clients are not equivalent proof. Use optional progressive enhancement, not a guaranteed required dependency.",
+      "sources": ["webmcp", "webmcp_imperative", "chrome_io26"],
+      "status": "EXPERIMENTAL; CONSUMER GEMINI CONSUMPTION NOT VERIFIED"
+    },
+    {
+      "id": "nano_distinction",
+      "finding": "The Prompt API uses a local Chrome model/Gemini Nano, distinct from the consumer Gemini in Chrome product.",
+      "qualification": "The fetched Prompt API page displays a future update label relative to the effective research date. Date-sensitive hardware/availability details require rechecking; earlier official I/O sources corroborate the product distinction.",
+      "sources": ["prompt_api", "chrome_io25", "extensions_ai"],
+      "status": "ARCHITECTURE DISTINCTION; NO MODEL TEST"
+    },
+    {
+      "id": "recurring_tasks",
+      "finding": "Google documents Gemini Tasks/Spark and a Chrome integration, distinguishing local desktop Chrome from a separate remote browser and task/schedule surfaces.",
+      "qualification": "The July 30 announcement distinguishes international Spark access from the initially US Chrome integration. No 24/7 arbitrary website backend, unlimited quota or user-account availability is established.",
+      "sources": ["spark_july", "gemini_tasks", "auto_browse_desktop"],
+      "status": "DOCUMENTED PERSONAL WORKFLOW; NOT RUN"
+    }
+  ],
+  "documentation_conflicts": [
+    {
+      "topic": "India and platform availability",
+      "observed": "Android availability and Android auto-browse Help list India and US. Desktop auto-browse eligibility still says US. Google One restrictions name India and US.",
+      "resolution": "Preserve all variants; do not infer availability for the user's particular account or device. Actual Ask Gemini / plan / Start Task / Let Gemini browse UI must be checked.",
+      "sources": ["android_availability", "auto_browse_android", "auto_browse_desktop", "one_restrictions"]
+    },
+    {
+      "topic": "Local versus mobile browser",
+      "observed": "Android-specific auto-browse instructions exist, while shared desktop/tasks text says local Chrome auto browse is desktop-only and mobile uses a remote browser.",
+      "resolution": "Do not claim mobile local-session reuse. Record which browser instance is actually used in future acceptance.",
+      "sources": ["auto_browse_android", "auto_browse_desktop", "gemini_tasks"]
+    },
+    {
+      "topic": "Plan variants",
+      "observed": "Fetched auto-browse Help variants mention Plus/Pro/Ultra while some indexed variants mention Pro/Ultra only.",
+      "resolution": "No fixed plan/price/quota guarantee and no purchase recommended before account eligibility verification.",
+      "sources": ["auto_browse_android", "auto_browse_desktop", "one_restrictions"]
+    },
+    {
+      "topic": "WebMCP documentation and agent support",
+      "observed": "Browser API documentation and extension demos do not establish consumer Gemini-in-Chrome consumption; the official I/O wording is prospective.",
+      "resolution": "Treat WebMCP as experimental additive tooling and keep ordinary website UI functional.",
+      "sources": ["webmcp", "chrome_io26"]
+    },
+    {
+      "topic": "Future labels relative to effective date",
+      "observed": "Fetched Prompt API page says updated 2026-10-21; Privacy Hub says 2026-10-26; Connected Apps Platform search result says 2026-11-03.",
+      "resolution": "Do not use those labels as evidence of already-shipped behavior/policy on 2026-10-19. The report records them explicitly and does not generalize future developer-platform pages to current Chrome/India eligibility.",
+      "sources": ["prompt_api", "privacy_hub_future_label", "connected_apps_platform_future_label"]
+    }
+  ],
+  "primary_sources": [
+    {
+      "id": "auto_browse_desktop",
+      "url": "https://support.google.com/chrome/answer/16821166?hl=en&co=GENIE.Platform%3DDesktop",
+      "title": "Ask Gemini in Chrome to complete tasks for you with auto browse - Computer",
+      "review": "Main instructions, requirements and local/remote-browser text directly fetched; search excerpts also reviewed.",
+      "displayed_page_date": null,
+      "key_points": ["user plan review and Start Task", "broad websites without app connection", "confirmations and take over", "US desktop eligibility bullet", "local Chrome awake; remote browser distinct"]
+    },
+    {
+      "id": "auto_browse_android",
+      "url": "https://support.google.com/chrome/answer/16821166?hl=en&co=GENIE.Platform%3DAndroid",
+      "title": "Ask Gemini in Chrome to complete tasks for you with auto browse - Android",
+      "review": "All three fetch chunks reviewed, including risks, prompt injection, data sharing and safeguards.",
+      "displayed_page_date": null,
+      "key_points": ["US or India", "18+ and English", "eligible subscription and permission", "Ask Gemini then plan then Start Task", "safeguards do not guarantee no mistakes"]
+    },
+    {
+      "id": "android_availability",
+      "url": "https://support.google.com/chrome/answer/17140089?hl=en&co=GENIE.Platform%3DAndroid",
+      "title": "Gemini in Chrome availability - Android",
+      "review": "Full primary page directly fetched; independently retrieved search excerpt also reviewed.",
+      "displayed_page_date": null,
+      "key_points": ["Android 12+", "4GB RAM minimum", "latest signed-in Chrome", "English", "US and India", "gradual rollout"]
+    },
+    {
+      "id": "use_gemini_android",
+      "url": "https://support.google.com/chrome/answer/16283624?hl=en&co=GENIE.Platform%3DAndroid",
+      "title": "Use Gemini in Chrome - Android",
+      "review": "Main article directly fetched; non-substantive footer not required.",
+      "displayed_page_date": null,
+      "key_points": ["current page shared by default after invocation", "stop sharing control", "basic page chat is not action proof"]
+    },
+    {
+      "id": "one_restrictions",
+      "url": "https://support.google.com/googleone/answer/16105039?hl=en",
+      "title": "Google One benefit restrictions",
+      "review": "Relevant main article sections directly fetched; an en-GB search variant also reviewed and kept distinct.",
+      "displayed_page_date": null,
+      "key_points": ["auto browse names India and US", "18+", "signed-in Chrome", "feature rollout and plan restrictions may vary"]
+    },
+    {
+      "id": "chrome_skills",
+      "url": "https://blog.google/products-and-platforms/products/chrome/skills-in-chrome/",
+      "title": "Turn your best AI prompts into one-click tools in Chrome",
+      "review": "Complete main article directly fetched; related-story continuation not treated as product documentation.",
+      "displayed_page_date": "2026-04-14",
+      "key_points": ["save prompt from chat", "invoke with slash or plus", "selected-page/tab context", "desktop rollout", "English-US footnote", "sensitive-action confirmations"]
+    },
+    {
+      "id": "webmcp",
+      "url": "https://developer.chrome.com/docs/ai/webmcp",
+      "title": "WebMCP",
+      "review": "Both primary fetch chunks reviewed.",
+      "displayed_page_date": "2026-10-07",
+      "key_points": ["proposed standard", "structured site tools", "origin trial", "local development flag", "tools permissions policy defaults self", "examples can use API keys or local Prompt API", "site visit required for discovery"]
+    },
+    {
+      "id": "webmcp_imperative",
+      "url": "https://developer.chrome.com/docs/ai/webmcp/imperative-api",
+      "title": "Imperative API",
+      "review": "First two of three chunks directly reviewed: current registration shape, schemas, annotations, cancellation and tool discovery/execution. No live API test.",
+      "displayed_page_date": "2026-10-16",
+      "key_points": ["document.modelContext.registerTool", "inputSchema", "readOnlyHint", "untrustedContentHint", "consequentialHint", "AbortSignal", "origin exposure"]
+    },
+    {
+      "id": "webmcp_security",
+      "url": "https://developer.chrome.com/docs/ai/webmcp/secure-tools",
+      "title": "WebMCP tool security",
+      "review": "Both fetch chunks directly reviewed.",
+      "displayed_page_date": "2026-09-01",
+      "key_points": ["indirect prompt injection", "no LLM safety guarantee", "annotations", "careful origin exposure", "human involvement and consent"]
+    },
+    {
+      "id": "chrome_io26",
+      "url": "https://developer.chrome.com/blog/chrome-at-io26",
+      "title": "15 updates from Google I/O 2026",
+      "review": "Primary WebMCP and built-in AI announcement sections directly fetched; search excerpt on Skills/Android also reviewed.",
+      "displayed_page_date": "2026-05-19",
+      "key_points": ["Gemini in Chrome will soon support WebMCP APIs", "origin trial is not consumer agent support", "Prompt API and consumer Chrome assistant are separate topics"]
+    },
+    {
+      "id": "custom_apps",
+      "url": "https://support.google.com/gemini/answer/17209137?hl=en",
+      "title": "Connect & manage custom apps for Gemini Apps",
+      "review": "Both primary fetch chunks reviewed, including setup, eligibility, revocation, manual write confirmations and risks.",
+      "displayed_page_date": null,
+      "key_points": ["custom MCP server URL", "US only", "18+ personal account", "English", "Keep Activity on", "Gemini web and mobile surfaces", "manual confirmation for write actions", "Google does not secure third-party MCP servers"]
+    },
+    {
+      "id": "gemini_tasks",
+      "url": "https://support.google.com/gemini/answer/17094507?hl=en",
+      "title": "Manage your tasks & workflows in Gemini Apps; search index also names Gemini Spark",
+      "review": "First two of five primary chunks reviewed, including requirements, task creation, schedules, local/remote browser, handoff and saved remote browser state. No claim of full-page review.",
+      "displayed_page_date": null,
+      "key_points": ["18+ personal account", "Pro/Ultra and Keep Activity", "tasks and schedules", "local desktop Chrome versus remote browser", "manual sign-in handoff", "custom apps limited to supported surfaces"]
+    },
+    {
+      "id": "spark_july",
+      "url": "https://blog.google/innovation-and-ai/products/gemini-app/gemini-spark-updates-july-2026/",
+      "title": "Gemini Spark now integrates with Chrome",
+      "review": "Full primary article directly fetched.",
+      "displayed_page_date": "2026-07-30",
+      "key_points": ["Chrome integration announced", "user permission and sensitive-action handoff", "initial US Chrome capability rollout", "wider international Spark availability is a separate statement"]
+    },
+    {
+      "id": "extensions_ai",
+      "url": "https://developer.chrome.com/docs/extensions/ai",
+      "title": "Extensions and AI",
+      "review": "Official search result/excerpts reviewed, not a full direct fetch in this research continuation.",
+      "displayed_page_date": "2025-05-21",
+      "key_points": ["Gemini Cloud API extension examples", "Prompt API/Gemini Nano examples", "extension UI is not consumer-service entitlement"]
+    },
+    {
+      "id": "prompt_api",
+      "url": "https://developer.chrome.com/docs/ai/prompt-api",
+      "title": "The Prompt API",
+      "review": "First two of four primary fetch chunks directly reviewed; architecture and model distinction useful, date-sensitive current availability qualified.",
+      "displayed_page_date": "2026-10-21",
+      "future_label_relative_to_effective_date": true,
+      "key_points": ["LanguageModel", "Gemini Nano", "separate model download", "hardware and mobile limits require recheck"]
+    },
+    {
+      "id": "chrome_io25",
+      "url": "https://developer.chrome.com/blog/web-at-io25",
+      "title": "10 updates from Google I/O 2025",
+      "review": "Official search result/excerpts reviewed; corroborates older product architecture, not present-day version eligibility.",
+      "displayed_page_date": "2025-05-20",
+      "key_points": ["built-in AI Gemini Nano/expert models", "separate client/cloud Firebase and Developer API architecture"]
+    }
+  ],
+  "pinned_source_files": [
+    {
+      "id": "glic_features_pin",
+      "ref": "refs/tags/155.0.8059.80",
+      "path": "chrome/common/chrome_features.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/common/chrome_features.cc",
+      "sha256": "2443a5e4b68f18ba16f7d9bf548a7f9bb98a98d74f569c459eaa553888ff3000",
+      "line_count": 2109,
+      "method": "Downloaded public Gitiles base64 TEXT and decoded before hashing; complete file read for targeted symbol extraction.",
+      "observations": ["Glic guest URL configuration", "GOOGLE_CHROME_BRANDING conditional status configuration", "Glic API allowed-origin configuration"],
+      "limit": "Static configuration observations, not proof of backend entitlement or live security bypass. No modifications made. Tag is a pinned project reference, not a claim of today's latest Chrome."
+    },
+    {
+      "id": "glic_api_pin",
+      "ref": "refs/tags/155.0.8059.80",
+      "path": "chrome/browser/resources/glic/glic_api/glic_api.ts",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/resources/glic/glic_api/glic_api.ts",
+      "sha256": "69c25af53b4cc32b8c7b991be8a41af277a8c1b8b9ccd9e2d7c5bd87c0814123",
+      "line_count": 2157,
+      "method": "Downloaded public Gitiles base64 TEXT and decoded before hashing; complete file read for targeted symbol extraction.",
+      "observations": ["GlicHostRegistry registration", "GlicWebClient browser-host initialization", "GlicBrowserHost interface", "injected boot interface"],
+      "limit": "Browser-host/client plumbing, not a published arbitrary website model-inference contract. No consumer session or model call was tested."
+    }
+  ],
+  "supplementary_not_used_as_current_chrome_entitlement_proof": [
+    {
+      "id": "privacy_hub_future_label",
+      "url": "https://support.google.com/gemini/answer/13594961?hl=en",
+      "review": "First fetch chunk/index only.",
+      "displayed_page_date": "2026-10-26",
+      "reason": "Future-labeled relative to effective date; report privacy warnings instead use directly reviewed auto-browse/custom-app Help. No exact retention/training-policy claim derived from this page."
+    },
+    {
+      "id": "connected_apps_platform_future_label",
+      "url": "https://developers.google.com/connected-apps",
+      "review": "Official search result only.",
+      "displayed_page_date": "2026-11-03",
+      "reason": "Future-labeled developer-platform result not used to claim current Chrome or India support. Primary Custom Apps Help records narrower current stated surfaces/eligibility."
+    },
+    {
+      "id": "connected_apps_dev_mode_future_label",
+      "url": "https://developers.google.com/connected-apps/mcp/dev-mode",
+      "review": "Official search result only.",
+      "displayed_page_date": "2026-10-28",
+      "reason": "Future label and no live account; not used as proof of current user-accessible developer mode."
+    },
+    {
+      "id": "ai_studio_plans",
+      "url": "https://aistudio.google.com/docs/google-ai-plans",
+      "review": "Full fetched page from ai.google.dev redirect.",
+      "reason": "Separate product/billing model, not a consumer Chrome Gemini bridge; no subscription/API billing or free-quota assumption made."
+    },
+    {
+      "id": "cli_authentication",
+      "url": "https://geminicli.com/docs/get-started/authentication/",
+      "review": "First of three fetch chunks only, including a product-transition banner.",
+      "reason": "CLI is a separate surface; not recommended as if equivalent to Chrome's built-in Gemini. No OAuth session, local CLI or quota tested."
+    }
+  ],
+  "proposed_security_acceptance": [
+    "Use read-only then draft-only roles before public actions.",
+    "Authorize every backend operation and enforce tenant/resource ownership.",
+    "Keep model/tool inputs and external page content untrusted.",
+    "Do not treat tool hints, prompts, checkboxes or approved:true as independent human authorization.",
+    "Bind consequential approval to exact action/resource/diff and verified user interaction where necessary.",
+    "Require idempotency and durable receipts; a model completion statement is not proof of success.",
+    "Preserve TLS, sandbox, OAuth, Safe Browsing and origin/CSRF protections.",
+    "No Google session extraction, cookie replay, origin/brand spoofing or region/plan bypass.",
+    "Real user-account tests require user's own device/account with user present; no private-content captures."
+  ],
+  "documentation_validation": {
+    "initial_staged_diff_check": "FAIL: two Markdown hard-break lines contained trailing spaces; commit did not run. Spaces removed before retry; no check weakened.",
+    "json_parse_and_unique_source_references": "PASS (static/signature/format only)",
+    "recorded_source_count_including_supplementary": 23,
+    "pinned_source_hashes_and_line_counts": "PASS (static/signature/format only)",
+    "markdown_fence_balance": "PASS (static/signature/format only)",
+    "illustrative_javascript_node_check": "PASS (syntax only; no browser, model or website execution)",
+    "live_feature_pass_claimed": false
+  },
+  "runtime_test_status": {
+    "actual_chrome_gemini_site_action": "NOT RUN",
+    "actual_android_user_device": "NOT RUN",
+    "actual_desktop_user_device": "NOT RUN",
+    "chrome_gemini_webmcp_consumption": "NOT RUN / NOT VERIFIED",
+    "custom_mcp_connection": "NOT RUN / REGION AND SURFACE LIMITED",
+    "website_backend_unit_integration_e2e": "NOT RUN; NO IMPLEMENTATION",
+    "illustrative_javascript": "DOCUMENTATION ONLY; NOT A DEPLOYED FEATURE",
+    "swiftra_native_feature": "UNCHANGED"
+  },
+  "repository_observation": {
+    "repository": "deepsilence10161-source/Fast-and-advanced-browser-",
+    "branch": "main",
+    "head_before_research": "b31fa8985ac76314ae2e85d3ba35ec61adf96d43",
+    "bootstrap_audit": {
+      "passed": 18,
+      "failed": 2,
+      "local_leak_count": 0,
+      "remote_http_status": 401,
+      "interpretation": "GitHub protections/log remote checks could not be verified because authenticated API returned 401. This is NOT evidence that secret scanning or push protection is disabled."
+    },
+    "github_publication": "BLOCKED / NOT CLAIMED",
+    "push_attempted_for_this_report": false,
+    "blocker": "Authenticated remote access returned HTTP 401. No new token requested, no credential printed and no secret changes made."
+  }
+}

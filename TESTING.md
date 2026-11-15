@@ -285,3 +285,12 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - x64 **39398358892** / ARM64 **39398363688**, driver `e124fa6`, पुराने source APKs: bad item=False; good item/badge=True; actual tap=True; complete=False; sha_match=False, consent_buttons=[]। **UPDATE_DOWNLOAD_E2E FAIL**, original flags restore=True। Download absent को केवल network/Intent के अकेले causal proof की तरह नहीं लिखा; official/pinned REQUIRE_NON_BROWSER source routing diagnosis का आधार है।
 - यह नए own-package source fix का runtime result नहीं। New builds **39395797864 / 39395800290** से बनी APKs पर positive actual tap/download और full gates अभी आवश्यक हैं; failing baseline हटाया नहीं गया।
 - Verify-state startup Android **39393973670 / 39393978663**: दोनों 84/84 valid, unchanged APK, Java cache/compile receipts, flags restore, Keystore PASS। AOT+verify कुल336 samples; अभी कोई निर्णायक common lever winner नहीं।
+
+
+## 19-10-2026: Chrome के वास्तविक Gemini से website Mini Me — शोध मात्र
+
+- `docs/plans/gemini-in-chrome-mini-me.md` और `evidence/gemini-chrome-mini-me-research-2026-10-19.json`: official auto browse, Skills, Tasks/Spark, custom MCP और WebMCP को अलग रखा। Custom Apps के US/web-mobile limits, WebMCP के experimental/unverified consumer-agent support और source-date conflicts सुरक्षित रखे। किसी अलग API chatbot को consumer Chrome Gemini नहीं कहा। कोई product source/feature change नहीं।
+- प्रथम staged `diff --check` **FAIL (exit 2)**: दो Markdown hard-break lines में trailing spaces। Commit नहीं चला। वे spaces हटाए; वही staged check फिर **exit 0**। Whitespace rule बंद नहीं किया।
+- **PASS (static/signature/format only):** research JSON parsing/23 unique source IDs और references; दोनों pinned155 public source-file hashes/line counts; Markdown fence balance। Illustrative JavaScript पर `node --check` syntax-only PASS; browser/model/website execution नहीं।
+- **NOT RUN / BLOCKED:** actual built-in Gemini/account/site actions, WebMCP consumption, custom MCP connection और Android/desktop device acceptance। Public site URL/device/account eligibility नहीं मिले; कोई Google credentials/cookies/private content नहीं लिया, deployment या paid inference शुरू नहीं किया।
+- Session bootstrap audit **18/20**; दो remote checks पर authenticated HTTP401। इससे secret scanning/push protection बंद सिद्ध नहीं होते—remote protection/log state unverified है। Local leakscan में zero leaks; research का GitHub publication authentication के कारण blocked, published होने का दावा नहीं।
