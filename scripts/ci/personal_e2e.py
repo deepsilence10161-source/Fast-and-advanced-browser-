@@ -214,6 +214,17 @@ def main():
     try:
         adb("logcat", "-c")
         adb("shell", "am", "force-stop", pkg)
+        # ---- C00: no-account first run (decline sign-in/promos) with the established UI handler
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        from ui_capture import Device, launch, wait_ready  # noqa: E402
+        dev = Device(pkg, a.out, lambda line: print("PERSONAL_E2E_UI", line, flush=True))
+        launch(dev)
+        ready = wait_ready(dev, seconds=180)
+        shot = subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=40).stdout
+        open(os.path.join(a.out, "first_run.png"), "wb").write(shot)
+        res("C00_first_run", "PASS" if ready else "FAIL", f"browser_ready={ready} (no account, sign-in declined by UI handler)")
+        adb("shell", "am", "force-stop", pkg)
+        time.sleep(2)
         # ---- C01 launch + C02a: write, then background retention
         n_rep = len(REPORTS)
         open_url(pkg, f"{base}/set")
@@ -226,6 +237,9 @@ def main():
             res("C01_launch", "PASS", f"pid={pid} page_js_wrote_cookie_ls_idb crash_lines=0")
         else:
             res("C01_launch", "FAIL", f"report={r} pid={pid or 'none'} crash_lines={crash_n}")
+            shot = subprocess.run(["adb", "exec-out", "screencap", "-p"], capture_output=True, timeout=40).stdout
+            open(os.path.join(a.out, "c01_fail.png"), "wb").write(shot)
+            open(os.path.join(a.out, "c01_fail_ui.xml"), "w").write(dev.dump())
 
         def read_back(label, restart):
             n_h, n_r = len(HITS), len(REPORTS)
