@@ -142,6 +142,20 @@ def test_provider_exports_and_grants_fail(fixture, attributes, grant_child, chec
     assert not result(fixture)["checks"][check]
 
 
+@pytest.mark.parametrize("name", sorted(pc.FILE_PROVIDERS_REQUIRING_GRANT_FLAG))
+def test_file_provider_subclasses_need_the_grant_flag_to_start(fixture, name):
+    """androidx FileProvider throws at process start without grantUriPermissions=true (real emulator crash)."""
+    def add(grant):
+        def change(_, app):
+            ET.SubElement(app, "provider", {pc.NS + "name": name, pc.NS + "exported": "false",
+                                            pc.NS + "grantUriPermissions": grant})
+        return change
+    modify_manifest(fixture, add("true"))
+    assert result(fixture)["checks"]["providers_cannot_grant_uri_access"]
+    modify_manifest(fixture, add("false"))
+    assert not result(fixture)["checks"]["providers_cannot_grant_uri_access"]
+
+
 @pytest.mark.parametrize("mode", sorted(pc.MODES))
 def test_missing_transfer_mode_fails_including_d2d(fixture, mode):
     modify_rules(fixture, lambda root: root.remove(root.find(mode)))

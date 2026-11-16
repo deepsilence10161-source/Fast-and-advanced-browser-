@@ -315,11 +315,13 @@ def main():
             res("C05_secure", "FAIL", "SECURE not in app window flags")
 
         # ---- C06 backup
-        flags = sh(f"dumpsys package {pkg} | grep -m1 -E '^\\s+(pkgFlags|flags)=\\['", 60)
-        if "ALLOW_BACKUP" not in flags and flags:
-            res("C06_backup", "PASS", f"flags={flags}")
+        pk = sh(f"dumpsys package {pkg}", 60)
+        m = re.search(r"^\s+(?:pkgFlags|flags)=\[([^\]]*)\]", pk, re.M)
+        flags = m.group(1).strip() if m else ""
+        if flags and "ALLOW_BACKUP" not in flags.split():
+            res("C06_backup", "PASS", f"flags=[{flags}]")
         else:
-            res("C06_backup", "NOT_RUN", f"allowBackup enabled or flags unreadable; rules not measurable here: {flags}")
+            res("C06_backup", "NOT_RUN", f"allowBackup enabled or flags unreadable; rules not measurable here: [{flags}]")
 
         # ---- C07 no account link
         acc = sh("dumpsys account", 60)
@@ -327,9 +329,11 @@ def main():
         res("C07_no_account", "PASS" if n_acc == 0 else "FAIL", f"accounts_on_device={n_acc}")
 
         # ---- C08 preserved (nothing wiped across the whole sequence)
-        listing = sh(f"find /data/data/{pkg}/app_chrome/Default -maxdepth 3 \\( -name Cookies -o -name 'Local Storage' -o -name IndexedDB \\) 2>/dev/null", 60)
-        want = ("Cookies", "Local Storage", "IndexedDB")
-        missing = [w for w in want if w not in listing]
+        prof = f"/data/data/{pkg}/app_chrome"
+        missing = []
+        for label, name in (("Cookies", "Cookies"), ("Local Storage", "Local Storage"), ("IndexedDB", "IndexedDB")):
+            if not sh(f"find {prof} -maxdepth 4 -name '{name}' 2>/dev/null | head -1", 60):
+                missing.append(label)
         res("C08_preserved", "PASS" if not missing else "FAIL", f"missing={missing}")
     except Exception as e:  # noqa: BLE001
         print("PERSONAL_E2E harness_error", repr(e)[:300], flush=True)

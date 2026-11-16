@@ -62,12 +62,6 @@
 -          android:value="{{ backup_key }}" />
 -      {% endif %}
 +
-@@ -1470 +1477 @@
--          android:grantUriPermissions="true">
-+          android:grantUriPermissions="false">
-@@ -1478 +1485 @@
--          android:grantUriPermissions="true">
-+          android:grantUriPermissions="false">
 @@ -1487 +1494 @@
 -          android:grantUriPermissions="true">
 +          android:grantUriPermissions="false">

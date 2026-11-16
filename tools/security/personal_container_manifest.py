@@ -22,6 +22,10 @@ import sys
 import xml.etree.ElementTree as ET
 
 NS = "{http://schemas.android.com/apk/res/android}"
+FILE_PROVIDERS_REQUIRING_GRANT_FLAG = frozenset({
+    "org.chromium.chrome.browser.util.ChromeFileProvider",
+    "org.chromium.chrome.browser.download.DownloadFileProvider",
+})
 DOMAINS = frozenset({
     "root", "file", "database", "sharedpref", "external", "device_root",
     "device_file", "device_database", "device_sharedpref",
@@ -162,8 +166,12 @@ def audit(manifest: Path, resources: Path, expected_package: str) -> dict:
         ),
         "no_platform_account_or_shared_storage_permissions": not permissions & DENIED_PERMISSIONS,
         "providers_not_exported": all(p.get(NS + "exported") == "false" for p in providers),
+        # androidx FileProvider.attachInfo throws "Provider must grant uri permissions" at process start
+        # (real x64 emulator crash, run 43922660826). Only these two non-exported FileProvider subclasses
+        # may declare it; they can only hand out access when the app itself attaches a URI grant.
         "providers_cannot_grant_uri_access": all(
-            p.get(NS + "grantUriPermissions", "false") == "false"
+            p.get(NS + "grantUriPermissions", "false") == (
+                "true" if p.get(NS + "name") in FILE_PROVIDERS_REQUIRING_GRANT_FLAG else "false")
             and not p.findall("grant-uri-permission") for p in providers
         ),
     }
