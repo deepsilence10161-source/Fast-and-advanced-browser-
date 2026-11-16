@@ -1236,8 +1236,8 @@
 -        request.notifyCompleted = notifyCompleted;
 -        DownloadManagerBridge.enqueueNewDownload(
 -                request, response -> onDownloadEnqueued(item, response));
-+        PostTask.postTask(
-+                TaskTraits.UI_DEFAULT,
++        org.chromium.base.task.PostTask.postTask(
++                org.chromium.base.task.TaskTraits.UI_DEFAULT,
 +                () -> onDownloadFailed(item, DownloadManager.ERROR_FILE_ERROR));
 @@ -799,10 +781,2 @@
 -        if (DownloadUtils.showDownloadManager(null, null, otrProfileId, source)) return;
