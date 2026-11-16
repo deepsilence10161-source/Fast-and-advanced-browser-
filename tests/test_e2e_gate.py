@@ -1,4 +1,5 @@
 import os, sys
+import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts", "release"))
 import e2e_gate as g
 
@@ -15,6 +16,21 @@ ALL = [k + " PASS" for k in g.REQUIRED] + ["SPEED_E2E PARTIAL"]
 
 def test_pass(tmp_path):
     assert g.gate(_mk(tmp_path, ALL), SHA) == []
+
+@pytest.mark.parametrize("prefix", [
+    "personal_source_only=1\n", "personal_source_only=\n",
+    "--- patches\n0101-persistent-account-boundary.patch\n",
+    "personal_source_only=0\n--- patches\n0103-personal-egress-and-storage.patch\n",
+])
+def test_development_personal_variant_never_enters_ordinary_swiftra_release(tmp_path, prefix):
+    folder = _mk(tmp_path, ALL)
+    path = os.path.join(folder, "BUILD_INFO.txt")
+    with open(path) as handle:
+        previous = handle.read()
+    with open(path, "w") as handle:
+        handle.write(prefix + previous)
+    assert any("personal development" in reason for reason in g.gate(folder, SHA))
+
 
 def test_other_apk_blocked(tmp_path):
     assert g.gate(_mk(tmp_path, ALL, sha="b" * 64), SHA)

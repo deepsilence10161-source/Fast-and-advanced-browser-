@@ -37,19 +37,14 @@ prep = load("personal_prepare", FIXTURES / "prepare.py")
 host = load("personal_host_probe", FIXTURES / "host_probe.py")
 static = load("personal_static_audit", ROOT / "tools/security/personal_container_manifest.py")
 patch_tools = load("personal_patch_tools", ROOT / "scripts/ci/patches.py")
+fixture_tools = load("personal_source_fixture", FIXTURES / "source_fixture.py")
+egress_guard = load("personal_egress_guard", PERSONAL / "0102-personal-egress-source-guard.py")
 
 
 @pytest.fixture(scope="module")
 def upstream():
-    index = json.loads((FIXTURES / "upstream-index.json").read_text())
-    payload = (FIXTURES / "upstream-155.0.8059.80.json.gz").read_bytes()
-    assert hashlib.sha256(payload).hexdigest() == index["fixture_gzip_sha256"]
-    sources = json.loads(gzip.decompress(payload))
-    hashes = {item["path"]: item["sha256"] for item in index["files"] if item["status"] == "READ"}
-    assert set(sources) == set(index["fixture_paths"])
-    for path, text in sources.items():
-        assert hashlib.sha256(text.encode()).hexdigest() == hashes[path]
-    return sources
+    # Both immutable source fixtures retain byte/source-index verification in this helper.
+    return fixture_tools.load_sources()
 
 
 def write_inputs(folder, sources):
@@ -63,15 +58,9 @@ def write_inputs(folder, sources):
 def patched(tmp_path_factory, upstream):
     folder = tmp_path_factory.mktemp("personal-pinned-src")
     write_inputs(folder, upstream)
-    guard.check(folder)
-    command = ["patch", "-p1", "--fuzz=0", "--batch", "--forward", "--no-backup-if-mismatch",
-               "-i", str(PERSONAL / "0101-persistent-account-boundary.patch")]
-    dry = subprocess.run(command + ["--dry-run"], cwd=folder, text=True, capture_output=True, timeout=20)
-    assert dry.returncode == 0, dry.stdout + dry.stderr
-    assert "offset" not in dry.stdout.lower() and "fuzz" not in dry.stdout.lower()
-    applied = subprocess.run(command, cwd=folder, text=True, capture_output=True, timeout=20)
-    assert applied.returncode == 0, applied.stdout + applied.stderr
-    assert "offset" not in applied.stdout.lower() and "fuzz" not in applied.stdout.lower()
+    receipts = fixture_tools.apply_strict(folder)
+    assert [row["entry"] for row in receipts] == fixture_tools.series()
+    assert len(receipts) == 4
     return folder
 
 
@@ -129,12 +118,13 @@ def test_guard_targets_do_not_overlap_the_ordinary_series():
     for name in patch_tools.read_series(str(ROOT / "patches")):
         if name.endswith(".patch"):
             touched.update(patch_tools.patched_files(ROOT / "patches" / name))
-    assert not touched.intersection(guard.EXPECTED)
+    guarded_paths = set(guard.EXPECTED) | set(egress_guard.EXPECTED)
+    assert not touched.intersection(guarded_paths)
     # Transform scripts have their own input sets. Check the current ones explicitly too.
     for name in patch_tools.read_series(str(ROOT / "patches")):
         if name.endswith(".py"):
             text = (ROOT / "patches" / name).read_text()
-            assert not any(path in text for path in guard.EXPECTED)
+            assert not any(path in text for path in guarded_paths)
 
 
 def test_provider_does_not_even_initialize_a_platform_delegate(patched):
@@ -288,12 +278,17 @@ def test_bundle_is_explicit_separate_and_reproducible(tmp_path):
     second = prep.prepare(ROOT, tmp_path / "two", PACKAGE, "personal-host-test")
     assert first == second
     assert first["product_containment"] == "NOT RUN / NOT CERTIFIED"
-    assert not first["release_ready"] and not first["apk_built"] and not first["ci_wired_or_dispatched"]
+    assert not first["release_ready"] and not first["apk_built"]
+    assert not first["ci_dispatch_performed_by_this_tool"]
+    assert first["ci_workflow_in_repo"] == ".github/workflows/personal-source-build.yml"
+    assert first["ci_run_status"] == "NOT ASSESSED / SOURCE INPUT PREPARATION ONLY"
     assert first["package"] == PACKAGE
     assert {p: (ROOT / "patches" / p).read_bytes() for p in before} == before
     series = patch_tools.read_series(str(tmp_path / "one/patches"))
-    assert series[:-2] == patch_tools.read_series(str(ROOT / "patches"))
-    assert series[-2:] == patch_tools.read_series(str(PERSONAL))
+    native_series = patch_tools.read_series(str(PERSONAL))
+    assert len(native_series) == 4
+    assert series[:-len(native_series)] == patch_tools.read_series(str(ROOT / "patches"))
+    assert series[-len(native_series):] == native_series
     assert first["base_patch_hash"] != first["composed_patch_hash"]
     assert (tmp_path / "one/adblock/swiftra-ruleset.pb.gz").read_bytes() == (ROOT / "adblock/swiftra-ruleset.pb.gz").read_bytes()
     for relative, digest in first["payload_sha256"].items():
@@ -343,7 +338,8 @@ def test_existing_patch_engine_tracks_the_opt_in_native_layer(tmp_path, upstream
     assert patch_tools.apply(str(source), str(PERSONAL), "-", str(output), now=1234567890) == 0
     state = json.loads(output.read_text())
     assert state["series"] == patch_tools.read_series(str(PERSONAL))
-    assert set(state["files"]) == set(guard.EXPECTED) | set(guard.NEW_PATHS)
+    assert set(state["files"]) == (set(guard.EXPECTED) | set(guard.NEW_PATHS)
+                                   | set(egress_guard.EXPECTED) | set(egress_guard.NEW_PATHS))
     assert state["epoch"] == 1234567890 and state["changed"]
     for path in state["files"]:
         assert (source / path).stat().st_mtime == 1234567890

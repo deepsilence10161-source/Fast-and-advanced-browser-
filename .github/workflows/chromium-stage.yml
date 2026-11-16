@@ -8,6 +8,7 @@ on:
       stage: { type: number, required: true }
       variant: { type: string, required: false, default: "a1" }   # state release: crstate-<tag>-<cpu>-<variant>
       seed:    { type: string, required: false, default: "" }     # खाली नई variant के लिए src/out इस variant से
+      personal_package: { type: string, required: false, default: "" }  # explicit development-only source lane
     outputs:
       done:
         value: ${{ jobs.stage.outputs.done }}
@@ -31,6 +32,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
           CPU: ${{ inputs.cpu }}
+          PERSONAL_PACKAGE: ${{ inputs.personal_package }}
           STAGE: ${{ inputs.stage }}
           STATE: crstate-${{ inputs.tag }}-${{ inputs.cpu }}-${{ inputs.variant }}
           SEED_STATE: ${{ inputs.seed != '' && format('crstate-{0}-{1}-{2}', inputs.tag, inputs.cpu, inputs.seed) || '' }}

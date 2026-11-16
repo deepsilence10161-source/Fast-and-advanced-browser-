@@ -30,8 +30,9 @@ EVID="$OUTPUTS_DIR/stage-$STAGE.txt"; : > "$EVID"
 ev(){ echo "$*" | tee -a "$EVID"; }
 
 CI_DIR=$(cd "$(dirname "$(readlink -f "$0")")" && pwd); REPO_DIR=$(cd "$CI_DIR/../.." && pwd)
-PDIR="$REPO_DIR/patches"
-# ---------- 0. args.gn (base + patches/args.gn) ----------
+source "$CI_DIR/personal_bundle.sh"
+configure_personal_bundle "$REPO_DIR" "$PK" "$OUTPUTS_DIR" "$TAG" "$CPU" "$STATE"
+# ---------- 0. args.gn (base + selected source bundle/args.gn) ----------
 ARGS=$(cat <<EOF
 target_os = "android"
 target_cpu = "$CPU"
@@ -288,7 +289,7 @@ if [ "$REM1" -ne 0 ]; then log "समय समाप्त, $REM1 edges बा
 
 # ---------- 5. पूरा: signing/सत्यापन/DONE -> finalize_apk.sh ----------
 APK="src/$OUTD/apks/ChromePublic.apk"; [ -f "$APK" ] || { echo "APK नहीं मिला"; exit 1; }
-declare -p TAG CPU STAGE STATE R ROOT OUTD OUTPUTS_DIR COMMIT PATCH_HASH BUILD_KEY EXP_PKG EXP_CERT EXP_NONDEBUG > "$PK/finalize.env"
+declare -p TAG CPU STAGE STATE R ROOT OUTD OUTPUTS_DIR COMMIT PATCH_HASH BUILD_KEY EXP_PKG EXP_CERT EXP_NONDEBUG PERSONAL_SOURCE_ONLY > "$PK/finalize.env"
 if [ -n "$EXP_CERT" ]; then
   # signing अलग step में (केवल उसे secrets)। तब तक unsigned परिणाम सुरक्षित रखें (DONE नहीं)।
   cp "$APK" "$PK/presign-ChromePublic-$TAG-$CPU.apk"; upload "$PK/presign-ChromePublic-$TAG-$CPU.apk"

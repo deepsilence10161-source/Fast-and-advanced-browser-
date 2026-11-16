@@ -74,6 +74,11 @@ CERT=$(cert_digests "$PK/apksigner.txt")
   echo "tag=$TAG"; echo "commit=$COMMIT"; echo "cpu=$CPU"; echo "built_on=github ubuntu-24.04 standard runner (staged, stage $STAGE)"
   echo "build_tools=$(basename "$BT")"
   echo "patch_hash=$PATCH_HASH build_key=$BUILD_KEY"
+  echo "personal_source_only=${PERSONAL_SOURCE_ONLY:-0}"
+  if [ "${PERSONAL_SOURCE_ONLY:-0}" = 1 ]; then
+    echo "product_containment=NOT RUN / NOT CERTIFIED"
+    echo "distribution=DEVELOPMENT ONLY; not the ordinary Swiftra release"
+  fi
   echo "signing=$SIGNING signer_cert_sha256=${CERT:-?} expected_cert_sha256=${EXP_CERT:-none}"
   echo "--- patches"; python3 -c "import json;d=json.load(open('$PK/patches.json'));[print(x) for x in d['series']];[print('overlay:',x) for x in d.get('overlay',[])]"
   echo "--- args.gn"; cat "src/$OUTD/args.gn"

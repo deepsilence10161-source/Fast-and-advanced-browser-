@@ -1,0 +1,418 @@
+{
+  "pinned_tag": "155.0.8059.80",
+  "status_semantics": "FETCHED and hashed; not all lines audited or executed",
+  "files": [
+    {
+      "path": "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+      "status": "FETCHED",
+      "sha256": "508639af0abf800f1fd3ffb26c307b44413df9461eeba75b61cb6b68087502b9",
+      "bytes": 139938,
+      "lines": 3105
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/externalnav/ExternalNavigationDelegateImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/externalnav/ExternalNavigationDelegateImpl.java",
+      "status": "FETCHED",
+      "sha256": "a2a8dec2bbe99a144057224a0b450f7d18c467e2792415770ef77baee819bd66",
+      "bytes": 13508,
+      "lines": 359
+    },
+    {
+      "path": "ui/android/java/src/org/chromium/ui/base/Clipboard.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/ui/android/java/src/org/chromium/ui/base/Clipboard.java",
+      "status": "FETCHED",
+      "sha256": "37a6dd4f1a3470be9a671f99566e74881759ab1d920baecda3680417c2b464c0",
+      "bytes": 16426,
+      "lines": 482
+    },
+    {
+      "path": "components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java",
+      "status": "FETCHED",
+      "sha256": "2bb156b1d191e14c158a1c56858c821d10ef4ea41a71a93cddacc204b72b3483",
+      "bytes": 20320,
+      "lines": 443
+    },
+    {
+      "path": "base/android/java/src/org/chromium/base/PathUtils.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/PathUtils.java",
+      "status": "FETCHED",
+      "sha256": "740605db4b36870f596ff242af4cf442e7da3cb09a259ad3e8d83acb5c269b17",
+      "bytes": 17097,
+      "lines": 387
+    },
+    {
+      "path": "base/base_paths_android.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/base_paths_android.cc",
+      "status": "FETCHED",
+      "sha256": "cdeeea79caf535d99499545dc4057e66788eedd57ddf2581881a4bd3102f1809",
+      "bytes": 2359,
+      "lines": 71
+    },
+    {
+      "path": "chrome/common/chrome_paths_android.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/common/chrome_paths_android.cc",
+      "status": "FETCHED",
+      "sha256": "207d2897b423dc3bf5d8c36784a8531064c6bcba355eb2ce4bed96e589996f48",
+      "bytes": 4421,
+      "lines": 131
+    },
+    {
+      "path": "chrome/browser/download/download_prefs.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/download_prefs.cc",
+      "status": "FETCHED",
+      "sha256": "b7edd58cb7df3342302fe4eb2a72be0dc9dd636e074fb65e97e8926de8cd5e9e",
+      "bytes": 27661,
+      "lines": 750
+    },
+    {
+      "path": "chrome/browser/download/download_prefs.h",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/download_prefs.h",
+      "status": "FETCHED",
+      "sha256": "f904f6d747e8cf7f550be45c46b670ff29fba180e47b162f7a7f1102d9905002",
+      "bytes": 6563,
+      "lines": 192
+    },
+    {
+      "path": "chrome/browser/download/download_target_determiner.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/download_target_determiner.cc",
+      "status": "FETCHED",
+      "sha256": "20c460af6833a7c0a2e3ed1f09ae8999681840542ab915dbe75b395de1fdd71c",
+      "bytes": 54877,
+      "lines": 1393
+    },
+    {
+      "path": "chrome/browser/download/chrome_download_manager_delegate.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/chrome_download_manager_delegate.cc",
+      "status": "FETCHED",
+      "sha256": "887d35516e7a26a61fcaba1a682feb09e1a34cb7a6354d6bcc3b27406b166829",
+      "bytes": 111031,
+      "lines": 2783
+    },
+    {
+      "path": "chrome/browser/download/android/download_controller.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/download_controller.cc",
+      "status": "FETCHED",
+      "sha256": "3f6790d14adfb6b214dfdb76e8db76d2058f102832b6b56c94cd61fca23e839f",
+      "bytes": 23705,
+      "lines": 647
+    },
+    {
+      "path": "chrome/browser/download/android/download_manager_bridge.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/download_manager_bridge.cc",
+      "status": "FETCHED",
+      "sha256": "83176d52df7aac03bde8925e5899354a3933ebfa776c68b00fce787a84097ad7",
+      "bytes": 1605,
+      "lines": 46
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadManagerService.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadManagerService.java",
+      "status": "FETCHED",
+      "sha256": "62a2e6dcd1e616a3f6a6b4dfd58bb9127243fb99fee4643d1f4ea5b52637b76a",
+      "bytes": 68990,
+      "lines": 1601
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadUtils.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadUtils.java",
+      "status": "FETCHED",
+      "sha256": "00b59e565307a1f653c1a5d523599c05d145969250b74063ab734bae93b566a5",
+      "bytes": 45818,
+      "lines": 1036
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDelegateImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDelegateImpl.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+      "status": "FETCHED",
+      "sha256": "115b949478561bfecc2230d8f26a5bfd4d184b3f18742954055c046d32f0d778",
+      "bytes": 36815,
+      "lines": 852
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java",
+      "status": "FETCHED",
+      "sha256": "da31a5a84fe4a967c3af1e21f287711faba4fcbb33e7e1a654143b2c11c8ec90",
+      "bytes": 2484,
+      "lines": 64
+    },
+    {
+      "path": "content/public/android/java/src/org/chromium/content/browser/ContentView.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/content/public/android/java/src/org/chromium/content/browser/ContentView.java",
+      "status": 404
+    },
+    {
+      "path": "components/autofill/android/java/src/org/chromium/components/autofill/AutofillProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/autofill/android/java/src/org/chromium/components/autofill/AutofillProvider.java",
+      "status": 404
+    },
+    {
+      "path": "components/autofill/android/java/src/org/chromium/components/autofill/AutofillProviderImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/autofill/android/java/src/org/chromium/components/autofill/AutofillProviderImpl.java",
+      "status": 404
+    },
+    {
+      "path": "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+      "status": 404
+    },
+    {
+      "path": "components/download/public/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/public/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadManagerBridge.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadManagerBridge.java",
+      "status": "FETCHED",
+      "sha256": "fac93ed27637bc1f28f749bb45b0ac63e30f2cad9c030b99b35ba5472a74d252",
+      "bytes": 17453,
+      "lines": 410
+    },
+    {
+      "path": "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadManagerBridge.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadManagerBridge.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/download/android/download_utils.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/download_utils.cc",
+      "status": "FETCHED",
+      "sha256": "7268e8da2248d692fd661ad37aad367b68231c1b8ad7c4a8fcf2c90578d6a516",
+      "bytes": 4939,
+      "lines": 119
+    },
+    {
+      "path": "ui/android/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/ui/android/BUILD.gn",
+      "status": "FETCHED",
+      "sha256": "daf798e009d30de101d57400346b3a723e8172c5aea56a952f7136bf0d5969da",
+      "bytes": 53170,
+      "lines": 1150
+    },
+    {
+      "path": "ui/android/java/src/org/chromium/ui/base/ClipboardImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/ui/android/java/src/org/chromium/ui/base/ClipboardImpl.java",
+      "status": "FETCHED",
+      "sha256": "e6bff7fceae8f930ce3e97b3736b1c8c9dfd2545a7516b8eb2a971b485f4841b",
+      "bytes": 35702,
+      "lines": 919
+    },
+    {
+      "path": "chrome/browser/ui/android/omnibox/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/omnibox/BUILD.gn",
+      "status": "FETCHED",
+      "sha256": "f890a684dc0c52b599a95f29f0b3446f14a93d07bb9fca996b027c0a1e206844",
+      "bytes": 49038,
+      "lines": 763
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/SystemDownloadNotifier.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/SystemDownloadNotifier.java",
+      "status": "FETCHED",
+      "sha256": "46334bb5071f9c593c0e99c907d9c15ca0c6e163a15520a11200156647cae312",
+      "bytes": 12914,
+      "lines": 290
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadController.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadController.java",
+      "status": "FETCHED",
+      "sha256": "478d9cb93db335eca7ba6a598cec9bd418b21ae8fe08b8ac32b0eed70dd71ac4",
+      "bytes": 5921,
+      "lines": 146
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadServiceDelegate.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadServiceDelegate.java",
+      "status": "FETCHED",
+      "sha256": "705310ab7e1033bfda6e0adb9a414f7285ab441a2050c7663e361c02e0458812",
+      "bytes": 1567,
+      "lines": 42
+    },
+    {
+      "path": "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+      "status": "FETCHED",
+      "sha256": "cf16d9c71134b414107ca8d2e74da365a250e948f528bb4d03cc82c17e58137d",
+      "bytes": 15134,
+      "lines": 377
+    },
+    {
+      "path": "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDelegateImpl.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDelegateImpl.java",
+      "status": "FETCHED",
+      "sha256": "4e720016593f10477f9e419a625119b0c694dab526e98c9eded58179ac76aeae",
+      "bytes": 1076,
+      "lines": 33
+    },
+    {
+      "path": "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadCollectionBridge.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadCollectionBridge.java",
+      "status": "FETCHED",
+      "sha256": "d507bf06e0b19f70661207e12353ff09f0d2046ba60e49ca181f1f0e65bdbe97",
+      "bytes": 16954,
+      "lines": 425
+    },
+    {
+      "path": "components/download/internal/common/android/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/BUILD.gn",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/ChromeShareHelper.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/ChromeShareHelper.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/download/download_target_determiner.h",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/download_target_determiner.h",
+      "status": "FETCHED",
+      "sha256": "cdd40640ce23aedc5453b90346a70d833c799fe8ae54319c889043796e1dfe52",
+      "bytes": 18438,
+      "lines": 422
+    },
+    {
+      "path": "chrome/browser/download/android/download_utils.h",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/android/download_utils.h",
+      "status": "FETCHED",
+      "sha256": "cd210bdf898db460796b3a554dc24465ff495c794285a7f2a2e4fed6c9b538c3",
+      "bytes": 1155,
+      "lines": 33
+    },
+    {
+      "path": "base/android/java/src/org/chromium/base/BuildInfo.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/BuildInfo.java",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/download/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/BUILD.gn",
+      "status": "FETCHED",
+      "sha256": "736c12bd19b95148de3e5d69e1d1820e363229956a5ad1f27b5021acd584d4d8",
+      "bytes": 19685,
+      "lines": 615
+    },
+    {
+      "path": "components/download/public/common/BUILD.gn",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/public/common/BUILD.gn",
+      "status": "FETCHED",
+      "sha256": "95c556cdab9acf2b2c21a41cff6bccfd0a1b11e685a859b8639e72e260c14f3d",
+      "bytes": 5355,
+      "lines": 209
+    },
+    {
+      "path": "chrome/browser/download/download_target_determiner_delegate.h",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/download_target_determiner_delegate.h",
+      "status": "FETCHED",
+      "sha256": "3c2c03463bd3019ffd9f1cebec1a138824ca4e1ae72324256b89ef67e8359b00",
+      "bytes": 7101,
+      "lines": 149
+    },
+    {
+      "path": "chrome/browser/download/download_file_picker.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/download_file_picker.cc",
+      "status": "FETCHED",
+      "sha256": "694311f23044517c0ed16cebd016fcec6ab6d24b3ed62f6bd2538c0e19543feb",
+      "bytes": 6106,
+      "lines": 150
+    },
+    {
+      "path": "components/download/public/common/download_utils.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/public/common/download_utils.cc",
+      "status": 404
+    },
+    {
+      "path": "components/download/public/common/download_utils.h",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/public/common/download_utils.h",
+      "status": "FETCHED",
+      "sha256": "07af3a98b4824fe178f3f6ac081abe600637962b6de5d0d7bcb918a51087de20",
+      "bytes": 8477,
+      "lines": 202
+    },
+    {
+      "path": "chrome/browser/download/target_determination_utils.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/target_determination_utils.cc",
+      "status": 404
+    },
+    {
+      "path": "chrome/browser/download/target_determination_utils.h",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/target_determination_utils.h",
+      "status": 404
+    },
+    {
+      "path": "components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareParams.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareParams.java",
+      "status": "FETCHED",
+      "sha256": "ebf12d5f69ec701eeda72d3c29080f02d5f0d675171e69c7e6c93fdc614eff83",
+      "bytes": 14734,
+      "lines": 433
+    },
+    {
+      "path": "components/download/internal/common/download_utils.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/download_utils.cc",
+      "status": "FETCHED",
+      "sha256": "821132d372e1b2c1e5d3cb530c90678862500be5ca858b5c3a7ec3cdb6889cb5",
+      "bytes": 38505,
+      "lines": 964
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/media/MediaViewerUtils.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/media/MediaViewerUtils.java",
+      "status": "FETCHED",
+      "sha256": "1ad1363dd7da8fa1a8be2dfe0117c106270fe694a80636c842c6673238cf5099",
+      "bytes": 16875,
+      "lines": 373
+    }
+  ],
+  "fixture_paths": [
+    "base/android/java/src/org/chromium/base/PathUtils.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadManagerService.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadUtils.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java",
+    "chrome/browser/download/BUILD.gn",
+    "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+    "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadManagerBridge.java",
+    "chrome/browser/download/download_prefs.cc",
+    "chrome/browser/download/download_target_determiner.cc",
+    "components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java",
+    "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadCollectionBridge.java",
+    "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+    "ui/android/BUILD.gn",
+    "ui/android/java/src/org/chromium/ui/base/Clipboard.java"
+  ],
+  "fixture_gzip_sha256": "b565c4fe6312d979457845a4845689230e75ea23ff7c935d390e3fe4ea779f64",
+  "native_source_outputs": [
+    "base/android/java/src/org/chromium/base/PathUtils.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadManagerService.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadUtils.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java",
+    "chrome/browser/download/BUILD.gn",
+    "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+    "chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadManagerBridge.java",
+    "chrome/browser/download/browser_contained_download_path.h",
+    "chrome/browser/download/download_prefs.cc",
+    "chrome/browser/download/download_target_determiner.cc",
+    "components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java",
+    "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadCollectionBridge.java",
+    "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+    "ui/android/BUILD.gn",
+    "ui/android/java/src/org/chromium/ui/base/BrowserContainedClipboard.java",
+    "ui/android/java/src/org/chromium/ui/base/Clipboard.java"
+  ],
+  "not_android_acceptance": true
+}

@@ -1,0 +1,99 @@
+name: Personal browser development build (not privacy certified)
+run-name: "Personal development ${{ inputs.cpu }} ${{ inputs.variant }}"
+# Manual development lane only. No install, E2E PASS, privacy certification or public publish.
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Reviewed distinct DEVELOPMENT application ID; never com.swiftra.app/Chrome"
+        type: string
+        required: true
+      cpu:
+        description: "ABI; both require separate native acceptance"
+        type: choice
+        options: [x64, arm64]
+        default: x64
+      variant:
+        description: "Separate personal-... state; no production-profile migration"
+        type: string
+        required: true
+        default: personal-dev
+      seed:
+        description: "Existing pristine source/out seed, never device/profile data"
+        type: string
+        default: a1
+      confirm_development_only:
+        description: "I understand this is an UNVERIFIED development APK, not the finished privacy browser"
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: personal-dev-155.0.8059.80-${{ inputs.cpu }}-${{ inputs.variant }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Require explicit development consent and separate source inputs
+        env:
+          PACKAGE: ${{ inputs.package }}
+          VARIANT: ${{ inputs.variant }}
+          CONFIRMED: ${{ inputs.confirm_development_only }}
+        run: |
+          [ "$CONFIRMED" = true ] || { echo "::error::Development-only confirmation is required"; exit 1; }
+          python3 tools/personal_browser/prepare.py --package "$PACKAGE" --variant "$VARIANT" \
+            --output "$RUNNER_TEMP/personal-validation"
+  s0:
+    needs: validate
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 0, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s1:
+    needs: s0
+    if: needs.s0.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 1, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s2:
+    needs: s1
+    if: needs.s1.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 2, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s3:
+    needs: s2
+    if: needs.s2.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 3, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s4:
+    needs: s3
+    if: needs.s3.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 4, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s5:
+    needs: s4
+    if: needs.s4.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 5, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s6:
+    needs: s5
+    if: needs.s5.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 6, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit
+  s7:
+    needs: s6
+    if: needs.s6.outputs.done == 'false'
+    uses: ./.github/workflows/chromium-stage.yml
+    with: { tag: "155.0.8059.80", cpu: "${{ inputs.cpu }}", stage: 7, variant: "${{ inputs.variant }}", seed: "${{ inputs.seed }}", personal_package: "${{ inputs.package }}" }
+    secrets: inherit

@@ -1,0 +1,1527 @@
+--- a/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java
++++ b/components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java
+@@ -14 +13,0 @@
+-import android.content.Intent.ShortcutIconResource;
+@@ -25,2 +23,0 @@
+-import android.os.StrictMode;
+-import android.os.SystemClock;
+@@ -30 +26,0 @@
+-import android.util.AndroidRuntimeException;
+@@ -44,2 +39,0 @@
+-import org.chromium.base.RequiredCallback;
+-import org.chromium.base.metrics.RecordHistogram;
+@@ -722 +716 @@
+-        mDelegate.reparentTabToSamePwa();
++        // Installed WebAPK/PWA handoffs cross the browser boundary and are disabled.
+@@ -737,48 +731,3 @@
+-        if (debug()) Log.i(TAG, "shouldOverrideUrlLoading called on " + params.getUrl().getSpec());
+-        Intent targetIntent;
+-        boolean isIntentUrl = UrlUtilities.hasIntentScheme(params.getUrl());
+-        // Perform generic parsing of the URI to turn it into an Intent.
+-        if (isIntentUrl) {
+-            try {
+-                targetIntent = Intent.parseUri(params.getUrl().getSpec(), Intent.URI_INTENT_SCHEME);
+-            } catch (Exception ex) {
+-                Log.w(TAG, "Bad URI %s", params.getUrl().getSpec(), ex);
+-                return OverrideUrlLoadingResult.forNoOverride();
+-            }
+-        } else if (isSupportedWtaiProtocol(params.getUrl())) {
+-            targetIntent = parseWtaiMcProtocol(params.getUrl());
+-        } else {
+-            targetIntent = new Intent(Intent.ACTION_VIEW);
+-            targetIntent.setData(Uri.parse(params.getUrl().getSpec()));
+-        }
+-
+-        GURL browserFallbackUrl =
+-                new GURL(IntentUtils.safeGetStringExtra(targetIntent, EXTRA_BROWSER_FALLBACK_URL));
+-        if (!browserFallbackUrl.isValid() || !UrlUtilities.isHttpOrHttps(browserFallbackUrl)) {
+-            browserFallbackUrl = GURL.emptyGURL();
+-        }
+-        targetIntent.removeExtra(EXTRA_BROWSER_FALLBACK_URL);
+-
+-        // TODO(crbug.com/40136041): Refactor shouldOverrideUrlLoadingInternal, splitting it
+-        // up to separate out the notions wanting to fire an external intent vs being able to.
+-        MutableBoolean canLaunchExternalFallbackResult = new MutableBoolean();
+-
+-        long time = SystemClock.elapsedRealtime();
+-        OverrideUrlLoadingResult result =
+-                shouldOverrideUrlLoadingInternal(
+-                        params, targetIntent, browserFallbackUrl, canLaunchExternalFallbackResult);
+-        assert canLaunchExternalFallbackResult.get() != null;
+-        RecordHistogram.recordTimesHistogram(
+-                "Android.StrictMode.OverrideUrlLoadingTime", SystemClock.elapsedRealtime() - time);
+-
+-        if (result.getResultType() == OverrideUrlLoadingResultType.NO_OVERRIDE) {
+-            result =
+-                    handleFallbackUrl(
+-                            params, browserFallbackUrl, canLaunchExternalFallbackResult.get());
+-        }
+-        if (debug()) printDebugShouldOverrideUrlLoadingResultType(result);
+-
+-        if (result.getResultType() == OverrideUrlLoadingResultType.OVERRIDE_WITH_ASYNC_ACTION) {
+-            params.onAsyncActionStarted();
+-        }
+-        return result;
++        // Persistent personal variant: the current tab keeps web navigation.
++        // Non-web schemes fail in-browser; do not parse or launch an external app/fallback.
++        return OverrideUrlLoadingResult.forNoOverride();
+@@ -795,3 +744 @@
+-        mIncognitoDialogDelegate =
+-                new IncognitoDialogDelegate(context, navigationId, intent, onUserConfirmation);
+-        mIncognitoDialogDelegate.showDialog();
++        // No external app, confirmation dialog or success callback in this variant.
+@@ -2549,26 +2496 @@
+-        // https://crbug.com/330555390. If we've launched an app on the current redirect chain, we
+-        // should never launch a second one.
+-        if (params.getRedirectHandler().isOnNavigation()) {
+-            params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
+-        }
+-
+-        forcePdfViewerAsIntentHandlerIfNeeded(intent);
+-        Context context = ContextUtils.activityFromContext(mDelegate.getContext());
+-        if (context == null) {
+-            context = ContextUtils.getApplicationContext();
+-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+-        }
+-        if (requiresIntentChooser) {
+-            assumeNonNull(resolvingInfos);
+-            assumeNonNull(resolveActivity);
+-            return startActivityWithChooser(
+-                    intent,
+-                    resolvingInfos,
+-                    resolveActivity,
+-                    browserFallbackUrl,
+-                    intentTargetUrl,
+-                    params,
+-                    context);
+-        }
+-        mDelegate.notifyCctPasswordSavingRecorderOfExternalNavigation();
+-        return doStartActivity(intent, context);
++        return OverrideUrlLoadingResult.forNoOverride();
+@@ -2578,25 +2500 @@
+-        // Only touches disk on Kitkat. See http://crbug.com/617725 for more context.
+-        StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskWrites();
+-        try {
+-            if (debug()) Log.i(TAG, "startActivity");
+-            context.startActivity(intent);
+-            recordExternalNavigationDispatched(intent);
+-            return OverrideUrlLoadingResult.forExternalIntent();
+-        } catch (SecurityException e) {
+-            // https://crbug.com/808494: Handle the URL internally if dispatching to another
+-            // application fails with a SecurityException. This happens due to malformed
+-            // manifests in another app.
+-        } catch (ActivityNotFoundException e) {
+-            // The targeted app must have been uninstalled/disabled since we queried for Activities
+-            // to handle this intent.
+-            if (debug()) Log.i(TAG, "Activity not found.");
+-        } catch (AndroidRuntimeException e) {
+-            // https://crbug.com/1226177: Most likely cause of this exception is Android failing
+-            // to start the app that we previously detected could handle the Intent.
+-            Log.e(TAG, "Could not start Activity for intent " + intent.toString(), e);
+-        } catch (RuntimeException e) {
+-            IntentUtils.logTransactionTooLargeOrRethrow(e, intent);
+-        } finally {
+-            StrictMode.setThreadPolicy(oldPolicy);
+-        }
+-
++        // Defense in depth for direct/async callers bypassing the URL entry point.
+@@ -2628,110 +2526 @@
+-        ResolveInfo intentResolveInfo = resolveActivity.get();
+-        // If this is null, then the intent was only previously matching
+-        // non-default filters, so just drop it.
+-        if (intentResolveInfo == null) return OverrideUrlLoadingResult.forNoOverride();
+-
+-        // If we resolve to the Chooser Activity, the user will already get the option to choose the
+-        // target app (as there will be multiple options) and we don't need to do anything.
+-        // Otherwise we have to make a fake option in the chooser dialog that loads the URL in the
+-        // embedding app.
+-        if (resolvesToChooser(intentResolveInfo, resolvingInfos.get())) {
+-            return doStartActivity(intent, context);
+-        }
+-
+-        Intent pickerIntent = new Intent(Intent.ACTION_PICK_ACTIVITY);
+-        pickerIntent.putExtra(Intent.EXTRA_INTENT, intent);
+-
+-        if (!resolveInfoContainsSelf(resolvingInfos.getIncludingNonDefaultResolveInfos())) {
+-            // Add the fake entry for the embedding app. This behavior is not well documented but
+-            // works consistently across Android since L (and at least up to S).
+-            PackageManager pm = context.getPackageManager();
+-            ArrayList<ShortcutIconResource> icons = new ArrayList<>();
+-            ArrayList<String> labels = new ArrayList<>();
+-            String packageName = context.getPackageName();
+-            String label = "";
+-            ShortcutIconResource resource = new ShortcutIconResource();
+-            try {
+-                ApplicationInfo applicationInfo =
+-                        pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+-                label = (String) pm.getApplicationLabel(applicationInfo);
+-                Resources resources = pm.getResourcesForApplication(applicationInfo);
+-                resource.packageName = packageName;
+-                resource.resourceName = resources.getResourceName(applicationInfo.icon);
+-                // This will throw a Resources.NotFoundException if the package uses resource
+-                // name collapsing/stripping. The ActivityPicker fails to handle this exception, we
+-                // have have to check for it here to avoid crashes.
+-                resources.getDrawable(
+-                        resources.getIdentifier(resource.resourceName, null, null), null);
+-            } catch (NameNotFoundException | Resources.NotFoundException e) {
+-                Log.w(TAG, "No icon resource found for package: " + packageName);
+-                // Most likely the app doesn't have an icon and is just a test
+-                // app. Android will just use a blank icon.
+-                resource.packageName = "";
+-                resource.resourceName = "";
+-            }
+-            labels.add(label);
+-            icons.add(resource);
+-            pickerIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, labels);
+-            pickerIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icons);
+-        }
+-
+-        // Call startActivityForResult on the PICK_ACTIVITY intent, which will set the component of
+-        // the data result to the component of the chosen app.
+-        WindowAndroid windowAndroid = assumeNonNull(mDelegate.getWindowAndroid());
+-        windowAndroid.showCancelableIntent(
+-                pickerIntent,
+-                new WindowAndroid.IntentCallback() {
+-                    @Override
+-                    public void onIntentCompleted(int resultCode, @Nullable Intent data) {
+-                        RequiredCallback<AsyncActionTakenParams> callback =
+-                                params.getRequiredAsyncActionTakenCallback();
+-                        assert callback != null;
+-                        // If |data| is null, the user backed out of the intent chooser.
+-                        if (data == null) {
+-                            callback.onResult(AsyncActionTakenParams.forNoAction());
+-                            return;
+-                        }
+-
+-                        // Quirk of how we use the ActivityChooser - if the embedding app is
+-                        // chosen we get an intent back with ACTION_CREATE_SHORTCUT.
+-                        if (assumeNonNull(data.getAction()).equals(Intent.ACTION_CREATE_SHORTCUT)) {
+-                            // Ensure we don't loop asking the user to choose an app, then
+-                            // re-asking when we navigate to the same URL.
+-                            if (params.getRedirectHandler().isOnNavigation()) {
+-                                params.getRedirectHandler()
+-                                        .setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
+-                            }
+-
+-                            // It's pretty arbitrary whether to prefer the data URL or the
+-                            // fallback URL here. We could consider preferring the
+-                            // fallback URL, as the URL was probably intending to leave
+-                            // Chrome, but loading the URL the site was trying to load in
+-                            // a browser seems like the better choice
+-                            // and matches what would have happened had the regular
+-                            // chooser dialog shown up and the user selected this app.
+-                            if (UrlUtilities.isAcceptedScheme(intentTargetUrl)) {
+-                                callback.onResult(
+-                                        AsyncActionTakenParams.forNavigate(
+-                                                intentTargetUrl, params));
+-                            } else if (!assumeNonNull(browserFallbackUrl).isEmpty()) {
+-                                callback.onResult(
+-                                        AsyncActionTakenParams.forNavigate(
+-                                                browserFallbackUrl, params));
+-                            } else {
+-                                callback.onResult(AsyncActionTakenParams.forNoAction());
+-                            }
+-                            return;
+-                        }
+-
+-                        // Set the package for the original intent to the chosen app and
+-                        // start it. Note that a selector cannot be set at the same time
+-                        // as a package.
+-                        intent.setSelector(null);
+-                        intent.setPackage(assumeNonNull(data.getComponent()).getPackageName());
+-                        startActivity(intent, params);
+-                        callback.onResult(
+-                                AsyncActionTakenParams.forExternalIntentLaunched(true, params));
+-                    }
+-                },
+-                null);
+-        return OverrideUrlLoadingResult.forAsyncAction();
++        return OverrideUrlLoadingResult.forNoOverride();
+--- a/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java
++++ b/components/browser_ui/share/android/java/src/org/chromium/components/browser_ui/share/ShareHelper.java
+@@ -37,0 +38,2 @@
++import org.chromium.base.task.PostTask;
++import org.chromium.base.task.TaskTraits;
+@@ -93,3 +95,2 @@
+-        recordShareSource(ShareSourceAndroid.ANDROID_SHARE_SHEET);
+-        new TargetChosenReceiver(params.getCallback())
+-                .sendChooserIntent(params.getWindow(), getShareIntent(params));
++        TargetChosenCallback callback = params.getCallback();
++        if (callback != null) PostTask.postTask(TaskTraits.UI_DEFAULT, callback::onCancel);
+@@ -153,7 +154,3 @@
+-            window.showIntent(intent, callback, null);
+-        } else {
+-            // TODO(crbug.com/40256344): Allow startActivity w/o result via
+-            // WindowAndroid.
+-            Activity activity = window.getActivity().get();
+-            assumeNonNull(activity);
+-            activity.startActivity(intent);
++            PostTask.postTask(
++                    TaskTraits.UI_DEFAULT,
++                    () -> callback.onIntentCompleted(Activity.RESULT_CANCELED, null));
+@@ -185,35 +182,2 @@
+-            ThreadUtils.assertOnUiThread();
+-
+-            if (window.isDestroyed()) {
+-                Log.e(TAG, "Can not send intent due to window being destroyed.");
+-                return;
+-            }
+-
+-            Activity activity = window.getActivity().get();
+-            assert activity != null;
+-            final String packageName = activity.getPackageName();
+-            mReceiverAction =
+-                    packageName
+-                            + "/"
+-                            + TargetChosenReceiver.class.getName()
+-                            + activity.getTaskId()
+-                            + "_ACTION";
+-
+-            TargetChosenReceiver prevReceiver =
+-                    TARGET_CHOSEN_RECEIVER_KEY.retrieveDataFromHost(
+-                            window.getUnownedUserDataHost());
+-            if (prevReceiver != null) {
+-                Log.e(TAG, "Another BroadcastReceiver already exists in the window.");
+-                // In case where the receiver is not unregistered correctly, cancel the callback
+-                // (to satisfy guarantee that exactly one method of TargetChosenCallback is called).
+-                prevReceiver.cancel();
+-            }
+-            TARGET_CHOSEN_RECEIVER_KEY.attachToHost(window.getUnownedUserDataHost(), this);
+-            mAttachedWindow = new WeakReference<>(window);
+-
+-            ContextUtils.registerNonExportedBroadcastReceiver(
+-                    activity, this, new IntentFilter(mReceiverAction));
+-            mAttachedContext = new WeakReference<>(activity);
+-
+-            Intent chooserIntent = getChooserIntent(window, sharingIntent);
+-            ShareHelper.fireIntent(window, chooserIntent, this);
++            // No receiver registration or chooser carries browser data outside this app.
++            cancel();
+--- a/ui/android/java/src/org/chromium/ui/base/Clipboard.java
++++ b/ui/android/java/src/org/chromium/ui/base/Clipboard.java
+@@ -9,2 +8,0 @@
+-import android.content.ClipboardManager;
+-import android.content.Context;
+@@ -21 +18,0 @@
+-import org.chromium.base.ContextUtils;
+@@ -89,11 +86 @@
+-        if (sInstance == null) {
+-            ClipboardManager clipboardManager =
+-                    (ClipboardManager)
+-                            ContextUtils.getApplicationContext()
+-                                    .getSystemService(Context.CLIPBOARD_SERVICE);
+-            if (clipboardManager != null) {
+-                sInstance = new ClipboardImpl(clipboardManager);
+-            } else {
+-                sInstance = new Clipboard();
+-            }
+-        }
++        if (sInstance == null) sInstance = new BrowserContainedClipboard();
+--- a/ui/android/BUILD.gn
++++ b/ui/android/BUILD.gn
+@@ -434,0 +435 @@
++    "java/src/org/chromium/ui/base/BrowserContainedClipboard.java",
+--- /dev/null
++++ b/ui/android/java/src/org/chromium/ui/base/BrowserContainedClipboard.java
+@@ -0,0 +1,179 @@
++// Copyright 2026 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++package org.chromium.ui.base;
++
++import org.chromium.build.annotations.NullMarked;
++import org.chromium.build.annotations.Nullable;
++import org.chromium.url.GURL;
++
++import java.util.Collections;
++import java.util.HashMap;
++import java.util.Map;
++
++/**
++ * Browser-process clipboard: never acquires Android's ClipboardManager or a URI provider.
++ *
++ * <p>This is a process-local buffer, not durable profile storage. It is not cleared on focus loss
++ * and does not change/delete cookies, history, drafts or other retained profile files. Text/HTML,
++ * custom text formats and raw PNG bytes are supported. URI/file clipboard operations inherited
++ * from the base class remain unavailable; no external content is read or granted.
++ *
++ * <p>Native Android text widgets/IME and other IPC paths require separate containment review.
++ */
++@NullMarked
++public final class BrowserContainedClipboard extends Clipboard {
++    private static final String PLAIN = "text/plain";
++    private static final String HTML = "text/html";
++    private static final String URI_LIST = "text/uri-list";
++    private static final String PNG = "image/png";
++
++    private Map<String, String> mText = Collections.emptyMap();
++    private byte @Nullable [] mPng;
++    private long mModified;
++
++    private void replace(Map<String, String> text, byte @Nullable [] png) {
++        synchronized (this) {
++            mText = Collections.unmodifiableMap(new HashMap<>(text));
++            mPng = png == null ? null : png.clone();
++            mModified = Math.max(System.currentTimeMillis(), mModified + 1);
++        }
++        // Native browser notification only; deliberately outside the Java monitor.
++        notifyPrimaryClipChanged();
++    }
++
++    @Override
++    public synchronized @Nullable String getCoercedText() {
++        return mText.get(PLAIN);
++    }
++
++    @Override
++    protected synchronized boolean hasCoercedText() {
++        return mText.containsKey(PLAIN);
++    }
++
++    @Override
++    protected synchronized @Nullable String getHTMLText() {
++        return mText.get(HTML);
++    }
++
++    @Override
++    public synchronized boolean hasHTMLOrStyledText() {
++        return mText.containsKey(HTML);
++    }
++
++    @Override
++    synchronized boolean hasUrl() {
++        return getUrl() != null;
++    }
++
++    @Override
++    synchronized @Nullable String getUrl() {
++        String text = mText.get(URI_LIST);
++        if (text == null) text = mText.get(PLAIN);
++        if (text == null || !(text.startsWith("https://") || text.startsWith("http://"))) {
++            return null;
++        }
++        for (int i = 0; i < text.length(); ++i) {
++            if (Character.isWhitespace(text.charAt(i))) return null;
++        }
++        return text;
++    }
++
++    @Override
++    public synchronized byte @Nullable [] getPng() {
++        return mPng == null ? null : mPng.clone();
++    }
++
++    @Override
++    public synchronized boolean hasImage() {
++        return mPng != null;
++    }
++
++    @Override
++    public void setText(String text) {
++        replace(Collections.singletonMap(PLAIN, text), null);
++    }
++
++    @Override
++    public void setText(String label, String text) {
++        setText(text);
++    }
++
++    @Override
++    public void setText(String label, String text, boolean notifyOnSuccess) {
++        setText(text);
++    }
++
++    @Override
++    void setHTMLText(String html, String text) {
++        Map<String, String> values = new HashMap<>();
++        values.put(PLAIN, text);
++        values.put(HTML, html);
++        replace(values, null);
++    }
++
++    @Override
++    protected void setClipboardText(Map<String, String> values) {
++        replace(values, null);
++    }
++
++    @Override
++    protected synchronized boolean hasClipboardDataForMimeType(String mimeType) {
++        return mText.containsKey(mimeType) || (PNG.equals(mimeType) && mPng != null);
++    }
++
++    @Override
++    protected synchronized @Nullable String getCustomClipData(String mimeType) {
++        return mText.get(mimeType);
++    }
++
++    @Override
++    public void setPassword(String password) {
++        // No system clipboard or third-party password provider receives this value.
++        setText(password);
++    }
++
++    @Override
++    public void setImage(byte[] imageData, String extension) {
++        // Never call ImageFileProvider, create a file or grant a content URI.
++        if (imageData.length < 8
++                || (imageData[0] & 0xff) != 137 || imageData[1] != 80
++                || imageData[2] != 78 || imageData[3] != 71
++                || imageData[4] != 13 || imageData[5] != 10
++                || imageData[6] != 26 || imageData[7] != 10) {
++            return;
++        }
++        replace(Collections.emptyMap(), imageData);
++    }
++
++    @Override
++    protected void clear() {
++        // An explicit clipboard API operation, NOT a profile/lifecycle auto-wipe.
++        replace(Collections.emptyMap(), null);
++    }
++
++    @Override
++    public void copyUrlToClipboard(GURL url) {
++        Map<String, String> values = new HashMap<>();
++        values.put(PLAIN, url.getSpec());
++        values.put(URI_LIST, url.getSpec());
++        replace(values, null);
++    }
++
++    @Override
++    public synchronized long getLastModifiedTimeMs() {
++        return mModified;
++    }
++
++    @Override
++    public synchronized boolean canPaste() {
++        return !mText.isEmpty() || mPng != null;
++    }
++
++    @Override
++    public boolean canCopy() {
++        return true;
++    }
++}
+--- a/base/android/java/src/org/chromium/base/PathUtils.java
++++ b/base/android/java/src/org/chromium/base/PathUtils.java
+@@ -8 +7,0 @@
+-import android.net.Uri;
+@@ -28 +26,0 @@
+-import java.util.Arrays;
+@@ -277,8 +275,2 @@
+-        if (sDownloadsDirectoryForTesting != null) return sDownloadsDirectoryForTesting;
+-        // TODO(crbug.com/41187555): Move calls to getDownloadsDirectory() to background thread.
+-        try (StrictModeContext ignored = StrictModeContext.allowDiskReads()) {
+-            // https://developer.android.com/preview/privacy/scoped-storage
+-            String[] dirs = getAllPrivateDownloadsDirectories();
+-            assert dirs != null;
+-            return dirs.length == 0 ? "" : dirs[0];
+-        }
++        String data = getDataDirectory();
++        return data.isEmpty() ? "" : new File(data, "Downloads").getAbsolutePath();
+@@ -294,11 +286,2 @@
+-        if (sAllPrivateDownloadsDirectoriesForTesting != null) {
+-            return sAllPrivateDownloadsDirectoriesForTesting;
+-        }
+-        List<File> files = new ArrayList<>();
+-        try (StrictModeContext ignored = StrictModeContext.allowDiskWrites()) {
+-            File[] externalDirs =
+-                    ContextUtils.getApplicationContext()
+-                            .getExternalFilesDirs(Environment.DIRECTORY_DOWNLOADS);
+-            files = (externalDirs == null) ? files : Arrays.asList(externalDirs);
+-        }
+-        return toAbsolutePathStrings(files);
++        String directory = getDownloadsDirectory();
++        return directory.isEmpty() ? new String[0] : new String[] {directory};
+@@ -316,32 +299 @@
+-        if (sExternalDownloadVolumesNamesForTesting != null) {
+-            return sExternalDownloadVolumesNamesForTesting;
+-        }
+-        ArrayList<File> files = new ArrayList<>();
+-        Set<String> volumes =
+-                MediaStore.getExternalVolumeNames(ContextUtils.getApplicationContext());
+-        for (String vol : volumes) {
+-            if (!TextUtils.isEmpty(vol) && !vol.contains(MediaStore.VOLUME_EXTERNAL_PRIMARY)) {
+-                StorageManager manager =
+-                        ContextUtils.getApplicationContext().getSystemService(StorageManager.class);
+-                Uri uri = MediaStore.Files.getContentUri(vol);
+-                try {
+-                    File volumeDir = manager.getStorageVolume(uri).getDirectory();
+-                    File volumeDownloadDir = new File(volumeDir, Environment.DIRECTORY_DOWNLOADS);
+-                    // Happens in rare case when Android doesn't create the download directory for
+-                    // this volume.
+-                    if (!volumeDownloadDir.isDirectory()) {
+-                        Log.w(
+-                                TAG,
+-                                "Download dir missing: %s, parent dir:%s, isDirectory:%s",
+-                                volumeDownloadDir.getAbsolutePath(),
+-                                volumeDir.getAbsolutePath(),
+-                                volumeDir.isDirectory());
+-                    }
+-                    files.add(volumeDownloadDir);
+-                } catch (Exception e) {
+-                    Log.e(TAG, "Failed to get storage volume for uri: " + uri, e);
+-                }
+-            }
+-        }
+-
+-        return toAbsolutePathStrings(files);
++        return new String[0];
+--- a/chrome/browser/download/download_prefs.cc
++++ b/chrome/browser/download/download_prefs.cc
+@@ -12,0 +13 @@
++#include "base/base_paths.h"
+@@ -117,0 +119,10 @@
++#if BUILDFLAG(IS_ANDROID)
++    base::FilePath private_root;
++    if (!base::PathService::Get(base::DIR_ANDROID_APP_DATA, &private_root) ||
++        private_root.empty() || !private_root.IsAbsolute() ||
++        private_root.ReferencesParent()) {
++      path_.clear();  // Fail the download; never fall back to another storage domain.
++      return;
++    }
++    path_ = private_root.Append("Downloads");
++#else
+@@ -125,0 +137 @@
++#endif
+@@ -447,0 +460,4 @@
++#if BUILDFLAG(IS_ANDROID)
++  download_path_.SetValue(GetDefaultDownloadDirectoryForProfile());
++  SetSaveFilePath(GetDefaultDownloadDirectoryForProfile());
++#else
+@@ -449,0 +466 @@
++#endif
+@@ -456,0 +474,3 @@
++#if BUILDFLAG(IS_ANDROID)
++  save_file_path_.SetValue(GetDefaultDownloadDirectoryForProfile());
++#else
+@@ -457,0 +478 @@
++#endif
+@@ -488,0 +510,3 @@
++#if BUILDFLAG(IS_ANDROID)
++  return false;
++#else
+@@ -489,0 +514 @@
++#endif
+@@ -493,0 +519,3 @@
++#if BUILDFLAG(IS_ANDROID)
++  return false;
++#else
+@@ -505,0 +534 @@
++#endif
+@@ -509,0 +539,3 @@
++#if BUILDFLAG(IS_ANDROID)
++  return false;
++#else
+@@ -521,0 +554 @@
++#endif
+@@ -525,0 +559,3 @@
++#if BUILDFLAG(IS_ANDROID)
++  return false;
++#else
+@@ -543,0 +580 @@
++#endif
+@@ -629,0 +667,4 @@
++#if BUILDFLAG(IS_ANDROID)
++  // Ignore stored/policy/test-overridden external directory preferences in this variant.
++  return GetDefaultDownloadDirectoryForProfile();
++#else
+@@ -709,0 +751 @@
++#endif
+--- a/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java
++++ b/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java
+@@ -14,2 +13,0 @@
+-import android.os.Build.VERSION;
+-import android.os.Build.VERSION_CODES;
+@@ -20 +17,0 @@
+-import org.chromium.base.ContentUriUtils;
+@@ -22 +18,0 @@
+-import org.chromium.base.Log;
+@@ -117,24 +112,0 @@
+-            // Retrieve additional directories, i.e. the external SD card directory. This doesn't
+-            // include the legacy directories on Q+.
+-            mExternalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
+-            SecondaryStorageInfo secondaryStorageInfo =
+-                    mDelegate.getSecondaryStorageDownloadDirectories();
+-            List<File> secondaryDirs =
+-                    Build.VERSION.SDK_INT > Build.VERSION_CODES.Q
+-                            ? secondaryStorageInfo.directories
+-                            : secondaryStorageInfo.directoriesPreR;
+-            assumeNonNull(secondaryDirs);
+-            if (secondaryDirs.isEmpty()) return dirs;
+-            boolean hasAddtionalDirectory = false;
+-            for (File file : secondaryDirs) {
+-                if (file == null) continue;
+-                dirs.add(
+-                        toDirectoryOption(
+-                                file, DirectoryOption.DownloadLocationDirectoryType.ADDITIONAL));
+-                hasAddtionalDirectory = true;
+-            }
+-
+-            if (hasAddtionalDirectory) {
+-                recordDirectoryType(DirectoryOption.DownloadLocationDirectoryType.ADDITIONAL);
+-            }
+-
+@@ -214 +186 @@
+-        registerSDCardReceiver();
++        // Only internal storage is offered; no SD-card receiver is registered.
+@@ -254,14 +226,14 @@
+-        String primaryDownloadDir = PathUtils.getDownloadsDirectory();
+-        if (TextUtils.isEmpty(primaryDownloadDir)) return null;
+-
+-        File downloadDir = new File(primaryDownloadDir);
+-
+-        // Create the directory if needed.
+-        if (!downloadDir.exists()) {
+-            try {
+-                downloadDir.mkdirs();
+-            } catch (SecurityException e) {
+-                Log.e(TAG, "Exception when creating download directory.", e);
+-            }
+-        }
+-        return downloadDir;
++        String directory = PathUtils.getDownloadsDirectory();
++        if (TextUtils.isEmpty(directory)) return null;
++        File downloadDir = new File(directory);
++        try {
++            File privateBase = new File(PathUtils.getDataDirectory()).getCanonicalFile();
++            File expected = new File(privateBase, "Downloads");
++            if (!downloadDir.isAbsolute() || !downloadDir.getCanonicalFile().equals(expected)) {
++                return null;
++            }
++            if (!downloadDir.isDirectory() && !downloadDir.mkdirs()) return null;
++            return downloadDir.getCanonicalFile().equals(expected) ? downloadDir : null;
++        } catch (java.io.IOException | SecurityException e) {
++            return null;  // No fallback to shared or cached storage; do not delete existing files.
++        }
+@@ -309,16 +281 @@
+-        // Starting from Android R, we use a different location for secondary storage.
+-        ArrayList<File> directoriesPreR = new ArrayList<>();
+-        String[] dirPaths = PathUtils.getAllPrivateDownloadsDirectories();
+-        // The first element returned from getAllPrivateDownloadsDirectories() is on primary
+-        // storage.
+-        for (int i = 1; i < dirPaths.length; ++i) directoriesPreR.add(new File(dirPaths[i]));
+-
+-        ArrayList<File> directoriesOnR = new ArrayList<>();
+-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+-            dirPaths = PathUtils.getExternalDownloadVolumesNames();
+-            // getExternalDownloadVolumesNames() doesn't include dirs on primary storage.
+-            for (String dir : dirPaths) directoriesOnR.add(new File(dir));
+-            return new SecondaryStorageInfo(directoriesOnR, directoriesPreR);
+-        }
+-
+-        return new SecondaryStorageInfo(null, directoriesPreR);
++        return new SecondaryStorageInfo(new ArrayList<>(), new ArrayList<>());
+@@ -333,17 +289,0 @@
+-        if (ContentUriUtils.isContentUri(filePath) || filePath == null) return false;
+-
+-        // Check private dirs on secondary storage. On Android R, there might be legacy downloads
+-        // that use this path before the migration to getExternalDownloadVolumesNames().
+-        String[] dirs = PathUtils.getAllPrivateDownloadsDirectories();
+-        for (int i = 1; i < dirs.length; ++i) {
+-            if (filePath.startsWith(dirs[i])) return true;
+-        }
+-
+-        // Check directories returned from media volume API on R.
+-        if (VERSION.SDK_INT >= VERSION_CODES.R) {
+-            dirs = PathUtils.getExternalDownloadVolumesNames();
+-            for (String dir : dirs) {
+-                if (filePath.startsWith(dir)) return true;
+-            }
+-        }
+-
+--- /dev/null
++++ b/chrome/browser/download/browser_contained_download_path.h
+@@ -0,0 +1,47 @@
++// Copyright 2026 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#ifndef CHROME_BROWSER_DOWNLOAD_BROWSER_CONTAINED_DOWNLOAD_PATH_H_
++#define CHROME_BROWSER_DOWNLOAD_BROWSER_CONTAINED_DOWNLOAD_PATH_H_
++
++#include <string_view>
++
++namespace download {
++
++// Lexical gate only. The root MUST come from the app-internal Android data
++// directory, never a website, policy, download preference or content URI.
++// Allows exactly one file component below root, including .crdownload files.
++// Does not prove filesystem ownership/symlink-race safety, encryption or IO.
++inline bool IsBrowserContainedDownloadPath(std::string_view root,
++                                          std::string_view candidate) {
++  if (root.size() < 2 || root.front() != '/' || root.back() == '/' ||
++      root.find('\0') != std::string_view::npos ||
++      root.find("//") != std::string_view::npos) {
++    return false;
++  }
++  for (std::size_t start = 1; start < root.size();) {
++    const std::size_t end = root.find('/', start);
++    const auto component = root.substr(start, end - start);
++    if (component == "." || component == "..") {
++      return false;
++    }
++    if (end == std::string_view::npos) {
++      break;
++    }
++    start = end + 1;
++  }
++  if (candidate.size() <= root.size() + 1 ||
++      candidate.substr(0, root.size()) != root ||
++      candidate[root.size()] != '/') {
++    return false;
++  }
++  const auto name = candidate.substr(root.size() + 1);
++  return name != "." && name != ".." &&
++         name.find('/') == std::string_view::npos &&
++         name.find('\0') == std::string_view::npos;
++}
++
++}  // namespace download
++
++#endif  // CHROME_BROWSER_DOWNLOAD_BROWSER_CONTAINED_DOWNLOAD_PATH_H_
+--- a/chrome/browser/download/BUILD.gn
++++ b/chrome/browser/download/BUILD.gn
+@@ -14,0 +15 @@
++    "browser_contained_download_path.h",
+--- a/chrome/browser/download/download_target_determiner.cc
++++ b/chrome/browser/download/download_target_determiner.cc
+@@ -5,0 +6,2 @@
++
++#include "chrome/browser/download/browser_contained_download_path.h"
+@@ -278,0 +281,7 @@
++#if BUILDFLAG(IS_ANDROID)
++  if (DownloadPrefs::GetDefaultDownloadDirectory().empty()) {
++    ScheduleCallbackAndDeleteSelf(
++        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);
++    return QUIT_DOLOOP;
++  }
++#endif
+@@ -519,0 +529,12 @@
++#if BUILDFLAG(IS_ANDROID)
++  if (!download::IsBrowserContainedDownloadPath(
++          DownloadPrefs::GetDefaultDownloadDirectory().value(), virtual_path_.value())) {
++    ScheduleCallbackAndDeleteSelf(
++        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);
++    return QUIT_DOLOOP;
++  }
++#endif
++
++#if BUILDFLAG(IS_ANDROID)
++  create_target_directory_ = true;  // The checked private root is created by reservation IO.
++#endif
+@@ -535,0 +557,9 @@
++#if BUILDFLAG(IS_ANDROID)
++  if (!download::IsBrowserContainedDownloadPath(
++          DownloadPrefs::GetDefaultDownloadDirectory().value(), path.value())) {
++    ScheduleCallbackAndDeleteSelf(
++        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);
++    return;
++  }
++#endif
++
+@@ -767,0 +798,9 @@
++#if BUILDFLAG(IS_ANDROID)
++  if (!download::IsBrowserContainedDownloadPath(
++          DownloadPrefs::GetDefaultDownloadDirectory().value(), virtual_path_.value())) {
++    ScheduleCallbackAndDeleteSelf(
++        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);
++    return QUIT_DOLOOP;
++  }
++#endif
++
+@@ -792,0 +832,9 @@
++
++#if BUILDFLAG(IS_ANDROID)
++  if (!download::IsBrowserContainedDownloadPath(
++          DownloadPrefs::GetDefaultDownloadDirectory().value(), local_path.value())) {
++    ScheduleCallbackAndDeleteSelf(
++        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);
++    return;
++  }
++#endif
+@@ -1110,0 +1159,11 @@
++#if BUILDFLAG(IS_ANDROID)
++  if (interrupt_reason == download::DOWNLOAD_INTERRUPT_REASON_NONE &&
++      (!download::IsBrowserContainedDownloadPath(
++           DownloadPrefs::GetDefaultDownloadDirectory().value(), local_path_.value()) ||
++       !download::IsBrowserContainedDownloadPath(
++           DownloadPrefs::GetDefaultDownloadDirectory().value(), intermediate_path_.value()))) {
++    interrupt_reason = download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED;
++    local_path_.clear();
++    intermediate_path_.clear();  // Metadata only; no file deletion or fallback export.
++  }
++#endif
+--- a/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadCollectionBridge.java
++++ b/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadCollectionBridge.java
+@@ -9,4 +8,0 @@
+-import android.content.ContentResolver;
+-import android.content.ContentUris;
+-import android.content.ContentValues;
+-import android.database.Cursor;
+@@ -14,3 +9,0 @@
+-import android.os.FileUtils;
+-import android.os.ParcelFileDescriptor;
+-import android.provider.BaseColumns;
+@@ -19 +11,0 @@
+-import android.provider.MediaStore.MediaColumns;
+@@ -29 +20,0 @@
+-import org.chromium.base.Log;
+@@ -37,4 +27,0 @@
+-import java.io.FileInputStream;
+-import java.io.InputStream;
+-import java.io.OutputStream;
+-import java.text.SimpleDateFormat;
+@@ -43 +29,0 @@
+-import java.util.Date;
+@@ -45 +30,0 @@
+-import java.util.Locale;
+@@ -92,15 +77,2 @@
+-        Uri uri = createPendingSessionInternal(fileName, mimeType, originalUrl, referrer);
+-        if (uri != null) return uri.toString();
+-
+-        // If there are too many duplicates on the same file name, createPendingSessionInternal()
+-        // will return null. Generate a new file name with timestamp.
+-        SimpleDateFormat sdf = new SimpleDateFormat(FILE_NAME_PATTERN, Locale.getDefault());
+-        // Remove the extension first.
+-        String baseName = getBaseName(fileName);
+-        String extension = fileName.substring(baseName.length());
+-        StringBuilder sb = new StringBuilder(baseName);
+-        sb.append(" - ");
+-        sb.append(sdf.format(new Date()));
+-        sb.append(extension);
+-        uri = createPendingSessionInternal(sb.toString(), mimeType, originalUrl, referrer);
+-        return uri == null ? null : uri.toString();
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
++        return null;
+@@ -117,3 +89,2 @@
+-        if (filePath == null) return false;
+-        // Only need to publish downloads that are on primary storage.
+-        return !sDownloadDelegate.isDownloadOnSDCard(filePath);
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
++        return false;
+@@ -133,12 +104 @@
+-        try {
+-            PendingSession session = openPendingUri(destinationUri);
+-            OutputStream out = session.openOutputStream();
+-            assumeNonNull(out);
+-            InputStream in = new FileInputStream(sourcePath);
+-            FileUtils.copy(in, out);
+-            in.close();
+-            out.close();
+-            return true;
+-        } catch (Exception e) {
+-            Log.e(TAG, "Unable to copy content to pending Uri.", e);
+-        }
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
+@@ -155,2 +115 @@
+-        PendingSession session = openPendingUri(uri);
+-        session.abandon();
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
+@@ -168,36 +127,2 @@
+-        // Android Q's MediaStore.Downloads has an issue that the custom mime type which is not
+-        // supported by MimeTypeMap is overridden to "application/octet-stream" when publishing.
+-        // To deal with this issue we set the mime type again after publishing.
+-        // See crbug.com/1010829 for more details.
+-        ContentResolver resolver = ContextUtils.getApplicationContext().getContentResolver();
+-        String mimeType = null;
+-        Cursor cursor = null;
+-        try {
+-            cursor =
+-                    resolver.query(
+-                            Uri.parse(intermediateUri),
+-                            new String[] {MediaColumns.MIME_TYPE},
+-                            null,
+-                            null,
+-                            null);
+-            if (cursor != null && cursor.getCount() != 0 && cursor.moveToNext()) {
+-                mimeType = cursor.getString(cursor.getColumnIndexOrThrow(MediaColumns.MIME_TYPE));
+-            }
+-        } catch (Exception e) {
+-            Log.e(TAG, "Unable to get mimeType.", e);
+-        } finally {
+-            if (cursor != null) cursor.close();
+-        }
+-
+-        PendingSession session = openPendingUri(intermediateUri);
+-        Uri publishedUri = session.publish();
+-        if (!TextUtils.isEmpty(mimeType)) {
+-            try {
+-                final ContentValues updateValues = new ContentValues();
+-                updateValues.put(MediaColumns.MIME_TYPE, mimeType);
+-                resolver.update(publishedUri, updateValues, null, null);
+-            } catch (Exception e) {
+-                Log.e(TAG, "Unable to modify mimeType.", e);
+-            }
+-        }
+-        return publishedUri.toString();
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
++        return "";
+@@ -215,13 +140 @@
+-        try {
+-            ContentResolver resolver = ContextUtils.getApplicationContext().getContentResolver();
+-            ParcelFileDescriptor pfd =
+-                    resolver.openFileDescriptor(Uri.parse(intermediateUri), "rw");
+-            ContentValues updateValues = new ContentValues();
+-            updateValues.put("date_expires", getNewExpirationTime());
+-            ContextUtils.getApplicationContext()
+-                    .getContentResolver()
+-                    .update(Uri.parse(intermediateUri), updateValues, null, null);
+-            return pfd.detachFd();
+-        } catch (Exception e) {
+-            Log.e(TAG, "Cannot open intermediate Uri.", e);
+-        }
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
+@@ -239 +152,2 @@
+-        return getDownloadUriForFileName(fileName) != null;
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
++        return false;
+@@ -253,7 +167,2 @@
+-        final ContentValues updateValues = new ContentValues();
+-        Uri uri = Uri.parse(downloadUri);
+-        updateValues.put(MediaColumns.DISPLAY_NAME, displayName);
+-        return ContextUtils.getApplicationContext()
+-                        .getContentResolver()
+-                        .update(uri, updateValues, null, null)
+-                == 1;
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
++        return false;
+@@ -269,22 +178 @@
+-        Cursor cursor = null;
+-        try {
+-            Uri uri = Downloads.EXTERNAL_CONTENT_URI;
+-            cursor =
+-                    ContextUtils.getApplicationContext()
+-                            .getContentResolver()
+-                            .query(
+-                                    MediaStore.setIncludePending(uri),
+-                                    new String[] {BaseColumns._ID},
+-                                    "_display_name LIKE ?1",
+-                                    new String[] {fileName},
+-                                    null);
+-            if (cursor == null) return null;
+-            if (cursor.moveToNext()) {
+-                return ContentUris.withAppendedId(
+-                        uri, cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID)));
+-            }
+-        } catch (Exception e) {
+-            Log.e(TAG, "Unable to check file name existence.", e);
+-        } finally {
+-            if (cursor != null) cursor.close();
+-        }
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
+@@ -398,20 +286 @@
+-        ContentResolver resolver = ContextUtils.getApplicationContext().getContentResolver();
+-        Cursor cursor = null;
+-        try {
+-            Uri uri = Uri.parse(downloadUri);
+-            if (MediaStore.AUTHORITY.equals(uri.getAuthority())) {
+-                uri = MediaStore.setIncludePending(uri);
+-            }
+-            cursor =
+-                    resolver.query(uri, new String[] {MediaColumns.DISPLAY_NAME}, null, null, null);
+-            if (cursor != null && cursor.moveToNext()) {
+-                int index = cursor.getColumnIndex(MediaColumns.DISPLAY_NAME);
+-                if (index != -1) {
+-                    return cursor.getString(index);
+-                }
+-            }
+-        } catch (Exception e) {
+-            Log.e(TAG, "Unable to get display name for download.", e);
+-        } finally {
+-            if (cursor != null) cursor.close();
+-        }
++        // Personal variant: no MediaStore/public-download IPC or existing-file deletion.
+--- a/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadManagerBridge.java
++++ b/chrome/browser/download/android/java/src/org/chromium/chrome/browser/download/DownloadManagerBridge.java
+@@ -10 +9,0 @@
+-import android.database.Cursor;
+@@ -12,2 +10,0 @@
+-import android.os.Environment;
+-import android.text.TextUtils;
+@@ -22 +18,0 @@
+-import org.chromium.base.ThreadUtils;
+@@ -30 +25,0 @@
+-import java.io.File;
+@@ -91,16 +86 @@
+-        PostTask.postTask(
+-                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+-                () -> {
+-                    long downloadId = removeDownloadIdMapping(downloadGuid);
+-
+-                    // Let Android DownloadManager to remove download only if the user removed the
+-                    // file in Chrome. If the user renamed or moved the file, Chrome should keep
+-                    // it intact.
+-                    if (downloadId != DownloadUtils.INVALID_SYSTEM_DOWNLOAD_ID
+-                            && !externallyRemoved) {
+-                        DownloadManager manager =
+-                                (DownloadManager)
+-                                        getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+-                        manager.remove(downloadId);
+-                    }
+-                });
++        // No system download record is owned by this variant; preserve external/old files.
+@@ -122,2 +102,4 @@
+-        new EnqueueNewDownloadTask(request, callback)
+-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
++        DownloadEnqueueResponse response = new DownloadEnqueueResponse();
++        response.result = false;
++        response.failureReason = DownloadManager.ERROR_FILE_ERROR;
++        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> callback.onResult(response));
+@@ -133,2 +115,3 @@
+-        DownloadQueryTask task = new DownloadQueryTask(downloadId, callback);
+-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
++        PostTask.postTask(
++                TaskTraits.UI_DEFAULT,
++                () -> callback.onResult(queryDownloadResult(downloadId)));
+@@ -142 +124,0 @@
+-        assert !ThreadUtils.runningOnUiThread();
+@@ -144,53 +126,2 @@
+-        DownloadManager manager =
+-                (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+-        Cursor c = null;
+-        try {
+-            c = manager.query(new DownloadManager.Query().setFilterById(downloadId));
+-            if (c == null) {
+-                result.downloadStatus = DownloadStatus.CANCELLED;
+-                return result;
+-            }
+-            result.downloadStatus = DownloadStatus.IN_PROGRESS;
+-            if (c.moveToNext()) {
+-                int status = c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS));
+-                result.downloadStatus = getDownloadStatus(status);
+-                result.fileName =
+-                        c.getString(c.getColumnIndexOrThrow(DownloadManager.COLUMN_TITLE));
+-                result.failureReason =
+-                        c.getInt(c.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON));
+-                result.lastModifiedTime =
+-                        c.getLong(
+-                                c.getColumnIndexOrThrow(
+-                                        DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
+-                result.bytesDownloaded =
+-                        c.getLong(
+-                                c.getColumnIndexOrThrow(
+-                                        DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+-                result.bytesTotal =
+-                        c.getLong(c.getColumnIndexOrThrow(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+-                String localUri =
+-                        c.getString(c.getColumnIndexOrThrow(DownloadManager.COLUMN_LOCAL_URI));
+-                if (!TextUtils.isEmpty(localUri)) {
+-                    Uri uri = Uri.parse(localUri);
+-                    result.filePath = uri.getPath();
+-                }
+-            } else {
+-                result.downloadStatus = DownloadStatus.CANCELLED;
+-            }
+-
+-            try {
+-                result.contentUri = manager.getUriForDownloadedFile(downloadId);
+-            } catch (SecurityException e) {
+-                Log.e(TAG, "unable to get content URI from DownloadManager");
+-            }
+-
+-            result.mimeType = manager.getMimeTypeForDownloadedFile(downloadId);
+-        } catch (Exception e) {
+-            result.downloadStatus = DownloadStatus.CANCELLED;
+-            Log.e(TAG, "unable to query android DownloadManager", e);
+-        } finally {
+-            if (c != null) {
+-                c.close();
+-            }
+-        }
+-
++        result.downloadStatus = DownloadStatus.FAILED;
++        result.failureReason = DownloadManager.ERROR_FILE_ERROR;
+@@ -321,72 +252,2 @@
+-            DownloadManager.Request request;
+-            try {
+-                request = new DownloadManager.Request(Uri.parse(mEnqueueRequest.url));
+-            } catch (IllegalArgumentException e) {
+-                Log.e(TAG, "Cannot download non http or https scheme");
+-                // Use ERROR_UNHANDLED_HTTP_CODE so that it will be treated as a server error.
+-                mFailureReason = DownloadManager.ERROR_UNHANDLED_HTTP_CODE;
+-                return false;
+-            }
+-
+-            request.setMimeType(mEnqueueRequest.mimeType);
+-            try {
+-                if (mEnqueueRequest.notifyCompleted) {
+-                    if (mEnqueueRequest.fileName != null) {
+-                        // Set downloaded file destination to /sdcard/Download or, should it be
+-                        // set to one of several Environment.DIRECTORY* dirs depending on mimetype?
+-                        request.setDestinationInExternalPublicDir(
+-                                Environment.DIRECTORY_DOWNLOADS, mEnqueueRequest.fileName);
+-                    }
+-                } else {
+-                    File dir = new File(getContext().getExternalFilesDir(null), DOWNLOAD_DIRECTORY);
+-                    if (dir.mkdir() || dir.isDirectory()) {
+-                        File file = new File(dir, mEnqueueRequest.fileName);
+-                        request.setDestinationUri(Uri.fromFile(file));
+-                    } else {
+-                        Log.e(TAG, "Cannot create download directory");
+-                        mFailureReason = DownloadManager.ERROR_FILE_ERROR;
+-                        return false;
+-                    }
+-                }
+-            } catch (IllegalStateException e) {
+-                Log.e(TAG, "Cannot create download directory");
+-                mFailureReason = DownloadManager.ERROR_FILE_ERROR;
+-                return false;
+-            }
+-
+-            if (mEnqueueRequest.notifyCompleted) {
+-                // Let this downloaded file be scanned by MediaScanner - so that it can
+-                // show up in Gallery app, for example.
+-                request.allowScanningByMediaScanner();
+-                request.setNotificationVisibility(
+-                        DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+-            } else {
+-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+-            }
+-            String description = mEnqueueRequest.description;
+-            if (TextUtils.isEmpty(description)) {
+-                description = mEnqueueRequest.fileName;
+-            }
+-            request.setDescription(description);
+-            request.setTitle(mEnqueueRequest.fileName);
+-            request.addRequestHeader("Cookie", mEnqueueRequest.cookie);
+-            request.addRequestHeader("referrer", mEnqueueRequest.referrer);
+-            request.addRequestHeader("User-Agent", mEnqueueRequest.userAgent);
+-
+-            DownloadManager manager =
+-                    (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+-            try {
+-                mStartTime = System.currentTimeMillis();
+-                mDownloadId = manager.enqueue(request);
+-            } catch (IllegalArgumentException e) {
+-                // See crbug.com/40904533 for more details.
+-                Log.e(TAG, "Download failed: " + e);
+-                mFailureReason = DownloadManager.ERROR_UNKNOWN;
+-                return false;
+-            } catch (RuntimeException e) {
+-                // See crbug.com/40419101 for more details.
+-                Log.e(TAG, "Failed to create target file on the external storage: " + e);
+-                mFailureReason = DownloadManager.ERROR_FILE_ERROR;
+-                return false;
+-            }
+-            return true;
++            mFailureReason = DownloadManager.ERROR_FILE_ERROR;
++            return false;
+--- a/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadManagerService.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadManagerService.java
+@@ -12 +11,0 @@
+-import android.content.ActivityNotFoundException;
+@@ -43 +41,0 @@
+-import org.chromium.chrome.browser.download.DownloadManagerBridge.DownloadEnqueueRequest;
+@@ -49 +46,0 @@
+-import org.chromium.chrome.browser.preferences.Pref;
+@@ -63,2 +59,0 @@
+-import org.chromium.components.prefs.PrefService;
+-import org.chromium.components.user_prefs.UserPrefs;
+@@ -541,16 +536,3 @@
+-        if (mDownloadManagerRequestInterceptor != null) {
+-            mDownloadManagerRequestInterceptor.interceptDownloadRequest(item, notifyCompleted);
+-            return;
+-        }
+-
+-        DownloadEnqueueRequest request = new DownloadEnqueueRequest();
+-        request.url = assumeNonNull(item.getDownloadInfo()).getUrl().getSpec();
+-        request.fileName = item.getDownloadInfo().getFileName();
+-        request.description = item.getDownloadInfo().getDescription();
+-        request.mimeType = item.getDownloadInfo().getMimeType();
+-        request.cookie = item.getDownloadInfo().getCookie();
+-        request.referrer = item.getDownloadInfo().getReferrer().getSpec();
+-        request.userAgent = item.getDownloadInfo().getUserAgent();
+-        request.notifyCompleted = notifyCompleted;
+-        DownloadManagerBridge.enqueueNewDownload(
+-                request, response -> onDownloadEnqueued(item, response));
++        PostTask.postTask(
++                TaskTraits.UI_DEFAULT,
++                () -> onDownloadFailed(item, DownloadManager.ERROR_FILE_ERROR));
+@@ -799,10 +781,2 @@
+-        if (DownloadUtils.showDownloadManager(null, null, otrProfileId, source)) return;
+-
+-        // Open the Android Download Manager.
+-        Intent pageView = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+-        pageView.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+-        try {
+-            ContextUtils.getApplicationContext().startActivity(pageView);
+-        } catch (ActivityNotFoundException e) {
+-            Log.e(TAG, "Cannot find Downloads app", e);
+-        }
++        // Only the browser's own Downloads UI, with no system-app fallback.
++        DownloadUtils.showDownloadManager(null, null, otrProfileId, source);
+@@ -1212,24 +1186 @@
+-        PrefService prefService = UserPrefs.get(ProfileManager.getLastUsedRegularProfile());
+-        // Only show the missing directory snackbar once.
+-        if (!prefService.getBoolean(Pref.SHOW_MISSING_SD_CARD_ERROR_ANDROID)) return;
+-
+-        DownloadDirectoryProvider provider = DownloadDirectoryProvider.getInstance();
+-        provider.getAllDirectoriesOptions(
+-                (ArrayList<DirectoryOption> dirs) -> {
+-                    if (dirs.size() > 1) return;
+-                    String externalStorageDir = provider.getExternalStorageDirectory();
+-
+-                    for (DownloadItem item : list) {
+-                        boolean missingOnSDCard =
+-                                isFilePathOnMissingExternalDrive(
+-                                        assumeNonNull(item.getDownloadInfo()).getFilePath(),
+-                                        externalStorageDir,
+-                                        dirs);
+-                        if (!isUnresumableOrCancelled(item) && missingOnSDCard) {
+-                            // TODO(shaktisahu): Show it on infobar in the right way.
+-                            mHandler.post(mDownloadSnackbarController::onDownloadDirectoryNotFound);
+-                            prefService.setBoolean(Pref.SHOW_MISSING_SD_CARD_ERROR_ANDROID, false);
+-                            break;
+-                        }
+-                    }
+-                });
++        // This variant never uses SD-card paths; do not misclassify internal-storage errors.
+@@ -1265,12 +1216 @@
+-        if (TextUtils.isEmpty(filePath)
+-                || filePath.contains(externalStorageDir)
+-                || ContentUriUtils.isContentUri(filePath)) {
+-            return false;
+-        }
+-
+-        for (DirectoryOption directory : directoryOptions) {
+-            if (TextUtils.isEmpty(directory.location)) continue;
+-            if (filePath.contains(directory.location)) return false;
+-        }
+-
+-        return true;
++        return false;
+--- a/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadUtils.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadUtils.java
+@@ -11,2 +10,0 @@
+-import android.app.DownloadManager;
+-import android.content.ActivityNotFoundException;
+@@ -16,2 +13,0 @@
+-import android.content.pm.PackageInfo;
+-import android.content.pm.PackageManager;
+@@ -41 +36,0 @@
+-import org.chromium.base.DeviceInfo;
+@@ -44,2 +38,0 @@
+-import org.chromium.base.Log;
+-import org.chromium.base.PackageManagerUtils;
+@@ -54 +46,0 @@
+-import org.chromium.chrome.browser.download.DownloadMetrics.DownloadOpenTarget;
+@@ -396,4 +388,2 @@
+-            ContextUtils.getApplicationContext()
+-                    .startActivity(
+-                            new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)
+-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
++            // Legacy system downloads are not imported or opened by this variant.
++            DownloadUtils.showDownloadManager(null, null, otrProfileId, source);
+@@ -482,87 +472,4 @@
+-
+-        if (ChromeFeatureList.isEnabled(ChromeFeatureList.OPEN_DOWNLOAD_IN_PREFERRED_APP)) {
+-            Intent targetIntent = createViewIntent(req);
+-            Context context = req.mContext;
+-            String chromePackage = context.getPackageName();
+-
+-            // Query OS for default handler or system resolver (chooser)
+-            ResolveInfo defaultApp =
+-                    PackageManagerUtils.resolveActivity(
+-                            targetIntent, PackageManager.MATCH_DEFAULT_ONLY);
+-            String resolvedPackage =
+-                    (defaultApp != null && defaultApp.activityInfo != null)
+-                            ? defaultApp.activityInfo.packageName
+-                            : null;
+-
+-            // Default handler is Chrome -> Open in Chrome internally
+-            if (chromePackage.equals(resolvedPackage)) {
+-                if (service.isDownloadOpenableInBrowser(req.mMimeType, isIncognito)
+-                        && openInChromeInternal(req)) {
+-                    DownloadMetrics.recordDownloadOpenTarget(DownloadOpenTarget.CHROME_DEFAULT);
+-                    service.updateLastAccessTime(req.mDownloadGuid, req.mOtrProfileId);
+-                    return true;
+-                }
+-            } else if (resolvedPackage != null) {
+-                // Default handler is not Chrome and not null -> OS chooser or external app
+-                if (isSystemResolver(defaultApp)) {
+-                    DownloadMetrics.recordDownloadOpenTarget(DownloadOpenTarget.OS_CHOOSER);
+-                } else {
+-                    DownloadMetrics.recordDownloadOpenTarget(DownloadOpenTarget.OTHER_APP_DEFAULT);
+-                }
+-                if (fireOpenIntentForDownload(context, targetIntent)) {
+-                    service.updateLastAccessTime(req.mDownloadGuid, req.mOtrProfileId);
+-                    return true;
+-                }
+-            }
+-
+-            // Handler is null (0 OS apps match). Check if Chrome can view internally.
+-            if (service.isDownloadOpenableInBrowser(req.mMimeType, isIncognito)
+-                    && openInChromeInternal(req)) {
+-                DownloadMetrics.recordDownloadOpenTarget(DownloadOpenTarget.CHROME_FALLBACK);
+-                service.updateLastAccessTime(req.mDownloadGuid, req.mOtrProfileId);
+-                return true;
+-            }
+-        } else {
+-            // Check if Chrome should open the file itself.
+-            if (service.isDownloadOpenableInBrowser(req.mMimeType, isIncognito)
+-                    && openInChromeInternal(req)) {
+-                service.updateLastAccessTime(req.mDownloadGuid, req.mOtrProfileId);
+-                return true;
+-            }
+-
+-            // Check if any apps can open the file.
+-            if (openFileWithExternalApps(
+-                    req.mFilePath,
+-                    req.mMimeType,
+-                    req.mOriginalUrl,
+-                    req.mReferrer,
+-                    req.mContext,
+-                    OpenWithExternalAppsSource.OPEN_FILE)) {
+-                service.updateLastAccessTime(req.mDownloadGuid, req.mOtrProfileId);
+-                return true;
+-            }
+-        }
+-
+-        // If this is a zip file, check if Android Files app exists.
+-        if (MIME_TYPE_ZIP.equals(req.mMimeType)) {
+-            // Use files app to open zip file if openDownloadInFilesAppIfNoHandlerFound() is
+-            // true.
+-            if (openDownloadInFilesAppIfNoHandlerFound()) {
+-                return false;
+-            }
+-            try {
+-                PackageInfo packageInfo =
+-                        req.mContext
+-                                .getPackageManager()
+-                                .getPackageInfo(
+-                                        DOCUMENTS_UI_PACKAGE_NAME, PackageManager.GET_ACTIVITIES);
+-                if (packageInfo != null) {
+-                    Intent viewDownloadsIntent = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+-                    viewDownloadsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+-                    viewDownloadsIntent.setPackage(DOCUMENTS_UI_PACKAGE_NAME);
+-                    req.mContext.startActivity(viewDownloadsIntent);
+-                    return true;
+-                }
+-            } catch (Exception e) {
+-                Log.e(TAG, "Cannot find files app for opening zip files", e);
+-            }
++        if (service.isDownloadOpenableInBrowser(req.mMimeType, isIncognito)
++                && openInChromeInternal(req)) {
++            service.updateLastAccessTime(req.mDownloadGuid, req.mOtrProfileId);
++            return true;
+@@ -634,2 +540,0 @@
+-        // Sharing for media files is disabled on automotive.
+-        boolean isAutomotive = DeviceInfo.isAutomotive();
+@@ -641,2 +546,2 @@
+-                        !isAutomotive,
+-                        !isAutomotive,
++                        /* allowExternalAppHandlers= */ false,
++                        /* allowShareAction= */ false,
+@@ -644,0 +550,4 @@
++            String ownPackage = req.mContext.getPackageName();
++            if (intent.getComponent() != null
++                    && !ownPackage.equals(intent.getComponent().getPackageName())) return false;
++            intent.setPackage(ownPackage);
+@@ -764,18 +672,0 @@
+-        try {
+-            if (TextUtils.equals(intent.getPackage(), context.getPackageName())) {
+-                IntentHandler.startActivityForTrustedIntent(intent);
+-            } else {
+-                context.startActivity(intent);
+-            }
+-            return true;
+-        } catch (ActivityNotFoundException ex) {
+-            Log.d(
+-                    TAG,
+-                    "Activity not found for %s over %s",
+-                    intent.getType(),
+-                    assumeNonNull(intent.getData()).getScheme(),
+-                    ex);
+-        } catch (Exception ex) {
+-            Log.d(TAG, "cannot open intent: %s", intent, ex);
+-        }
+-
+@@ -976,15 +867 @@
+-        try {
+-            // TODO(qinmin): Move this to an AsyncTask so we don't need to temper with strict mode.
+-            Uri uri =
+-                    ContentUriUtils.isContentUri(filePath)
+-                            ? Uri.parse(filePath)
+-                            : getUriForOtherApps(filePath);
+-            Intent viewIntent =
+-                    MediaViewerUtils.createViewIntentForUri(uri, mimeType, originalUrl, referrer);
+-            context.startActivity(viewIntent);
+-            DownloadMetrics.recordOpenDownloadWithExternalAppsSource(source);
+-            return true;
+-        } catch (Exception e) {
+-            Log.e(TAG, "Cannot start activity to open file", e);
+-            return false;
+-        }
++        return false;
+@@ -999,21 +875,0 @@
+-        try {
+-            Uri uri = Uri.parse(filePath);
+-            String scheme = uri.getScheme();
+-
+-            // If it is a Content URI, open the system Downloads folder. Passing file path may cause
+-            // FileUriExposedException unless we have a file provider.
+-            // TODO(b/503083696): handle the case if the content URI points to external SD card.
+-            if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+-                Intent intent = new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS);
+-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+-
+-                // Ensure the device has an app that can handle the Downloads intent
+-                if (intent.resolveActivity(ContextUtils.getApplicationContext().getPackageManager())
+-                        != null) {
+-                    ContextUtils.getApplicationContext().startActivity(intent);
+-                    return true;
+-                }
+-            }
+-        } catch (Exception e) {
+-            Log.e(TAG, "Cannot open download with system files app", e);
+-        }
+@@ -1024,2 +880 @@
+-        return ChromeFeatureList.isEnabled(
+-                ChromeFeatureList.OPEN_DOWNLOAD_IN_FILES_APP_IF_NO_HANDLER_FOUND);
++        return false;
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeBaseAppCompatActivity.java
+@@ -23,0 +24 @@
++import android.view.WindowManager;
+@@ -210,0 +212,11 @@
++        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
++            setRecentsScreenshotEnabled(false);
++        }
++        getWindow().getDecorView().setImportantForAutofill(
++                View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
++            getWindow().getDecorView().setImportantForContentCapture(
++                    View.IMPORTANT_FOR_CONTENT_CAPTURE_NO_EXCLUDE_DESCENDANTS);
++        }
++
+--- a/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java
+@@ -13 +12,0 @@
+-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+@@ -42,20 +41,3 @@
+-        assert mIsShowingIncognitoSupplier != null : "Supplier not found!";
+-
+-        WindowManager.LayoutParams attributes = mWindow.getAttributes();
+-        boolean currentSecureState =
+-                (attributes.flags & WindowManager.LayoutParams.FLAG_SECURE)
+-                        == WindowManager.LayoutParams.FLAG_SECURE;
+-
+-        boolean expectedSecureState = mIsShowingIncognitoSupplier.get();
+-        if (ChromeFeatureList.sIncognitoScreenshot.isEnabled()) {
+-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+-                mActivity.setRecentsScreenshotEnabled(!expectedSecureState);
+-            }
+-            expectedSecureState = false;
+-        }
+-        if (currentSecureState == expectedSecureState) return;
+-
+-        if (expectedSecureState) {
+-            mWindow.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+-        } else {
+-            mWindow.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
++        mWindow.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
++            mActivity.setRecentsScreenshotEnabled(false);

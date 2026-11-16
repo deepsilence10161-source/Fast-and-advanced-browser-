@@ -49,8 +49,18 @@ def required_for(d):
     return markers
 
 
+def is_personal_development(info):
+    flags = re.findall(r"^personal_source_only[ \t]*=[ \t]*(.*)$", info, re.M)
+    if any(value.strip() != "0" for value in flags):
+        return True
+    return any(re.search(r"^" + re.escape(patch) + r"\s*$", info, re.M) for patch in (
+        "0101-persistent-account-boundary.patch", "0103-personal-egress-and-storage.patch"))
+
+
 def gate(d, apk_sha):
     reasons = []
+    if is_personal_development(build_info(d)):
+        reasons.append("personal development artifact cannot enter the ordinary Swiftra release")
     sha = tested_sha(d)
     if sha != apk_sha:
         reasons.append(f"tested APK sha {str(sha)[:12]} != published {apk_sha[:12]}")

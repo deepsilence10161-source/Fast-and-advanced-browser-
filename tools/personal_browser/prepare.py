@@ -5,8 +5,10 @@ No default package is chosen. The existing Swiftra package, Chrome packages,
 existing output directories, source profiles and devices are never modified.
 Output layout preserves 0013's ../adblock dependency and the existing PUBLIC
 signer pin. No keys are copied/generated; no build, dispatch or install happens.
-The ordinary patches/series, args.gn and workflows remain unchanged. This is not
-a runnable high-privacy browser, release gate or substitute for both-ABI E2E.
+The ordinary patches/series and args.gn remain unchanged. A separate optional
+manual development workflow may consume this bundle; this tool does not assess
+CI execution. This is not a runnable high-privacy browser, release gate or a
+substitute for both-ABI E2E.
 """
 from __future__ import annotations
 
@@ -72,7 +74,8 @@ def prepare(repo: Path, output: Path, package: str, variant: str) -> dict:
     base_series = helper.read_series(str(base))
     personal_series = helper.read_series(str(personal))
     if not base_series or personal_series != [
-            "0100-personal-source-guard.py", "0101-persistent-account-boundary.patch"]:
+            "0100-personal-source-guard.py", "0101-persistent-account-boundary.patch",
+            "0102-personal-egress-source-guard.py", "0103-personal-egress-and-storage.patch"]:
         raise PreparationError("unexpected_patch_series")
     if len(set(base_series + personal_series)) != len(base_series + personal_series):
         raise PreparationError("duplicate_patch_name")
@@ -118,7 +121,7 @@ def prepare(repo: Path, output: Path, package: str, variant: str) -> dict:
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
         receipt = {
-            "schema_version": 1,
+            "schema_version": 2,
             "scope": "SOURCE-ONLY OPT-IN DEVELOPMENT BUNDLE; NOT A BUILT OR TESTED BROWSER",
             "pinned_tag": "155.0.8059.80",
             "package": package,
@@ -130,7 +133,10 @@ def prepare(repo: Path, output: Path, package: str, variant: str) -> dict:
             "release_ready": False,
             "apk_built": False,
             "existing_profile_touched": False,
-            "ci_wired_or_dispatched": False,
+            "ci_dispatch_performed_by_this_tool": False,
+            "ci_workflow_in_repo": ".github/workflows/personal-source-build.yml" if (
+                repo / ".github/workflows/personal-source-build.yml").is_file() else None,
+            "ci_run_status": "NOT ASSESSED / SOURCE INPUT PREPARATION ONLY",
             "open_runtime_gates": [
                 "x64 Actions and native ARM64 E2E", "physical/account/OEM backup acceptance",
                 "external navigation/share/clipboard/credential/autofill calls",

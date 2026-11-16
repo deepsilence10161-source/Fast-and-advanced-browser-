@@ -1,5 +1,7 @@
 {
   "effective_date": "2026-10-19",
+  "record_scope": "Historical first native-source checkpoint at commit c6c011b. Component hashes/workflow and receipt schema statements refer to that revision, not later changes.",
+  "continuation_evidence": "evidence/personal-egress-source-2026-10-19.json",
   "scope": "Opt-in persistent personal-browser native source layer; no automatic wipe; privacy first, AI deferred.",
   "status": "PARTIAL SOURCE IMPLEMENTATION / ANDROID NOT RUN",
   "base_local_commit": "0989aa4235019eec1f3b7e477516c949fd3bb513",

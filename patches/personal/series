@@ -1,3 +1,5 @@
 # Explicit opt-in source layer; never add to patches/series.
 0100-personal-source-guard.py
 0101-persistent-account-boundary.patch
+0102-personal-egress-source-guard.py
+0103-personal-egress-and-storage.patch

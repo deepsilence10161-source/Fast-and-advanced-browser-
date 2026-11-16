@@ -1,0 +1,293 @@
+{
+  "effective_date": "2026-10-19",
+  "base_local_commit": "c6c011b30e2bf4663f0c9e05c31506162bf12a76",
+  "scope": "Second opt-in native egress/storage layer plus guarded development-build lane; persistent profile, no automatic wipe; privacy first, AI deferred.",
+  "status": "PARTIAL NATIVE SOURCE IMPLEMENTATION / DEVELOPMENT WORKFLOW PREPARED / ANDROID NOT RUN",
+  "product_containment": "NOT RUN / NOT CERTIFIED",
+  "historical_records": [
+    "evidence/personal-container-research-2026-10-19.json @0989aa4",
+    "evidence/personal-native-source-2026-10-19.json @c6c011b"
+  ],
+  "source": {
+    "pinned_tag": "155.0.8059.80; not a current-latest claim",
+    "new_prerequisite_source_files": 15,
+    "new_source_outputs": 2,
+    "new_native_files_changed_or_added": 17,
+    "combined_native_files": 25,
+    "combined_prerequisite_hashes": 21,
+    "combined_new_outputs_absent": 4,
+    "all_fixture_input_files": 22,
+    "new_fixture_input_files": 15,
+    "index": "tools/personal_browser/egress-upstream-index.json",
+    "fetched_public_sources": 38,
+    "unsuccessful_paths": [
+      {
+        "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDirectoryProvider.java",
+        "status": 404
+      },
+      {
+        "path": "chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDelegateImpl.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/download/DownloadDelegateImpl.java",
+        "status": 404
+      },
+      {
+        "path": "content/public/android/java/src/org/chromium/content/browser/ContentView.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/content/public/android/java/src/org/chromium/content/browser/ContentView.java",
+        "status": 404
+      },
+      {
+        "path": "components/autofill/android/java/src/org/chromium/components/autofill/AutofillProvider.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/autofill/android/java/src/org/chromium/components/autofill/AutofillProvider.java",
+        "status": 404
+      },
+      {
+        "path": "components/autofill/android/java/src/org/chromium/components/autofill/AutofillProviderImpl.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/autofill/android/java/src/org/chromium/components/autofill/AutofillProviderImpl.java",
+        "status": 404
+      },
+      {
+        "path": "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+        "status": 404
+      },
+      {
+        "path": "components/download/public/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/public/common/android/java/src/org/chromium/components/download/DownloadDirectoryProvider.java",
+        "status": 404
+      },
+      {
+        "path": "components/download/internal/common/android/java/src/org/chromium/components/download/DownloadManagerBridge.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/java/src/org/chromium/components/download/DownloadManagerBridge.java",
+        "status": 404
+      },
+      {
+        "path": "components/download/internal/common/android/BUILD.gn",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/internal/common/android/BUILD.gn",
+        "status": 404
+      },
+      {
+        "path": "chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/ChromeShareHelper.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/ChromeShareHelper.java",
+        "status": 404
+      },
+      {
+        "path": "base/android/java/src/org/chromium/base/BuildInfo.java",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/base/android/java/src/org/chromium/base/BuildInfo.java",
+        "status": 404
+      },
+      {
+        "path": "components/download/public/common/download_utils.cc",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/download/public/common/download_utils.cc",
+        "status": 404
+      },
+      {
+        "path": "chrome/browser/download/target_determination_utils.cc",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/target_determination_utils.cc",
+        "status": 404
+      },
+      {
+        "path": "chrome/browser/download/target_determination_utils.h",
+        "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/download/target_determination_utils.h",
+        "status": 404
+      }
+    ],
+    "FETCHED_semantics": "Downloaded public source and recorded hash, not full-line audit or runtime execution.",
+    "fixture_sha256": "b565c4fe6312d979457845a4845689230e75ea23ff7c935d390e3fe4ea779f64",
+    "licence": "tools/personal_browser/UPSTREAM_LICENSE; source copyright headers retained",
+    "source_layer_application": "Both layers strict dry-run and apply on public pinned slices; fuzz=0, offset=0. Existing patch-engine state/mtime integration also tested. Not a full checkout/build.",
+    "implemented_source_controls": [
+      "URL-driven external navigation, WebAPK reparent, activity/chooser terminal and incognito external-confirmation paths deny",
+      "common Share entry/chooser/terminal fire cancels without success or outbound payload",
+      "PathUtils and DownloadPrefs point to persistent app-internal data directory/Downloads, no public/cache/temp fallback",
+      "native root/pref enforcement and direct-file lexical checks before reservation, returned/substituted local path and final success metadata",
+      "MediaStore publish/copy/open/rename/query deny; system DownloadManager legacy/OMA handoff denies before Cookie/Referrer copying and at enqueue sink",
+      "only internal viewer allowed, own-package pin, real MediaViewerUtils allowExternalAppHandlers=false and allowShareAction=false",
+      "auto-open enforcement and enable/status false on Android; no silent forced external open",
+      "browser-process clipboard text/HTML/custom text/raw PNG-signature buffer; no platform clipboard or file-URI provider backend",
+      "FLAG_SECURE/recents controls across normal/incognito; root-view autofill/content-capture hints"
+    ],
+    "important_not_new_fix": "Original Java DownloadManagerBridge.addCompletedDownload already returned INVALID_DOWNLOAD_ID; no claim it previously exported a completed download.",
+    "clipboard_limits": "RAM buffer, not durable profile/vault; process death can lose clipboard. PNG signature-only storage, no image decoder proof. URI/files/other formats and native-widget/IME paths not covered.",
+    "path_limits": "Lexical predicate, not filesystem ownership, symlink-race, actual Android IO, encryption or retained-download proof.",
+    "screen_limits": "Mock window tests and source controls, not actual screenshot/recents/accessibility enforcement. Autofill/content-capture view hints do not disable all explicit APIs."
+  },
+  "build_lane": {
+    "workflow": ".github/workflows/personal-source-build.yml",
+    "manual_only": true,
+    "explicit_package_required": true,
+    "final_user_package_selected": false,
+    "explicit_development_confirmation_required": true,
+    "state_prefix": "personal-",
+    "reviewed_cpus": [
+      "x64",
+      "arm64"
+    ],
+    "standard_public_runner_only": true,
+    "reusable_optional_input": "personal_package defaults empty; ordinary default source selection unchanged",
+    "selection_before_remote_or_runner_cleanup": true,
+    "signing_secret_isolation_preserved": true,
+    "existing_key_or_public_pin_changed": false,
+    "new_keys_generated_or_copied": false,
+    "ordinary_patch_series_or_gn_package_changed": false,
+    "build_metadata_marker": "personal_source_only=1 plus NOT RUN / NOT CERTIFIED; ordinary/legacy default0",
+    "ordinary_release_gate": "Reject marker nonzero/blank or either personal patch, even with other synthetic PASS markers. Does not replace a dedicated personal release gate.",
+    "old_after_build_autopublish_not_triggered": true,
+    "receipt_schema": 2,
+    "input_tool_ci_status": "NOT ASSESSED / SOURCE INPUT PREPARATION ONLY",
+    "published_or_dispatched_by_us": false,
+    "actual_build_or_signing_run": false,
+    "new_apk": false,
+    "runtime_e2e_workflow_or_acceptance_complete": false
+  },
+  "observed_host_receipts": {
+    "native_path_predicate": {
+      "test_type": "HOST C++ ACTUAL PRODUCTION PREDICATE; NO ANDROID/DOWNLOAD FILESYSTEM OPERATIONS",
+      "dependency_stubs": false,
+      "sanitizers": [
+        "address",
+        "undefined"
+      ],
+      "product_containment": "NOT RUN / NOT CERTIFIED",
+      "source_sha256": "7f6045ca64eb8b123a48a89834d38cd9a48082800f5639b2c5cfcc138e6dd3e0",
+      "mutation_control": false,
+      "checks": 6030,
+      "compiler_exit": 0,
+      "runtime_exit": 0,
+      "diagnostic": "",
+      "mismatch_indices": [],
+      "output_lines": 6030,
+      "status": "PASS (host native predicate, sanitized)"
+    },
+    "clipboard_and_snapshot_java": {
+      "test_type": "HOST JVM; REAL THREE SOURCE CLASSES; ANDROID/JNI DEPENDENCIES STUBBED",
+      "product_containment": "NOT RUN / NOT CERTIFIED",
+      "dependency_stubs": true,
+      "source_sha256": {
+        "org/chromium/ui/base/Clipboard.java": "5d09e0b0219cda42de3837a30fdc5da936505203398ff3e2c84bb7c595875f3b",
+        "org/chromium/ui/base/BrowserContainedClipboard.java": "1d31aa8b98dce93b91a4bb722dd3ccfc8905bf8f2474b8aa3346ab04c3ce0382",
+        "org/chromium/chrome/browser/incognito/IncognitoSnapshotController.java": "04f5f22106475df930ce551fa13f7997c3c672a7cde7caf0e9c4020027bca590"
+      },
+      "mutation_control": false,
+      "compiler_exit": 0,
+      "runtime_exit": 0,
+      "output": "PERSONAL_EGRESS_HOST_PROBE assertions=40",
+      "diagnostic": "",
+      "assertions": 40,
+      "status": "PASS (host component with stubs)"
+    }
+  },
+  "test_history": [
+    {
+      "scope": "first source generator",
+      "result": "FAIL before final patch-output writes",
+      "reason": "Assumed protected Boolean doInBackground; pinned system enqueue task declares public.",
+      "fix": "Use exact public source signature; no loose matching."
+    },
+    {
+      "scope": "first combined egress/native host tests",
+      "result": "1 failed, 133 passed in 9.31s",
+      "reason": "Directory getter test selector matched interface/delegate/static definitions three times.",
+      "fix": "Select exact public static nullable method; retain source policy assertions."
+    },
+    {
+      "scope": "new auto-open consistency controls before fix",
+      "result": "2 failed, 2 passed, 68 deselected in 0.19s",
+      "reason": "Source enable/status APIs could still report true despite hard-disabled automatic opening.",
+      "fix": "Both APIs return false on Android; original code retained on other platforms; tests retained."
+    },
+    {
+      "scope": "corrected egress/native/static focused run",
+      "result": "206 passed in 9.35s; Python compilation PASS"
+    },
+    {
+      "scope": "new ordinary release-category controls before gate fix",
+      "result": "4 failed, 8 deselected in 0.04s",
+      "reason": "Existing ordinary gate did not classify private development marker/patches; synthetic existing PASS markers could pass it.",
+      "fix": "Explicit marker/patch rejection, including blank flag and misleading0 plus personal patch. No actual bad release published."
+    },
+    {
+      "scope": "FINAL focused source/component/lane/gate tests",
+      "result": "233 passed in 9.77s; Python compilation and bash -n PASS",
+      "breakdown": {
+        "egress": 72,
+        "existing_native_layer": 66,
+        "static_manifest": 66,
+        "existing_apk_audit": 2,
+        "public_gate": 12,
+        "personal_build_lane": 15
+      }
+    },
+    {
+      "scope": "FINAL full host regression",
+      "result": "522 passed, 8 skipped in 127.19s",
+      "new_tests_skipped": 0,
+      "not_android_acceptance": true
+    }
+  ],
+  "negative_mutation_controls": [
+    "native separator removed: sibling-prefix false acceptance detected as logical mismatch, not compilation failure",
+    "platform clipboard service/backend selection: compiled host mutation rejected by poisoned service/backend",
+    "PNG input-array alias: compiled mutation rejected by copy-isolation assertion",
+    "snapshot addFlags changed to clearFlags: compiled mutation rejected by secure-window assertion"
+  ],
+  "docs": [
+    {
+      "url": "https://developer.android.com/training/data-storage/app-specific#internal-access-files",
+      "reviewed": "chunks0-1, persistent internal versus external/cache storage and URI-grant boundary"
+    },
+    {
+      "url": "https://developer.android.com/privacy-and-security/risks/implicit-intent-hijacking",
+      "reviewed": "chunk0; footer says2026-10-23, AFTER this2026-10-19 effective cutoff; NOT used as current shipping-behavior proof. Pinned source API signatures are the engineering reference."
+    }
+  ],
+  "remaining_gates": [
+    "actual full Chromium Android compilation, APK binary manifest/resource/signature binding, install/launch",
+    "assistant-run x64 Actions emulator and native ARM64 Redroid actual retention/IPC/download/backup/network/screen/performance E2E",
+    "persistent cookies/localStorage/IndexedDB/drafts across lock/background/crash/force-stop/restart; no duplicates or auto-wipe",
+    "explicit Android Autofill/CredentialManager/passkey/native account/sign-in paths and other direct intents/Print/Cast",
+    "notifications, native-widget/omnibox/IME clipboard and actual screen/dialog/recents/accessibility behavior",
+    "full on-disk profile/cache/SQLite/WAL/LevelDB/download coverage and key-failure preservation/fail-closed writes; 0021 cookie evidence is not that proof",
+    "browser-origin background network/AI eligibility audit, while retaining TLS/Safe Browsing/sandbox/security updates",
+    "private internal viewer/format compatibility, same-APK performance and large storage failures",
+    "reviewed personal package/label/update channel and dedicated personal E2E/release automation",
+    "separate physical Android and user-present owned Google/Arena account acceptance",
+    "original normal Swiftra exact UI/full feature/advanced/Arena scope remains open and unchanged",
+    "AI remains deferred"
+  ],
+  "safety_and_environment": {
+    "bootstrap": "18/20; two remote checks authenticated HTTP401 => unverified, not protections-disabled proof",
+    "bootstrap_local_scan": "1059 files, 14 needles, 0 leaks (at phase start)",
+    "post_change_local_scan": "4425 files across /home/user and /tmp, 14 secret needles, 0 leaks; exit0. Platform restore archive noted as vault-only by scanner.",
+    "local_host": "about20GiB free; no adb/emulator/Docker or KVM observed; no full local Chromium build attempted",
+    "paid_resource": false,
+    "actual_account_access": false,
+    "unrelated_connected_app_access": false,
+    "existing_profile_or_device_modified": false,
+    "production_data_deleted": false,
+    "secret_solicited_or_printed": false,
+    "unchanged_invalid_auth_repeatedly_retried": false,
+    "old_ordinary_apk_relabelled_as_personal": false
+  },
+  "github_publication": "BLOCKED / NOT CLAIMED",
+  "component_sha256": {
+    ".github/workflows/personal-source-build.yml": "f913b0c048a1e3b15b04a2cf5fe7dfcfec6baa636e5a943fbdb08b6c84d0605b",
+    ".github/workflows/chromium-stage.yml": "fdbe9ad0c1833a5b2e0cf35560e94d76d5397392d8d449fccfc153add5849fdd",
+    "patches/personal/series": "36552a3389abc1e8802a2744743a7d7da61bbf2004a0756022b6bc10ce5f6bde",
+    "patches/personal/0102-personal-egress-source-guard.py": "71fa0d836aeae3dbe1b07b1e70ef298a99689ca1313db15aba686447208b1b24",
+    "patches/personal/0103-personal-egress-and-storage.patch": "a5b194e5280e3d1e6890ca3614fc7e4f2fb2f194397f5364f18780c58b5fdcbf",
+    "scripts/ci/personal_bundle.sh": "0c0b849a5dc6779944bfe1f73f5cc88021d2dffa0c16282298a4e7f61a058464",
+    "scripts/ci/chromium_stage.sh": "2a353336194f62702f6a8cbc107a989ceb7b177c61f26d9f4f814f330db9a894",
+    "scripts/ci/finalize_apk.sh": "6e022337af0fc6f8b7b0dd3963762150f810726a312544d854abd8cf1a5a4143",
+    "scripts/release/e2e_gate.py": "c18d8f4e6e67b8211c9f1a492efea8745feb13c095ff8d334dae609554c36ab7",
+    "tools/personal_browser/prepare.py": "0412775506cb03f1a41d657b10f4b7a03a7f69ca3881c9e867ada054c15c08cd",
+    "tools/personal_browser/source_fixture.py": "e9f711decfda775c1de36d685749a17de18ecd6ce6de1795ea5aebec9a6dc689",
+    "tools/personal_browser/egress_host_probe.py": "c2c3cc1c8ea79a4b0541a59bdf2f6796da76b8c498fd7a54175fed52a64b16ac",
+    "tools/personal_browser/egress-upstream-155.0.8059.80.json.gz": "b565c4fe6312d979457845a4845689230e75ea23ff7c935d390e3fe4ea779f64",
+    "tools/personal_browser/egress-upstream-index.json": "831b155196dabc1ee34e219fade6610bb265f33642d531e0c84e9bd8a7ad2e71",
+    "tests/test_personal_native_source.py": "e46b8a38d55ca99329a474a8bbbdac6c2147da24b0436b48028306d787b9837f",
+    "tests/test_personal_egress_source.py": "a433788bd575944a357fb067fba732ee603513655f0941b36fa7959f17caf9e1",
+    "tests/test_personal_build_lane.py": "ddaf3f242c330da25f2f042d5e8153a51495fa90f45e6e9486e086e8c6d6d4cd",
+    "tests/test_e2e_gate.py": "e1297def527792c6339478a660ac9c82180675fb3e503ba37e3f0d8dce08d7d2"
+  }
+}
