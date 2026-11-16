@@ -39,7 +39,9 @@ elif sub == "create":
 elif sub == "download":
     f = os.path.join(d, opt("-p"))
     if not os.path.isfile(f): sys.exit(1)
-    sys.stdout.buffer.write(open(f, "rb").read())
+    out = opt("-O")
+    if out and out != "-": open(out, "wb").write(open(f, "rb").read())
+    else: sys.stdout.buffer.write(open(f, "rb").read())
 elif sub == "upload":
     for f in pos: shutil.copy(f, os.path.join(d, os.path.basename(f)))
 elif sub == "delete-asset":
