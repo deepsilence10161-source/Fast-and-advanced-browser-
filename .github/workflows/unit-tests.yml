@@ -11,11 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: { persist-credentials: false }
-      - run: pip install -q pillow ninja pyyaml pytest protobuf h2 jinja2
+      # Runner image drift (2026-11): system dist-packages protobuf shadows pip's; isolate in a venv.
+      - name: Isolated Python environment
+        run: |
+          python3 -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install -q pillow ninja pyyaml pytest protobuf h2 jinja2
+          echo "$RUNNER_TEMP/venv/bin" >> "$GITHUB_PATH"
       - name: Chromium grit (155.0.8059.80) — b2 string-rebrand tests असली grit पर
         run: |
           mkdir -p "$RUNNER_TEMP/grit"
-          curl -fsSL --retry 3 "https://chromium.googlesource.com/chromium/src/+archive/refs/tags/155.0.8059.80/tools/grit.tar.gz" | tar -xz -C "$RUNNER_TEMP/grit"
+          curl -fsSL --retry 6 --retry-all-errors --retry-delay 10 "https://chromium.googlesource.com/chromium/src/+archive/refs/tags/155.0.8059.80/tools/grit.tar.gz" | tar -xz -C "$RUNNER_TEMP/grit"
           test -f "$RUNNER_TEMP/grit/grit.py" && echo "GRIT_DIR=$RUNNER_TEMP/grit" >> "$GITHUB_ENV"
       # pytest runs both the unittest classes and the pytest-style tests (speed pack, turbo download, A/B bench)
       - run: python3 -m pytest -q tests
