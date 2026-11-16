@@ -118,7 +118,17 @@ export PATH="$ROOT/depot_tools:$PATH" DEPOT_TOOLS_UPDATE=0 DEPOT_TOOLS_METRICS=0
 R="$GITHUB_REPOSITORY"
 assets_of(){ gh release view "$1" -R "$R" --json assets -q '.assets[].name' 2>/dev/null || true; }
 assets(){ assets_of "$STATE"; }
-fetch_from(){ gh release download "$1" -R "$R" -p "$2" -O - ; }
+# GitHub CDN कभी-कभी बीच में connection reset देता है (run 43912198821, 1.8GB out part) — अधूरा stream tar में नहीं जाना चाहिए:
+# पहले पूरा asset temp file में (backoff के साथ 6 प्रयास), तभी stdout पर।
+fetch_from(){
+  local t f; f=$(mktemp "${RUNNER_TEMP:-/tmp}/fetch.XXXXXX")
+  for t in 1 2 3 4 5 6; do
+    rm -f "$f"
+    if gh release download "$1" -R "$R" -p "$2" -O "$f" >&2 && [ -s "$f" ]; then cat "$f"; rm -f "$f"; return 0; fi
+    echo "release download विफल: $1/$2 (प्रयास $t)" >&2; sleep $((t*15))
+  done
+  rm -f "$f"; return 1
+}
 fetch_asset(){ fetch_from "$STATE" "$1"; }
 upload(){ local i; for i in 1 2 3 4; do gh release upload "$STATE" -R "$R" --clobber "$@" && return 0; log "upload retry $i"; sleep $((i*15)); done; return 1; }
 
