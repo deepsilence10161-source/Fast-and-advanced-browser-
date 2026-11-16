@@ -1,0 +1,101 @@
+name: Personal development APK device E2E (x64 emulator + native ARM64 Redroid; never publishes)
+# Real Android runtime acceptance probes for the opt-in personal development APK (scripts/ci/personal_e2e.py).
+# Manual only. No publish, no update-feed, no production data. Host PASS is never Android PASS.
+on:
+  workflow_dispatch:
+    inputs:
+      cpu:
+        type: choice
+        options: [x64, arm64]
+        default: x64
+      variant:
+        description: "state variant of the personal development build"
+        default: personal-dev
+      tag:
+        default: "155.0.8059.80"
+      redroid_image:
+        default: "redroid/redroid:14.0.0_64only-latest"
+permissions:
+  contents: write   # draft state release is only visible with write access; nothing is uploaded
+jobs:
+  x64-emulator:
+    if: inputs.cpu == 'x64'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Fetch personal development APK + BUILD_INFO (SHA-256 must match)
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          ST=crstate-${{ inputs.tag }}-x64-${{ inputs.variant }}; T=personal_x64; mkdir -p dl out/$T
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p "ChromePublic-${{ inputs.tag }}-x64.apk" -O dl/ChromePublic.apk
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/$T/BUILD_INFO.txt
+          test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/$T/BUILD_INFO.txt | tail -1)"
+          grep -E "^(package|application-label|native-code)" out/$T/BUILD_INFO.txt
+      - run: pip install -q websocket-client
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Personal E2E on x64 emulator (API 36, google_apis)
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          ram-size: 4096M
+          disk-size: 8G
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
+          disable-animations: true
+          script: bash scripts/ci/personal_e2e_run.sh personal_x64 dl/ChromePublic.apk
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: personal-e2e-x64, path: out/ }
+  arm64-redroid:
+    if: inputs.cpu == 'arm64'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+    env:
+      ANDROID_SERIAL: 127.0.0.1:5555
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Host + binder kernel module
+        run: |
+          uname -a; nproc; free -g | head -2
+          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder" 2>/dev/null || {
+            sudo apt-get update -qq && sudo apt-get install -y -qq "linux-modules-extra-$(uname -r)" >/dev/null
+            sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"; }
+          sudo modprobe ashmem_linux 2>/dev/null || echo "no ashmem_linux (memfd kernel, fine)"
+          sudo apt-get install -y -qq adb >/dev/null; adb version | head -1
+      - name: Boot Redroid (native arm64 Android)
+        run: |
+          mkdir -p "$RUNNER_TEMP/rd"
+          docker run -d --name rd --privileged -v "$RUNNER_TEMP/rd:/data" -p 5555:5555 "${{ inputs.redroid_image }}" \
+            androidboot.redroid_width=1080 androidboot.redroid_height=2400 androidboot.redroid_dpi=420 androidboot.redroid_gpu_mode=guest
+          for i in $(seq 1 60); do adb connect 127.0.0.1:5555 >/dev/null 2>&1
+            [ "$(timeout 10 adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ] && { echo "booted after ~$((i*5)) s"; break; }; sleep 5; done
+          test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
+          for p in ro.product.cpu.abi ro.build.version.release ro.build.version.sdk ro.dalvik.vm.native.bridge; do echo "$p=$(adb shell getprop $p | tr -d '\r')"; done
+          adb shell settings put global window_animation_scale 0; adb shell settings put global transition_animation_scale 0; adb shell settings put global animator_duration_scale 0
+      - name: Fetch personal development APK + BUILD_INFO (SHA-256 must match)
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          ST=crstate-${{ inputs.tag }}-arm64-${{ inputs.variant }}; T=personal_arm64; mkdir -p dl out/$T
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p "ChromePublic-${{ inputs.tag }}-arm64.apk" -O dl/ChromePublic.apk
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/$T/BUILD_INFO.txt
+          test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/$T/BUILD_INFO.txt | tail -1)"
+          grep -E "^(package|application-label|native-code)" out/$T/BUILD_INFO.txt
+      - run: pip install -q websocket-client
+      - name: Personal E2E on native ARM64 Redroid
+        run: bash scripts/ci/personal_e2e_run.sh personal_arm64 dl/ChromePublic.apk
+      - name: Meta
+        if: always()
+        run: |
+          mkdir -p out/personal_arm64; adb shell getprop > out/personal_arm64/getprop.txt 2>/dev/null || true
+          docker logs rd 2>&1 | tail -100 > out/personal_arm64/redroid_container.log || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: personal-e2e-arm64, path: out/ }
