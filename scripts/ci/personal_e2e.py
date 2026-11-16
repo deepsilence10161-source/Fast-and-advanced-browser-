@@ -121,6 +121,17 @@ def sh(cmd, timeout=40):
     return adb("shell", cmd, timeout=timeout).strip()
 
 
+def sh_retry(cmd, ok, tries=3, timeout=120):
+    """Slow emulator services (dumpsys) occasionally time out; retry until `ok(output)`."""
+    out = ""
+    for _ in range(tries):
+        out = sh(cmd, timeout)
+        if ok(out):
+            return out
+        time.sleep(5)
+    return out
+
+
 def go_root():
     adb("root", timeout=30)
     time.sleep(3)
@@ -319,7 +330,7 @@ def main():
         reverse()
         open_url(pkg, f"{base}/")
         time.sleep(5)
-        wd = sh("dumpsys window windows", 60)
+        wd = sh_retry("dumpsys window windows", lambda o: pkg in o)
         open(os.path.join(a.out, "window_dump.txt"), "w").write(wd)
         if pkg not in wd:
             res("C05_secure", "NOT_RUN", "app window not found in dumpsys window")
@@ -329,7 +340,7 @@ def main():
             res("C05_secure", "FAIL", "SECURE not in app window flags")
 
         # ---- C06 backup
-        pk = sh(f"dumpsys package {pkg}", 60)
+        pk = sh_retry(f"dumpsys package {pkg}", lambda o: "flags=[" in o)
         m = re.search(r"^\s+(?:pkgFlags|flags)=\[([^\]]*)\]", pk, re.M)
         flags = m.group(1).strip() if m else ""
         if flags and "ALLOW_BACKUP" not in flags.split():
