@@ -1,0 +1,71 @@
+{
+ "scope": "Personal development APK on a REAL x64 Android 16 (API 36) Actions emulator; development build, NOT certified",
+ "package": "com.swiftra.personaldev",
+ "abi": "x86_64",
+ "apk_sha256": "fc56a8f067584e33d09695498d895f5e639c720b3eea4b3643fec1ac919626cf",
+ "build_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/43925466510",
+ "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/43969723962",
+ "harness_commit": "0d9c017",
+ "results": [
+  {
+   "id": "C00_first_run",
+   "status": "PASS",
+   "detail": "browser_ready=True (no account, sign-in declined by UI handler)"
+  },
+  {
+   "id": "C01_launch",
+   "status": "PASS",
+   "detail": "pid=4384 page_js_wrote_cookie_ls_idb crash_lines=0"
+  },
+  {
+   "id": "C02_retention",
+   "status": "PASS",
+   "detail": "{\"background\": {\"cookie\": true, \"indexedDB\": true, \"localStorage\": true}, \"crash\": {\"cookie\": true, \"indexedDB\": true, \"localStorage\": true}, \"force_stop\": {\"cookie\": true, \"indexedDB\": true, \"localStorage\": true}}"
+  },
+  {
+   "id": "C03_download",
+   "status": "PASS",
+   "detail": "served=True private_path=/data/data/com.swiftra.personaldev/app_chrome/Downloads/personal_e2e_a24e1090682c31f23a0e6703.bin sha_ok=True shared_storage=none mediastore_hit=False downloads_provider_hit=False dumpsys_downloads=0"
+  },
+  {
+   "id": "C04_external",
+   "status": "PASS",
+   "detail": "top_package_after_tap={'tel': 'com.swiftra.personaldev', 'market': 'com.swiftra.personaldev'} (negative-only: no positive control)"
+  },
+  {
+   "id": "C05_secure",
+   "status": "PASS",
+   "detail": "window fl= contains SECURE"
+  },
+  {
+   "id": "C06_backup",
+   "status": "PASS",
+   "detail": "flags=[HAS_CODE ALLOW_CLEAR_USER_DATA]"
+  },
+  {
+   "id": "C07_no_account",
+   "status": "PASS",
+   "detail": "accounts_on_device=0"
+  },
+  {
+   "id": "C08_preserved",
+   "status": "PASS",
+   "detail": "missing=[]"
+  }
+ ],
+ "summary": {
+  "PASS": 9,
+  "FAIL": 0,
+  "NOT_RUN": 0
+ },
+ "limits": [
+  "C04 external-intent is negative-only (no positive control on this APK)",
+  "C06 checks package flags only; backup-rule content is verified statically by tools/security/personal_container_manifest.py",
+  "synthetic loopback canaries only; no real account/site; ARM64 native Redroid run NOT yet done for this APK",
+  "clipboard/IME/native-widget leak, whole-profile encryption, key-loss preservation, passkey/autofill APIs NOT covered"
+ ],
+ "earlier_real_failures_fixed": [
+  "x64 javac: PostTask/TaskTraits not imported in DownloadManagerService (run 43862245579)",
+  "x64 startup crash: FileProvider requires grantUriPermissions=true (run 43922660826)"
+ ]
+}
