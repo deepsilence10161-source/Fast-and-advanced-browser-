@@ -16,7 +16,7 @@ JAVA_LANG = {'String', 'Object', 'Integer', 'Long', 'Boolean', 'Math', 'System',
              'SafeVarargs', 'Process', 'Enum', 'InterruptedException', 'AssertionError',
              'UnsupportedOperationException', 'IndexOutOfBoundsException'}
 # New same-package classes created by the personal patches (no import needed).
-SAME_PACKAGE_NEW = {'BrowserContainedAccountManagerFacade', 'BrowserContainedClipboard'}
+SAME_PACKAGE_NEW = {'BrowserContainedAccountManagerFacade', 'BrowserContainedClipboard', 'FaceGuardLockState'}
 
 
 def idents(text):

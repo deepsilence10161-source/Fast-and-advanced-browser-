@@ -3,3 +3,5 @@
 0101-persistent-account-boundary.patch
 0102-personal-egress-source-guard.py
 0103-personal-egress-and-storage.patch
+0104-face-guard-source-guard.py
+0105-face-guard-presence-mode.patch

@@ -1,0 +1,72 @@
+{
+ "pinned_tag": "155.0.8059.80",
+ "status_semantics": "FETCHED and hashed; not all lines audited or executed",
+ "files": [
+  {
+   "path": "chrome/android/chrome_java_sources.gni",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/chrome_java_sources.gni",
+   "status": "FETCHED",
+   "sha256": "0a377b23450f37279d289220a50d1cbfa5ccd6872e54743ca52ff0fa90ab5720",
+   "bytes": 120692,
+   "lines": 1408
+  },
+  {
+   "path": "chrome/android/java/res/xml/privacy_preferences.xml",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/res/xml/privacy_preferences.xml",
+   "status": "FETCHED",
+   "sha256": "d926df40914535cd4dd2dc6de0e4f3be82211f5162c7f408825131988660ae3f",
+   "bytes": 5403,
+   "lines": 88
+  },
+  {
+   "path": "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java",
+   "status": "FETCHED",
+   "sha256": "90b33b6cdfc4d44f4d126d5fe97ca01646ddbe08243525045ad65b75672ba28a",
+   "bytes": 297173,
+   "lines": 6103
+  },
+  {
+   "path": "chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java",
+   "status": "FETCHED",
+   "sha256": "0f830e87ad3ebfb2d927c15f40b47bcdcae34e50144b3ad7e62d36a5d0c83bff",
+   "bytes": 31855,
+   "lines": 645
+  },
+  {
+   "path": "chrome/browser/tab_ui/android/BUILD.gn",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/tab_ui/android/BUILD.gn",
+   "status": "FETCHED",
+   "sha256": "f955bd6860c08c8b5b9e9e61be680edc4c9885675b04a91d021776522ad90ba7",
+   "bytes": 9004,
+   "lines": 194
+  },
+  {
+   "path": "chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java",
+   "status": "FETCHED",
+   "sha256": "db7cec3783bd94f633af3be7262d3fb69dc4c5fee3972e4d32f2c3401616d649",
+   "bytes": 31786,
+   "lines": 800
+  }
+ ],
+ "fixture_paths": [
+  "chrome/android/chrome_java_sources.gni",
+  "chrome/android/java/res/xml/privacy_preferences.xml",
+  "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java",
+  "chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java",
+  "chrome/browser/tab_ui/android/BUILD.gn",
+  "chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java"
+ ],
+ "fixture_gzip_sha256": "0fa54de49896ca5506da0ba516ef30d8ecd8b96cf8edd8cf01cf376e85b0b63e",
+ "native_source_outputs": [
+  "chrome/android/chrome_java_sources.gni",
+  "chrome/android/java/res/xml/privacy_preferences.xml",
+  "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java",
+  "chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java",
+  "chrome/browser/tab_ui/android/BUILD.gn",
+  "chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java"
+ ],
+ "not_android_acceptance": true
+}

@@ -1,0 +1,1372 @@
+diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
+index 30ba7c4..594621f 100644
+--- a/chrome/android/chrome_java_sources.gni
++++ b/chrome/android/chrome_java_sources.gni
+@@ -1192,6 +1192,15 @@ chrome_java_sources = [
+   "java/src/org/chromium/chrome/browser/suggestions/tile/tile_edit_dialog/CustomTileEditMediator.java",
+   "java/src/org/chromium/chrome/browser/suggestions/tile/tile_edit_dialog/CustomTileEditView.java",
+   "java/src/org/chromium/chrome/browser/supervised_user/ChildAccountService.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java",
++  "java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java",
+   "java/src/org/chromium/chrome/browser/survey/ChromeSurveyController.java",
+   "java/src/org/chromium/chrome/browser/sync/SyncErrorNotifier.java",
+   "java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java",
+diff --git a/chrome/android/java/res/xml/privacy_preferences.xml b/chrome/android/java/res/xml/privacy_preferences.xml
+index 5c4464c..be42e02 100644
+--- a/chrome/android/java/res/xml/privacy_preferences.xml
++++ b/chrome/android/java/res/xml/privacy_preferences.xml
+@@ -42,6 +42,11 @@ found in the LICENSE file.
+         android:title="@string/settings_incognito_tab_lock_title"
+         android:summary="@string/settings_incognito_tab_lock_summary_android_setting_off"
+         android:persistent="false" />
++    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
++        android:key="swiftra_face_guard"
++        android:title="Face Guard (experimental)"
++        android:summary="Locks the browser and opens the tab switcher when the front camera no longer sees a face. Detects that a face is present, not whose face it is. Convenience lock, not strong security."
++        android:persistent="false" />
+ 
+     <org.chromium.components.browser_ui.settings.ChromeBasePreferenceCategory
+         android:key="security_section"
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+index 6a9d0fa..ec881c2 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -266,6 +266,7 @@ import org.chromium.chrome.browser.single_tab.SingleTabModuleBuilder;
+ import org.chromium.chrome.browser.survey.ChromeSurveyController;
+ import org.chromium.chrome.browser.sync.SyncServiceFactory;
+ import org.chromium.chrome.browser.sync.ui.SyncErrorMessage;
++import org.chromium.chrome.browser.swiftra.faceguard.FaceGuardController;
+ import org.chromium.chrome.browser.tab.RedirectHandlerTabHelper;
+ import org.chromium.chrome.browser.tab.Tab;
+ import org.chromium.chrome.browser.tab.TabAssociatedApp;
+@@ -1722,6 +1723,9 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+ 
+     @Override
+     public void onResumeWithNative() {
++        // Swiftra personal build: Face Guard (off unless enabled in Settings).
++        FaceGuardController.onActivityResumed(this);
++
+         // While the super#onResumeWithNative call below also invokes #startUmaSession, we call
+         // it here (early) as well to setup the UMA activity state for any metrics emitted prior
+         // to call to super#onResumeWithNative below. It's safe to call #startUmaSession in both
+@@ -1788,6 +1792,8 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+ 
+     @Override
+     public void onPauseWithNative() {
++        FaceGuardController.onActivityPaused(this);
++
+         mTabModelSelector.commitAllTabClosures();
+ 
+         if (!ChromeFeatureList.isEnabled(ChromeFeatureList.UMA_SESSION_CORRECTNESS_FIXES)
+@@ -5331,6 +5337,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+ 
+     @Override
+     public void onDestroyInternal() {
++        FaceGuardController.onActivityDestroyed(this);
+ 
+         if (mPrefChangeRegistrar != null) {
+             mPrefChangeRegistrar.destroy();
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
+index 1b5d10d..013a694 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
+@@ -55,6 +55,7 @@ import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+ import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
+ import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+ import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
++import org.chromium.chrome.browser.swiftra.faceguard.FaceGuardSettings;
+ import org.chromium.chrome.browser.signin.services.IdentityServicesProvider;
+ import org.chromium.chrome.browser.ssl.HttpsFirstModeSettingsFragment;
+ import org.chromium.chrome.browser.sync.settings.GoogleServicesSettings;
+@@ -142,6 +143,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+         mPageTitle.set(getString(R.string.prefs_privacy_security));
+ 
+         SettingsUtils.addPreferencesFromResource(this, R.xml.privacy_preferences);
++        FaceGuardSettings.setUp(this, getActivity());
+ 
+         Preference privacyGuidePreference = findPreference(PREF_PRIVACY_GUIDE);
+         // Record the launch of PG from the S&P link-row entry point
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java
+new file mode 100644
+index 0000000..57b0423
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java
+@@ -0,0 +1,249 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.content.Context;
++import android.graphics.ImageFormat;
++import android.hardware.camera2.CameraAccessException;
++import android.hardware.camera2.CameraCaptureSession;
++import android.hardware.camera2.CameraCharacteristics;
++import android.hardware.camera2.CameraDevice;
++import android.hardware.camera2.CameraManager;
++import android.hardware.camera2.CaptureRequest;
++import android.hardware.camera2.params.OutputConfiguration;
++import android.hardware.camera2.params.SessionConfiguration;
++import android.hardware.camera2.params.StreamConfigurationMap;
++import android.media.Image;
++import android.media.ImageReader;
++import android.os.Handler;
++import android.os.HandlerThread;
++import android.os.SystemClock;
++import android.util.Size;
++import android.view.Surface;
++import android.view.WindowManager;
++
++import java.nio.ByteBuffer;
++import java.util.Collections;
++
++/**
++ * Front camera frames -> face counts, entirely in memory. Frames are never written to disk, logged or sent anywhere.
++ * Any camera problem is reported through onCameraFailed() so the policy can fail closed.
++ */
++final class FaceCameraSource {
++    interface Listener {
++        /** Called on the camera thread. valid=false means the frame could not be analysed. */
++        void onFrame(long atMs, boolean valid, int faces);
++
++        void onCameraFailed();
++    }
++
++    private static final int TARGET_W = 320;
++    private static final long MIN_FRAME_INTERVAL_MS = 80;
++
++    private final Context mContext;
++    private final Listener mListener;
++    private final PresenceFaceAnalyzer mAnalyzer = new PresenceFaceAnalyzer();
++    private HandlerThread mThread;
++    private Handler mHandler;
++    private CameraDevice mCamera;
++    private CameraCaptureSession mSession;
++    private ImageReader mReader;
++    private int mSensorOrientation;
++    private long mLastFrameMs;
++    private volatile boolean mRunning;
++
++    FaceCameraSource(Context context, Listener listener) {
++        mContext = context.getApplicationContext();
++        mListener = listener;
++    }
++
++    synchronized void start() {
++        if (mRunning) return;
++        mRunning = true;
++        mThread = new HandlerThread("SwiftraFaceGuardCamera");
++        mThread.start();
++        mHandler = new Handler(mThread.getLooper());
++        mHandler.post(this::open);
++    }
++
++    synchronized void stop() {
++        if (!mRunning) return;
++        mRunning = false;
++        final HandlerThread thread = mThread;
++        mHandler.post(
++                () -> {
++                    closeQuietly();
++                    mAnalyzer.release();
++                    thread.quitSafely();
++                });
++        mThread = null;
++        mHandler = null;
++    }
++
++    private void fail() {
++        if (mRunning) mListener.onCameraFailed();
++    }
++
++    private void open() {
++        if (!mRunning) return;
++        try {
++            CameraManager manager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
++            String id = null;
++            CameraCharacteristics chars = null;
++            for (String candidate : manager.getCameraIdList()) {
++                CameraCharacteristics c = manager.getCameraCharacteristics(candidate);
++                Integer facing = c.get(CameraCharacteristics.LENS_FACING);
++                if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
++                    id = candidate;
++                    chars = c;
++                    break;
++                }
++            }
++            if (id == null || chars == null) {
++                fail();
++                return;
++            }
++            Integer so = chars.get(CameraCharacteristics.SENSOR_ORIENTATION);
++            mSensorOrientation = so == null ? 270 : so;
++            StreamConfigurationMap map = chars.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
++            if (map == null) {
++                fail();
++                return;
++            }
++            Size size = chooseSize(map.getOutputSizes(ImageFormat.YUV_420_888));
++            if (size == null) {
++                fail();
++                return;
++            }
++            mReader = ImageReader.newInstance(size.getWidth(), size.getHeight(), ImageFormat.YUV_420_888, 2);
++            mReader.setOnImageAvailableListener(this::onImage, mHandler);
++            manager.openCamera(id, new CameraDevice.StateCallback() {
++                @Override
++                public void onOpened(CameraDevice camera) {
++                    mCamera = camera;
++                    if (!mRunning) {
++                        closeQuietly();
++                        return;
++                    }
++                    startSession(camera);
++                }
++
++                @Override
++                public void onDisconnected(CameraDevice camera) {
++                    closeQuietly();
++                    fail();
++                }
++
++                @Override
++                public void onError(CameraDevice camera, int error) {
++                    closeQuietly();
++                    fail();
++                }
++            }, mHandler);
++        } catch (CameraAccessException | SecurityException | IllegalArgumentException | IllegalStateException e) {
++            closeQuietly();
++            fail();
++        }
++    }
++
++    private void startSession(CameraDevice camera) {
++        try {
++            Surface surface = mReader.getSurface();
++            SessionConfiguration config = new SessionConfiguration(
++                    SessionConfiguration.SESSION_REGULAR,
++                    Collections.singletonList(new OutputConfiguration(surface)),
++                    r -> {
++                        Handler h = mHandler;
++                        if (h != null) h.post(r);
++                    },
++                    new CameraCaptureSession.StateCallback() {
++                        @Override
++                        public void onConfigured(CameraCaptureSession session) {
++                            mSession = session;
++                            if (!mRunning) {
++                                closeQuietly();
++                                return;
++                            }
++                            try {
++                                CaptureRequest.Builder b = camera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
++                                b.addTarget(surface);
++                                b.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
++                                session.setRepeatingRequest(b.build(), null, mHandler);
++                            } catch (CameraAccessException | IllegalStateException e) {
++                                closeQuietly();
++                                fail();
++                            }
++                        }
++
++                        @Override
++                        public void onConfigureFailed(CameraCaptureSession session) {
++                            closeQuietly();
++                            fail();
++                        }
++                    });
++            camera.createCaptureSession(config);
++        } catch (CameraAccessException | IllegalStateException | IllegalArgumentException e) {
++            closeQuietly();
++            fail();
++        }
++    }
++
++    static Size chooseSize(Size[] sizes) {
++        if (sizes == null || sizes.length == 0) return null;
++        Size best = null;
++        for (Size s : sizes) {
++            if (s.getWidth() < TARGET_W) continue;
++            if (best == null || s.getWidth() * s.getHeight() < best.getWidth() * best.getHeight()) best = s;
++        }
++        if (best != null) return best;
++        for (Size s : sizes) {
++            if (best == null || s.getWidth() * s.getHeight() > best.getWidth() * best.getHeight()) best = s;
++        }
++        return best;
++    }
++
++    @SuppressWarnings("deprecation")
++    private int displayRotationDegrees() {
++        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
++        int r = wm.getDefaultDisplay().getRotation();
++        return r == Surface.ROTATION_90 ? 90 : r == Surface.ROTATION_180 ? 180 : r == Surface.ROTATION_270 ? 270 : 0;
++    }
++
++    private void onImage(ImageReader reader) {
++        Image image = null;
++        long now = SystemClock.elapsedRealtime();
++        try {
++            image = reader.acquireLatestImage();
++            if (image == null || !mRunning) return;
++            if (now - mLastFrameMs < MIN_FRAME_INTERVAL_MS) return;
++            mLastFrameMs = now;
++            Image.Plane plane = image.getPlanes()[0];
++            ByteBuffer buf = plane.getBuffer();
++            byte[] y = new byte[buf.remaining()];
++            buf.get(y);
++            int rotation = FaceGrayConverter.frontCameraRotation(mSensorOrientation, displayRotationDegrees());
++            FaceGrayConverter.Result gray =
++                    FaceGrayConverter.toRgb565(y, image.getWidth(), image.getHeight(), plane.getRowStride(), rotation);
++            mListener.onFrame(now, true, mAnalyzer.countFaces(gray));
++        } catch (RuntimeException e) {
++            mListener.onFrame(now, false, 0);   // an unusable frame proves nothing; the policy ignores it
++        } finally {
++            if (image != null) image.close();
++        }
++    }
++
++    private void closeQuietly() {
++        try {
++            if (mSession != null) mSession.close();
++        } catch (RuntimeException ignored) {
++            // closing is best effort
++        }
++        try {
++            if (mCamera != null) mCamera.close();
++        } catch (RuntimeException ignored) {
++            // closing is best effort
++        }
++        if (mReader != null) mReader.close();
++        mSession = null;
++        mCamera = null;
++        mReader = null;
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java
+new file mode 100644
+index 0000000..f149d35
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java
+@@ -0,0 +1,78 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++/**
++ * Pure luminance -> RGB565 gray conversion with clockwise rotation, so frames can be handed to
++ * android.media.FaceDetector (which needs an upright RGB_565 bitmap of EVEN width). No Android dependency.
++ */
++public final class FaceGrayConverter {
++    public static final class Result {
++        public final short[] pixels;
++        public final int width;
++        public final int height;
++
++        Result(short[] pixels, int width, int height) {
++            this.pixels = pixels;
++            this.width = width;
++            this.height = height;
++        }
++    }
++
++    private FaceGrayConverter() {}
++
++    /**
++     * @param y         luminance plane
++     * @param rowStride bytes per source row (>= width)
++     * @param rotation  clockwise degrees: 0, 90, 180 or 270
++     */
++    public static Result toRgb565(byte[] y, int width, int height, int rowStride, int rotation) {
++        if (y == null || width <= 0 || height <= 0 || rowStride < width) {
++            throw new IllegalArgumentException("bad frame geometry");
++        }
++        if (y.length < (long) (height - 1) * rowStride + width) {
++            throw new IllegalArgumentException("luminance plane too small");
++        }
++        if (rotation != 0 && rotation != 90 && rotation != 180 && rotation != 270) {
++            throw new IllegalArgumentException("rotation must be 0/90/180/270");
++        }
++        boolean swap = rotation == 90 || rotation == 270;
++        int fullW = swap ? height : width;
++        int outH = swap ? width : height;
++        int outW = fullW & ~1;                       // FaceDetector requires an even width
++        if (outW < 2 || outH < 1) throw new IllegalArgumentException("frame too small");
++        short[] out = new short[outW * outH];
++        for (int oy = 0; oy < outH; oy++) {
++            for (int ox = 0; ox < outW; ox++) {
++                int sx;
++                int sy;
++                switch (rotation) {
++                    case 90:
++                        sx = oy;
++                        sy = height - 1 - ox;
++                        break;
++                    case 180:
++                        sx = width - 1 - ox;
++                        sy = height - 1 - oy;
++                        break;
++                    case 270:
++                        sx = width - 1 - oy;
++                        sy = ox;
++                        break;
++                    default:
++                        sx = ox;
++                        sy = oy;
++                        break;
++                }
++                int g = y[sy * rowStride + sx] & 0xFF;
++                out[oy * outW + ox] = (short) (((g >> 3) << 11) | ((g >> 2) << 5) | (g >> 3));
++            }
++        }
++        return new Result(out, outW, outH);
++    }
++
++    /** Clockwise rotation that makes a FRONT camera frame upright (mirroring is irrelevant for detection). */
++    public static int frontCameraRotation(int sensorOrientationDegrees, int displayRotationDegrees) {
++        int r = (sensorOrientationDegrees + displayRotationDegrees) % 360;
++        if (r < 0) r += 360;
++        return (r / 90) * 90;
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java
+new file mode 100644
+index 0000000..36d318f
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java
+@@ -0,0 +1,48 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.app.Activity;
++import android.app.KeyguardManager;
++import android.content.Context;
++import android.hardware.biometrics.BiometricManager;
++import android.hardware.biometrics.BiometricPrompt;
++import android.os.Build;
++import android.os.CancellationSignal;
++
++/** Device credential (PIN/pattern/password) check via the framework BiometricPrompt: no extra dependency. */
++final class FaceGuardAuth {
++    private FaceGuardAuth() {}
++
++    static boolean hasDeviceCredential(Context context) {
++        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
++        return km != null && km.isDeviceSecure();
++    }
++
++    /** Runs onSuccess only after the platform confirms the device credential; otherwise onFailure (never both). */
++    static void authenticate(Activity activity, Runnable onSuccess, Runnable onFailure) {
++        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || !hasDeviceCredential(activity)) {
++            onFailure.run();
++            return;
++        }
++        try {
++            BiometricPrompt prompt = new BiometricPrompt.Builder(activity)
++                    .setTitle("Face Guard")
++                    .setDescription("Confirm your device PIN, pattern or password")
++                    .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL)
++                    .build();
++            prompt.authenticate(new CancellationSignal(), activity.getMainExecutor(),
++                    new BiometricPrompt.AuthenticationCallback() {
++                        @Override
++                        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
++                            onSuccess.run();
++                        }
++
++                        @Override
++                        public void onAuthenticationError(int errorCode, CharSequence errString) {
++                            onFailure.run();
++                        }
++                    });
++        } catch (RuntimeException e) {
++            onFailure.run();
++        }
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
+new file mode 100644
+index 0000000..a3aa1bd
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
+@@ -0,0 +1,25 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.app.Activity;
++
++import org.chromium.chrome.browser.ChromeTabbedActivity;
++import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
++import org.chromium.chrome.browser.layouts.LayoutType;
++
++/** The ONLY Face Guard class that touches Chromium browser internals (keeps the patch surface small). */
++final class FaceGuardChromeBridge {
++    private FaceGuardChromeBridge() {}
++
++    /** Opens the tab switcher (Hub layout in Chromium 155). Safe to call repeatedly or before layouts exist. */
++    static void showTabSwitcher(Activity activity) {
++        if (!(activity instanceof ChromeTabbedActivity)) return;
++        try {
++            LayoutManagerChrome layoutManager = ((ChromeTabbedActivity) activity).getLayoutManager();
++            if (layoutManager.getActiveLayoutType() != LayoutType.HUB) {
++                layoutManager.showLayout(LayoutType.HUB, /* animate= */ false);
++            }
++        } catch (RuntimeException e) {
++            // Layouts not ready yet (very early startup): the opaque overlay still hides everything.
++        }
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
+new file mode 100644
+index 0000000..b6379e1
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
+@@ -0,0 +1,236 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.Manifest;
++import android.app.Activity;
++import android.content.Context;
++import android.content.Intent;
++import android.content.SharedPreferences;
++import android.content.pm.PackageManager;
++import android.net.Uri;
++import android.os.Handler;
++import android.os.Looper;
++import android.os.SystemClock;
++import android.provider.Settings;
++import android.view.ViewGroup;
++
++import org.chromium.chrome.browser.tab_ui.FaceGuardLockState;
++
++/**
++ * Face Guard glue (PRESENCE MODE): while enabled and the browser is in the foreground, the front camera must keep
++ * seeing a face or the browser is covered by an opaque lock screen and the tab switcher is opened behind it.
++ * All decisions come from FaceGuardPolicy (host-tested). Off by default. Never deletes any data.
++ */
++public final class FaceGuardController implements FaceCameraSource.Listener, FaceGuardOverlay.Actions {
++    private static final String PREFS = "swiftra_face_guard";
++    private static final String KEY_ENABLED = "enabled";
++    static final int REQUEST_CAMERA = 0x4647;
++    private static final long CAMERA_RETRY_MS = 3000;
++
++    private static FaceGuardController sInstance;
++
++    private final Handler mMain = new Handler(Looper.getMainLooper());
++    private final FaceGuardPolicy mPolicy = new FaceGuardPolicy(FaceGuardPolicy.Config.defaults());
++    private final Runnable mTick = this::render;
++    private final Runnable mRetryCamera = this::retryCamera;
++    private Activity mActivity;
++    private FaceCameraSource mCamera;
++    private FaceGuardOverlay mOverlay;
++    private boolean mForeground;
++    private boolean mCameraFailed;
++
++    private FaceGuardController() {}
++
++    // ------------------------------------------------------------------ static API
++    public static boolean isEnabled(Context context) {
++        return prefs(context).getBoolean(KEY_ENABLED, false);
++    }
++
++    public static void setEnabled(Context context, boolean enabled) {
++        prefs(context).edit().putBoolean(KEY_ENABLED, enabled).apply();
++        if (sInstance != null) sInstance.mMain.post(sInstance::refreshFromSettings);
++    }
++
++    public static boolean hasCameraPermission(Context context) {
++        return context.checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
++    }
++
++    private static SharedPreferences prefs(Context context) {
++        return context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
++    }
++
++    public static void onActivityResumed(Activity activity) {
++        if (sInstance == null) sInstance = new FaceGuardController();
++        sInstance.resume(activity);
++    }
++
++    public static void onActivityPaused(Activity activity) {
++        if (sInstance != null) sInstance.pause(activity);
++    }
++
++    public static void onActivityDestroyed(Activity activity) {
++        if (sInstance != null) sInstance.destroy(activity);
++    }
++
++    // ------------------------------------------------------------------ lifecycle
++    private void resume(Activity activity) {
++        mActivity = activity;
++        mForeground = true;
++        mCameraFailed = false;
++        applySettingsAndState();
++        if (mPolicy.evaluate(SystemClock.elapsedRealtime()).locked) {
++            // Warm resume does not produce a lock "edge", so always (re)open the switcher while locked.
++            mMain.post(() -> FaceGuardChromeBridge.showTabSwitcher(mActivity));
++            mMain.postDelayed(() -> {
++                if (mForeground && FaceGuardLockState.isLocked()) FaceGuardChromeBridge.showTabSwitcher(mActivity);
++            }, 400);
++        }
++    }
++
++    private void pause(Activity activity) {
++        if (mActivity != activity) return;
++        mForeground = false;
++        mPolicy.onBackground();
++        stopCamera();
++        mMain.removeCallbacks(mRetryCamera);
++        render();   // keeps/creates the overlay so the content is already covered when the app returns
++    }
++
++    private void destroy(Activity activity) {
++        if (mActivity != activity) return;
++        mMain.removeCallbacksAndMessages(null);
++        stopCamera();
++        removeOverlay();
++        FaceGuardLockState.setLocked(false);
++        mActivity = null;
++        mForeground = false;
++    }
++
++    private void refreshFromSettings() {
++        if (mActivity != null && mForeground) applySettingsAndState();
++    }
++
++    private void applySettingsAndState() {
++        Activity a = mActivity;
++        boolean enabled = isEnabled(a);
++        mPolicy.setEnabled(enabled);
++        mPolicy.setTemplate(FaceGuardPolicy.Template.OK);   // presence mode has no enrolled template
++        mPolicy.setPermissionGranted(hasCameraPermission(a));
++        if (mForeground) mPolicy.onForeground();
++        if (enabled && mForeground && hasCameraPermission(a)) startCamera(); else stopCamera();
++        render();
++    }
++
++    // ------------------------------------------------------------------ camera
++    private void startCamera() {
++        if (mCamera != null) return;
++        mCamera = new FaceCameraSource(mActivity, this);
++        mCamera.start();
++    }
++
++    private void stopCamera() {
++        if (mCamera != null) mCamera.stop();
++        mCamera = null;
++    }
++
++    private void retryCamera() {
++        if (!mForeground || mActivity == null || !isEnabled(mActivity) || !hasCameraPermission(mActivity)) return;
++        stopCamera();
++        startCamera();
++    }
++
++    @Override
++    public void onFrame(long atMs, boolean valid, int faces) {
++        mMain.post(() -> {
++            if (!mForeground) return;
++            if (valid && mCameraFailed) {
++                mCameraFailed = false;
++                mPolicy.onCameraRecovered();
++            }
++            // PRESENCE: one visible face counts as "present"; any additional face is an "other face".
++            mPolicy.onObservation(new FaceGuardPolicy.Observation(atMs, valid, faces >= 1, Math.max(0, faces - 1)));
++            render();
++        });
++    }
++
++    @Override
++    public void onCameraFailed() {
++        mMain.post(() -> {
++            if (!mForeground) return;
++            mCameraFailed = true;
++            mPolicy.onCameraFailed();
++            render();
++            mMain.removeCallbacks(mRetryCamera);
++            mMain.postDelayed(mRetryCamera, CAMERA_RETRY_MS);
++        });
++    }
++
++    // ------------------------------------------------------------------ decision -> UI
++    private void render() {
++        if (mActivity == null) return;
++        long now = SystemClock.elapsedRealtime();
++        FaceGuardPolicy.Decision d = mPolicy.evaluate(now);
++        FaceGuardPolicy.Action action = mPolicy.poll(now);
++        FaceGuardLockState.setLocked(d.locked);
++        if (d.locked) {
++            showOverlay(d.reason);
++            if (action == FaceGuardPolicy.Action.LOCK && mForeground) {
++                FaceGuardChromeBridge.showTabSwitcher(mActivity);
++            }
++        } else {
++            removeOverlay();
++        }
++        mMain.removeCallbacks(mTick);
++        long deadline = mPolicy.nextDeadlineMs();
++        if (deadline >= 0) mMain.postDelayed(mTick, Math.max(0, deadline - now));
++    }
++
++    private void showOverlay(FaceGuardPolicy.Reason reason) {
++        ViewGroup content = mActivity.findViewById(android.R.id.content);
++        if (content == null) return;
++        if (mOverlay == null || mOverlay.getParent() != content) {
++            removeOverlay();
++            mOverlay = new FaceGuardOverlay(mActivity, this);
++            content.addView(mOverlay, new ViewGroup.LayoutParams(
++                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
++        }
++        mOverlay.bringToFront();
++        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity));
++    }
++
++    private void removeOverlay() {
++        if (mOverlay != null && mOverlay.getParent() instanceof ViewGroup) {
++            ((ViewGroup) mOverlay.getParent()).removeView(mOverlay);
++        }
++        mOverlay = null;
++    }
++
++    // ------------------------------------------------------------------ overlay actions
++    @Override
++    public void onUnlockWithDeviceCredential() {
++        if (mActivity == null) return;
++        FaceGuardAuth.authenticate(mActivity, () -> {
++            mPolicy.onDeviceCredentialSuccess();
++            render();
++        }, () -> { });
++    }
++
++    @Override
++    public void onGrantCamera() {
++        if (mActivity != null) mActivity.requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CAMERA);
++    }
++
++    @Override
++    public void onOpenAppSettings() {
++        if (mActivity == null) return;
++        Intent i = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
++                Uri.fromParts("package", mActivity.getPackageName(), null));
++        mActivity.startActivity(i);
++    }
++
++    @Override
++    public void onTurnOff() {
++        if (mActivity == null) return;
++        // The overlay only offers this when the device has no credential, i.e. no stronger proof exists.
++        setEnabled(mActivity, false);
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java
+new file mode 100644
+index 0000000..3325dfb
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java
+@@ -0,0 +1,115 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.content.Context;
++import android.graphics.Color;
++import android.graphics.Typeface;
++import android.view.Gravity;
++import android.view.View;
++import android.widget.Button;
++import android.widget.FrameLayout;
++import android.widget.LinearLayout;
++import android.widget.TextView;
++
++/** Opaque full-window lock screen shown over the browser while Face Guard is locked. Built in code (no resources). */
++final class FaceGuardOverlay extends FrameLayout {
++    interface Actions {
++        void onUnlockWithDeviceCredential();
++
++        void onGrantCamera();
++
++        void onOpenAppSettings();
++
++        void onTurnOff();
++    }
++
++    private final TextView mMessage;
++    private final Button mCredential;
++    private final Button mGrant;
++    private final Button mAppSettings;
++    private final Button mTurnOff;
++
++    FaceGuardOverlay(Context context, Actions actions) {
++        super(context);
++        setBackgroundColor(0xFF10151A);       // fully opaque: tab thumbnails/titles underneath are never visible
++        setClickable(true);                   // swallow every touch
++        setFocusable(true);
++        setOnTouchListener((v, e) -> true);
++
++        LinearLayout column = new LinearLayout(context);
++        column.setOrientation(LinearLayout.VERTICAL);
++        column.setGravity(Gravity.CENTER_HORIZONTAL);
++        int pad = dp(24);
++        column.setPadding(pad, pad, pad, pad);
++
++        TextView title = new TextView(context);
++        title.setText("Face Guard");
++        title.setTextColor(Color.WHITE);
++        title.setTextSize(24);
++        title.setTypeface(Typeface.DEFAULT_BOLD);
++        title.setGravity(Gravity.CENTER);
++        column.addView(title);
++
++        mMessage = new TextView(context);
++        mMessage.setTextColor(0xFFC9D1D9);
++        mMessage.setTextSize(16);
++        mMessage.setGravity(Gravity.CENTER);
++        mMessage.setPadding(0, dp(12), 0, dp(20));
++        column.addView(mMessage);
++
++        mCredential = button(context, "Unlock with device PIN", actions::onUnlockWithDeviceCredential);
++        mGrant = button(context, "Allow camera", actions::onGrantCamera);
++        mAppSettings = button(context, "Open app settings", actions::onOpenAppSettings);
++        mTurnOff = button(context, "Turn off Face Guard", actions::onTurnOff);
++        column.addView(mCredential);
++        column.addView(mGrant);
++        column.addView(mAppSettings);
++        column.addView(mTurnOff);
++
++        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER);
++        addView(column, lp);
++    }
++
++    private Button button(Context context, String text, Runnable action) {
++        Button b = new Button(context);
++        b.setText(text);
++        b.setAllCaps(false);
++        b.setOnClickListener(v -> action.run());
++        b.setVisibility(View.GONE);
++        return b;
++    }
++
++    private int dp(int v) {
++        return Math.round(v * getResources().getDisplayMetrics().density);
++    }
++
++    /** Messages never include page, tab, account or face data. */
++    void show(FaceGuardPolicy.Reason reason, boolean hasDeviceCredential) {
++        String msg;
++        boolean grant = false;
++        switch (reason) {
++            case PERMISSION_DENIED:
++                msg = "Camera permission is needed. Face Guard stays locked until a face is visible to the front camera.";
++                grant = true;
++                break;
++            case CAMERA_UNAVAILABLE:
++                msg = "The front camera is not available, so Face Guard stays locked.";
++                break;
++            case OTHER_FACE:
++                msg = "More than one face is visible. Only one person may look at the browser.";
++                break;
++            case BACKGROUND:
++            case WAITING_FOR_OWNER:
++            case OWNER_ABSENT:
++            case NO_FRAMES:
++            default:
++                msg = "Looking for your face\u2026 The tab switcher is open behind this screen.";
++                break;
++        }
++        mMessage.setText(msg + "\n\nThis build checks that a face is present. It does not recognise whose face it is.");
++        mCredential.setVisibility(hasDeviceCredential ? View.VISIBLE : View.GONE);
++        mGrant.setVisibility(grant ? View.VISIBLE : View.GONE);
++        mAppSettings.setVisibility(grant ? View.VISIBLE : View.GONE);
++        // Without a device credential there is no stronger way to prove ownership, so never lock the user out.
++        mTurnOff.setVisibility(hasDeviceCredential ? View.GONE : View.VISIBLE);
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java
+new file mode 100644
+index 0000000..20113f7
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java
+@@ -0,0 +1,318 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++/**
++ * Face Guard decision core. Pure Java: no Android, camera, model or Chromium dependency, so that the
++ * lock/unlock rules can be unit-tested on a host JVM. It never touches images; it only sees per-frame
++ * observations (how many faces, whether one matched the owner template).
++ *
++ * Contract (see docs/plans/face-guard.md):
++ *  - Feature disabled        -> never locks, camera not needed.
++ *  - Feature enabled         -> content stays LOCKED until the owner is seen for several consecutive clean frames.
++ *  - FAIL CLOSED             -> missing/corrupt template, permission denied, camera failure, stale/no frames,
++ *                               backgrounding and any non-owner face all lock. Nothing here deletes data.
++ *  - Escape hatch            -> device credential override (until backgrounded) so the owner is never locked out.
++ *  - Time is injected (monotonic ms) so behaviour is deterministic.
++ */
++public final class FaceGuardPolicy {
++    public enum Reason {
++        DISABLED, OWNER_PRESENT, WAITING_FOR_OWNER, OWNER_ABSENT, OTHER_FACE, NO_FRAMES,
++        CAMERA_UNAVAILABLE, PERMISSION_DENIED, NOT_ENROLLED, TEMPLATE_UNAVAILABLE,
++        BACKGROUND, DEVICE_CREDENTIAL_OVERRIDE
++    }
++
++    public enum Template { MISSING, UNAVAILABLE, OK }
++
++    /** Edge-triggered UI action. LOCK = open the (masked) tab switcher once; UNLOCK = reveal once. */
++    public enum Action { NONE, LOCK, UNLOCK }
++
++    /** Hard bounds so a config can never weaken the guard beyond these limits. */
++    public static final float MIN_MATCH_THRESHOLD = 0.55f;
++    public static final float MAX_MATCH_THRESHOLD = 0.95f;
++    public static final long MAX_LOCK_DELAY_MS = 10_000;
++    public static final long MAX_STALE_MS = 5_000;
++    public static final int MIN_UNLOCK_FRAMES = 2;
++
++    public static final class Config {
++        /** UNCALIBRATED default: must be tuned against the real embedding model before any claim of accuracy. */
++        public final float matchThreshold;
++        public final long lockDelayMs;     // owner may be briefly missing (blink/turn) before locking
++        public final long staleMs;         // no valid frame for this long -> lock
++        public final int unlockFrames;     // consecutive clean owner frames required to unlock
++        public final long minUnlockMs;     // ...spanning at least this long
++        public final int otherFaceFrames;  // consecutive frames with a non-owner face before locking
++        public final boolean lockOnOtherFaces;
++
++        public Config(float matchThreshold, long lockDelayMs, long staleMs, int unlockFrames,
++                      long minUnlockMs, int otherFaceFrames, boolean lockOnOtherFaces) {
++            if (!(matchThreshold >= MIN_MATCH_THRESHOLD && matchThreshold <= MAX_MATCH_THRESHOLD)) {
++                throw new IllegalArgumentException("matchThreshold out of bounds");
++            }
++            if (lockDelayMs < 0 || lockDelayMs > MAX_LOCK_DELAY_MS) throw new IllegalArgumentException("lockDelayMs");
++            if (staleMs <= 0 || staleMs > MAX_STALE_MS) throw new IllegalArgumentException("staleMs");
++            if (unlockFrames < MIN_UNLOCK_FRAMES) throw new IllegalArgumentException("unlockFrames");
++            if (minUnlockMs < 0) throw new IllegalArgumentException("minUnlockMs");
++            if (otherFaceFrames < 1) throw new IllegalArgumentException("otherFaceFrames");
++            this.matchThreshold = matchThreshold;
++            this.lockDelayMs = lockDelayMs;
++            this.staleMs = staleMs;
++            this.unlockFrames = unlockFrames;
++            this.minUnlockMs = minUnlockMs;
++            this.otherFaceFrames = otherFaceFrames;
++            this.lockOnOtherFaces = lockOnOtherFaces;
++        }
++
++        public static Config defaults() {
++            return new Config(0.70f, 300, 1000, 3, 300, 2, true);
++        }
++    }
++
++    public static final class Observation {
++        public final long atMs;
++        public final boolean valid;       // detector produced a usable result for this frame
++        public final boolean ownerMatched;
++        public final int otherFaces;      // faces that are NOT the owner
++
++        public Observation(long atMs, boolean valid, boolean ownerMatched, int otherFaces) {
++            this.atMs = atMs;
++            this.valid = valid;
++            this.ownerMatched = ownerMatched;
++            this.otherFaces = Math.max(0, otherFaces);
++        }
++    }
++
++    public static final class Decision {
++        public final boolean locked;
++        public final Reason reason;
++        public final boolean cameraNeeded;
++
++        Decision(boolean locked, Reason reason, boolean cameraNeeded) {
++            this.locked = locked;
++            this.reason = reason;
++            this.cameraNeeded = cameraNeeded;
++        }
++
++        @Override
++        public String toString() {
++            return (locked ? "LOCKED:" : "UNLOCKED:") + reason + (cameraNeeded ? ":camera" : "");
++        }
++    }
++
++    private final Config mConfig;
++    private boolean mEnabled;
++    private boolean mForeground;
++    private boolean mPermissionGranted;
++    private boolean mCameraFailed;
++    private boolean mOverride;
++    private Template mTemplate = Template.MISSING;
++
++    private boolean mUnlocked;           // latched state: owner proven and not yet lost
++    private long mLastValidMs = -1;
++    private long mLastOwnerMs = -1;
++    private int mOwnerRun;
++    private long mOwnerRunStartMs = -1;
++    private int mOtherRun;
++    private boolean mLastLocked;         // for edge detection in poll()
++    private long mEvalClockMs = Long.MIN_VALUE; // evaluate() time never goes backwards
++
++    public FaceGuardPolicy(Config config) {
++        if (config == null) throw new IllegalArgumentException("config");
++        mConfig = config;
++    }
++
++    public Config config() {
++        return mConfig;
++    }
++
++    // ---------------------------------------------------------------- inputs
++    public void setEnabled(boolean enabled) {
++        if (mEnabled != enabled) resetTracking();
++        mEnabled = enabled;
++    }
++
++    public void setTemplate(Template t) {
++        if (t == null) throw new IllegalArgumentException("template");
++        if (mTemplate != t) resetTracking();
++        mTemplate = t;
++    }
++
++    public void setPermissionGranted(boolean granted) {
++        if (mPermissionGranted != granted) resetTracking();
++        mPermissionGranted = granted;
++        if (granted) mCameraFailed = false;
++    }
++
++    public void onCameraFailed() {
++        mCameraFailed = true;
++        resetTracking();
++    }
++
++    public void onCameraRecovered() {
++        mCameraFailed = false;
++    }
++
++    public void onForeground() {
++        mForeground = true;
++        resetTracking();   // always re-verify the owner after coming back
++    }
++
++    public void onBackground() {
++        mForeground = false;
++        mOverride = false; // an override never survives backgrounding
++        resetTracking();
++    }
++
++    /** Call only after the platform confirmed device credential (PIN/pattern/password) success. */
++    public void onDeviceCredentialSuccess() {
++        mOverride = true;
++    }
++
++    public void onObservation(Observation o) {
++        if (o == null || !o.valid) return;                 // an unusable frame proves nothing
++        if (o.atMs < mLastValidMs) return;                 // non-monotonic timestamp: ignore, never trust
++        mLastValidMs = o.atMs;
++        if (o.otherFaces > 0) mOtherRun++; else mOtherRun = 0;
++        boolean clean = o.ownerMatched && o.otherFaces == 0;
++        boolean ownerOnly = o.ownerMatched && (o.otherFaces == 0 || !mConfig.lockOnOtherFaces);
++        if (ownerOnly) {
++            if (mOwnerRun == 0) mOwnerRunStartMs = o.atMs;
++            mOwnerRun++;
++            mLastOwnerMs = o.atMs;
++        } else {
++            mOwnerRun = 0;
++            mOwnerRunStartMs = -1;
++        }
++        if (!clean && mConfig.lockOnOtherFaces && o.otherFaces > 0 && mOtherRun >= mConfig.otherFaceFrames) {
++            mUnlocked = false;
++        }
++    }
++
++    // ---------------------------------------------------------------- decision
++    public Decision evaluate(long nowMs) {
++        if (nowMs < mEvalClockMs) nowMs = mEvalClockMs;   // a regressing clock must never unlock
++        mEvalClockMs = nowMs;
++        if (!mEnabled) return new Decision(false, Reason.DISABLED, false);
++        if (!mForeground) return new Decision(true, Reason.BACKGROUND, false);
++        if (mOverride) return new Decision(false, Reason.DEVICE_CREDENTIAL_OVERRIDE, false);
++        if (mTemplate == Template.MISSING) return new Decision(true, Reason.NOT_ENROLLED, false);
++        if (mTemplate == Template.UNAVAILABLE) return new Decision(true, Reason.TEMPLATE_UNAVAILABLE, false);
++        if (!mPermissionGranted) return new Decision(true, Reason.PERMISSION_DENIED, false);
++        if (mCameraFailed) return new Decision(true, Reason.CAMERA_UNAVAILABLE, true);
++
++        if (mLastValidMs < 0 || nowMs - mLastValidMs > mConfig.staleMs) {
++            mUnlocked = false;
++            mOwnerRun = 0;
++            mOwnerRunStartMs = -1;
++            return new Decision(true, mLastValidMs < 0 ? Reason.WAITING_FOR_OWNER : Reason.NO_FRAMES, true);
++        }
++        if (mConfig.lockOnOtherFaces && mOtherRun >= mConfig.otherFaceFrames) {
++            mUnlocked = false;
++            mOwnerRun = 0;
++            mOwnerRunStartMs = -1;
++            return new Decision(true, Reason.OTHER_FACE, true);
++        }
++        if (mOwnerRun >= mConfig.unlockFrames && mOwnerRunStartMs >= 0
++                && mLastValidMs - mOwnerRunStartMs >= mConfig.minUnlockMs) {
++            mUnlocked = true;
++        }
++        if (mUnlocked) {
++            if (mLastOwnerMs >= 0 && nowMs - mLastOwnerMs <= mConfig.lockDelayMs) {
++                return new Decision(false, Reason.OWNER_PRESENT, true);
++            }
++            mUnlocked = false;
++            mOwnerRun = 0;              // a fresh sustained run is required after any lock
++            mOwnerRunStartMs = -1;
++            return new Decision(true, Reason.OWNER_ABSENT, true);
++        }
++        return new Decision(true, mLastOwnerMs >= 0 ? Reason.OWNER_ABSENT : Reason.WAITING_FOR_OWNER, true);
++    }
++
++    /**
++     * Edge-triggered result for the UI layer: LOCK exactly once when the state goes unlocked -> locked (open
++     * the masked tab switcher immediately), UNLOCK exactly once on locked -> unlocked, otherwise NONE.
++     * Call after every observation AND at nextDeadlineMs() so locking never waits for another frame.
++     */
++    public Action poll(long nowMs) {
++        boolean locked = evaluate(nowMs).locked;
++        if (locked == mLastLocked) return Action.NONE;
++        mLastLocked = locked;
++        return locked ? Action.LOCK : Action.UNLOCK;
++    }
++
++    /**
++     * Earliest time (ms, same clock) at which evaluate() could flip from unlocked to locked purely because
++     * time passed (owner missing too long, or frames stalled). -1 when no time-based lock is pending.
++     */
++    public long nextDeadlineMs() {
++        if (!mEnabled || !mForeground || mOverride || !mUnlocked || mLastValidMs < 0 || mLastOwnerMs < 0) return -1;
++        return Math.min(mLastOwnerMs + mConfig.lockDelayMs, mLastValidMs + mConfig.staleMs) + 1;
++    }
++
++    /** Turning the feature off (or re-enrolling) needs the owner proven right now or a device credential. */
++    public boolean mayDisable(long nowMs) {
++        if (!mEnabled) return true;
++        Decision d = evaluate(nowMs);
++        return !d.locked && (d.reason == Reason.OWNER_PRESENT || d.reason == Reason.DEVICE_CREDENTIAL_OVERRIDE);
++    }
++
++    private void resetTracking() {
++        mUnlocked = false;
++        mLastValidMs = -1;
++        mLastOwnerMs = -1;
++        mOwnerRun = 0;
++        mOwnerRunStartMs = -1;
++        mOtherRun = 0;
++        mEvalClockMs = Long.MIN_VALUE;
++    }
++
++    // ---------------------------------------------------------------- embedding helpers
++    /** Cosine similarity of two finite, same-length, non-zero vectors; NaN when the input is unusable. */
++    public static float cosine(float[] a, float[] b) {
++        if (a == null || b == null || a.length == 0 || a.length != b.length) return Float.NaN;
++        double dot = 0, na = 0, nb = 0;
++        for (int i = 0; i < a.length; i++) {
++            if (Float.isNaN(a[i]) || Float.isInfinite(a[i]) || Float.isNaN(b[i]) || Float.isInfinite(b[i])) {
++                return Float.NaN;
++            }
++            dot += (double) a[i] * b[i];
++            na += (double) a[i] * a[i];
++            nb += (double) b[i] * b[i];
++        }
++        if (na == 0 || nb == 0) return Float.NaN;
++        return (float) (dot / (Math.sqrt(na) * Math.sqrt(nb)));
++    }
++
++    /** Fail closed: an unusable similarity (NaN) is never a match. */
++    public static boolean isMatch(float similarity, float threshold) {
++        return !Float.isNaN(similarity) && similarity >= threshold;
++    }
++
++    /**
++     * Enrollment template = re-normalised mean of the samples, but only when every sample pair is consistent.
++     * Returns null when there are too few samples or the samples look like different people/unusable data.
++     */
++    public static float[] buildTemplate(float[][] samples, int minSamples, float minPairwise) {
++        if (samples == null || samples.length < minSamples || minSamples < 2) return null;
++        int dim = samples[0] == null ? 0 : samples[0].length;
++        if (dim == 0) return null;
++        for (int i = 0; i < samples.length; i++) {
++            for (int j = i + 1; j < samples.length; j++) {
++                float c = cosine(samples[i], samples[j]);
++                if (Float.isNaN(c) || c < minPairwise) return null;
++            }
++        }
++        double[] mean = new double[dim];
++        for (float[] s : samples) {
++            double n = 0;
++            for (float v : s) n += (double) v * v;
++            n = Math.sqrt(n);
++            for (int k = 0; k < dim; k++) mean[k] += s[k] / n;
++        }
++        double n = 0;
++        for (double v : mean) n += v * v;
++        n = Math.sqrt(n);
++        if (n == 0) return null;
++        float[] out = new float[dim];
++        for (int k = 0; k < dim; k++) out[k] = (float) (mean[k] / n);
++        return out;
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java
+new file mode 100644
+index 0000000..33ce72b
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java
+@@ -0,0 +1,43 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.Manifest;
++import android.app.Activity;
++
++import androidx.preference.Preference;
++import androidx.preference.PreferenceFragmentCompat;
++import androidx.preference.TwoStatePreference;
++
++/** Wires the "Face Guard" switch in Settings > Privacy and security. Off by default. */
++public final class FaceGuardSettings {
++    public static final String KEY = "swiftra_face_guard";
++
++    private FaceGuardSettings() {}
++
++    public static void setUp(PreferenceFragmentCompat fragment, Activity activity) {
++        Preference p = fragment.findPreference(KEY);
++        if (!(p instanceof TwoStatePreference) || activity == null) return;
++        TwoStatePreference toggle = (TwoStatePreference) p;
++        toggle.setChecked(FaceGuardController.isEnabled(activity));
++        toggle.setOnPreferenceChangeListener((pref, newValue) -> {
++            boolean on = Boolean.TRUE.equals(newValue);
++            if (on) {
++                FaceGuardController.setEnabled(activity, true);
++                if (!FaceGuardController.hasCameraPermission(activity)) {
++                    activity.requestPermissions(new String[] {Manifest.permission.CAMERA},
++                            FaceGuardController.REQUEST_CAMERA);
++                }
++                return true;
++            }
++            // Turning the guard OFF needs the device credential whenever the device has one.
++            if (!FaceGuardAuth.hasDeviceCredential(activity)) {
++                FaceGuardController.setEnabled(activity, false);
++                return true;
++            }
++            FaceGuardAuth.authenticate(activity, () -> {
++                FaceGuardController.setEnabled(activity, false);
++                toggle.setChecked(false);
++            }, () -> { });
++            return false;   // stays ON until the credential is confirmed
++        });
++    }
++}
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java
+new file mode 100644
+index 0000000..e1caff8
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java
+@@ -0,0 +1,48 @@
++package org.chromium.chrome.browser.swiftra.faceguard;
++
++import android.graphics.Bitmap;
++import android.media.FaceDetector;
++
++import java.nio.ShortBuffer;
++
++/**
++ * PRESENCE ONLY: counts frontal faces with the framework android.media.FaceDetector (no Play services, no model
++ * file, no network). It does NOT identify whose face it is. Identity needs an embedding model (docs/plans/face-guard.md).
++ */
++final class PresenceFaceAnalyzer {
++    static final int MAX_FACES = 3;
++    /** Framework-documented FaceDetector.CONFIDENCE_THRESHOLD. */
++    static final float MIN_CONFIDENCE = 0.4f;
++
++    private FaceDetector mDetector;
++    private Bitmap mBitmap;
++    private int mWidth;
++    private int mHeight;
++
++    /** @return number of confident, reasonably large faces in the (already upright) gray frame. */
++    int countFaces(FaceGrayConverter.Result frame) {
++        if (mDetector == null || mWidth != frame.width || mHeight != frame.height) {
++            release();
++            mDetector = new FaceDetector(frame.width, frame.height, MAX_FACES);
++            mBitmap = Bitmap.createBitmap(frame.width, frame.height, Bitmap.Config.RGB_565);
++            mWidth = frame.width;
++            mHeight = frame.height;
++        }
++        mBitmap.copyPixelsFromBuffer(ShortBuffer.wrap(frame.pixels));
++        FaceDetector.Face[] faces = new FaceDetector.Face[MAX_FACES];
++        int found = mDetector.findFaces(mBitmap, faces);
++        float minEyes = Math.max(4f, frame.width * 0.05f);
++        int count = 0;
++        for (int i = 0; i < found && i < faces.length; i++) {
++            FaceDetector.Face f = faces[i];
++            if (f != null && f.confidence() >= MIN_CONFIDENCE && f.eyesDistance() >= minEyes) count++;
++        }
++        return count;
++    }
++
++    void release() {
++        if (mBitmap != null) mBitmap.recycle();
++        mBitmap = null;
++        mDetector = null;
++    }
++}
+diff --git a/chrome/browser/tab_ui/android/BUILD.gn b/chrome/browser/tab_ui/android/BUILD.gn
+index 085df44..6a7820b 100644
+--- a/chrome/browser/tab_ui/android/BUILD.gn
++++ b/chrome/browser/tab_ui/android/BUILD.gn
+@@ -22,6 +22,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/tab_ui/ActionConfirmationManager.java",
+     "java/src/org/chromium/chrome/browser/tab_ui/InvalidationAwareThumbnailProvider.java",
+     "java/src/org/chromium/chrome/browser/tab_ui/MultiThumbnailCardProvider.java",
++    "java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java",
+     "java/src/org/chromium/chrome/browser/tab_ui/OnTabSelectingListener.java",
+     "java/src/org/chromium/chrome/browser/tab_ui/RecyclerViewPosition.java",
+     "java/src/org/chromium/chrome/browser/tab_ui/SuggestionLifecycleObserverHandler.java",
+diff --git a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java
+new file mode 100644
+index 0000000..add323b
+--- /dev/null
++++ b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java
+@@ -0,0 +1,21 @@
++// Swiftra personal development build. Part of the opt-in Face Guard layer (docs/plans/face-guard.md).
++package org.chromium.chrome.browser.tab_ui;
++
++/**
++ * Process-wide "Face Guard is locked" flag. It lives in the tab_ui module so TabContentManager (same module)
++ * can refuse to hand out tab thumbnails while locked, without a dependency cycle on chrome/android.
++ * Defence in depth only: the opaque lock overlay is what actually hides content.
++ */
++public final class FaceGuardLockState {
++    private static volatile boolean sLocked;
++
++    private FaceGuardLockState() {}
++
++    public static boolean isLocked() {
++        return sLocked;
++    }
++
++    public static void setLocked(boolean locked) {
++        sLocked = locked;
++    }
++}
+diff --git a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java
+index f91d7f1..3d416e3 100644
+--- a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java
++++ b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java
+@@ -333,7 +333,8 @@ public class TabContentManager {
+      * @param callback The callback to send the {@link Bitmap} with.
+      */
+     public void getEtc1TabThumbnailWithCallback(int tabId, Callback<@Nullable Bitmap> callback) {
+-        if (!mSnapshotsEnabled || mNativeTabContentManager == 0) {
++        // Swiftra Face Guard: no page snapshots while locked.
++        if (FaceGuardLockState.isLocked() || !mSnapshotsEnabled || mNativeTabContentManager == 0) {
+             callback.onResult(null);
+             return;
+         }
+@@ -353,7 +354,8 @@ public class TabContentManager {
+      */
+     public void getTabThumbnailWithCallback(
+             int tabId, Size thumbnailSize, Callback<@Nullable Bitmap> callback) {
+-        if (!mSnapshotsEnabled) {
++        // Swiftra Face Guard: no page snapshots while locked.
++        if (FaceGuardLockState.isLocked() || !mSnapshotsEnabled) {
+             callback.onResult(null);
+             return;
+         }
