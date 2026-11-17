@@ -13,5 +13,5 @@ for i in $(seq 1 40); do
   adb logcat -d -s CLIPHELPER:I | grep -q "CAMDIAG done" && break
 done
 adb logcat -d -s CLIPHELPER:I | grep CAMDIAG | tee "$OUT/camdiag.txt"
-adb exec-out run-as com.swiftra.cliphelper cat files/frame.pgm > "$OUT/frame.pgm" 2>/dev/null || adb pull /data/data/com.swiftra.cliphelper/files/frame.pgm "$OUT/frame.pgm" 2>&1 | tail -1
+adb pull /sdcard/Android/data/com.swiftra.cliphelper/files/frame.pgm "$OUT/frame.pgm" 2>&1 | tail -1
 ls -la "$OUT"

@@ -114,7 +114,7 @@ final class CamDiag {
         long sum = 0;
         for (int i = 0; i < h; i++) for (int j = 0; j < w; j++) sum += y[i * stride + j] & 0xFF;
         Log.i(TAG, "CAMDIAG frame " + w + "x" + h + " stride=" + stride + " meanY=" + (sum / (w * h)));
-        try (FileOutputStream o = new FileOutputStream(new File(mCtx.getFilesDir(), "frame.pgm"))) {
+        try (FileOutputStream o = new FileOutputStream(new File(mCtx.getExternalFilesDir(null), "frame.pgm"))) {
             o.write(("P5\n" + w + " " + h + "\n255\n").getBytes());
             for (int i = 0; i < h; i++) o.write(y, i * stride, w);
         } catch (Exception e) {
