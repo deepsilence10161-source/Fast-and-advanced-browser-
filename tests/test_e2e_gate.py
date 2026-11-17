@@ -21,6 +21,7 @@ def test_pass(tmp_path):
     "personal_source_only=1\n", "personal_source_only=\n",
     "--- patches\n0101-persistent-account-boundary.patch\n",
     "personal_source_only=0\n--- patches\n0103-personal-egress-and-storage.patch\n",
+    "personal_source_only=0\n--- patches\n0105-face-guard-presence-mode.patch\n",
 ])
 def test_development_personal_variant_never_enters_ordinary_swiftra_release(tmp_path, prefix):
     folder = _mk(tmp_path, ALL)

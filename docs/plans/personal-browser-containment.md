@@ -231,3 +231,7 @@ Schema2 input receipt अब CI status का अनुमान नहीं �
 Internal-storage source/docs: <https://developer.android.com/training/data-storage/app-specific#internal-access-files> (reviewed chunks0–1)। अतिरिक्त implicit-intent guide fetched था, पर उसका footer **23October** इस19October cutoff से बाद है; उसे current shipping-behavior proof नहीं माना। Actual implementation decisions pinned source signatures/paths पर आधारित हैं। URLs/hashes/failed paths और observed receipts `evidence/personal-egress-source-2026-10-19.json` / `tools/personal_browser/egress-upstream-index.json` में हैं।
 
 **निष्कर्ष:** meaningful native source implementation और सुरक्षित development build तैयारी आगे बढ़ी है; मौजूदा app/data नहीं बदले। पूरा private browser/APK, zero-leak/whole-profile encryption या Android PASS अभी घोषित नहीं हैं। असली Android चरण के लिए सुरक्षित GitHub access बहाल करना आवश्यक है; token चैट में न भेजें।
+
+## Face Guard layer (17 Nov 2026) — status
+
+`0104-face-guard-source-guard.py` + `0105-face-guard-presence-mode.patch` personal bundle में छठी/पाँचवीं layer हैं (series = 6)। यह **presence-only** है: framework `FaceDetector` से देखता है कि कैमरे के सामने चेहरा है या नहीं; **किसका चेहरा है यह नहीं पहचानता**, liveness नहीं है, और यह security boundary नहीं बल्कि convenience lock है। Release gate अब 0105 वाले BUILD_INFO को भी personal-development मानकर सामान्य release से रोकता है। Android build/E2E नतीजे TESTING.md में आएँगे; जब तक वहाँ PASS नहीं, इसे PASS न कहें।

@@ -54,7 +54,8 @@ def is_personal_development(info):
     if any(value.strip() != "0" for value in flags):
         return True
     return any(re.search(r"^" + re.escape(patch) + r"\s*$", info, re.M) for patch in (
-        "0101-persistent-account-boundary.patch", "0103-personal-egress-and-storage.patch"))
+        "0101-persistent-account-boundary.patch", "0103-personal-egress-and-storage.patch",
+        "0105-face-guard-presence-mode.patch"))
 
 
 def gate(d, apk_sha):
