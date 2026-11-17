@@ -95,10 +95,10 @@ index 1b5d10d..013a694 100644
          // Record the launch of PG from the S&P link-row entry point
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java
 new file mode 100644
-index 0000000..2f7838d
+index 0000000..df1167b
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java
-@@ -0,0 +1,249 @@
+@@ -0,0 +1,271 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.content.Context;
@@ -117,6 +117,7 @@ index 0000000..2f7838d
 +import android.os.Handler;
 +import android.os.HandlerThread;
 +import android.os.SystemClock;
++import android.util.Log;
 +import android.util.Size;
 +import android.view.Surface;
 +import android.view.WindowManager;
@@ -150,6 +151,11 @@ index 0000000..2f7838d
 +    private int mSensorOrientation;
 +    private long mLastFrameMs;
 +    private volatile boolean mRunning;
++    private static final String TAG = "SwiftraFaceGuard";
++    private int mFrames;
++    private int mInvalid;
++    private int mLastFaces;
++    private long mLastLogMs;
 +
 +    FaceCameraSource(Context context, Listener listener) {
 +        mContext = context.getApplicationContext();
@@ -235,6 +241,7 @@ index 0000000..2f7838d
 +
 +                @Override
 +                public void onError(CameraDevice camera, int error) {
++                    Log.w(TAG, "camera error code=" + error);
 +                    closeQuietly();
 +                    fail();
 +                }
@@ -276,6 +283,7 @@ index 0000000..2f7838d
 +
 +                        @Override
 +                        public void onConfigureFailed(CameraCaptureSession session) {
++                            Log.w(TAG, "camera session configure failed");
 +                            closeQuietly();
 +                            fail();
 +                        }
@@ -323,12 +331,26 @@ index 0000000..2f7838d
 +            int rotation = FaceGrayConverter.frontCameraRotation(mSensorOrientation, displayRotationDegrees());
 +            FaceGrayConverter.Result gray =
 +                    FaceGrayConverter.toRgb565(y, image.getWidth(), image.getHeight(), plane.getRowStride(), rotation);
-+            mListener.onFrame(now, true, mAnalyzer.countFaces(gray));
++            int faces = mAnalyzer.countFaces(gray);
++            mFrames++;
++            mLastFaces = faces;
++            logCounters(now, image.getWidth(), image.getHeight(), rotation);
++            mListener.onFrame(now, true, faces);
 +        } catch (RuntimeException e) {
++            mInvalid++;
++            logCounters(now, 0, 0, -1);
 +            mListener.onFrame(now, false, 0);   // an unusable frame proves nothing; the policy ignores it
 +        } finally {
 +            if (image != null) image.close();
 +        }
++    }
++
++    /** Counters only (never pixels): lets a device test tell "no frames" from "frames without a face". */
++    private void logCounters(long now, int w, int h, int rotation) {
++        if (now - mLastLogMs < 3000) return;
++        mLastLogMs = now;
++        Log.i(TAG, "frames=" + mFrames + " invalid=" + mInvalid + " lastFaces=" + mLastFaces + " size=" + w + "x" + h
++                + " rot=" + rotation + " sensor=" + mSensorOrientation);
 +    }
 +
 +    private void closeQuietly() {
@@ -494,10 +516,10 @@ index 0000000..8d32c97
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
 new file mode 100644
-index 0000000..a3aa1bd
+index 0000000..d8c332f
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,34 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.app.Activity;
@@ -505,6 +527,8 @@ index 0000000..a3aa1bd
 +import org.chromium.chrome.browser.ChromeTabbedActivity;
 +import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 +import org.chromium.chrome.browser.layouts.LayoutType;
++import org.chromium.chrome.browser.tabmodel.TabModel;
++import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 +
 +/** The ONLY Face Guard class that touches Chromium browser internals (keeps the patch surface small). */
 +final class FaceGuardChromeBridge {
@@ -514,7 +538,14 @@ index 0000000..a3aa1bd
 +    static void showTabSwitcher(Activity activity) {
 +        if (!(activity instanceof ChromeTabbedActivity)) return;
 +        try {
-+            LayoutManagerChrome layoutManager = ((ChromeTabbedActivity) activity).getLayoutManager();
++            ChromeTabbedActivity tabbed = (ChromeTabbedActivity) activity;
++            // Opening the Hub before the tab state is restored and a tab is selected crashes the tab list (activePosition -1,
++            // seen on a real device run). Until then the opaque overlay alone hides the page; the caller retries.
++            TabModelSelector selector = tabbed.getTabModelSelector();
++            if (selector == null || !selector.isTabStateInitialized()) return;
++            TabModel model = selector.getCurrentModel();
++            if (model == null || model.getCount() == 0 || model.index() < 0) return;
++            LayoutManagerChrome layoutManager = tabbed.getLayoutManager();
 +            if (layoutManager.getActiveLayoutType() != LayoutType.HUB) {
 +                layoutManager.showLayout(LayoutType.HUB, /* animate= */ false);
 +            }
@@ -525,10 +556,10 @@ index 0000000..a3aa1bd
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
 new file mode 100644
-index 0000000..dce0def
+index 0000000..03bb99f
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
-@@ -0,0 +1,243 @@
+@@ -0,0 +1,245 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.Manifest;
@@ -613,9 +644,11 @@ index 0000000..dce0def
 +        if (mPolicy.evaluate(SystemClock.elapsedRealtime()).locked) {
 +            // Warm resume does not produce a lock "edge", so always (re)open the switcher while locked.
 +            mMain.post(() -> FaceGuardChromeBridge.showTabSwitcher(mActivity));
-+            mMain.postDelayed(() -> {
-+                if (mForeground && FaceGuardLockState.isLocked()) FaceGuardChromeBridge.showTabSwitcher(mActivity);
-+            }, 400);
++            for (long delay : new long[] {400, 1500, 4000}) {
++                mMain.postDelayed(() -> {
++                    if (mForeground && FaceGuardLockState.isLocked()) FaceGuardChromeBridge.showTabSwitcher(mActivity);
++                }, delay);
++            }
 +        }
 +    }
 +

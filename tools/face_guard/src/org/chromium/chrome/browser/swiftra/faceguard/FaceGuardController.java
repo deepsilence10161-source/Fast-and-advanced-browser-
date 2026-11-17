@@ -82,9 +82,11 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
         if (mPolicy.evaluate(SystemClock.elapsedRealtime()).locked) {
             // Warm resume does not produce a lock "edge", so always (re)open the switcher while locked.
             mMain.post(() -> FaceGuardChromeBridge.showTabSwitcher(mActivity));
-            mMain.postDelayed(() -> {
-                if (mForeground && FaceGuardLockState.isLocked()) FaceGuardChromeBridge.showTabSwitcher(mActivity);
-            }, 400);
+            for (long delay : new long[] {400, 1500, 4000}) {
+                mMain.postDelayed(() -> {
+                    if (mForeground && FaceGuardLockState.isLocked()) FaceGuardChromeBridge.showTabSwitcher(mActivity);
+                }, delay);
+            }
         }
     }
 

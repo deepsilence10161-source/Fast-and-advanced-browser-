@@ -106,10 +106,18 @@ def test_no_image_persistence_logging_or_network_in_face_guard_sources():
     banned = ("FileOutputStream", "FileWriter", "Bitmap.compress", "java.net", "okhttp", "HttpURLConnection",
               "android.util.Log", "Log.d(", "Log.e(", "Log.i(", "Log.w(", "MediaRecorder", "ImageWriter",
               "openFileOutput", "getExternalFilesDir", "Socket", "DownloadManager")
+    log_words = ("android.util.Log", "Log.d(", "Log.e(", "Log.i(", "Log.w(")
     for path in FG.glob("*.java"):
         source = path.read_text()
         for word in banned:
+            if path.name == "FaceCameraSource.java" and word in log_words:
+                continue   # counters-only diagnostics, checked below
             assert word not in source, (path.name, word)
+    camera = (FG / "FaceCameraSource.java").read_text()
+    lines = [l for l in camera.splitlines() if "Log." in l]
+    assert lines and all("TAG" in l for l in lines)
+    assert all(w not in l for l in lines for w in ("getBuffer", "pixels", "plane", "gray", "image."))
+    assert 'TAG = "SwiftraFaceGuard"' in camera
 
 
 def test_lock_overlay_is_opaque_and_swallows_touch():
@@ -120,6 +128,7 @@ def test_lock_overlay_is_opaque_and_swallows_touch():
 def test_tab_switcher_is_opened_via_hub_and_thumbnails_are_blocked_while_locked():
     bridge = (FG / "FaceGuardChromeBridge.java").read_text()
     assert "showLayout(LayoutType.HUB, /* animate= */ false)" in bridge
+    assert "isTabStateInitialized()" in bridge and "model.index() < 0" in bridge
     text = patch_text()
     assert len(re.findall(r"^\+.*FaceGuardLockState.isLocked\(\) \|\|", text, re.M)) == 2
     assert "FaceGuardController.onActivityResumed(this);" in text

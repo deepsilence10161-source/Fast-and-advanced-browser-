@@ -16,6 +16,7 @@ import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.WindowManager;
@@ -49,6 +50,11 @@ final class FaceCameraSource {
     private int mSensorOrientation;
     private long mLastFrameMs;
     private volatile boolean mRunning;
+    private static final String TAG = "SwiftraFaceGuard";
+    private int mFrames;
+    private int mInvalid;
+    private int mLastFaces;
+    private long mLastLogMs;
 
     FaceCameraSource(Context context, Listener listener) {
         mContext = context.getApplicationContext();
@@ -134,6 +140,7 @@ final class FaceCameraSource {
 
                 @Override
                 public void onError(CameraDevice camera, int error) {
+                    Log.w(TAG, "camera error code=" + error);
                     closeQuietly();
                     fail();
                 }
@@ -175,6 +182,7 @@ final class FaceCameraSource {
 
                         @Override
                         public void onConfigureFailed(CameraCaptureSession session) {
+                            Log.w(TAG, "camera session configure failed");
                             closeQuietly();
                             fail();
                         }
@@ -222,12 +230,26 @@ final class FaceCameraSource {
             int rotation = FaceGrayConverter.frontCameraRotation(mSensorOrientation, displayRotationDegrees());
             FaceGrayConverter.Result gray =
                     FaceGrayConverter.toRgb565(y, image.getWidth(), image.getHeight(), plane.getRowStride(), rotation);
-            mListener.onFrame(now, true, mAnalyzer.countFaces(gray));
+            int faces = mAnalyzer.countFaces(gray);
+            mFrames++;
+            mLastFaces = faces;
+            logCounters(now, image.getWidth(), image.getHeight(), rotation);
+            mListener.onFrame(now, true, faces);
         } catch (RuntimeException e) {
+            mInvalid++;
+            logCounters(now, 0, 0, -1);
             mListener.onFrame(now, false, 0);   // an unusable frame proves nothing; the policy ignores it
         } finally {
             if (image != null) image.close();
         }
+    }
+
+    /** Counters only (never pixels): lets a device test tell "no frames" from "frames without a face". */
+    private void logCounters(long now, int w, int h, int rotation) {
+        if (now - mLastLogMs < 3000) return;
+        mLastLogMs = now;
+        Log.i(TAG, "frames=" + mFrames + " invalid=" + mInvalid + " lastFaces=" + mLastFaces + " size=" + w + "x" + h
+                + " rot=" + rotation + " sensor=" + mSensorOrientation);
     }
 
     private void closeQuietly() {
