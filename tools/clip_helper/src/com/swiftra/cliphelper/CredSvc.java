@@ -22,21 +22,21 @@ public class CredSvc extends CredentialProviderService {
     }
 
     @Override
-    public void onBeginGetCredentialRequest(BeginGetCredentialRequest request, CancellationSignal cancel,
+    public void onBeginGetCredential(BeginGetCredentialRequest request, CancellationSignal cancel,
             OutcomeReceiver<BeginGetCredentialResponse, GetCredentialException> callback) {
         Log.i(TAG, "CRED_GET pkg=" + who(request.getCallingAppInfo()));
         callback.onResult(new BeginGetCredentialResponse.Builder().build());
     }
 
     @Override
-    public void onBeginCreateCredentialRequest(BeginCreateCredentialRequest request, CancellationSignal cancel,
+    public void onBeginCreateCredential(BeginCreateCredentialRequest request, CancellationSignal cancel,
             OutcomeReceiver<BeginCreateCredentialResponse, CreateCredentialException> callback) {
         Log.i(TAG, "CRED_CREATE pkg=" + who(request.getCallingAppInfo()));
         callback.onError(new CreateCredentialException(CreateCredentialException.TYPE_NO_CREATE_OPTIONS));
     }
 
     @Override
-    public void onClearCredentialStateRequest(ClearCredentialStateRequest request, CancellationSignal cancel,
+    public void onClearCredentialState(ClearCredentialStateRequest request, CancellationSignal cancel,
             OutcomeReceiver<Void, android.credentials.ClearCredentialStateException> callback) {
         Log.i(TAG, "CRED_CLEAR pkg=" + who(request.getCallingAppInfo()));
         callback.onResult(null);
