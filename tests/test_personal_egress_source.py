@@ -52,7 +52,7 @@ def patched(tmp_path_factory, originals):
         file.parent.mkdir(parents=True, exist_ok=True)
         file.write_text(text)
     receipts = fixtures.apply_strict(root)
-    assert len(receipts) == 8
+    assert len(receipts) == 10
     assert all(row.get("fuzz", 0) == 0 and row.get("offset", 0) == 0 for row in receipts)
     return root
 

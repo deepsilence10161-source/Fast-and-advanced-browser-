@@ -77,7 +77,8 @@ def prepare(repo: Path, output: Path, package: str, variant: str) -> dict:
             "0100-personal-source-guard.py", "0101-persistent-account-boundary.patch",
             "0102-personal-egress-source-guard.py", "0103-personal-egress-and-storage.patch",
             "0104-face-guard-source-guard.py", "0105-face-guard-presence-mode.patch",
-            "0106-personal-signin-source-guard.py", "0107-personal-signin-message.patch"]:
+            "0106-personal-signin-source-guard.py", "0107-personal-signin-message.patch",
+            "0108-personal-omnibox-source-guard.py", "0109-personal-omnibox-clipboard.patch"]:
         raise PreparationError("unexpected_patch_series")
     if len(set(base_series + personal_series)) != len(base_series + personal_series):
         raise PreparationError("duplicate_patch_name")

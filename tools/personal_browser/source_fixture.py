@@ -19,6 +19,7 @@ FIXTURES = (
     ("egress-upstream-index.json", "egress-upstream-155.0.8059.80.json.gz"),
     ("face-guard-upstream-index.json", "face-guard-upstream-155.0.8059.80.json.gz"),
     ("signin-message-upstream-index.json", "signin-message-upstream-155.0.8059.80.json.gz"),
+    ("omnibox-clipboard-upstream-index.json", "omnibox-clipboard-upstream-155.0.8059.80.json.gz"),
 )
 
 

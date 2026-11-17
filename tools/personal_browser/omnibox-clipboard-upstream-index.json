@@ -1,0 +1,22 @@
+{
+  "pinned_tag": "155.0.8059.80",
+  "status_semantics": "FETCHED and hashed; not all lines audited or executed",
+  "files": [
+    {
+      "path": "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java",
+      "status": "FETCHED",
+      "sha256": "0c824ac5b6eb2f4170fef6fc789f0c79e1673e922610fb20c4851ba550c5d155",
+      "bytes": 79753,
+      "lines": 1868
+    }
+  ],
+  "fixture_paths": [
+    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java"
+  ],
+  "fixture_gzip_sha256": "4b8aef932fd49c20cee7d8d1cde1f86bfae4fcf5124149a94a9ae294aa692dc6",
+  "native_source_outputs": [
+    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java"
+  ],
+  "not_android_acceptance": true
+}

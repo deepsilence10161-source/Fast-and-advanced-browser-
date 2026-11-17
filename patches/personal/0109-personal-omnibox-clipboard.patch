@@ -1,0 +1,42 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
+index e320419..771c269 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
+@@ -943,7 +943,19 @@ public class UrlBar extends AutocompleteEditText {
+             return true;
+         }
+ 
+-        if (mTextContextMenuDelegate == null) return super.onTextContextMenuItem(id);
++        if (mTextContextMenuDelegate == null) {
++            // Swiftra personal build: copy/cut never reaches Android's system ClipboardManager.
++            if (id == android.R.id.copy || id == android.R.id.cut) {
++                int lower = Math.max(0, Math.min(getSelectionStart(), getSelectionEnd()));
++                int upper = Math.max(getSelectionStart(), getSelectionEnd());
++                if (upper > lower) {
++                    Clipboard.getInstance().setText(getText().toString().substring(lower, upper));
++                    if (id == android.R.id.cut) getText().delete(lower, upper);
++                }
++                return true;
++            }
++            return super.onTextContextMenuItem(id);
++        }
+ 
+         boolean isCutOption = false;
+         int selStart = isFocused() ? getSelectionStart() : 0;
+@@ -992,8 +1004,14 @@ public class UrlBar extends AutocompleteEditText {
+                         mTextContextMenuDelegate.getReplacementCutCopyText(
+                                 getText().toString(), selection);
+ 
+-                // No text from the Delegate - let OS handle the action.
+-                if (replacementCutCopyText == null) break;
++                // Swiftra personal build: never let the platform TextView hand omnibox text to
++                // Android's system ClipboardManager. Use the browser-contained clipboard instead.
++                if (replacementCutCopyText == null) {
++                    if (selection.getLower() >= selection.getUpper()) return true;
++                    replacementCutCopyText =
++                            getText().toString()
++                                    .substring(selection.getLower(), selection.getUpper());
++                }
+ 
+                 Clipboard.getInstance().setText(replacementCutCopyText);
+                 if (isCutOption) getText().replace(selection.getLower(), selection.getUpper(), "");

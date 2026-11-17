@@ -138,7 +138,13 @@ def helper(mode, text=None):
 
 
 def wait_for(step, since, secs=20):
-    return P.wait_report(step, since, secs)
+    t0 = time.time()
+    while time.time() - t0 < secs:
+        got = [r for r in REPORTS[since:] if r.get("step") == step]
+        if got:
+            return got[-1]
+        time.sleep(1)
+    return None
 
 
 def main():

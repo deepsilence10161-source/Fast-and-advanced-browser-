@@ -7,3 +7,5 @@
 0105-face-guard-presence-mode.patch
 0106-personal-signin-source-guard.py
 0107-personal-signin-message.patch
+0108-personal-omnibox-source-guard.py
+0109-personal-omnibox-clipboard.patch
