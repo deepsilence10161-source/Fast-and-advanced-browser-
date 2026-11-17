@@ -30,7 +30,13 @@ def main(out):
         src = Image.open(os.path.join(FIX, name)).convert("RGB")
         upright = fit(src, 480, 640)                       # what the app should see (portrait 480x640)
         upright.rotate(-90, expand=True).save(os.path.join(out, f"cam_{key}_rot90.jpg"), quality=92)   # sensor frame 640x480
-        fit(src, 640, 480).save(os.path.join(out, f"cam_{key}_rot0.jpg"), quality=92)
+        # Measured (camdiag, 17 Nov 2026): the emulator turns the 640x480 file into a 480-wide portrait view and keeps only the
+        # central 480 columns, so a full-width picture loses its edges (the second person was cut off). Keep the whole
+        # picture inside the central 480x480 square.
+        inner = fit(src, 480, 480)
+        canvas = Image.new("RGB", (640, 480), BG)
+        canvas.paste(inner, (80, 0))
+        canvas.save(os.path.join(out, f"cam_{key}_rot0.jpg"), quality=92)
     print("wrote", sorted(os.listdir(out)))
 
 
