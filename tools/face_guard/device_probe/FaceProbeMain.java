@@ -1,5 +1,6 @@
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.FaceDetector;
 
 import org.chromium.chrome.browser.swiftra.faceguard.FaceGrayConverter;
 import org.chromium.chrome.browser.swiftra.faceguard.FaceProbeBridge;
@@ -34,6 +35,20 @@ public final class FaceProbeMain {
             for (int i = 0; i < px.length; i++) {
                 int c = px[i];
                 y[i] = (byte) (((c >> 16 & 0xFF) * 299 + (c >> 8 & 0xFF) * 587 + (c & 0xFF) * 114) / 1000);
+            }
+            // RAW detector output (no analyzer filter) at several analysis widths, for threshold evidence.
+            for (int rw : new int[] {320, 480, 640, 960}) {
+                int rh = Math.round(src.getHeight() * (rw / (float) src.getWidth()));
+                Bitmap s2 = Bitmap.createScaledBitmap(src, rw & ~1, rh, true);
+                Bitmap b565 = s2.copy(Bitmap.Config.RGB_565, false);
+                FaceDetector.Face[] fs = new FaceDetector.Face[3];
+                int found = new FaceDetector(b565.getWidth(), b565.getHeight(), 3).findFaces(b565, fs);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < found; i++) {
+                    sb.append(String.format(" [conf=%.2f eyes=%.1fpx=%.1f%%w]", fs[i].confidence(), fs[i].eyesDistance(),
+                            100f * fs[i].eyesDistance() / b565.getWidth()));
+                }
+                System.out.println("FACE_RAW " + n + " width=" + b565.getWidth() + " found=" + found + sb);
             }
             for (int rot : new int[] {0, 90, 180, 270}) {
                 // Build the "sensor" frame that the converter must turn back into the upright image.
