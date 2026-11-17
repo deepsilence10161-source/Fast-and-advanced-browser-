@@ -29,9 +29,16 @@ def main(out):
     for key, name in (("one", "one_face.jpg"), ("two", "two_faces.jpg"), ("none", "no_face.jpg")):
         src = Image.open(os.path.join(FIX, name)).convert("RGB")
         if key == "two":
-            # Both heads close to the camera (a second person leaning in): crop the wide group photo around the two faces.
+            # android.media.FaceDetector found only ONE of the two real people in the group photo through the emulator camera
+            # (camdiag runs, 17 Nov 2026), so the two-face fixture shows the same clearly detectable face TWICE side by side.
+            # It tests the app's "two detected faces -> lock" path; it does NOT prove the detector finds a real second person.
             w, h = src.size
-            src = src.crop((round(w * 0.22), 0, round(w * 0.80), h))
+            face = src.crop((round(w * 0.24), round(h * 0.10), round(w * 0.52), round(h * 0.78)))
+            half = fit(face, 240, 480)
+            both = Image.new("RGB", (480, 480), BG)
+            both.paste(half, (0, 0))
+            both.paste(half, (240, 0))
+            src = both
         upright = fit(src, 480, 640)                       # what the app should see (portrait 480x640)
         upright.rotate(-90, expand=True).save(os.path.join(out, f"cam_{key}_rot90.jpg"), quality=92)   # sensor frame 640x480
         # Measured (camdiag, 17 Nov 2026): the emulator turns the 640x480 file into a 480-wide portrait view and keeps only the
