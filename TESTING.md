@@ -393,3 +393,7 @@ Cause (source): `UrlBar.onTextContextMenuItem` falls through to the platform `Te
 Build for the fix: x64 run 44057451792, arm64 run 44057457297 (dispatched 09:38 UTC). Earlier builds 44051494682/44051498843 cancelled so one build carries Face Guard + sign-in message + omnibox fix.
 
 **Update (same day):** clipboard harness fixed. x64 run 44058491637 and ARM64 Redroid run 44058021096: K00 PASS, K01 PASS, K02 PASS, **K03 FAIL on both ABIs** (address-bar copy reaches the system clipboard). Evidence: `evidence/personal-clipboard-2026-11-17.json`. After the new build, K03 must flip to PASS (with `pasted_back_into_url_bar=True` as proof the copy happened) before the fix is claimed.
+
+## Personal dev APK: Android autofill exposure (17 Nov 2026)
+
+Observer = CI-only helper registered as the system autofill service (logs requesters, never fills). x64 Android 16 run 44059509912 and ARM64 Redroid Android 14 run 44059513931: **A00 control PASS** (a foreground helper field reaches the service), **A01 PASS** (username/password fields of a loopback web form focused in the personal browser, **no autofill request** from `com.swiftra.personaldev`). Evidence: `evidence/personal-autofill-2026-11-17.json`. This is the shipped APK (0103 `IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS`). NOT covered: passkeys/Credential Manager, other password managers, IME suggestions, real device. Not a privacy certification.

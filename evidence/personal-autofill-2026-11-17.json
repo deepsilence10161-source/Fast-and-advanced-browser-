@@ -1,0 +1,23 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev; published build, WITHOUT 0105/0107/0109): is a web login form exposed to the Android AUTOFILL service? Observer = CI-only helper registered as the system autofill service; it never fills. Synthetic loopback form, no account. NOT privacy-certified.",
+ "harness": "scripts/ci/personal_autofill_e2e.py (A00-A01)",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44059509912",
+  "A00_control": "PASS (helper's own field reached the service)",
+  "A01_browser_form": "PASS (fields focused, no request from the browser)"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14 / API 34",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44059513931",
+  "A00_control": "PASS",
+  "A01_browser_form": "PASS"
+ },
+ "not_covered": [
+  "Credential Manager / passkey flows (needs a credential provider and a WebAuthn site)",
+  "third-party password managers other than the observer service",
+  "autofill dropdown/inline suggestions UI",
+  "IME suggestions",
+  "real OEM device"
+ ]
+}
