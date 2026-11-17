@@ -33,10 +33,15 @@ public final class FaceGuardSettings {
                 FaceGuardController.setEnabled(activity, false);
                 return true;
             }
-            FaceGuardAuth.authenticate(activity, () -> {
+            boolean started = FaceGuardAuth.authenticate(activity, () -> {
                 FaceGuardController.setEnabled(activity, false);
                 toggle.setChecked(false);
             }, () -> { });
+            if (!started) {
+                // No way to verify the owner on this device: refusing would make the switch impossible to turn off.
+                FaceGuardController.setEnabled(activity, false);
+                return true;
+            }
             return false;   // stays ON until the credential is confirmed
         });
     }

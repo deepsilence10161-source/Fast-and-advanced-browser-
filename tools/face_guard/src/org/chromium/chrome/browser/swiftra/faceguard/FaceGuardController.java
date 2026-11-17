@@ -37,6 +37,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
     private FaceGuardOverlay mOverlay;
     private boolean mForeground;
     private boolean mCameraFailed;
+    private boolean mCredentialPromptBroken;
 
     private FaceGuardController() {}
 
@@ -76,6 +77,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
         mActivity = activity;
         mForeground = true;
         mCameraFailed = false;
+        mCredentialPromptBroken = false;
         applySettingsAndState();
         if (mPolicy.evaluate(SystemClock.elapsedRealtime()).locked) {
             // Warm resume does not produce a lock "edge", so always (re)open the switcher while locked.
@@ -194,7 +196,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         mOverlay.bringToFront();
-        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity));
+        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken);
     }
 
     private void removeOverlay() {
@@ -208,10 +210,15 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
     @Override
     public void onUnlockWithDeviceCredential() {
         if (mActivity == null) return;
-        FaceGuardAuth.authenticate(mActivity, () -> {
+        boolean started = FaceGuardAuth.authenticate(mActivity, () -> {
             mPolicy.onDeviceCredentialSuccess();
             render();
         }, () -> { });
+        if (!started) {
+            // The platform could not show its credential prompt: never trap the owner behind the lock screen.
+            mCredentialPromptBroken = true;
+            render();
+        }
     }
 
     @Override

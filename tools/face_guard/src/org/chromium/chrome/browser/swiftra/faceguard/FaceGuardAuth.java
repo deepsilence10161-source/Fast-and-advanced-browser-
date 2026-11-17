@@ -17,19 +17,24 @@ final class FaceGuardAuth {
         return km != null && km.isDeviceSecure();
     }
 
-    /** Runs onSuccess only after the platform confirms the device credential; otherwise onFailure (never both). */
-    static void authenticate(Activity activity, Runnable onSuccess, Runnable onFailure) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || !hasDeviceCredential(activity)) {
-            onFailure.run();
-            return;
-        }
+    /**
+     * Shows the platform credential prompt. onSuccess runs only after the platform confirms the credential; onFailure
+     * runs on error/cancel. Returns false (and runs neither) when the prompt could not even be started, so the caller
+     * can offer a non-credential way out instead of locking the owner out.
+     */
+    @SuppressWarnings("deprecation")
+    static boolean authenticate(Activity activity, Runnable onSuccess, Runnable onFailure) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || !hasDeviceCredential(activity)) return false;
         try {
-            BiometricPrompt prompt = new BiometricPrompt.Builder(activity)
+            BiometricPrompt.Builder builder = new BiometricPrompt.Builder(activity)
                     .setTitle("Face Guard")
-                    .setDescription("Confirm your device PIN, pattern or password")
-                    .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-                    .build();
-            prompt.authenticate(new CancellationSignal(), activity.getMainExecutor(),
+                    .setDescription("Confirm your device PIN, pattern or password");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                builder.setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL);
+            } else {
+                builder.setDeviceCredentialAllowed(true);   // Android 10: the only way to ask for the device credential
+            }
+            builder.build().authenticate(new CancellationSignal(), activity.getMainExecutor(),
                     new BiometricPrompt.AuthenticationCallback() {
                         @Override
                         public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
@@ -41,8 +46,9 @@ final class FaceGuardAuth {
                             onFailure.run();
                         }
                     });
+            return true;
         } catch (RuntimeException e) {
-            onFailure.run();
+            return false;
         }
     }
 }

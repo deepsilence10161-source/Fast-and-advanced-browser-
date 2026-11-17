@@ -434,10 +434,10 @@ index 0000000..f149d35
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java
 new file mode 100644
-index 0000000..36d318f
+index 0000000..8d32c97
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java
-@@ -0,0 +1,48 @@
+@@ -0,0 +1,54 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.app.Activity;
@@ -457,19 +457,24 @@ index 0000000..36d318f
 +        return km != null && km.isDeviceSecure();
 +    }
 +
-+    /** Runs onSuccess only after the platform confirms the device credential; otherwise onFailure (never both). */
-+    static void authenticate(Activity activity, Runnable onSuccess, Runnable onFailure) {
-+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || !hasDeviceCredential(activity)) {
-+            onFailure.run();
-+            return;
-+        }
++    /**
++     * Shows the platform credential prompt. onSuccess runs only after the platform confirms the credential; onFailure
++     * runs on error/cancel. Returns false (and runs neither) when the prompt could not even be started, so the caller
++     * can offer a non-credential way out instead of locking the owner out.
++     */
++    @SuppressWarnings("deprecation")
++    static boolean authenticate(Activity activity, Runnable onSuccess, Runnable onFailure) {
++        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || !hasDeviceCredential(activity)) return false;
 +        try {
-+            BiometricPrompt prompt = new BiometricPrompt.Builder(activity)
++            BiometricPrompt.Builder builder = new BiometricPrompt.Builder(activity)
 +                    .setTitle("Face Guard")
-+                    .setDescription("Confirm your device PIN, pattern or password")
-+                    .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-+                    .build();
-+            prompt.authenticate(new CancellationSignal(), activity.getMainExecutor(),
++                    .setDescription("Confirm your device PIN, pattern or password");
++            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
++                builder.setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL);
++            } else {
++                builder.setDeviceCredentialAllowed(true);   // Android 10: the only way to ask for the device credential
++            }
++            builder.build().authenticate(new CancellationSignal(), activity.getMainExecutor(),
 +                    new BiometricPrompt.AuthenticationCallback() {
 +                        @Override
 +                        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
@@ -481,8 +486,9 @@ index 0000000..36d318f
 +                            onFailure.run();
 +                        }
 +                    });
++            return true;
 +        } catch (RuntimeException e) {
-+            onFailure.run();
++            return false;
 +        }
 +    }
 +}
@@ -519,10 +525,10 @@ index 0000000..a3aa1bd
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
 new file mode 100644
-index 0000000..b6379e1
+index 0000000..dce0def
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
-@@ -0,0 +1,236 @@
+@@ -0,0 +1,243 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.Manifest;
@@ -562,6 +568,7 @@ index 0000000..b6379e1
 +    private FaceGuardOverlay mOverlay;
 +    private boolean mForeground;
 +    private boolean mCameraFailed;
++    private boolean mCredentialPromptBroken;
 +
 +    private FaceGuardController() {}
 +
@@ -601,6 +608,7 @@ index 0000000..b6379e1
 +        mActivity = activity;
 +        mForeground = true;
 +        mCameraFailed = false;
++        mCredentialPromptBroken = false;
 +        applySettingsAndState();
 +        if (mPolicy.evaluate(SystemClock.elapsedRealtime()).locked) {
 +            // Warm resume does not produce a lock "edge", so always (re)open the switcher while locked.
@@ -719,7 +727,7 @@ index 0000000..b6379e1
 +                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 +        }
 +        mOverlay.bringToFront();
-+        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity));
++        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken);
 +    }
 +
 +    private void removeOverlay() {
@@ -733,10 +741,15 @@ index 0000000..b6379e1
 +    @Override
 +    public void onUnlockWithDeviceCredential() {
 +        if (mActivity == null) return;
-+        FaceGuardAuth.authenticate(mActivity, () -> {
++        boolean started = FaceGuardAuth.authenticate(mActivity, () -> {
 +            mPolicy.onDeviceCredentialSuccess();
 +            render();
 +        }, () -> { });
++        if (!started) {
++            // The platform could not show its credential prompt: never trap the owner behind the lock screen.
++            mCredentialPromptBroken = true;
++            render();
++        }
 +    }
 +
 +    @Override
@@ -1206,10 +1219,10 @@ index 0000000..20113f7
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java
 new file mode 100644
-index 0000000..33ce72b
+index 0000000..b1c6094
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java
-@@ -0,0 +1,43 @@
+@@ -0,0 +1,48 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.Manifest;
@@ -1245,10 +1258,15 @@ index 0000000..33ce72b
 +                FaceGuardController.setEnabled(activity, false);
 +                return true;
 +            }
-+            FaceGuardAuth.authenticate(activity, () -> {
++            boolean started = FaceGuardAuth.authenticate(activity, () -> {
 +                FaceGuardController.setEnabled(activity, false);
 +                toggle.setChecked(false);
 +            }, () -> { });
++            if (!started) {
++                // No way to verify the owner on this device: refusing would make the switch impossible to turn off.
++                FaceGuardController.setEnabled(activity, false);
++                return true;
++            }
 +            return false;   // stays ON until the credential is confirmed
 +        });
 +    }
