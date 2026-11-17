@@ -29,6 +29,10 @@ public class Main extends Activity {
         super.onWindowFocusChanged(hasFocus);
         if (!hasFocus || mDone) return;
         mDone = true;
+        if ("cam".equals(mMode)) {
+            new CamDiag(this, () -> runOnUiThread(this::finish)).start();
+            return;
+        }
         if ("cred".equals(mMode)) {
             // Positive control: this foreground app asks Credential Manager, which must consult the selected provider.
             try {
