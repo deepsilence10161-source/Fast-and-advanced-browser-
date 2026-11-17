@@ -397,3 +397,7 @@ Build for the fix: x64 run 44057451792, arm64 run 44057457297 (dispatched 09:38 
 ## Personal dev APK: Android autofill exposure (17 Nov 2026)
 
 Observer = CI-only helper registered as the system autofill service (logs requesters, never fills). x64 Android 16 run 44059509912 and ARM64 Redroid Android 14 run 44059513931: **A00 control PASS** (a foreground helper field reaches the service), **A01 PASS** (username/password fields of a loopback web form focused in the personal browser, **no autofill request** from `com.swiftra.personaldev`). Evidence: `evidence/personal-autofill-2026-11-17.json`. This is the shipped APK (0103 `IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS`). NOT covered: passkeys/Credential Manager, other password managers, IME suggestions, real device. Not a privacy certification.
+
+## Personal dev APK: passkey / Credential Manager exposure (17 Nov 2026)
+
+Observer = CI-only helper registered as the system credential provider. x64 run 44061021675 (Android 16) and ARM64 Redroid run 44061959106 (Android 14): **C00 control PASS**, **C01 PASS**: a real tap + `navigator.credentials.get({publicKey})` produced **no request** to the system provider. The page got `NotSupportedError: Not implemented` (ARM64) / no result in 20 s (x64), so **passkeys are effectively unusable in this build** (a functional limitation, not a leak). Evidence: `evidence/personal-cred-2026-11-17.json`. Not covered: a real passkey site, Google/third-party providers, OEM device.

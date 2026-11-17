@@ -1,0 +1,22 @@
+{
+ "scope": "Personal DEVELOPMENT APK (published build): does a WebAuthn/passkey request reach the system Credential Manager provider? Observer = CI-only helper registered as credential provider (returns nothing). Loopback page, real tap, no account.",
+ "harness": "scripts/ci/personal_cred_e2e.py (C00-C01)",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44061021675",
+  "C00_control": "PASS",
+  "C01_browser": "PASS (no request reached the provider; the page got no WebAuthn result in 20 s)"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14 / API 34",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44061959106",
+  "C00_control": "PASS",
+  "C01_browser": "PASS (no request reached the provider; page got NotSupportedError: Not implemented)"
+ },
+ "interpretation": "Nothing was exposed to the system credential provider. Passkeys are effectively NOT usable in this build (the page gets NotSupportedError / no result), so passkey login on websites will not work.",
+ "not_covered": [
+  "real passkey-capable site",
+  "Google Password Manager / third-party providers",
+  "real OEM device"
+ ]
+}
