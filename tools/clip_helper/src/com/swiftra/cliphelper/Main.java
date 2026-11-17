@@ -29,6 +29,26 @@ public class Main extends Activity {
         super.onWindowFocusChanged(hasFocus);
         if (!hasFocus || mDone) return;
         mDone = true;
+        if ("cred".equals(mMode)) {
+            // Positive control: this foreground app asks Credential Manager, which must consult the selected provider.
+            try {
+                android.credentials.CredentialManager cmgr = getSystemService(android.credentials.CredentialManager.class);
+                android.credentials.GetCredentialRequest req = new android.credentials.GetCredentialRequest.Builder(new android.os.Bundle())
+                        .addCredentialOption(new android.credentials.CredentialOption.Builder(
+                                "android.credentials.TYPE_PASSWORD_CREDENTIAL", new android.os.Bundle(), new android.os.Bundle()).build())
+                        .build();
+                cmgr.getCredential(this, req, null, getMainExecutor(), new android.os.OutcomeReceiver<
+                        android.credentials.GetCredentialResponse, android.credentials.GetCredentialException>() {
+                    @Override public void onResult(android.credentials.GetCredentialResponse r) { Log.i(TAG, "CRED_CONTROL_RESULT"); }
+                    @Override public void onError(android.credentials.GetCredentialException e) { Log.i(TAG, "CRED_CONTROL_ERROR " + e.getType()); }
+                });
+                Log.i(TAG, "CRED_CONTROL_SENT");
+            } catch (Throwable e) {
+                Log.i(TAG, "CRED_CONTROL_EXC " + e);
+            }
+            getWindow().getDecorView().postDelayed(this::finish, 5000);
+            return;
+        }
         if ("autofill".equals(mMode)) {
             // Positive control: this foreground app asks the selected autofill service to fill its own field.
             EditText f = (EditText) ((android.view.ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
