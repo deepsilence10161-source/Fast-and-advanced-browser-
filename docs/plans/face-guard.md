@@ -69,3 +69,20 @@ Chromium के Android `shape_detection` Face API पर निर्भर न
 | Thumbnails mask करना | `chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java` — `getTabThumbnailWithCallback(...)` (एकल प्रवेश-द्वार का उम्मीदवार) | lock के दौरान null/placeholder लौटाना; titles/favicons का mask और उन सभी रास्तों की जाँच **बाकी** |
 | Settings toggle | `chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java` और `chrome/android/java/res/xml/privacy_preferences.xml` (दोनों 155 में मौजूद, HTTP 200) | अब patch लिखने से पहले इनकी वास्तविक सामग्री पढ़कर hunk बनेंगे |
 | UI थ्रेड/समय | LOCK का `showLayout` UI thread पर; camera frames background thread पर; policy में timer (`nextDeadlineMs`) | latency मापना बाकी |
+
+## 9. चरण 3 की वास्तविक स्थिति: Android परत लिखी गई — **PRESENCE MODE** (उपस्थिति, पहचान नहीं)
+**यह सबसे ज़रूरी बात है:** अभी बनी परत केवल यह जाँचती है कि front camera को **कोई चेहरा** दिख रहा है या नहीं। यह **नहीं** पहचानती कि चेहरा *मालिक का* है। पहचान के लिए embedding model चाहिए, और वह (licence-सत्यापन, Chromium build में runtime, calibration-डेटा) अभी **नहीं** चुना/जोड़ा गया। इसलिए दावा: "चेहरा हटते ही लॉक", **न कि** "सिर्फ मेरा चेहरा खोलेगा"।
+
+| भाग | फ़ाइल (patch 0105; स्रोत `tools/face_guard/`) | काम |
+|---|---|---|
+| Settings switch (डिफ़ॉल्ट OFF) | `privacy_preferences.xml` + `FaceGuardSettings` | Privacy and security में "Face Guard (experimental)"; ON पर camera permission माँगता है; **OFF करने के लिए device PIN/pattern ज़रूरी** (device में credential हो तो) |
+| Camera | `FaceCameraSource` (camera2, front, YUV, केवल memory) | frames न disk पर, न log में, न network पर; कोई भी camera त्रुटि → fail-closed |
+| उपस्थिति पहचान | `PresenceFaceAnalyzer` (framework `android.media.FaceDetector`, कोई model-फ़ाइल/Play services नहीं) + `FaceGrayConverter` | चेहरों की गिनती; ≥2 चेहरे = "दूसरा चेहरा" |
+| निर्णय | `FaceGuardPolicy` (चरण 1 में host-परीक्षित) | lockDelay 300 ms, stale 1000 ms, unlock के लिए 3 frames |
+| Lock UI | `FaceGuardOverlay` (पूरी तरह अपारदर्शी, सभी touch निगलता है) + `FaceGuardChromeBridge` | LOCK होते ही tab switcher (Hub, `animate=false`) खुलता है और ऊपर ढक्कन रहता है |
+| Mask | `TabContentManager` (+ `FaceGuardLockState` उसी module में) | lock में tab thumbnails नहीं दिए जाते |
+| बाहर निकलने का रास्ता | overlay में "Unlock with device PIN"; PIN न हो तो "Turn off Face Guard" | **कभी lockout नहीं**; डेटा कभी नहीं मिटता |
+
+**जो मापा गया (वास्तविक Android, दोनों ABI):** `face-guard-device-e2e.yml` का `probe` suite असली `android.media.FaceDetector` + असली `FaceGrayConverter`/`PresenceFaceAnalyzer` को तीन काल्पनिक (AI-निर्मित) चित्रों पर चलाता है — बिना चेहरा / एक चेहरा / दो चेहरे — चारों frame-rotations पर। **पहली माप (320 px चौड़ाई):** x64 (Android 16) और ARM64 Redroid (Android 14) दोनों पर no_face=0, one_face=1, पर two_faces=0 (दूसरा चेहरा छूट गया)। **कच्चा detector output** बताता है कि 480 px से ऊपर दोनों चेहरे मिलते हैं (आँखों की दूरी ≈ चौड़ाई का 4.4%) जबकि मेरा आकार-फ़िल्टर 5% माँग रहा था। इसलिए विश्लेषण-चौड़ाई 480 और न्यूनतम आँख-दूरी 3% की गई (**केवल 3 चित्रों पर ट्यून** — यह calibration/accuracy का दावा नहीं है)।
+
+**जो अभी नहीं मापा/नहीं बना:** (1) मालिक की पहचान (embedding) — नहीं बना; (2) असली चेहरे से unlock और face-हटने की latency — emulator के camera में चेहरा नहीं, इसलिए केवल fail-closed पक्ष मापा जाता है; (3) photo/screen spoof — बचाव नहीं; FaceDetector एक फोटो को भी "चेहरा" गिनेगा; (4) असली OEM फ़ोन; (5) cold start में native init से पहले की ~1 सेकंड की खिड़की, accessibility service, तथा overlay के ऊपर दिखने वाली अलग विंडो (dialog/popup) अब भी देख सकते हैं; (6) Settings/Recents-screenshot में सामग्री; (7) ARM64 Redroid में camera नहीं होने से camera वाले चरण NOT_RUN रहेंगे।
