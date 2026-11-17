@@ -73,3 +73,15 @@ def test_device_loss_is_a_harness_error_not_a_quiet_not_run(monkeypatch):
         raise AssertionError("device loss was swallowed")
     monkeypatch.setattr(P, "adb", lambda *a, **k: "device\n")
     assert P.device_up() is True
+
+
+def test_launcher_on_top_is_not_an_observed_hand_off():
+    pkg = "com.swiftra.personaldev"
+    out = "priority=0 ... \ncom.android.launcher3/.uioverrides.QuickstepLauncher\n"
+    ign = P.home_packages(out) | {"com.android.systemui"}
+    assert "com.android.launcher3" in ign
+    assert P.control_label("com.android.launcher3", pkg, ign).startswith("UNAVAILABLE")
+    assert P.control_label("com.android.systemui", pkg, ign).startswith("UNAVAILABLE")
+    assert P.control_label("com.google.android.dialer", pkg, ign) == "OBSERVED(com.google.android.dialer)"
+    # without the ignore set a launcher would wrongly read as an observed hand-off (the ARM64 Redroid case)
+    assert P.control_label("com.android.launcher3", pkg).startswith("OBSERVED")

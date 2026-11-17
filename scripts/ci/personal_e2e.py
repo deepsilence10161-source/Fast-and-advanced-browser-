@@ -203,13 +203,20 @@ def top_package(dump):
     return m.group(1) if m else ""
 
 
-def control_label(ctl, pkg):
+def home_packages(resolve_output):
+    """Packages of the HOME launcher(s) from `cmd package resolve-activity --brief ... HOME` (or query-activities)."""
+    return set(re.findall(r"([A-Za-z][\w]*(?:\.[\w]+)+)/", resolve_output or ""))
+
+
+def control_label(ctl, pkg, ignore=()):
     """Measurement control for C04: an adb-issued DIAL intent must make ANOTHER package top-resumed,
     proving top_package() can observe a hand-off on this device. Says nothing about the browser itself."""
     if not ctl:
         return "UNAVAILABLE(top package not parsed)"
     if ctl == pkg:
         return "UNAVAILABLE(no other app handles tel: on this image)"
+    if ctl in ignore:
+        return f"UNAVAILABLE(only the launcher/system UI {ctl} is on top: no app handled tel:)"
     return f"OBSERVED({ctl})"
 
 
@@ -394,7 +401,9 @@ def main():
             time.sleep(2)
             adb("shell", "am", "start", "-W", "-a", "android.intent.action.DIAL", "-d", "tel:5551234", timeout=60)
             time.sleep(4)
-            control = control_label(top_package(sh("dumpsys activity activities", 60)), pkg)
+            ignore = home_packages(sh("cmd package resolve-activity --brief -a android.intent.action.MAIN "
+                                      "-c android.intent.category.HOME", 60)) | {"com.android.systemui"}
+            control = control_label(top_package(sh("dumpsys activity activities", 60)), pkg, ignore)
             res("C09_measurement_control", "PASS" if control.startswith("OBSERVED") else "NOT_RUN", control)
     except Exception as e:  # noqa: BLE001
         print("PERSONAL_E2E harness_error", repr(e)[:300], flush=True)
