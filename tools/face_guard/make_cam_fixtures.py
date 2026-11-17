@@ -25,9 +25,9 @@ def fit(img, w, h):
 
 
 # Measured with the camdiag suite (17 Nov 2026, x64 emulator front camera via -camera-front imagefile:, sensor orientation 90):
-# the emulator scales the 640x480 file by 640/480 to cover a 480x640 portrait view and keeps only the CENTRAL columns
-# 141..499 of the file (358 px wide, full height). Everything the test needs must therefore sit inside that window.
-WIN_X, WIN_W, FRAME_W, FRAME_H = 141, 358, 640, 480
+# the emulator scales the 640x480 file by 640/480 and shows it in a 480x640 portrait view: only the LEFT columns 0..359 of
+# the file (360 px wide, full height) are visible (upright x = 1.333 * file x). Everything the test needs must sit there.
+WIN_X, WIN_W, FRAME_W, FRAME_H = 0, 360, 640, 480
 
 
 def window_frame(content):
