@@ -13,6 +13,7 @@ final class PresenceFaceAnalyzer {
     static final int MAX_FACES = 3;
     /** Framework-documented FaceDetector.CONFIDENCE_THRESHOLD. */
     static final float MIN_CONFIDENCE = 0.4f;
+    static final float MIN_EYES_FRACTION = 0.03f;
 
     private FaceDetector mDetector;
     private Bitmap mBitmap;
@@ -31,7 +32,9 @@ final class PresenceFaceAnalyzer {
         mBitmap.copyPixelsFromBuffer(ShortBuffer.wrap(frame.pixels));
         FaceDetector.Face[] faces = new FaceDetector.Face[MAX_FACES];
         int found = mDetector.findFaces(mBitmap, faces);
-        float minEyes = Math.max(4f, frame.width * 0.05f);
+        // Evidence (real FaceDetector, x64 + ARM64): a second, smaller face is found from ~480 px analysis width with the
+        // eye distance near 4.4% of the width, so the size floor must sit below that. Tuned on very few images.
+        float minEyes = Math.max(4f, frame.width * MIN_EYES_FRACTION);
         int count = 0;
         for (int i = 0; i < found && i < faces.length; i++) {
             FaceDetector.Face f = faces[i];

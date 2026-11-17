@@ -58,6 +58,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
           disable-animations: true
           script: PROBE_DEX=probe_dex/probe.dex bash scripts/ci/face_guard_probe.sh out/face_x64
+      - name: Evaluate probe expectations
+        run: python3 scripts/ci/face_guard_probe_check.py out/face_x64/face_probe.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: face-guard-x64, path: out/ }
@@ -90,6 +92,8 @@ jobs:
       - name: Face probe on native ARM64 Redroid
         run: |
           PROBE_DEX=probe_dex/probe.dex bash scripts/ci/face_guard_probe.sh out/face_arm64
+      - name: Evaluate probe expectations
+        run: python3 scripts/ci/face_guard_probe_check.py out/face_arm64/face_probe.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: face-guard-arm64, path: out/ }

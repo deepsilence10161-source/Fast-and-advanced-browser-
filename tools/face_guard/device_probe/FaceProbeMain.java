@@ -14,7 +14,7 @@ import java.util.Arrays;
  * Usage: app_process / FaceProbeMain <dir-with-images>
  */
 public final class FaceProbeMain {
-    static final int WIDTH = 320;
+    static final int WIDTH = 480;   // must equal FaceCameraSource.TARGET_W
 
     public static void main(String[] args) {
         File[] files = new File(args[0]).listFiles();

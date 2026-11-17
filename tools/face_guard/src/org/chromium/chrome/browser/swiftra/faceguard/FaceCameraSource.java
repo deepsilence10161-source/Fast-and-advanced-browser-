@@ -35,7 +35,7 @@ final class FaceCameraSource {
         void onCameraFailed();
     }
 
-    private static final int TARGET_W = 320;
+    private static final int TARGET_W = 480;   // smaller faces (a second person) are not detected below ~480 px
     private static final long MIN_FRAME_INTERVAL_MS = 80;
 
     private final Context mContext;

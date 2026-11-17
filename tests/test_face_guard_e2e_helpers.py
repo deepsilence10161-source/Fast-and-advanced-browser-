@@ -53,3 +53,35 @@ def test_locked_screenshot_detection():
 def test_summarize_never_counts_not_run_as_pass():
     c = M.summarize([{"status": "PASS"}, {"status": "NOT_RUN"}, {"status": "FAIL"}])
     assert c == {"PASS": 1, "FAIL": 1, "NOT_RUN": 1}
+
+
+def _probe_module():
+    s = importlib.util.spec_from_file_location("fg_probe_check", ROOT / "scripts/ci/face_guard_probe_check.py")
+    m = importlib.util.module_from_spec(s)
+    s.loader.exec_module(m)
+    return m
+
+
+def _probe_text(one=1, two=2, none=0, done=True):
+    lines = []
+    for name, v in (("no_face.jpg", none), ("one_face.jpg", one), ("two_faces.jpg", two)):
+        for r in (0, 90, 180, 270):
+            lines.append(f"FACE_PROBE {name} rot={r} faces={v}")
+    return "\n".join(lines) + ("\nFACE_PROBE_DONE\n" if done else "\n")
+
+
+def test_probe_check_accepts_expected_counts_and_rejects_any_deviation():
+    P = _probe_module()
+    assert all(ok for _, ok, _ in P.evaluate(_probe_text()))
+    assert [ok for _, ok, _ in P.evaluate(_probe_text(two=1))] == [True, True, False]
+    assert [ok for _, ok, _ in P.evaluate(_probe_text(none=1))] == [False, True, True]
+    assert P.evaluate(_probe_text(done=False)) is None
+    partial = _probe_text().replace("FACE_PROBE one_face.jpg rot=90 faces=1\n", "")
+    assert [ok for _, ok, _ in P.evaluate(partial)] == [True, False, True]
+
+
+def test_regenerated_patch_is_current():
+    import subprocess
+    import sys
+    r = subprocess.run([sys.executable, str(ROOT / "tools/face_guard/regen_patch.py"), "--check"], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
