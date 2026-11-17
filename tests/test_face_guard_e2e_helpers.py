@@ -100,3 +100,10 @@ def test_face_scenario_script_and_fixture_builder_are_valid():
         for key in ("one", "two", "none"):
             for v in ("rot0", "rot90"):
                 assert PIL.open(f"{d}/cam_{key}_{v}.jpg").size == (640, 480)
+
+
+def test_secure_blank_screenshot_is_unverifiable_not_a_failure():
+    PIL = pytest.importorskip("PIL.Image")
+    black = PIL.new("RGB", (200, 400), (0, 0, 0))
+    buf = io.BytesIO(); black.save(buf, "PNG")
+    assert M.locked_screenshot_ok(buf.getvalue()) is None
