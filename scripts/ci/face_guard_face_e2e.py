@@ -13,6 +13,7 @@ are uiautomator-polling bounds (about +-1.5 s); they are NOT the policy latency 
 """
 import argparse
 import json
+import re
 import os
 import sys
 import time
@@ -66,6 +67,9 @@ def main():
         last_text = ""
         while time.time() - t0 < 60:
             xml = G.dump()
+            if "default browser" in xml:
+                G.dismiss_default_browser()
+                continue
             vis = G.overlay_visible(xml)
             txt = G.overlay_text(xml)
             t = round(time.time() - t0, 1)
@@ -122,6 +126,11 @@ def main():
 def finish(a, results, abi, rc):
     try:
         open(os.path.join(a.out, "logcat_tail.txt"), "w").write(G.adb("logcat", "-d", "-t", "4000", timeout=60))
+        full = G.adb("logcat", "-d", "-t", "40000", timeout=90)
+        keep = [l for l in full.splitlines() if "AccessibilityNodeInfoDumper" not in l and "uiautomator" not in l.lower()
+                and re.search(r"com\.swiftra\.personaldev|FATAL|AndroidRuntime|tombstone|DEBUG|CameraService|Camera2|CameraDevice|ActivityManager: (Process|Start|Killing)|libc|SIGSEGV|ANR", l)]
+        open(os.path.join(a.out, "logcat_filtered.txt"), "w").write("\n".join(keep[-3000:]))
+        open(os.path.join(a.out, "logcat_crash.txt"), "w").write(G.adb("logcat", "-d", "-b", "crash", timeout=60))
     except Exception:  # noqa: BLE001
         pass
     c = G.summarize(results)
