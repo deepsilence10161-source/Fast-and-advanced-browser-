@@ -1,0 +1,72 @@
+name: Face Guard device checks (x64 emulator + native ARM64 Redroid; never publishes)
+# Real Android runtime evidence for the opt-in Face Guard layer. Manual only. No publish, no update feed.
+# probe: real android.media.FaceDetector + repo analyzer code on still images (no camera, no APK).
+# Host PASS is never Android PASS.
+on:
+  workflow_dispatch:
+    inputs:
+      cpu:
+        type: choice
+        options: [x64, arm64]
+        default: x64
+      redroid_image:
+        default: "redroid/redroid:14.0.0_64only-latest"
+permissions:
+  contents: read
+jobs:
+  probe-x64:
+    if: inputs.cpu == 'x64'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Face probe on x64 emulator (API 36)
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          ram-size: 4096M
+          disk-size: 8G
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
+          disable-animations: true
+          script: bash scripts/ci/face_guard_probe.sh out/face_x64
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: face-guard-x64, path: out/ }
+  probe-arm64:
+    if: inputs.cpu == 'arm64'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    env:
+      ANDROID_SERIAL: 127.0.0.1:5555
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Host + binder kernel module
+        run: |
+          sudo modprobe binder_linux devices="binder,hwbinder,vndbinder" 2>/dev/null || {
+            sudo apt-get update -qq && sudo apt-get install -y -qq "linux-modules-extra-$(uname -r)" >/dev/null
+            sudo modprobe binder_linux devices="binder,hwbinder,vndbinder"; }
+          sudo apt-get install -y -qq adb >/dev/null
+      - name: Boot Redroid (native arm64 Android)
+        run: |
+          mkdir -p "$RUNNER_TEMP/rd"
+          docker run -d --name rd --privileged -v "$RUNNER_TEMP/rd:/data" -p 5555:5555 "${{ inputs.redroid_image }}" \
+            androidboot.redroid_width=1080 androidboot.redroid_height=2400 androidboot.redroid_dpi=420 androidboot.redroid_gpu_mode=guest
+          for i in $(seq 1 60); do adb connect 127.0.0.1:5555 >/dev/null 2>&1
+            [ "$(timeout 10 adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" = 1 ] && { echo "booted after ~$((i*5)) s"; break; }; sleep 5; done
+          test "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1
+      - name: Face probe on native ARM64 Redroid
+        run: |
+          # the arm64 runner image has the SDK build-tools but not necessarily an android.jar: fall back to downloading none.
+          bash scripts/ci/face_guard_probe.sh out/face_arm64
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: face-guard-arm64, path: out/ }
