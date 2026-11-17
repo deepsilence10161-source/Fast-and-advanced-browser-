@@ -133,6 +133,17 @@ def sh_retry(cmd, ok, tries=3, timeout=120):
     return out
 
 
+def device_up():
+    """True only while adb reports the device as `device` (an emulator/Redroid that vanished is a harness
+    error, never a quiet NOT_RUN)."""
+    return adb("get-state", timeout=20).strip() == "device"
+
+
+def require_device(label):
+    if not device_up():
+        raise RuntimeError(f"device lost {label}")
+
+
 def go_root():
     adb("root", timeout=30)
     time.sleep(3)
@@ -318,13 +329,16 @@ def main():
             res("C03_download", "FAIL", detail)
 
         # ---- C04 external intent handoff (real taps; negative-only, no positive control on this APK)
+        require_device("before C04 control")
         adb("shell", "am", "force-stop", pkg)
         adb("shell", "input", "keyevent", "KEYCODE_HOME")
         time.sleep(2)
         adb("shell", "am", "start", "-W", "-a", "android.intent.action.DIAL", "-d", "tel:5551234", timeout=60)
         time.sleep(4)
+        require_device("after C04 DIAL control")
         control = control_label(top_package(sh("dumpsys activity activities", 60)), pkg)
         adb("shell", "input", "keyevent", "KEYCODE_HOME")
+        require_device("after C04 control cleanup")
         outcomes = {}
         for name, href in (("tel", "tel:5551234"), ("market", "market://details?id=com.android.vending")):
             adb("shell", "am", "force-stop", pkg)
@@ -344,6 +358,7 @@ def main():
         else:
             res("C04_external", "FAIL", f"another app took focus: {outcomes}")
 
+        require_device("after C04 taps")
         # ---- C05 FLAG_SECURE
         adb("shell", "am", "force-stop", pkg)
         reverse()

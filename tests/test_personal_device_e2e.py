@@ -60,3 +60,16 @@ def test_external_measurement_control_labels():
     assert P.control_label("", pkg).startswith("UNAVAILABLE")
     # a control that only observed the browser itself must never read as an observed hand-off
     assert not P.control_label(pkg, pkg).startswith("OBSERVED")
+
+
+def test_device_loss_is_a_harness_error_not_a_quiet_not_run(monkeypatch):
+    monkeypatch.setattr(P, "adb", lambda *a, **k: "adb: device 'emulator-5554' not found")
+    assert P.device_up() is False
+    try:
+        P.require_device("unit")
+    except RuntimeError as e:
+        assert "device lost unit" in str(e)
+    else:
+        raise AssertionError("device loss was swallowed")
+    monkeypatch.setattr(P, "adb", lambda *a, **k: "device\n")
+    assert P.device_up() is True
