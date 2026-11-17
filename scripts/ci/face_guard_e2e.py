@@ -197,9 +197,34 @@ def scroll_to_switch(max_swipes=8):
     return dump()
 
 
+def camera_client_from_dump(out, pkg):
+    """True only while `pkg` HOLDS a camera: Active Camera Clients section, else the last service event for pkg."""
+    m = re.search(r"Active Camera Clients[^\n]*\n(.*?)(?:\n== |\Z)", out, re.S)
+    if m:
+        return pkg in m.group(1)
+    last = None
+    for line in out.splitlines():
+        if pkg in line:
+            u = line.upper()
+            if "DISCONNECT" in u:
+                last = False
+            elif "CONNECT" in u:
+                last = True
+    return bool(last)
+
+
+DUMPS = {"n": 0, "dir": None}
+
+
 def camera_client(pkg):
     out = sh("dumpsys media.camera", 60)
-    return pkg in out and bool(re.search(r"Client package: " + re.escape(pkg) + r"|Client Package Name: " + re.escape(pkg) + r"|" + re.escape(pkg) + r".*(?:Priority|Score)", out))
+    if DUMPS["dir"]:
+        DUMPS["n"] += 1
+        try:
+            open(os.path.join(DUMPS["dir"], f"dumpsys_camera_{DUMPS['n']}.txt"), "w").write(out)
+        except Exception:  # noqa: BLE001
+            pass
+    return camera_client_from_dump(out, pkg)
 
 
 def pref_enabled(pkg):
@@ -215,6 +240,7 @@ def main():
     a = ap.parse_args()
     pkg, out = a.package, a.out
     os.makedirs(out, exist_ok=True)
+    DUMPS["dir"] = out
     results = []
 
     def res(cid, status, detail=""):

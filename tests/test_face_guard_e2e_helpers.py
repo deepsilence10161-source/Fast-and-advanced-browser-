@@ -107,3 +107,12 @@ def test_secure_blank_screenshot_is_unverifiable_not_a_failure():
     black = PIL.new("RGB", (200, 400), (0, 0, 0))
     buf = io.BytesIO(); black.save(buf, "PNG")
     assert M.locked_screenshot_ok(buf.getvalue()) is None
+
+
+def test_camera_client_uses_active_clients_not_history():
+    pkg = "com.swiftra.personaldev"
+    hist = "== Camera service events log ==\n  10:00 CONNECT device 1 client for package com.swiftra.personaldev\n  10:01 DISCONNECT device 1 client for package com.swiftra.personaldev\n"
+    assert M.camera_client_from_dump(hist, pkg) is False
+    act = "== Active Camera Clients ==\n[Client Package Name: com.swiftra.personaldev]\n== Other ==\nx"
+    assert M.camera_client_from_dump(act, pkg) is True
+    assert M.camera_client_from_dump("== Active Camera Clients ==\n[]\n== Other ==\n" + hist, pkg) is False
