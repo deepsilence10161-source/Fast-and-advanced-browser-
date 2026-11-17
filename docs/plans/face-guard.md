@@ -49,3 +49,14 @@ Chromium के Android `shape_detection` Face API पर निर्भर न
 1. Face न दिखे तो **lock overlay** (डिफ़ॉल्ट) या tabs छिपाना/app बंद करना?
 2. दूसरा चेहरा दिखे तो lock (डिफ़ॉल्ट) या अनदेखा?
 3. Liveness (blink/head-turn) चरण 6 से पहले चाहिए?
+
+## 7. चरण 2 के शोध-निष्कर्ष (17 नवंबर 2026; सार्वजनिक स्रोत, अभी model चुना नहीं गया)
+| विषय | निष्कर्ष | स्रोत/स्थिति |
+|---|---|---|
+| Face detector उम्मीदवार | MediaPipe BlazeFace short-range (Apache-2.0, model card उपलब्ध), या YuNet (MIT, 5-point landmarks) | तृतीय-पक्ष wrapper repos की licence तालिकाएँ; मूल repo/model-card से **अलग से सत्यापित करना बाकी** |
+| Embedding उम्मीदवार | MobileFaceNet (लगभग 5 MB, 128–512-d)। **Licence वितरण-निर्भर** — कुछ repos MIT बताते हैं पर उनका training data (जैसे WebFace) अकसर केवल-शोध शर्तों पर होता है। AuraFace (Apache-2.0) बड़ा ResNet100 है | **अपनाने से पहले weights + training-data की licence पढ़ना अनिवार्य**; अभी NOT CHOSEN |
+| Photo/screen spoof | 2D RGB कैमरा बिना liveness के photo-spoof के प्रति कमज़ोर; NIST SP 800-63B प्रमाणीकरण के लिए presentation-attack detection माँगता है | इसलिए Face Guard को अभी "प्रमाणीकरण" नहीं, सुविधा/shoulder-surfing रोक कहा जाएगा |
+| Bias | NIST IR 8280: false-positive अंतर बड़े (कई algorithms में 10x से 100x तक), महिलाओं/बुज़ुर्गों/बच्चों में अधिक; false-negative अंतर छोटे | "अजनबी का खुल जाना" (false accept) मुख्य जोखिम है → threshold मालिक के अपने डेटा और विरोधी नमूनों पर calibrate होगा, और strict बाकी रहेगा |
+| Runtime | Chromium Android build में TFLite Java runtime का मार्ग **अभी सत्यापित नहीं**; यह चरण 2 का मुख्य तकनीकी जोखिम है | खुला |
+
+इन सबसे यह नहीं निकलता कि कोई model "सुरक्षित" या "सटीक" है; ये केवल चयन-मानदंड हैं।
