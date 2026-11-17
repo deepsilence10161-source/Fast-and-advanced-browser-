@@ -183,39 +183,55 @@ def main():
         control_ok = (k2 == "text" and t2 == ctl)
         res("K00_control", "PASS" if control_ok else "NOT_RUN", f"set={k} get={k2}[{t2}]")
 
-        # K01 web copy
-        since = len(REPORTS)
-        P.open_url(pkg, url)
-        rdy = wait_for("ready", since, 40)
-        time.sleep(2)
-        combo(CTRL, KA)
-        combo(CTRL, KC)
-        cp = wait_for("copy", since, 10)
-        observed = bool(cp) and tok in (cp.get("v") or "")
+        # K01 web copy (up to 3 attempts: the emulator is slow; every attempt taps into the textarea first)
+        w, h = 1080, 2400
+        m = re.search(r"(\d+)x(\d+)", P.sh("wm size"))
+        if m:
+            w, h = int(m.group(1)), int(m.group(2))
+        ax, ay, by = w // 2, int(h * 0.17), int(h * 0.31)   # textarea a / b centres (page starts under the toolbar)
+        observed, cp, rdy = False, None, None
+        for attempt in range(3):
+            since = len(REPORTS)
+            P.open_url(pkg, url)
+            rdy = wait_for("ready", since, 40)
+            time.sleep(3)
+            P.sh(f"input tap {ax} {ay}")
+            time.sleep(1)
+            combo(CTRL, KA)
+            time.sleep(1)
+            combo(CTRL, KC)
+            cp = wait_for("copy", since, 8)
+            observed = bool(cp) and tok in (cp.get("v") or "")
+            if observed:
+                break
         sk, st = helper("get")
         if not control_ok:
             res("K01_web_copy", "NOT_RUN", "control failed")
         else:
-            s, d = classify_copy(sk, st, ctl, "web_" + tok, observed)
-            res("K01_web_copy", s, d + f" page_ready={bool(rdy)} copy_event={cp}")
+            s_, d = classify_copy(sk, st, ctl, "web_" + tok, observed)
+            res("K01_web_copy", s_, d + f" attempts={attempt + 1} page_ready={bool(rdy)} copy_event={cp}")
 
-        # K02 web paste (system clipboard holds ctl)
+        # K02 web paste (system clipboard holds ctl; the browser clipboard holds web_<tok> from K01)
         helper("set", ctl)
-        since = len(REPORTS)
-        P.open_url(pkg, url)
-        wait_for("ready", since, 40)
-        time.sleep(2)
-        P.sh("input keyevent 61")      # TAB -> second textarea
-        time.sleep(1)
-        combo(CTRL, KV)
-        time.sleep(3)
-        vals = [r.get("v", "") for r in REPORTS[since:] if r.get("step") in ("paste", "b")]
-        seen = any(r.get("step") == "paste" for r in REPORTS[since:])
+        vals, seen = [], False
+        for attempt in range(3):
+            since = len(REPORTS)
+            P.open_url(pkg, url)
+            wait_for("ready", since, 40)
+            time.sleep(3)
+            P.sh(f"input tap {ax} {by}")
+            time.sleep(1)
+            combo(CTRL, KV)
+            time.sleep(3)
+            vals = [r.get("v", "") for r in REPORTS[since:] if r.get("step") in ("paste", "b")]
+            seen = any(r.get("step") == "paste" for r in REPORTS[since:])
+            if seen:
+                break
         if not control_ok:
             res("K02_web_paste", "NOT_RUN", "control failed")
         else:
-            s, d = classify_paste(vals, ctl, seen)
-            res("K02_web_paste", s, d)
+            s_, d = classify_paste(vals, ctl, seen)
+            res("K02_web_paste", s_, d + f" attempts={attempt + 1}")
 
         # K03 native URL bar copy
         helper("set", ctl)
