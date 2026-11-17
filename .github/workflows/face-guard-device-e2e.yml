@@ -162,7 +162,7 @@ jobs:
           disk-size: 8G
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front ${{ inputs.scenario == 'nofaces' && 'emulated' || format('imagefile:{0}/camfx/cam_{1}_{2}.jpg', github.workspace, inputs.scenario, inputs.orient) }} -no-snapshot
           disable-animations: true
-          script: FG_SCRIPT=${{ inputs.scenario == 'nofaces' && 'face_guard_e2e.py' || 'face_guard_face_e2e.py' }} FG_ARGS="${{ inputs.scenario == 'nofaces' && '' || format('--scenario {0} --variant {1}', inputs.scenario, inputs.orient) }}" bash scripts/ci/face_guard_e2e_run.sh face_x64 dl/ChromePublic.apk
+          script: FG_SCRIPT=${{ inputs.scenario == 'nofaces' && 'face_guard_e2e.py' || 'face_guard_face_e2e.py' }} FG_ARGS="${{ inputs.scenario == 'nofaces' && ' ' || format('--scenario {0} --variant {1}', inputs.scenario, inputs.orient) }}" bash scripts/ci/face_guard_e2e_run.sh face_x64 dl/ChromePublic.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: face-guard-apk-x64, path: out/ }
