@@ -356,3 +356,18 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 | ARM64 older harness | 44030652744 | C09 printed PASS for `com.android.launcher3` = false positive; harness fixed to ignore launcher/system UI; superseded |
 
 Evidence: `evidence/personal-e2e-both-abi-2026-11-17.json`. Still NOT covered: clipboard/IME leak, whole-profile encryption, key-loss, passkeys/autofill, real device/account/site. Face Guard not in this APK.
+
+## Face Guard (personal dev APK) — 17 Nov 2026
+
+**Status: implemented in PRESENCE MODE (a face is present), NOT owner identification. Not yet in any published APK.**
+
+| What | Where measured | Result |
+|---|---|---|
+| Policy core (lock/unlock/fail-closed rules) | host JVM (76 assertions + 16 mutation tests) | PASS (host only, not Android) |
+| Frame converter (stride/rotation/RGB565) | host JVM (16 assertions + 7 mutants) AND real Android (probe, all 4 rotations) | PASS |
+| Patch 0104/0105 applies to pinned Chromium 155.0.8059.80 sources | host `patch --fuzz=0` on verified source fixture; guard pins sha256 of 6 files | PASS (host only; no Chromium compile yet) |
+| Real `android.media.FaceDetector` on 3 images (none/one/two faces) x 4 rotations | x64 emulator Android 16 (run 44036749346) and native ARM64 Redroid Android 14 (run 44036755471) | PASS 3/3 on both ABIs |
+
+Recorded failure first: at 320 px analysis width BOTH ABIs missed the second face (two_faces=0; runs 44035592513, 44035823237). The raw detector output showed both faces from 480 px up with eye distance about 4.4 % of the width while my filter demanded 5 %. Width was raised to 480 px and the floor lowered to 3 %. This is tuned on THREE images; it is not a calibration, FAR/FRR or demographic-fairness measurement. Evidence: `evidence/face-guard-probe-2026-11-17.json`.
+
+Not measured yet (see docs/plans/face-guard.md section 9): Settings/lock-overlay/tab-switcher on a real APK, a real camera pipeline (emulator `-camera-front imagefile:` scenarios are written, awaiting the APK build), face-loss latency, spoofing, OEM phones.

@@ -1,0 +1,81 @@
+{
+ "schema": 1,
+ "scope": "Face Guard analyzer probe: real android.media.FaceDetector + repo FaceGrayConverter/PresenceFaceAnalyzer on 3 committed AI-generated still images via app_process. NOT camera, NOT APK, NOT accuracy/calibration.",
+ "workflow": "face-guard-device-e2e.yml (suite=probe)",
+ "fixture_images": [
+  "no_face.jpg",
+  "one_face.jpg",
+  "two_faces.jpg"
+ ],
+ "runs": {
+  "x64 emulator Android 16": {
+   "run_id": 44036749346,
+   "checks": [
+    [
+     "no_face.jpg",
+     "PASS",
+     "expected 0 at every rotation, got {0: 0, 90: 0, 180: 0, 270: 0}"
+    ],
+    [
+     "one_face.jpg",
+     "PASS",
+     "expected 1 at every rotation, got {0: 1, 90: 1, 180: 1, 270: 1}"
+    ],
+    [
+     "two_faces.jpg",
+     "PASS",
+     "expected 2 at every rotation, got {0: 2, 90: 2, 180: 2, 270: 2}"
+    ]
+   ],
+   "raw_detector": [
+    "no_face.jpg width=320 found=0",
+    "no_face.jpg width=480 found=0",
+    "no_face.jpg width=640 found=0",
+    "no_face.jpg width=960 found=0",
+    "one_face.jpg width=320 found=1 [conf=0.54 eyes=60.7px=19.0%w]",
+    "one_face.jpg width=480 found=1 [conf=0.54 eyes=91.9px=19.2%w]",
+    "one_face.jpg width=640 found=1 [conf=0.54 eyes=121.3px=19.0%w]",
+    "one_face.jpg width=960 found=1 [conf=0.54 eyes=171.6px=17.9%w]",
+    "two_faces.jpg width=320 found=0",
+    "two_faces.jpg width=480 found=2 [conf=0.52 eyes=21.4px=4.5%w] [conf=0.52 eyes=21.4px=4.5%w]",
+    "two_faces.jpg width=640 found=2 [conf=0.52 eyes=28.3px=4.4%w] [conf=0.52 eyes=28.3px=4.4%w]",
+    "two_faces.jpg width=960 found=2 [conf=0.53 eyes=40.0px=4.2%w] [conf=0.52 eyes=40.0px=4.2%w]"
+   ]
+  },
+  "native ARM64 Redroid Android 14": {
+   "run_id": 44036755471,
+   "checks": [
+    [
+     "no_face.jpg",
+     "PASS",
+     "expected 0 at every rotation, got {0: 0, 90: 0, 180: 0, 270: 0}"
+    ],
+    [
+     "one_face.jpg",
+     "PASS",
+     "expected 1 at every rotation, got {0: 1, 90: 1, 180: 1, 270: 1}"
+    ],
+    [
+     "two_faces.jpg",
+     "PASS",
+     "expected 2 at every rotation, got {0: 2, 90: 2, 180: 2, 270: 2}"
+    ]
+   ],
+   "raw_detector": [
+    "no_face.jpg width=320 found=0",
+    "no_face.jpg width=480 found=0",
+    "no_face.jpg width=640 found=0",
+    "no_face.jpg width=960 found=0",
+    "one_face.jpg width=320 found=1 [conf=0.54 eyes=60.7px=19.0%w]",
+    "one_face.jpg width=480 found=1 [conf=0.54 eyes=91.9px=19.2%w]",
+    "one_face.jpg width=640 found=1 [conf=0.54 eyes=121.3px=19.0%w]",
+    "one_face.jpg width=960 found=1 [conf=0.54 eyes=171.6px=17.9%w]",
+    "two_faces.jpg width=320 found=0",
+    "two_faces.jpg width=480 found=2 [conf=0.52 eyes=21.4px=4.5%w] [conf=0.52 eyes=21.4px=4.5%w]",
+    "two_faces.jpg width=640 found=2 [conf=0.52 eyes=28.3px=4.4%w] [conf=0.52 eyes=28.3px=4.4%w]",
+    "two_faces.jpg width=960 found=2 [conf=0.53 eyes=40.0px=4.2%w] [conf=0.52 eyes=40.0px=4.2%w]"
+   ]
+  }
+ },
+ "earlier_run_320px": "Runs 44035592513 (x64) and 44035823237 (arm64) used 320 px analysis width: no_face=0, one_face=1, two_faces=0 on BOTH ABIs (second face missed); width/eye-floor were changed from this evidence."
+}
