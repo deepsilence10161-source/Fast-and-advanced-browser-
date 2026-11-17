@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+"""PERSONAL_CLIP: does text copied inside the personal browser reach the SYSTEM clipboard? (real Android runtime)
+
+A CI-only helper app (tools/clip_helper) is the observer: it is launched in the foreground and logs what Android's
+system ClipboardManager holds. Synthetic canary tokens, loopback only, no account, no real site.
+Every line: `PERSONAL_CLIP <id> PASS|FAIL|NOT_RUN <detail>`; NOT_RUN = could not be measured (never a pass).
+Exit 1 on any FAIL, 2 on harness error.
+
+  K00 control      : helper can set + read a canary on the system clipboard (otherwise the rest is NOT_RUN)
+  K01 web_copy     : Ctrl+C on web-page text must NOT replace the system clipboard
+  K02 web_paste    : the page must NOT receive the system clipboard text on Ctrl+V
+  K03 urlbar_copy  : copying text typed in the NATIVE URL bar must NOT reach the system clipboard
+"""
+import argparse
+import http.server
+import json
+import os
+import re
+import secrets
+import subprocess
+import sys
+import threading
+import time
+import urllib.parse
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+import personal_e2e as P  # noqa: E402
+
+PORT = P.PORT
+HELPER = "com.swiftra.cliphelper"
+REPORTS = []
+TOKEN = {"v": ""}
+
+PAGE = """<!doctype html><meta name=viewport content="width=device-width"><title>clip</title>
+<body style="margin:8px"><textarea id=a rows=3 autofocus style="width:94vw;font-size:30px">web_{t}</textarea><br>
+<textarea id=b rows=3 style="width:94vw;font-size:30px"></textarea>
+<script>
+const r=(s,v)=>fetch('/report?step='+s+'&v='+encodeURIComponent(v||''));
+const sel=()=>{{const e=document.activeElement;return (e&&e.value!==undefined)?e.value.substring(e.selectionStart,e.selectionEnd):String(getSelection())}};
+document.addEventListener('copy',()=>r('copy',sel()));
+document.addEventListener('paste',e=>{{let t='';try{{t=e.clipboardData.getData('text/plain')}}catch(x){{}};r('paste',t)}});
+document.getElementById('b').addEventListener('input',e=>r('b',e.target.value));
+addEventListener('load',()=>r('ready',document.activeElement&&document.activeElement.id));
+</script>"""
+
+
+class H(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):  # noqa: N802
+        u = urllib.parse.urlparse(self.path)
+        q = urllib.parse.parse_qs(u.query)
+        if u.path == "/report":
+            REPORTS.append({k: v[0] for k, v in q.items()})
+            body, ct = b"ok", "text/plain"
+        else:
+            body, ct = PAGE.format(t=TOKEN["v"]).encode(), "text/html"
+        self.send_response(200)
+        self.send_header("Content-Type", ct)
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def log_message(self, *a):
+        pass
+
+
+# ---------------------------------------------------------------- pure helpers (host-tested)
+def parse_helper_get(logcat):
+    """Last `CLIPHELPER GET` line -> ('none'|'text'|'error'|'missing', text)."""
+    last = None
+    for line in logcat.splitlines():
+        if "CLIPHELPER" in line and (" GET " in line or "ERR " in line or "SET_OK" in line):
+            last = line
+    if last is None:
+        return "missing", ""
+    if "ERR " in last:
+        return "error", last.split("ERR ", 1)[1][:120]
+    m = re.search(r"GET text=\[(.*)\]\s*$", last)
+    if m:
+        return "text", m.group(1)
+    if "GET none" in last:
+        return "none", ""
+    return "missing", ""
+
+
+def classify_copy(sys_kind, sys_text, ctl, copied_marker, copy_observed):
+    """K01/K03: PASS only if the copy demonstrably happened and the system clipboard still holds the control text."""
+    if sys_kind != "text":
+        return "NOT_RUN", f"helper could not read the system clipboard ({sys_kind})"
+    if copied_marker in sys_text:
+        return "FAIL", f"the copied canary reached the SYSTEM clipboard: [{sys_text}]"
+    if not copy_observed:
+        return "NOT_RUN", f"no in-browser evidence that the copy happened; system clipboard=[{sys_text}]"
+    if sys_text == ctl:
+        return "PASS", "copy happened inside the browser; system clipboard unchanged (still the control text)"
+    return "FAIL", f"system clipboard changed to an unexpected value [{sys_text}]"
+
+
+def classify_paste(page_values, ctl, paste_event_seen):
+    joined = " ".join(page_values)
+    if ctl in joined:
+        return "FAIL", f"page received the system clipboard text: {page_values}"
+    if not paste_event_seen:
+        return "NOT_RUN", "no paste event reached the page"
+    return "PASS", f"paste event reached the page without the system clipboard text: {page_values}"
+
+
+def summarize(results):
+    c = {"PASS": 0, "FAIL": 0, "NOT_RUN": 0}
+    for r in results:
+        c[r["status"]] += 1
+    return c
+
+
+# ---------------------------------------------------------------- device helpers
+def combo(*codes):
+    P.sh("input keycombination " + " ".join(str(c) for c in codes))
+
+
+CTRL, KA, KC, KV = 113, 29, 31, 50
+
+
+def helper(mode, text=None):
+    P.adb("logcat", "-c")
+    args = ["shell", "am", "start", "-W", "-n", f"{HELPER}/.Main", "--es", "mode", mode]
+    if text is not None:
+        args += ["--es", "text", text]
+    P.adb(*args, timeout=60)
+    t0 = time.time()
+    while time.time() - t0 < 15:
+        out = P.adb("logcat", "-d", "-s", "CLIPHELPER:I")
+        kind, txt = parse_helper_get(out)
+        if kind != "missing":
+            return kind, txt
+        time.sleep(1)
+    return "missing", ""
+
+
+def wait_for(step, since, secs=20):
+    return P.wait_report(step, since, secs)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--package", required=True)
+    ap.add_argument("--out", required=True)
+    a = ap.parse_args()
+    pkg = a.package
+    os.makedirs(a.out, exist_ok=True)
+    TOKEN["v"] = secrets.token_hex(8)
+    tok = TOKEN["v"]
+    ctl = "ctl_" + tok
+    results = []
+
+    def res(cid, status, detail=""):
+        results.append({"id": cid, "status": status, "detail": detail})
+        print(f"PERSONAL_CLIP {cid} {status} {detail}", flush=True)
+
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    P.go_root()
+    P.reverse()
+    url = f"http://127.0.0.1:{PORT}/clip"
+    print(f"PERSONAL_CLIP env package={pkg} abi={P.sh('getprop ro.product.cpu.abi')} sdk={P.sh('getprop ro.build.version.sdk')}", flush=True)
+    try:
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+        from ui_capture import Device, launch, wait_ready  # noqa: E402
+        dev = Device(pkg, a.out, lambda line: print("PERSONAL_CLIP_UI", line, flush=True))
+        P.adb("shell", "am", "force-stop", pkg)
+        launch(dev)
+        wait_ready(dev, seconds=180)
+
+        # K00 control
+        k, t = helper("set", ctl)
+        k2, t2 = helper("get")
+        control_ok = (k2 == "text" and t2 == ctl)
+        res("K00_control", "PASS" if control_ok else "NOT_RUN", f"set={k} get={k2}[{t2}]")
+
+        # K01 web copy
+        since = len(REPORTS)
+        P.open_url(pkg, url)
+        rdy = wait_for("ready", since, 40)
+        time.sleep(2)
+        combo(CTRL, KA)
+        combo(CTRL, KC)
+        cp = wait_for("copy", since, 10)
+        observed = bool(cp) and tok in (cp.get("v") or "")
+        sk, st = helper("get")
+        if not control_ok:
+            res("K01_web_copy", "NOT_RUN", "control failed")
+        else:
+            s, d = classify_copy(sk, st, ctl, "web_" + tok, observed)
+            res("K01_web_copy", s, d + f" page_ready={bool(rdy)} copy_event={cp}")
+
+        # K02 web paste (system clipboard holds ctl)
+        helper("set", ctl)
+        since = len(REPORTS)
+        P.open_url(pkg, url)
+        wait_for("ready", since, 40)
+        time.sleep(2)
+        P.sh("input keyevent 61")      # TAB -> second textarea
+        time.sleep(1)
+        combo(CTRL, KV)
+        time.sleep(3)
+        vals = [r.get("v", "") for r in REPORTS[since:] if r.get("step") in ("paste", "b")]
+        seen = any(r.get("step") == "paste" for r in REPORTS[since:])
+        if not control_ok:
+            res("K02_web_paste", "NOT_RUN", "control failed")
+        else:
+            s, d = classify_paste(vals, ctl, seen)
+            res("K02_web_paste", s, d)
+
+        # K03 native URL bar copy
+        helper("set", ctl)
+        P.adb("shell", "am", "start", "-W", "-a", "android.intent.action.VIEW", "-d", f"http://127.0.0.1:{PORT}/plain", "-p", pkg, timeout=60)
+        time.sleep(4)
+        xml = ""
+        node = None
+        for _ in range(4):
+            xml = dev.dump() if hasattr(dev, "dump") else ""
+            m = re.search(r'<node [^>]*resource-id="[^"]*url_bar"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', xml)
+            if m:
+                node = list(map(int, m.groups()))
+                break
+            time.sleep(2)
+        if not node:
+            res("K03_urlbar_copy", "NOT_RUN", "url_bar node not found in UI dump")
+        else:
+            P.sh(f"input tap {(node[0]+node[2])//2} {(node[1]+node[3])//2}")
+            time.sleep(2)
+            P.sh("input keyevent KEYCODE_MOVE_END")
+            combo(CTRL, KA)
+            P.sh("input keyevent 67")  # DEL
+            P.sh(f"input text omni_{tok}")
+            time.sleep(1)
+            combo(CTRL, KA)
+            combo(CTRL, KC)
+            time.sleep(1)
+            P.sh("input keyevent 67")
+            combo(CTRL, KV)
+            time.sleep(2)
+            xml2 = dev.dump() if hasattr(dev, "dump") else ""
+            pasted_back = ("omni_" + tok) in xml2
+            P.sh("input keyevent KEYCODE_BACK")
+            sk, st = helper("get")
+            if not control_ok:
+                res("K03_urlbar_copy", "NOT_RUN", "control failed")
+            else:
+                s, d = classify_copy(sk, st, ctl, "omni_" + tok, pasted_back)
+                res("K03_urlbar_copy", s, d + f" pasted_back_into_url_bar={pasted_back}")
+    except Exception as e:  # noqa: BLE001
+        print("PERSONAL_CLIP harness_error", repr(e)[:300], flush=True)
+        return 2
+    finally:
+        try:
+            open(os.path.join(a.out, "logcat_tail.txt"), "w").write(P.adb("logcat", "-d", "-t", "3000", timeout=60))
+        except Exception:  # noqa: BLE001
+            pass
+    c = summarize(results)
+    json.dump({"package": pkg, "results": results, "summary": c}, open(os.path.join(a.out, "personal_clip.json"), "w"), indent=1)
+    print(f"PERSONAL_CLIP_SUMMARY pass={c['PASS']} fail={c['FAIL']} not_run={c['NOT_RUN']}", flush=True)
+    return 1 if c["FAIL"] else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

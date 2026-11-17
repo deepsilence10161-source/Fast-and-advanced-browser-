@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CI-only helper: reads/sets the SYSTEM clipboard while foreground so E2E can observe leaks. Never shipped. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.swiftra.cliphelper">
+    <application android:label="cliphelper" android:allowBackup="false">
+        <activity android:name=".Main" android:exported="true" android:theme="@android:style/Theme.Material.NoActionBar" />
+    </application>
+</manifest>
