@@ -1,0 +1,22 @@
+{
+  "pinned_tag": "155.0.8059.80",
+  "status_semantics": "FETCHED and hashed; not all lines audited or executed",
+  "files": [
+    {
+      "path": "chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java",
+      "status": "FETCHED",
+      "sha256": "2993dd487ed3b0e25d9d915233ea291372bb2bb147a95706dec82c81d611966c",
+      "bytes": 12117,
+      "lines": 283
+    }
+  ],
+  "fixture_paths": [
+    "chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java"
+  ],
+  "fixture_gzip_sha256": "a09cd60df4880edc06f50e1b58d4e5369f239ac485ef727b29b0d9b3b4d251f3",
+  "native_source_outputs": [
+    "chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java"
+  ],
+  "not_android_acceptance": true
+}

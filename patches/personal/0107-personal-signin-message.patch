@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java b/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java
+index f1e245d..f24532b 100644
+--- a/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java
++++ b/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java
+@@ -271,10 +271,12 @@ public abstract class SigninAndHistorySyncCoordinator {
+                     SigninAccessPoint.MAX_VALUE + 1);
+             ManagedPreferencesUtils.showManagedByAdministratorToast(context);
+         } else {
++            // Swiftra personal build: browser sign-in/Sync is intentionally off (no Android
++            // account bridge). Say so instead of the generic "Can't sign in" message.
+             Toast.makeText(
+                             context,
+-                            context.getString(
+-                                    R.string.signin_account_picker_bottom_sheet_error_title),
++                            "Browser sign-in is turned off in this private build."
++                                    + " Sign in on the website instead.",
+                             Toast.LENGTH_LONG)
+                     .show();
+         }

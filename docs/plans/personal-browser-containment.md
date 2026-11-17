@@ -235,3 +235,7 @@ Internal-storage source/docs: <https://developer.android.com/training/data-stora
 ## Face Guard layer (17 Nov 2026) — status
 
 `0104-face-guard-source-guard.py` + `0105-face-guard-presence-mode.patch` personal bundle में छठी/पाँचवीं layer हैं (series = 6)। यह **presence-only** है: framework `FaceDetector` से देखता है कि कैमरे के सामने चेहरा है या नहीं; **किसका चेहरा है यह नहीं पहचानता**, liveness नहीं है, और यह security boundary नहीं बल्कि convenience lock है। Release gate अब 0105 वाले BUILD_INFO को भी personal-development मानकर सामान्य release से रोकता है। Android build/E2E नतीजे TESTING.md में आएँगे; जब तक वहाँ PASS नहीं, इसे PASS न कहें।
+
+## "Can't sign in" संदेश — कारण और बदलाव (17 Nov 2026)
+
+उपयोगकर्ता को sign-in की कोशिश पर "Can't sign in" दिखा। Chromium 155 में यह `SigninAndHistorySyncCoordinator.canStartSigninAndHistorySyncOrShowError` का generic Toast है, जो तब दिखता है जब sign-in शुरू ही नहीं हो सकता। हमारी personal build में `SigninManagerImpl` का sign-in जानबूझकर बंद है (0101), इसलिए यह अपेक्षित व्यवहार है, bug नहीं। `0106` guard + `0107` patch सिर्फ़ इस Toast का शब्द बदलते हैं: "Browser sign-in is turned off in this private build. Sign in on the website instead." Sign-in चालू **नहीं** होता; website login (cookies) अलग रास्ता है। Source/host-test स्तर पर PASS; Android पर यह Toast देखा नहीं गया (NOT RUN)। अगला build चाहिए।

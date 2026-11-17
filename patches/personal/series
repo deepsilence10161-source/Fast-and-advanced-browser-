@@ -5,3 +5,5 @@
 0103-personal-egress-and-storage.patch
 0104-face-guard-source-guard.py
 0105-face-guard-presence-mode.patch
+0106-personal-signin-source-guard.py
+0107-personal-signin-message.patch
