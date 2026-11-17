@@ -14,6 +14,16 @@ on:
         type: choice
         options: [probe, apk, emulator-help]
         default: probe
+      scenario:
+        description: "apk suite, x64 only: nofaces (front camera = emulated scene) | one | two (front camera renders a committed face image)"
+        type: choice
+        options: [nofaces, one, two]
+        default: nofaces
+      orient:
+        description: "image orientation fed to the emulator: rot90 = acceptance, rot0 = information only"
+        type: choice
+        options: [rot90, rot0]
+        default: rot90
       variant:
         default: personal-dev
       tag:
@@ -136,7 +146,7 @@ jobs:
           test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/$T/BUILD_INFO.txt | tail -1)"
           grep -E "^(package|application-label|native-code)" out/$T/BUILD_INFO.txt
           grep -c "0105-face-guard-presence-mode.patch" out/$T/BUILD_INFO.txt
-      - run: pip install -q websocket-client pillow
+      - run: pip install -q websocket-client pillow && python3 tools/face_guard/make_cam_fixtures.py "$PWD/camfx"
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -150,9 +160,9 @@ jobs:
           profile: pixel_6
           ram-size: 4096M
           disk-size: 8G
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front emulated -no-snapshot
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front ${{ inputs.scenario == 'nofaces' && 'emulated' || format('imagefile:{0}/camfx/cam_{1}_{2}.jpg', github.workspace, inputs.scenario, inputs.orient) }} -no-snapshot
           disable-animations: true
-          script: bash scripts/ci/face_guard_e2e_run.sh face_x64 dl/ChromePublic.apk
+          script: FG_SCRIPT=${{ inputs.scenario == 'nofaces' && 'face_guard_e2e.py' || 'face_guard_face_e2e.py' }} FG_ARGS="${{ inputs.scenario == 'nofaces' && '' || format('--scenario {0} --variant {1}', inputs.scenario, inputs.orient) }}" bash scripts/ci/face_guard_e2e_run.sh face_x64 dl/ChromePublic.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: face-guard-apk-x64, path: out/ }

@@ -85,3 +85,18 @@ def test_regenerated_patch_is_current():
     import sys
     r = subprocess.run([sys.executable, str(ROOT / "tools/face_guard/regen_patch.py"), "--check"], capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
+
+
+def test_face_scenario_script_and_fixture_builder_are_valid():
+    import py_compile
+    py_compile.compile(str(ROOT / "scripts/ci/face_guard_face_e2e.py"), doraise=True)
+    PIL = pytest.importorskip("PIL.Image")
+    import subprocess
+    import sys
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        r = subprocess.run([sys.executable, str(ROOT / "tools/face_guard/make_cam_fixtures.py"), d], capture_output=True, text=True)
+        assert r.returncode == 0, r.stderr
+        for key in ("one", "two", "none"):
+            for v in ("rot0", "rot90"):
+                assert PIL.open(f"{d}/cam_{key}_{v}.jpg").size == (640, 480)

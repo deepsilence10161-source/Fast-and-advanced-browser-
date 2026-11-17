@@ -15,5 +15,5 @@ IN=$(timeout 300 adb install -r "$APK" 2>&1 | tr -d '\r' | tail -1); echo "insta
 FL=$(adb shell dumpsys package "$PKG" | grep -m1 -E "^\s+flags=\[" | tr -s ' ')
 if grep -q DEBUGGABLE <<<"$FL"; then echo "FACE_GUARD_E2E FAIL debuggable build" | tee -a "$L"; exit 1; fi
 echo "package flags:$FL" | tee -a "$L"
-timeout 1500 python3 -u scripts/ci/face_guard_e2e.py --package "$PKG" --out "$OUT/face_guard_e2e" 2>&1 | tee -a "$L"
+timeout 1500 python3 -u "scripts/ci/${FG_SCRIPT:-face_guard_e2e.py}" --package "$PKG" --out "$OUT/face_guard_e2e" ${FG_ARGS:-} 2>&1 | tee -a "$L"
 exit "${PIPESTATUS[0]}"
