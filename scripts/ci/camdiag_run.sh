@@ -3,7 +3,7 @@
 # Usage: camdiag_run.sh <outdir> <helper.apk>   (current adb device). No browser involved.
 set -u
 OUT=$1; APK=$2; mkdir -p "$OUT"
-adb wait-for-device
+adb wait-for-device; adb root >/dev/null 2>&1; sleep 2; adb wait-for-device
 adb install -r "$APK" | tail -1
 adb shell pm grant com.swiftra.cliphelper android.permission.CAMERA
 adb logcat -c

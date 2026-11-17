@@ -5,8 +5,10 @@ exercised end to end on a real Android runtime. Used only on the x64 emulator (R
 
   --scenario one  : one face in view  -> the browser must UNLOCK (lock overlay disappears) and stay unlocked
   --scenario two  : two faces in view -> the browser must STAY LOCKED with the "More than one face" message
-  --variant rot90 : sensor frame rotated so the app sees the picture upright (acceptance)
-  --variant rot0  : upright sensor frame (the app sees it sideways): INFORMATION ONLY, reported NOT_RUN, never PASS
+  --variant rot0  : ACCEPTANCE. Measured on the x64 emulator (camdiag run, 17 Nov 2026): the emulated front camera
+                    reports SENSOR_ORIENTATION 90 and FaceDetector finds the face in the rot0 file at the app's
+                    rotation (90). So rot0 is the picture the app really sees upright.
+  --variant rot90 : INFORMATION ONLY, reported NOT_RUN, never PASS (FaceDetector found no face at any rotation)
 
 Prints `FACE_GUARD_E2E <id> PASS|FAIL|NOT_RUN <detail>` plus a timeline of overlay observations. The measured times
 are uiautomator-polling bounds (about +-1.5 s); they are NOT the policy latency (lockDelay 300 ms).
@@ -27,7 +29,7 @@ def main():
     ap.add_argument("--package", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--scenario", choices=["one", "two"], required=True)
-    ap.add_argument("--variant", choices=["rot90", "rot0"], default="rot90")
+    ap.add_argument("--variant", choices=["rot90", "rot0"], default="rot0")
     a = ap.parse_args()
     pkg = a.package
     os.makedirs(a.out, exist_ok=True)
@@ -99,7 +101,7 @@ def main():
                 stable = not G.overlay_visible(G.dump())
             detail = (f"first_unlocked_after_launch_s={first_unlock} stayed_unlocked_10s_more={stable} "
                       f"app_holds_camera={cam} variant={a.variant}")
-            if a.variant != "rot90":
+            if a.variant != "rot0":
                 res("H01_one_face_unlocks_orientation_probe", "NOT_RUN", "information only: " + detail)
             elif first_unlock is not None and stable:
                 res("H01_one_face_unlocks", "PASS", detail)
@@ -109,7 +111,7 @@ def main():
             still = G.overlay_visible(G.dump())
             detail = (f"locked_throughout={first_unlock is None and still} message_seen_more_than_one_face={ever_other} "
                       f"app_holds_camera={cam} variant={a.variant}")
-            if a.variant != "rot90":
+            if a.variant != "rot0":
                 res("H02_two_faces_orientation_probe", "NOT_RUN", "information only: " + detail)
             elif first_unlock is None and still and ever_other:
                 res("H02_two_faces_stay_locked", "PASS", detail)

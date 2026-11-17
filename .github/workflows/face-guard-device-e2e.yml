@@ -20,10 +20,10 @@ on:
         options: [nofaces, one, two]
         default: nofaces
       orient:
-        description: "image orientation fed to the emulator: rot90 = acceptance, rot0 = information only"
+        description: "image orientation fed to the emulator: rot0 = acceptance (measured: emulator front camera sensor=90), rot90 = information only"
         type: choice
-        options: [rot90, rot0]
-        default: rot90
+        options: [rot0, rot90]
+        default: rot0
       variant:
         default: personal-dev
       tag:

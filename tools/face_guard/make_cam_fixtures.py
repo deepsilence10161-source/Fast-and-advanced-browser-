@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build the front-camera frames fed to the Android emulator (-camera-front imagefile:/videofile:).
 
-The emulated front camera reports SENSOR_ORIENTATION 270, so a sensor frame must hold the picture rotated clockwise
-by 90 degrees for the app (which rotates by 270) to see it upright. `rot90` files do that; `rot0` files hold the
+NOTE (measured 17 Nov 2026): the emulator's imagefile front camera reports SENSOR_ORIENTATION 90 and FaceDetector finds
+the face in the `rot0` files at the app's rotation, so `rot0` is the ACCEPTANCE variant. Old text follows. `rot90` files hold the
 upright picture (the app will see it sideways) and exist only to learn how the emulator orients image files.
 Usage: make_cam_fixtures.py <out-dir>   (needs Pillow)
 """
