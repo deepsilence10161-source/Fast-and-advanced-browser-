@@ -47,3 +47,20 @@ def test_arm64_needs_only_nofaces_and_never_counts_not_run_as_pass():
     assert pg.gate("arm64", FG, SHA, [e, fg]) == []
     fg["face_guard_apk"]["arm64"]["scenarios"]["nofaces"] = "NOT_RUN"
     assert pg.gate("arm64", FG, SHA, [e, fg])
+
+
+OMNI = INFO + "--- patches\n0109-personal-omnibox-clipboard.patch\n"
+
+
+def _clip(**kw):
+    row = {"apk_sha256": SHA, "K01_web_copy": "PASS", "K02_web_paste": "PASS", "K03_urlbar_copy": "PASS"}
+    row.update(kw)
+    return {"clipboard_apk": {"x64": row}}
+
+
+def test_omnibox_fix_in_build_needs_clipboard_pass_for_this_apk():
+    assert "omnibox_clipboard_fix_in_build_but_no_K01_K02_K03_PASS_for_this_sha256" in pg.gate("x64", OMNI, SHA, [E2E])
+    assert pg.gate("x64", OMNI, SHA, [E2E, _clip()]) == []
+    assert pg.gate("x64", OMNI, SHA, [E2E, _clip(K03_urlbar_copy="FAIL")])
+    assert pg.gate("x64", OMNI, SHA, [E2E, _clip(K03_urlbar_copy="NOT_RUN")])
+    assert pg.gate("x64", OMNI, SHA, [E2E, _clip(apk_sha256="b" * 64)])

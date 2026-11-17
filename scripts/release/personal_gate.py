@@ -7,6 +7,8 @@ It refuses to publish a personal APK unless recorded evidence matches the exact 
   * if the build contains Face Guard (0105), a Face Guard APK evidence for the same sha256 must exist
     with FAIL == 0 and the camera scenarios x64 'one' and 'two' PASS (ARM64 Redroid has no camera: NOT_RUN is
     allowed there and is never reported as PASS);
+  * if the build contains the omnibox clipboard fix (0109), `clipboard_apk.<cpu>` evidence for the same sha256 with
+    K01, K02 and K03 all PASS must exist;
   * if the build contains the sign-in message layer (0107) nothing extra is required (static message only).
 Passing this gate is NOT a privacy certification. Usage:
   personal_gate.py --cpu x64 --build-info BUILD_INFO-x64.txt --apk-sha <sha256> --evidence a.json [b.json ...]
@@ -21,6 +23,7 @@ def _flags(info):
     return {
         "personal": any(v.strip() == "1" for v in re.findall(r"^personal_source_only[ \t]*=[ \t]*(.*)$", info, re.M)),
         "face_guard": bool(re.search(r"^0105-face-guard-presence-mode\.patch\s*$", info, re.M)),
+        "omnibox_clipboard": bool(re.search(r"^0109-personal-omnibox-clipboard\.patch\s*$", info, re.M)),
     }
 
 
@@ -59,6 +62,15 @@ def gate(cpu, info, apk_sha, evidences):
             fg = True
         if not fg:
             reasons.append("face_guard_in_build_but_no_apk_evidence_for_this_sha256")
+    if f["omnibox_clipboard"]:
+        cl = False
+        for ev in evidences:
+            row = (ev.get("clipboard_apk") or {}).get(cpu)
+            if isinstance(row, dict) and row.get("apk_sha256") == apk_sha and row.get("K03_urlbar_copy") == "PASS" \
+                    and row.get("K01_web_copy") == "PASS" and row.get("K02_web_paste") == "PASS":
+                cl = True
+        if not cl:
+            reasons.append("omnibox_clipboard_fix_in_build_but_no_K01_K02_K03_PASS_for_this_sha256")
     return reasons
 
 
