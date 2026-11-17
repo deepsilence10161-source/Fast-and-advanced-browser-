@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: build_clip_helper.sh <out.apk>   Builds the CI-only clipboard helper APK (javac + d8 + aapt2 + apksigner).
 set -euo pipefail
-OUT=${1:?out apk}
+OUT=${1:?out apk}; mkdir -p "$(dirname "$OUT")"
 SDK=${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}
 BT=$(ls -d "$SDK"/build-tools/*/ | sort -V | tail -1); AJ=$(ls -d "$SDK"/platforms/android-*/android.jar | sort -V | tail -1)
 W=$(mktemp -d); mkdir -p "$W/cls"
