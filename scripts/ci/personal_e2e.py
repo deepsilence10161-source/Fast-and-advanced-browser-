@@ -14,7 +14,8 @@ Checks
                     (a) background (HOME), (b) force-stop + restart, (c) crash (am crash) + restart
   C03 download    : attachment download lands ONLY in the app-private Downloads root: exact sha256, absent from
                     shared storage, MediaStore and the system DownloadManager provider
-  C04 external    : a real tap on tel:/market: links does not hand off to another app (negative-only)
+  C04 external    : a real tap on tel:/market: links does not hand off to another app; an adb DIAL control
+                    shows whether the measurement can observe a hand-off (else reported negative-only)
   C05 secure      : FLAG_SECURE on the browser window
   C06 backup      : package is not backup-enabled (otherwise NOT_RUN: rules not measurable here)
   C07 no_account  : no Android account was created/linked by the browser
@@ -190,6 +191,16 @@ def top_package(dump):
     return m.group(1) if m else ""
 
 
+def control_label(ctl, pkg):
+    """Measurement control for C04: an adb-issued DIAL intent must make ANOTHER package top-resumed,
+    proving top_package() can observe a hand-off on this device. Says nothing about the browser itself."""
+    if not ctl:
+        return "UNAVAILABLE(top package not parsed)"
+    if ctl == pkg:
+        return "UNAVAILABLE(no other app handles tel: on this image)"
+    return f"OBSERVED({ctl})"
+
+
 def summarize(results):
     c = {"PASS": 0, "FAIL": 0, "NOT_RUN": 0}
     for r in results:
@@ -307,6 +318,13 @@ def main():
             res("C03_download", "FAIL", detail)
 
         # ---- C04 external intent handoff (real taps; negative-only, no positive control on this APK)
+        adb("shell", "am", "force-stop", pkg)
+        adb("shell", "input", "keyevent", "KEYCODE_HOME")
+        time.sleep(2)
+        adb("shell", "am", "start", "-W", "-a", "android.intent.action.DIAL", "-d", "tel:5551234", timeout=60)
+        time.sleep(4)
+        control = control_label(top_package(sh("dumpsys activity activities", 60)), pkg)
+        adb("shell", "input", "keyevent", "KEYCODE_HOME")
         outcomes = {}
         for name, href in (("tel", "tel:5551234"), ("market", "market://details?id=com.android.vending")):
             adb("shell", "am", "force-stop", pkg)
@@ -319,7 +337,8 @@ def main():
             time.sleep(4)
             outcomes[name] = top_package(sh("dumpsys activity activities", 60))
         if all(v == pkg for v in outcomes.values()):
-            res("C04_external", "PASS", f"top_package_after_tap={outcomes} (negative-only: no positive control)")
+            res("C04_external", "PASS", f"top_package_after_tap={outcomes} measurement_control={control}"
+                + ("" if control.startswith("OBSERVED") else " (negative-only: control unavailable)"))
         elif any(not v for v in outcomes.values()):
             res("C04_external", "NOT_RUN", f"top package not parsed: {outcomes}")
         else:

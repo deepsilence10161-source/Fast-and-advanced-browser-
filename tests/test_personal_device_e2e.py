@@ -51,3 +51,12 @@ def test_workflow_never_publishes_and_refuses_ordinary_packages():
     assert re.search(r"on:\s+workflow_dispatch:", wf)
     run = (ROOT / "scripts/ci/personal_e2e_run.sh").read_text()
     assert "com.swiftra.app" in run and "REFUSED" in run
+
+
+def test_external_measurement_control_labels():
+    pkg = "com.swiftra.personaldev"
+    assert P.control_label("com.android.dialer", pkg) == "OBSERVED(com.android.dialer)"
+    assert P.control_label(pkg, pkg).startswith("UNAVAILABLE")
+    assert P.control_label("", pkg).startswith("UNAVAILABLE")
+    # a control that only observed the browser itself must never read as an observed hand-off
+    assert not P.control_label(pkg, pkg).startswith("OBSERVED")
