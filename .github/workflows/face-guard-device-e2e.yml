@@ -12,7 +12,7 @@ on:
       suite:
         description: "probe = analyzer on still images (no APK); apk = Settings/lock/tab-switcher suite on the personal APK"
         type: choice
-        options: [probe, apk]
+        options: [probe, apk, emulator-help]
         default: probe
       variant:
         default: personal-dev
@@ -23,7 +23,18 @@ on:
 permissions:
   contents: write   # the draft state release holding the APK is only visible with write access; nothing is uploaded
 jobs:
+  emulator-help:
+    if: inputs.suite == 'emulator-help'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - run: |
+          E=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}/emulator/emulator; ls -la "$E" || true
+          "$E" -version 2>&1 | head -3 || true
+          for t in camera-front camera-back virtualscene-poster; do echo "=== -help-$t"; "$E" -help-$t 2>&1 | head -40 || true; done
+          ls ${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}/emulator/resources 2>/dev/null | head -30
   build-probe:
+    if: inputs.suite == 'probe'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
