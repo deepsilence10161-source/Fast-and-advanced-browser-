@@ -11,7 +11,8 @@ import os
 import sys
 
 EXPECTED = {
-    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java": "0c824ac5b6eb2f4170fef6fc789f0c79e1673e922610fb20c4851ba550c5d155"
+    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java": "0c824ac5b6eb2f4170fef6fc789f0c79e1673e922610fb20c4851ba550c5d155",
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java": "1dc8d6efb287d3b6e2b0f07c6117c0636497d51118bfef6695da74dd1a6b4f53",
 }
 NEW_PATHS = ()
 

@@ -8,7 +8,7 @@ It refuses to publish a personal APK unless recorded evidence matches the exact 
     with FAIL == 0 and the camera scenarios x64 'one' and 'two' PASS (ARM64 Redroid has no camera: NOT_RUN is
     allowed there and is never reported as PASS);
   * if the build contains the omnibox clipboard fix (0109), `clipboard_apk.<cpu>` evidence for the same sha256 with
-    K01, K02 and K03 all PASS must exist;
+    K01-K04 all PASS must exist;
   * if the build contains the sign-in message layer (0107) nothing extra is required (static message only).
 Passing this gate is NOT a privacy certification. Usage:
   personal_gate.py --cpu x64 --build-info BUILD_INFO-x64.txt --apk-sha <sha256> --evidence a.json [b.json ...]
@@ -67,10 +67,11 @@ def gate(cpu, info, apk_sha, evidences):
         for ev in evidences:
             row = (ev.get("clipboard_apk") or {}).get(cpu)
             if isinstance(row, dict) and row.get("apk_sha256") == apk_sha and row.get("K03_urlbar_copy") == "PASS" \
-                    and row.get("K01_web_copy") == "PASS" and row.get("K02_web_paste") == "PASS":
+                    and row.get("K01_web_copy") == "PASS" and row.get("K02_web_paste") == "PASS" \
+                    and row.get("K04_find_in_page_copy") == "PASS":
                 cl = True
         if not cl:
-            reasons.append("omnibox_clipboard_fix_in_build_but_no_K01_K02_K03_PASS_for_this_sha256")
+            reasons.append("omnibox_clipboard_fix_in_build_but_no_K01_K02_K03_K04_PASS_for_this_sha256")
     return reasons
 
 

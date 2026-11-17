@@ -53,13 +53,13 @@ OMNI = INFO + "--- patches\n0109-personal-omnibox-clipboard.patch\n"
 
 
 def _clip(**kw):
-    row = {"apk_sha256": SHA, "K01_web_copy": "PASS", "K02_web_paste": "PASS", "K03_urlbar_copy": "PASS"}
+    row = {"apk_sha256": SHA, "K01_web_copy": "PASS", "K02_web_paste": "PASS", "K03_urlbar_copy": "PASS", "K04_find_in_page_copy": "PASS"}
     row.update(kw)
     return {"clipboard_apk": {"x64": row}}
 
 
 def test_omnibox_fix_in_build_needs_clipboard_pass_for_this_apk():
-    assert "omnibox_clipboard_fix_in_build_but_no_K01_K02_K03_PASS_for_this_sha256" in pg.gate("x64", OMNI, SHA, [E2E])
+    assert "omnibox_clipboard_fix_in_build_but_no_K01_K02_K03_K04_PASS_for_this_sha256" in pg.gate("x64", OMNI, SHA, [E2E])
     assert pg.gate("x64", OMNI, SHA, [E2E, _clip()]) == []
     assert pg.gate("x64", OMNI, SHA, [E2E, _clip(K03_urlbar_copy="FAIL")])
     assert pg.gate("x64", OMNI, SHA, [E2E, _clip(K03_urlbar_copy="NOT_RUN")])

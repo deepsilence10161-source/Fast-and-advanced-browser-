@@ -40,3 +40,27 @@ index e320419..771c269 100644
  
                  Clipboard.getInstance().setText(replacementCutCopyText);
                  if (isCutOption) getText().replace(selection.getLower(), selection.getUpper(), "");
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java b/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
+index 69eeabe..cbadb25 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
+@@ -197,6 +197,19 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+                 text.replace(min, max, textToPaste);
+                 return true;
+             }
++            if (id == android.R.id.copy || id == android.R.id.cut) {
++                // Swiftra personal build: Find-in-page copy/cut never reaches Android's system
++                // ClipboardManager; it uses the browser-contained clipboard.
++                var query = getText();
++                assumeNonNull(query);
++                int lower = Math.max(0, Math.min(getSelectionStart(), getSelectionEnd()));
++                int upper = Math.max(0, Math.max(getSelectionStart(), getSelectionEnd()));
++                if (upper > lower) {
++                    Clipboard.getInstance().setText(query.subSequence(lower, upper).toString());
++                    if (id == android.R.id.cut) query.delete(lower, upper);
++                }
++                return true;
++            }
+             return super.onTextContextMenuItem(id);
+         }
+ 

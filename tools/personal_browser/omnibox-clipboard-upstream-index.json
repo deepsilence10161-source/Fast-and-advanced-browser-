@@ -9,14 +9,24 @@
       "sha256": "0c824ac5b6eb2f4170fef6fc789f0c79e1673e922610fb20c4851ba550c5d155",
       "bytes": 79753,
       "lines": 1868
+    },
+    {
+      "path": "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java",
+      "status": "FETCHED",
+      "sha256": "1dc8d6efb287d3b6e2b0f07c6117c0636497d51118bfef6695da74dd1a6b4f53",
+      "bytes": 35529,
+      "lines": 871
     }
   ],
   "fixture_paths": [
-    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java"
+    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java"
   ],
-  "fixture_gzip_sha256": "4b8aef932fd49c20cee7d8d1cde1f86bfae4fcf5124149a94a9ae294aa692dc6",
+  "fixture_gzip_sha256": "c444e98d8d657690620c02277f0bfcc19e7e0e1530269953bfd239560ee9e68a",
   "native_source_outputs": [
-    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java"
+    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java",
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java"
   ],
   "not_android_acceptance": true
 }
