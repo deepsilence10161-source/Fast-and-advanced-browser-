@@ -99,3 +99,13 @@ Chromium के Android `shape_detection` Face API पर निर्भर न
 
 * **Crash found (x64, real run):** launching with Face Guard on made the lock open the tab-switcher Hub before any tab was selected -> `AssertionError: activePosition of the RecyclerView is -1` (the app crashes). Fix: `FaceGuardChromeBridge.showTabSwitcher` opens the Hub only once `isTabStateInitialized()` is true and a tab is selected (`index() >= 0`); until then the opaque overlay alone hides the page, and the controller retries after 0.4 s / 1.5 s / 4 s. NOT yet re-measured on a device.
 * **Open:** with the emulated front camera (image with one face, rot90) the lock stayed for 60 s: camera open and frames flowing, but no face detected (cause unknown: rotation, resolution or the emulator image path). `FaceCameraSource` now logs a counters-only line every 3 s (`SwiftraFaceGuard: frames= invalid= lastFaces= size= rot= sensor=`; no pixels, no images) so the next run can tell "no frames" from "frames without a face".
+
+### 11.1 What the emulated front camera really delivers (camdiag, x64, 17 Nov 2026)
+
+Measured with `face-guard-device-e2e.yml` suite `camdiag` (helper app `CamDiag`, no browser involved):
+
+- The emulator's `imagefile:` front camera reports SENSOR_ORIENTATION **90** (an earlier note said 270; that was wrong) and a 640x480 YUV frame.
+- `android.media.FaceDetector` finds the face in the **rot0** file when the frame is rotated by 90, so **rot0 is the acceptance variant** and rot90 is information only.
+- The emulator shows only the left 360 of the 640 file columns in the portrait view, so a full-width group photo loses the second person. `make_cam_fixtures.py` therefore places the content inside that window.
+- With the real two-person photo the detector found only ONE face; the two-face fixture is now the same detectable face shown twice. It tests the app's "two detected faces -> lock" path; it does not show that a real second person is detected. FaceDetector is a weak detector (confidence ~0.5), so it is not a security control.
+- Measured result for the final fixtures: one face -> 1 face at rot 90; two-face fixture -> 2 faces at rot 90 (and 270); rot 0/180 find nothing.
