@@ -335,3 +335,15 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 - **Final focused233 passed in9.77s**, Python compilation/bash -n PASS; **full host522 passed,8 skipped in127.19s**। Focused breakdown72 egress +66 prior native +66 manifest +2 APK audit +12 public gate +15 lane। New tests skipped0; old optional-fixture skips8। Existing complete hermetic stage/signing lifecycle runs real shell/ninja with stub external world; Android build/E2E नहीं। Actual component receipts उसी final pytest tree से evidence में पढ़े, successful probes दुबारा चलाकर receipt नहीं गढ़ी।
 - Official internal-storage documentation chunks0–1 और pinned source reviewed। Fetched implicit-intent guide का23October footer current19October cutoff से बाद था; उसे current shipping proof नहीं कहा। Source indexes में hashes/failed paths सुरक्षित; licence retained।
 - **BLOCKED / NOT RUN:** new privacy APK/full Android compile, x64 Actions emulator/native ARM64 Redroid and physical/user-present account acceptance; actual persistent-site data/backup/IPC/network/performance/UI/encryption/key-failure tests। Local≈20GiB और adb/emulator/Docker/KVM absent; कोई paid substitute/full local source build/duplicate old source build नहीं। Bootstrap18/20, remote401 unverified; local starting1059files/14needles/0leaks। Post-change local-only scan ने /home/user और /tmp में **4425 files/14 needles/0 leaks**, exit0 दिया; platform restore archive scanner ने vault-only बताया। कोई real account/unrelated connected app/secret disclosure नहीं। GitHub publication/dispatch not claimed। Current detail: `docs/plans/personal-browser-containment.md` §9 और `evidence/personal-egress-source-2026-10-19.json`।
+
+## 2026-11-17 — personal dev APK x64 E2E: harness changes, real instability, Face Guard core (host only)
+
+| Run | Harness | Result | Meaning |
+|---|---|---|---|
+| 43969723962 | 0d9c017 | 9/9 PASS | baseline (see evidence/personal-e2e-x64-2026-11-16.json) |
+| 44019224669 | 0fb7ca3 (C04 DIAL control placed inside C04) | 6 PASS, 3 NOT_RUN (C04/C05/C06) | artifact shows `adb: device 'emulator-5554' not found`: the emulator vanished after C03. The harness reported NOT_RUN instead of failing loudly. NOT a pass. |
+| 44020355092 | 07f60e2 (device-loss guard added) | FAIL: `harness_error device lost after C04 taps` | emulator vanished during the `market:` tap. DIAL control had passed both device checks, so the cause is not proven to be the control. |
+| (next) | control moved to last as C09 | see evidence when finished | |
+
+- Cause of the device loss is UNKNOWN (no emulator log retained). Hypotheses not tested: swiftshader/emulator crash on the free runner, memory pressure, intent hand-off in the `market:` tap. The original 9/9 run passed the same tap once, so this is intermittent evidence, not a regression proof.
+- Face Guard (docs/plans/face-guard.md): `FaceGuardPolicy` host JVM probe 55 assertions, 10 mutants rejected. **Host only — NOT Android PASS**; no camera, model, UI, Settings or APK exists yet.
