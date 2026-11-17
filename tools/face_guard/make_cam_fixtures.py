@@ -28,6 +28,10 @@ def main(out):
     os.makedirs(out, exist_ok=True)
     for key, name in (("one", "one_face.jpg"), ("two", "two_faces.jpg"), ("none", "no_face.jpg")):
         src = Image.open(os.path.join(FIX, name)).convert("RGB")
+        if key == "two":
+            # Both heads close to the camera (a second person leaning in): crop the wide group photo around the two faces.
+            w, h = src.size
+            src = src.crop((round(w * 0.22), 0, round(w * 0.80), h))
         upright = fit(src, 480, 640)                       # what the app should see (portrait 480x640)
         upright.rotate(-90, expand=True).save(os.path.join(out, f"cam_{key}_rot90.jpg"), quality=92)   # sensor frame 640x480
         # Measured (camdiag, 17 Nov 2026): the emulator turns the 640x480 file into a 480-wide portrait view and keeps only the
