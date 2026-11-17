@@ -1,0 +1,35 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev) on real Android runtimes; synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "harness_commit": "see git log (C09 launcher fix after 1f1d653)",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36 x86_64",
+  "apk_sha256": "fc56a8f067584e33d09695498d895f5e639c720b3eea4b3643fec1ac919626cf",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44031056649",
+  "summary": {
+   "PASS": 10,
+   "FAIL": 0,
+   "NOT_RUN": 0
+  },
+  "c09": "OBSERVED(com.google.android.dialer)"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14 / API 34 arm64-v8a",
+  "apk_sha256": "38e55c07fcec93d97c7166aa426387981afefa76c8603f3e836e34382fe37abe",
+  "build_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/43969626419",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44031053143",
+  "summary": {
+   "PASS": 9,
+   "FAIL": 0,
+   "NOT_RUN": 1
+  },
+  "c09": "NOT_RUN: no dialer on Redroid; launcher focus is not a hand-off",
+  "earlier_run_note": "run 44030652744 (older harness) printed C09 PASS OBSERVED(com.android.launcher3) - a false positive, fixed and superseded"
+ },
+ "limits": [
+  "C04 tel:/market: no-hand-off is positive-controlled on x64 only; negative-only on ARM64 Redroid",
+  "C06 checks package flags only; backup rules verified statically",
+  "clipboard/IME/native-widget leak, whole-profile encryption, key-loss preservation, passkey/autofill APIs NOT covered",
+  "no real device (OEM) test; no real account or site",
+  "Face Guard is NOT part of this build"
+ ]
+}

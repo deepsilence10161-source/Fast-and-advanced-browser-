@@ -347,3 +347,12 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 
 - Cause of the device loss is UNKNOWN (no emulator log retained). Hypotheses not tested: swiftshader/emulator crash on the free runner, memory pressure, intent hand-off in the `market:` tap. The original 9/9 run passed the same tap once, so this is intermittent evidence, not a regression proof.
 - Face Guard (docs/plans/face-guard.md): `FaceGuardPolicy` host JVM probe 76 assertions, 15 mutants rejected. **Host only — NOT Android PASS**; no camera, model, UI, Settings or APK exists yet.
+
+### 2026-11-17 (later) — both ABIs, same APKs as published
+| ABI | Run | Result |
+|---|---|---|
+| x64 emulator (Android 16) | 44031056649 | 10/10 PASS (C09 observed dialer) |
+| native ARM64 Redroid (Android 14) | 44031053143 | 9 PASS, 1 NOT_RUN (C09: Redroid has no dialer) |
+| ARM64 older harness | 44030652744 | C09 printed PASS for `com.android.launcher3` = false positive; harness fixed to ignore launcher/system UI; superseded |
+
+Evidence: `evidence/personal-e2e-both-abi-2026-11-17.json`. Still NOT covered: clipboard/IME leak, whole-profile encryption, key-loss, passkeys/autofill, real device/account/site. Face Guard not in this APK.
