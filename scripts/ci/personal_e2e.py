@@ -14,8 +14,9 @@ Checks
                     (a) background (HOME), (b) force-stop + restart, (c) crash (am crash) + restart
   C03 download    : attachment download lands ONLY in the app-private Downloads root: exact sha256, absent from
                     shared storage, MediaStore and the system DownloadManager provider
-  C04 external    : a real tap on tel:/market: links does not hand off to another app; an adb DIAL control
-                    shows whether the measurement can observe a hand-off (else reported negative-only)
+  C04 external    : a real tap on tel:/market: links does not hand off to another app (negative-only)
+  C09 control     : (last) an adb DIAL intent makes another package top-resumed, i.e. the C04 measurement can
+                    observe a hand-off on this image; NOT_RUN where no handler exists
   C05 secure      : FLAG_SECURE on the browser window
   C06 backup      : package is not backup-enabled (otherwise NOT_RUN: rules not measurable here)
   C07 no_account  : no Android account was created/linked by the browser
@@ -329,16 +330,6 @@ def main():
             res("C03_download", "FAIL", detail)
 
         # ---- C04 external intent handoff (real taps; negative-only, no positive control on this APK)
-        require_device("before C04 control")
-        adb("shell", "am", "force-stop", pkg)
-        adb("shell", "input", "keyevent", "KEYCODE_HOME")
-        time.sleep(2)
-        adb("shell", "am", "start", "-W", "-a", "android.intent.action.DIAL", "-d", "tel:5551234", timeout=60)
-        time.sleep(4)
-        require_device("after C04 DIAL control")
-        control = control_label(top_package(sh("dumpsys activity activities", 60)), pkg)
-        adb("shell", "input", "keyevent", "KEYCODE_HOME")
-        require_device("after C04 control cleanup")
         outcomes = {}
         for name, href in (("tel", "tel:5551234"), ("market", "market://details?id=com.android.vending")):
             adb("shell", "am", "force-stop", pkg)
@@ -351,8 +342,7 @@ def main():
             time.sleep(4)
             outcomes[name] = top_package(sh("dumpsys activity activities", 60))
         if all(v == pkg for v in outcomes.values()):
-            res("C04_external", "PASS", f"top_package_after_tap={outcomes} measurement_control={control}"
-                + ("" if control.startswith("OBSERVED") else " (negative-only: control unavailable)"))
+            res("C04_external", "PASS", f"top_package_after_tap={outcomes} (negative-only; C09 reports whether this measurement can observe a hand-off)")
         elif any(not v for v in outcomes.values()):
             res("C04_external", "NOT_RUN", f"top package not parsed: {outcomes}")
         else:
@@ -394,6 +384,18 @@ def main():
             if not sh(f"find {prof} -maxdepth 4 -name '{name}' 2>/dev/null | head -1", 60):
                 missing.append(label)
         res("C08_preserved", "PASS" if not missing else "FAIL", f"missing={missing}")
+
+        # ---- C09 measurement control, deliberately LAST so it cannot disturb any acceptance check above.
+        # An adb-issued DIAL intent must make ANOTHER package top-resumed; says nothing about the browser.
+        if not device_up():
+            res("C09_measurement_control", "NOT_RUN", "device lost before control")
+        else:
+            adb("shell", "input", "keyevent", "KEYCODE_HOME")
+            time.sleep(2)
+            adb("shell", "am", "start", "-W", "-a", "android.intent.action.DIAL", "-d", "tel:5551234", timeout=60)
+            time.sleep(4)
+            control = control_label(top_package(sh("dumpsys activity activities", 60)), pkg)
+            res("C09_measurement_control", "PASS" if control.startswith("OBSERVED") else "NOT_RUN", control)
     except Exception as e:  # noqa: BLE001
         print("PERSONAL_E2E harness_error", repr(e)[:300], flush=True)
         return 2
