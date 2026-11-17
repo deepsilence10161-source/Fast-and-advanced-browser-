@@ -128,7 +128,7 @@ def finish(a, results, abi, rc):
         open(os.path.join(a.out, "logcat_tail.txt"), "w").write(G.adb("logcat", "-d", "-t", "4000", timeout=60))
         full = G.adb("logcat", "-d", "-t", "40000", timeout=90)
         keep = [l for l in full.splitlines() if "AccessibilityNodeInfoDumper" not in l and "uiautomator" not in l.lower()
-                and re.search(r"com\.swiftra\.personaldev|FATAL|AndroidRuntime|tombstone|DEBUG|CameraService|Camera2|CameraDevice|ActivityManager: (Process|Start|Killing)|libc|SIGSEGV|ANR", l)]
+                and re.search(r"SwiftraFaceGuard|com\.swiftra\.personaldev|FATAL|AndroidRuntime|tombstone|DEBUG|CameraService|Camera2|CameraDevice|ActivityManager: (Process|Start|Killing)|libc|SIGSEGV|ANR", l)]
         open(os.path.join(a.out, "logcat_filtered.txt"), "w").write("\n".join(keep[-3000:]))
         open(os.path.join(a.out, "logcat_crash.txt"), "w").write(G.adb("logcat", "-d", "-b", "crash", timeout=60))
     except Exception:  # noqa: BLE001
