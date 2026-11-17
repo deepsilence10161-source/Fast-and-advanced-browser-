@@ -10,6 +10,7 @@ Exit 1 on any FAIL, 2 on harness error.
   K01 web_copy     : Ctrl+C on web-page text must NOT replace the system clipboard
   K02 web_paste    : the page must NOT receive the system clipboard text on Ctrl+V
   K03 urlbar_copy  : copying text typed in the NATIVE URL bar must NOT reach the system clipboard
+  K04 find_in_page : same for the native Find-in-page text field (a leak here = FAIL; unproven = NOT_RUN)
 """
 import argparse
 import http.server
@@ -271,6 +272,33 @@ def main():
             else:
                 s, d = classify_copy(sk, st, ctl, "omni_" + tok, pasted_back)
                 res("K03_urlbar_copy", s, d + f" pasted_back_into_url_bar={pasted_back}")
+
+        # K04 find-in-page text field (native EditText inside the find toolbar)
+        try:
+            helper("set", ctl)
+            P.adb("shell", "am", "start", "-W", "-a", "android.intent.action.VIEW", "-d", f"http://127.0.0.1:{PORT}/plain", "-p", pkg, timeout=60)
+            time.sleep(4)
+            opened = bool(dev.tap(r"(?i)^more options$|menu_button", wait=2.0, tries=3)) and bool(dev.tap(r"(?i)find in page", wait=2.0, tries=3))
+            if not opened:
+                res("K04_find_in_page_copy", "NOT_RUN", "could not open Find in page through the UI")
+            else:
+                P.sh(f"input text find_{tok}")
+                time.sleep(1)
+                combo(CTRL, KA)
+                combo(CTRL, KC)
+                time.sleep(1)
+                P.sh("input keyevent 67")
+                combo(CTRL, KV)
+                time.sleep(2)
+                pasted_back = ("find_" + tok) in (dev.dump() or "")
+                sk, st = helper("get")
+                if not control_ok:
+                    res("K04_find_in_page_copy", "NOT_RUN", "control failed")
+                else:
+                    s, d = classify_copy(sk, st, ctl, "find_" + tok, pasted_back)
+                    res("K04_find_in_page_copy", s, d + f" pasted_back_into_find_field={pasted_back}")
+        except Exception as e:  # noqa: BLE001
+            res("K04_find_in_page_copy", "NOT_RUN", "harness: " + repr(e)[:160])
     except Exception as e:  # noqa: BLE001
         print("PERSONAL_CLIP harness_error", repr(e)[:300], flush=True)
         return 2
