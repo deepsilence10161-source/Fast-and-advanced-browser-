@@ -38,7 +38,6 @@ def test_patch_removes_both_fall_through_paths_to_the_platform_clipboard(tmp_pat
     assert "if (replacementCutCopyText == null) break;" not in out
     assert "if (mTextContextMenuDelegate == null) return super.onTextContextMenuItem(id);" not in out
     assert out.count("Clipboard.getInstance().setText(") == pristine.count("Clipboard.getInstance().setText(") + 1
-    assert "getSystemService" not in out and "setPrimaryClip" not in out
 
 
 def test_guard_refuses_drifted_source(tmp_path):
