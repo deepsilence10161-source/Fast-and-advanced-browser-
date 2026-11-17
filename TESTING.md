@@ -371,3 +371,9 @@ Evidence: `evidence/personal-e2e-both-abi-2026-11-17.json`. Still NOT covered: c
 Recorded failure first: at 320 px analysis width BOTH ABIs missed the second face (two_faces=0; runs 44035592513, 44035823237). The raw detector output showed both faces from 480 px up with eye distance about 4.4 % of the width while my filter demanded 5 %. Width was raised to 480 px and the floor lowered to 3 %. This is tuned on THREE images; it is not a calibration, FAR/FRR or demographic-fairness measurement. Evidence: `evidence/face-guard-probe-2026-11-17.json`.
 
 Not measured yet (see docs/plans/face-guard.md section 9): Settings/lock-overlay/tab-switcher on a real APK, a real camera pipeline (emulator `-camera-front imagefile:` scenarios are written, awaiting the APK build), face-loss latency, spoofing, OEM phones.
+
+## Personal dev build: sign-in message + release gate + rebuild (17 Nov 2026)
+
+- **Sign-in message (0106 guard + 0107 patch):** host/source only — patch applies to pinned Chromium 155 `SigninAndHistorySyncCoordinator.java`, replaces only the generic "Can't sign in" Toast text; guard refuses drifted source. **Android: NOT RUN** (needs the new build). Browser sign-in/Sync stays intentionally OFF.
+- **`scripts/release/personal_gate.py`:** refuses a personal publish unless evidence JSON matches the APK sha256 with FAIL=0; a build containing Face Guard (0105) additionally needs Face Guard APK evidence (x64: nofaces/one/two all PASS; ARM64: nofaces PASS, camera scenarios may be NOT_RUN). Host unit tests only.
+- **Builds:** x64 run 44051494682 and arm64 run 44051498843 (dispatched 08:59 UTC, include 0105 + 0107). Earlier builds 44037651643/44037655253 were cancelled by me so that one build carries both layers instead of needing a second ~8 h cycle. Results: PENDING. Nothing on this page claims Android PASS for Face Guard or the new message yet.
