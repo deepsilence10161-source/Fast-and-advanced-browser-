@@ -61,3 +61,11 @@ Chromium के Android `shape_detection` Face API पर निर्भर न
 | Runtime | Chromium Android build में TFLite Java runtime का मार्ग **अभी सत्यापित नहीं**; यह चरण 2 का मुख्य तकनीकी जोखिम है | खुला |
 
 इन सबसे यह नहीं निकलता कि कोई model "सुरक्षित" या "सटीक" है; ये केवल चयन-मानदंड हैं।
+
+## 8. चरण 3 के source-निष्कर्ष (Chromium 155.0.8059.80, सार्वजनिक gitiles; patch अभी नहीं लिखा)
+| ज़रूरत | मिला हुआ बिंदु (सत्यापित: फ़ाइल मौजूद, पंक्तियाँ पढ़ीं) | टिप्पणी |
+|---|---|---|
+| LOCK पर tab switcher खोलना | `chrome/android/java/src/org/chromium/chrome/browser/compositor/layouts/LayoutManagerChrome.java` — `showLayout(LayoutType.HUB, animate)` (155 में switcher **Hub** layout का हिस्सा है; `LayoutType.HUB = 2`) | `animate=false` से तुरंत खुलेगा; tabs=0 या hub-disabled (`isHubEnabled()`) स्थितियाँ अलग संभालनी होंगी |
+| Thumbnails mask करना | `chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java` — `getTabThumbnailWithCallback(...)` (एकल प्रवेश-द्वार का उम्मीदवार) | lock के दौरान null/placeholder लौटाना; titles/favicons का mask और उन सभी रास्तों की जाँच **बाकी** |
+| Settings toggle | Privacy settings की Java फ़ाइल और `privacy_preferences.xml` का सटीक 155 path **अभी नहीं मिला** (मेरा पहला अनुमान 404 था) | GN/listing से खोजना है; अंदाज़े से patch नहीं लिखा जाएगा |
+| UI थ्रेड/समय | LOCK का `showLayout` UI thread पर; camera frames background thread पर; policy में timer (`nextDeadlineMs`) | latency मापना बाकी |
