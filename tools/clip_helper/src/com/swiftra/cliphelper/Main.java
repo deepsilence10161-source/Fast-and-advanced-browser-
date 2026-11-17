@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.autofill.AutofillManager;
 import android.widget.EditText;
 
 /** E2E helper. --es mode set --es text X : put X on the system clipboard. --es mode get : log the clipboard text. */
@@ -28,6 +29,16 @@ public class Main extends Activity {
         super.onWindowFocusChanged(hasFocus);
         if (!hasFocus || mDone) return;
         mDone = true;
+        if ("autofill".equals(mMode)) {
+            // Positive control: this foreground app asks the selected autofill service to fill its own field.
+            EditText f = (EditText) ((android.view.ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+            f.requestFocus();
+            AutofillManager am = getSystemService(AutofillManager.class);
+            Log.i(TAG, "AUTOFILL_CONTROL enabled=" + (am != null && am.isEnabled()));
+            if (am != null) am.requestAutofill(f);
+            f.postDelayed(this::finish, 4000);
+            return;
+        }
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         try {
             if ("set".equals(mMode)) {
