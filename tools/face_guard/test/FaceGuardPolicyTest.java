@@ -3,6 +3,8 @@ import org.chromium.chrome.browser.swiftra.faceguard.FaceGuardPolicy.*;
 
 public final class FaceGuardPolicyTest {
     static int n = 0;
+    static final long LD = Config.defaults().lockDelayMs;
+    static final long ST = Config.defaults().staleMs;
     static void check(boolean ok, String what) {
         n++;
         if (!ok) { System.out.println("FAIL: " + what); System.exit(1); }
@@ -40,15 +42,18 @@ public final class FaceGuardPolicyTest {
         b.onObservation(new Observation(100, true, true, 0)); b.onObservation(new Observation(150, true, true, 0));
         check(locked(b, 150), "burst shorter than minUnlockMs stays locked");
 
-        // brief absence tolerated, long absence locks (last owner frame at 600, lockDelay 1500)
-        p.onObservation(new Observation(1900, true, false, 0));
-        check(!locked(p, 2000) && why(p, 2000) == Reason.OWNER_PRESENT, "absence of 1400ms is tolerated");
-        check(locked(p, 2200) && why(p, 2200) == Reason.OWNER_ABSENT, "absence of 1600ms locks");
+        // brief absence tolerated, longer absence locks (last owner frame at 600)
+        p.onObservation(new Observation(600 + LD - 100, true, false, 0));
+        check(!locked(p, 600 + LD - 50) && why(p, 600 + LD - 50) == Reason.OWNER_PRESENT, "short absence is tolerated");
+        check(!locked(p, 600 + LD), "exactly lockDelay is still tolerated");
+        check(locked(p, 600 + LD + 1) && why(p, 600 + LD + 1) == Reason.OWNER_ABSENT, "absence beyond lockDelay locks");
         // after locking, returning owner needs a fresh sustained run
         p.onObservation(new Observation(3000, true, true, 0));
         check(locked(p, 3000), "one owner frame after lock does not unlock");
         owner(p, 3100, 3500);
         check(!locked(p, 3500), "sustained owner unlocks again");
+        check(Config.defaults().lockDelayMs <= 500, "default lock delay is sub-second");
+        check(Config.defaults().staleMs <= 1000, "default stalled-camera lock is within one second");
 
         // other face: strict lock after otherFaceFrames, even with owner present
         FaceGuardPolicy o = ready(); owner(o, 0, 500);
@@ -72,8 +77,8 @@ public final class FaceGuardPolicyTest {
 
         // stale frames lock
         FaceGuardPolicy st = ready(); owner(st, 0, 500);
-        check(!locked(st, 1000), "fresh");
-        check(locked(st, 500 + 2001) && why(st, 2501) == Reason.NO_FRAMES, "no frames for >staleMs locks");
+        check(!locked(st, 500 + LD - 1), "fresh");
+        check(locked(st, 500 + ST + 1) && why(st, 500 + ST + 1) == Reason.NO_FRAMES, "no frames for >staleMs locks");
 
         // invalid frames and non-monotonic timestamps are not trusted
         FaceGuardPolicy iv = ready();
@@ -128,6 +133,38 @@ public final class FaceGuardPolicyTest {
         check(m2.mayDisable(0), "credential may disable");
         m2.setEnabled(false);
         check(m2.mayDisable(0), "already disabled");
+
+        // edge actions for the tab switcher: LOCK once, UNLOCK once, no repeats
+        FaceGuardPolicy ed = new FaceGuardPolicy(Config.defaults());
+        check(ed.poll(0) == Action.NONE && ed.nextDeadlineMs() == -1, "disabled: no action, no deadline");
+        ed.setEnabled(true); ed.setTemplate(Template.OK); ed.setPermissionGranted(true); ed.onForeground();
+        check(ed.poll(0) == Action.LOCK, "enabling without owner proof opens the switcher once");
+        check(ed.poll(1) == Action.NONE && ed.poll(2) == Action.NONE, "no repeated LOCK while still locked");
+        owner(ed, 100, 500);
+        check(ed.poll(500) == Action.UNLOCK, "owner verified reveals once");
+        check(ed.poll(501) == Action.NONE, "no repeated UNLOCK");
+        check(ed.nextDeadlineMs() == 500 + LD + 1, "deadline = last owner frame + lockDelay + 1");
+        check(ed.poll(500 + LD) == Action.NONE, "no lock at the deadline boundary minus one");
+        check(ed.poll(ed.nextDeadlineMs()) == Action.LOCK, "timer alone locks when the face leaves, without another frame");
+        check(ed.nextDeadlineMs() == -1, "locked: no pending deadline");
+        check(ed.poll(10) == Action.NONE, "a regressing clock cannot unlock");
+        check(ed.poll(900) == Action.NONE, "stale owner run cannot re-unlock after a time lock");
+        owner(ed, 2000, 2400);
+        check(ed.poll(2400) == Action.UNLOCK, "owner back unlocks once");
+        ed.onObservation(new Observation(2500, true, true, 1)); ed.onObservation(new Observation(2530, true, true, 1));
+        check(ed.poll(2530) == Action.LOCK, "stranger joins: immediate LOCK on the next poll");
+        owner(ed, 3000, 3400);
+        check(ed.poll(3400) == Action.UNLOCK, "unlock after stranger leaves");
+        ed.onBackground();
+        check(ed.poll(3500) == Action.LOCK && ed.nextDeadlineMs() == -1, "background locks, no timer");
+        ed.onForeground(); ed.onDeviceCredentialSuccess();
+        check(ed.poll(3600) == Action.UNLOCK, "credential override reveals");
+        ed.setEnabled(false);
+        check(ed.poll(3700) == Action.NONE, "turning the feature off while unlocked produces no lock");
+        FaceGuardPolicy stall = new FaceGuardPolicy(Config.defaults());
+        stall.setEnabled(true); stall.setTemplate(Template.OK); stall.setPermissionGranted(true); stall.onForeground();
+        owner(stall, 0, 400); stall.poll(400);
+        check(stall.nextDeadlineMs() == 400 + LD + 1, "stall deadline uses the earlier of owner/stale timers");
 
         // config bounds
         boolean threw = false;

@@ -346,4 +346,4 @@ APKs (commit a58f8ec, patches 0001–0007): x64 `20e288a58e0dbfdecd603deedb0d46d
 | 44021299400 | 0084bb4 (control moved to last as C09) | **10/10 PASS (x64 emulator, API 36)** | C09 observed `com.google.android.dialer` take focus after an adb DIAL, so the C04 `tel:`/`market:` no-hand-off result is now positive-controlled on x64. Device loss in the two previous runs did NOT recur; its cause remains unknown. ARM64 Redroid E2E for this APK: NOT RUN (build 43969626419 still in progress). |
 
 - Cause of the device loss is UNKNOWN (no emulator log retained). Hypotheses not tested: swiftshader/emulator crash on the free runner, memory pressure, intent hand-off in the `market:` tap. The original 9/9 run passed the same tap once, so this is intermittent evidence, not a regression proof.
-- Face Guard (docs/plans/face-guard.md): `FaceGuardPolicy` host JVM probe 55 assertions, 10 mutants rejected. **Host only — NOT Android PASS**; no camera, model, UI, Settings or APK exists yet.
+- Face Guard (docs/plans/face-guard.md): `FaceGuardPolicy` host JVM probe 76 assertions, 15 mutants rejected. **Host only — NOT Android PASS**; no camera, model, UI, Settings or APK exists yet.

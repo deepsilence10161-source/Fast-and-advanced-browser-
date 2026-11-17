@@ -11,7 +11,8 @@
 | विषय | निर्णय |
 |---|---|
 | डिफ़ॉल्ट | **Off**। चालू करने से पहले enrollment अनिवार्य |
-| क्या होता है | मालिक न दिखे → content पर lock overlay, media pause। मालिक लौटे → स्थिर रूप से पहचाने जाने पर खुलता है |
+| क्या होता है (उपयोगकर्ता निर्णय, 17-11-2026) | चेहरा हटते ही **तुरंत tab switcher / recent-tabs (select-tab) स्क्रीन खुले**; media pause। Switcher में page के **thumbnails/titles छिपे (masked)** रहेंगे और tab चुनना तब तक बंद जब तक मालिक फिर प्रमाणित न हो — वरना thumbnail ख़ुद page-सामग्री दिखा देते। मालिक लौटे → स्थिर पहचान के बाद thumbnails दिखें और tab चुना जा सके |
+| गति का लक्ष्य | चेहरा हटने से lock तक **लक्ष्य ≲ 0.5 s** (डिफ़ॉल्ट lockDelay 300 ms + frame-अंतराल + detection)। यह **लक्ष्य** है, गारंटी नहीं; emulator पर मापा जाएगा। Frames रुकें तो भी timer से lock (stale 1 s) |
 | दूसरा चेहरा | मालिक के साथ किसी और का चेहरा आए → भी lock (सख़्त)। यह विकल्प बंद किया जा सकता है |
 | Fail-closed | template गायब/ख़राब, camera permission नहीं, camera विफल, frames रुकें, background — सब पर lock |
 | बाहर निकलने का रास्ता | device PIN/pattern/password से override (backgrounding तक); मालिक कभी स्थायी रूप से बाहर न हो |
@@ -31,9 +32,9 @@
 | चरण | काम | सत्यापन | स्थिति |
 |---|---|---|---|
 | 0 | यह design और निर्णय | समीक्षा | तैयार |
-| 1 | `FaceGuardPolicy` — lock/unlock state machine, embedding matching/template बनाना | host JVM: 55 assertions + 10 mutants reject | **तैयार (host only)** |
+| 1 | `FaceGuardPolicy` — lock/unlock state machine, edge actions (LOCK/UNLOCK, nextDeadlineMs timer), embedding matching/template | host JVM: 76 assertions + 15 mutants reject | **तैयार (host only)** |
 | 2 | Model चयन (licence, आकार, bias, on-device): detector + embedding। Camera2 (framework, GMS-मुक्त) से frames | licence/आकार रिपोर्ट, host accuracy-harness | बाकी |
-| 3 | Enrollment UI, Keystore-wrapped template storage, lock overlay (`FLAG_SECURE` के साथ), media pause | x64 emulator virtual camera दृश्य | बाकी |
+| 3 | Enrollment UI, Keystore-wrapped template storage, LOCK पर masked tab switcher खोलना (Chromium `LayoutType.TAB_SWITCHER`; thumbnails/titles mask), media pause | x64 emulator virtual camera दृश्य | बाकी |
 | 4 | Settings toggle (Privacy) + camera permission flow + device-credential override | x64 emulator + ARM64 Redroid UI | बाकी |
 | 5 | Personal layer `0104` (सामान्य `patches/series` में नहीं), full Android compile | CI build x64 + arm64 | बाकी |
 | 6 | Android E2E | नीचे §5 | बाकी |
@@ -46,7 +47,7 @@ Chromium के Android `shape_detection` Face API पर निर्भर न
 - Host PASS को Android PASS नहीं कहा जाएगा।
 
 ## 6. खुले निर्णय (उपयोगकर्ता से)
-1. Face न दिखे तो **lock overlay** (डिफ़ॉल्ट) या tabs छिपाना/app बंद करना?
+1. ~~Face न दिखे तो क्या?~~ **तय:** tab switcher खुले (masked thumbnails)। खुला प्रश्न: क्या masked switcher में भी tab चुनना पूरी तरह बंद रहे (डिफ़ॉल्ट) या चुनने पर face-check माँगे?
 2. दूसरा चेहरा दिखे तो lock (डिफ़ॉल्ट) या अनदेखा?
 3. Liveness (blink/head-turn) चरण 6 से पहले चाहिए?
 

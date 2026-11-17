@@ -22,6 +22,9 @@ public final class FaceGuardPolicy {
 
     public enum Template { MISSING, UNAVAILABLE, OK }
 
+    /** Edge-triggered UI action. LOCK = open the (masked) tab switcher once; UNLOCK = reveal once. */
+    public enum Action { NONE, LOCK, UNLOCK }
+
     /** Hard bounds so a config can never weaken the guard beyond these limits. */
     public static final float MIN_MATCH_THRESHOLD = 0.55f;
     public static final float MAX_MATCH_THRESHOLD = 0.95f;
@@ -59,7 +62,7 @@ public final class FaceGuardPolicy {
         }
 
         public static Config defaults() {
-            return new Config(0.70f, 1500, 2000, 3, 400, 2, true);
+            return new Config(0.70f, 300, 1000, 3, 300, 2, true);
         }
     }
 
@@ -108,6 +111,8 @@ public final class FaceGuardPolicy {
     private int mOwnerRun;
     private long mOwnerRunStartMs = -1;
     private int mOtherRun;
+    private boolean mLastLocked;         // for edge detection in poll()
+    private long mEvalClockMs = Long.MIN_VALUE; // evaluate() time never goes backwards
 
     public FaceGuardPolicy(Config config) {
         if (config == null) throw new IllegalArgumentException("config");
@@ -183,6 +188,8 @@ public final class FaceGuardPolicy {
 
     // ---------------------------------------------------------------- decision
     public Decision evaluate(long nowMs) {
+        if (nowMs < mEvalClockMs) nowMs = mEvalClockMs;   // a regressing clock must never unlock
+        mEvalClockMs = nowMs;
         if (!mEnabled) return new Decision(false, Reason.DISABLED, false);
         if (!mForeground) return new Decision(true, Reason.BACKGROUND, false);
         if (mOverride) return new Decision(false, Reason.DEVICE_CREDENTIAL_OVERRIDE, false);
@@ -193,10 +200,14 @@ public final class FaceGuardPolicy {
 
         if (mLastValidMs < 0 || nowMs - mLastValidMs > mConfig.staleMs) {
             mUnlocked = false;
+            mOwnerRun = 0;
+            mOwnerRunStartMs = -1;
             return new Decision(true, mLastValidMs < 0 ? Reason.WAITING_FOR_OWNER : Reason.NO_FRAMES, true);
         }
         if (mConfig.lockOnOtherFaces && mOtherRun >= mConfig.otherFaceFrames) {
             mUnlocked = false;
+            mOwnerRun = 0;
+            mOwnerRunStartMs = -1;
             return new Decision(true, Reason.OTHER_FACE, true);
         }
         if (mOwnerRun >= mConfig.unlockFrames && mOwnerRunStartMs >= 0
@@ -208,9 +219,32 @@ public final class FaceGuardPolicy {
                 return new Decision(false, Reason.OWNER_PRESENT, true);
             }
             mUnlocked = false;
+            mOwnerRun = 0;              // a fresh sustained run is required after any lock
+            mOwnerRunStartMs = -1;
             return new Decision(true, Reason.OWNER_ABSENT, true);
         }
         return new Decision(true, mLastOwnerMs >= 0 ? Reason.OWNER_ABSENT : Reason.WAITING_FOR_OWNER, true);
+    }
+
+    /**
+     * Edge-triggered result for the UI layer: LOCK exactly once when the state goes unlocked -> locked (open
+     * the masked tab switcher immediately), UNLOCK exactly once on locked -> unlocked, otherwise NONE.
+     * Call after every observation AND at nextDeadlineMs() so locking never waits for another frame.
+     */
+    public Action poll(long nowMs) {
+        boolean locked = evaluate(nowMs).locked;
+        if (locked == mLastLocked) return Action.NONE;
+        mLastLocked = locked;
+        return locked ? Action.LOCK : Action.UNLOCK;
+    }
+
+    /**
+     * Earliest time (ms, same clock) at which evaluate() could flip from unlocked to locked purely because
+     * time passed (owner missing too long, or frames stalled). -1 when no time-based lock is pending.
+     */
+    public long nextDeadlineMs() {
+        if (!mEnabled || !mForeground || mOverride || !mUnlocked || mLastValidMs < 0 || mLastOwnerMs < 0) return -1;
+        return Math.min(mLastOwnerMs + mConfig.lockDelayMs, mLastValidMs + mConfig.staleMs) + 1;
     }
 
     /** Turning the feature off (or re-enrolling) needs the owner proven right now or a device credential. */
@@ -227,6 +261,7 @@ public final class FaceGuardPolicy {
         mOwnerRun = 0;
         mOwnerRunStartMs = -1;
         mOtherRun = 0;
+        mEvalClockMs = Long.MIN_VALUE;
     }
 
     // ---------------------------------------------------------------- embedding helpers

@@ -28,7 +28,18 @@ MUTANTS = {
     "anyone_may_disable": ("        return !d.locked && (d.reason == Reason.OWNER_PRESENT || d.reason == Reason.DEVICE_CREDENTIAL_OVERRIDE);",
                            "        return true;"),
     "absence_never_locks": ("nowMs - mLastOwnerMs <= mConfig.lockDelayMs", "nowMs - mLastOwnerMs <= 100000000L"),
+    "lock_edge_repeats_every_poll": ("if (locked == mLastLocked) return Action.NONE;", "if (false) return Action.NONE;"),
+    "deadline_too_late": ("mLastValidMs + mConfig.staleMs) + 1;", "mLastValidMs + mConfig.staleMs) + 1000;"),
+    "slow_default_lock_delay": ("return new Config(0.70f, 300, 1000, 3, 300, 2, true);", "return new Config(0.70f, 1500, 1000, 3, 300, 2, true);"),
+    "sub_second_stale_ignored": ("return new Config(0.70f, 300, 1000, 3, 300, 2, true);", "return new Config(0.70f, 300, 5000, 3, 300, 2, true);"),
 }
+
+# Two defences overlap on purpose (monotonic evaluation clock AND owner-run reset after a lock); removing only one is
+# behaviourally equivalent, so they are mutated together.
+COMBINED_MUTANT = [
+    ("        if (nowMs < mEvalClockMs) nowMs = mEvalClockMs;   // a regressing clock must never unlock\n", ""),
+    ("            mOwnerRun = 0;              // a fresh sustained run is required after any lock\n", ""),
+]
 
 
 def test_policy_host_probe_passes():
@@ -47,3 +58,15 @@ def test_mutant_is_rejected(name):
         rc, out = H.run(p)
     assert rc != 0, f"mutant {name} survived the tests"
     assert "FACE_GUARD_POLICY_OK" not in out
+
+
+def test_combined_clock_and_run_reset_mutant_is_rejected():
+    src = H.SRC.read_text()
+    for old, new in COMBINED_MUTANT:
+        assert src.count(old) == 1, "mutation anchor drifted"
+        src = src.replace(old, new)
+    with tempfile.TemporaryDirectory() as d:
+        p = Path(d) / "FaceGuardPolicy.java"
+        p.write_text(src)
+        rc, out = H.run(p)
+    assert rc != 0 and "FACE_GUARD_POLICY_OK" not in out, out
