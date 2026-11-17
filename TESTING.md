@@ -401,3 +401,5 @@ Observer = CI-only helper registered as the system autofill service (logs reques
 ## Personal dev APK: passkey / Credential Manager exposure (17 Nov 2026)
 
 Observer = CI-only helper registered as the system credential provider. x64 run 44061021675 (Android 16) and ARM64 Redroid run 44061959106 (Android 14): **C00 control PASS**, **C01 PASS**: a real tap + `navigator.credentials.get({publicKey})` produced **no request** to the system provider. The page got `NotSupportedError: Not implemented` (ARM64) / no result in 20 s (x64), so **passkeys are effectively unusable in this build** (a functional limitation, not a leak). Evidence: `evidence/personal-cred-2026-11-17.json`. Not covered: a real passkey site, Google/third-party providers, OEM device.
+
+**K04 (find-in-page field), x64 run 44062597384 on the shipped APK: FAIL** (leak, same mechanism as K03). The fix for both fields is 0109 (UrlBar + FindToolbar). Other native text fields (dialogs, settings inputs, IME) remain unaudited. Passing K01-K04 on the next build is required by `personal_gate.py` before publishing.

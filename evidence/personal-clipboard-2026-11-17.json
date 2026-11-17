@@ -7,7 +7,8 @@
   "K00_control": "PASS",
   "K01_web_copy": "PASS",
   "K02_web_paste": "PASS",
-  "K03_urlbar_copy": "FAIL (canary reached the SYSTEM clipboard)"
+  "K03_urlbar_copy": "FAIL (canary reached the SYSTEM clipboard)",
+  "K04_find_in_page_copy": "FAIL (canary reached the SYSTEM clipboard) - run 44062597384"
  },
  "arm64": {
   "runtime": "native ARM64 Redroid Android 14 / API 34",
@@ -17,8 +18,8 @@
   "K02_web_paste": "PASS",
   "K03_urlbar_copy": "FAIL (canary reached the SYSTEM clipboard)"
  },
- "finding": "Native address-bar copy/cut falls through to the platform TextView and reaches the system clipboard on BOTH ABIs. Web-page copy/paste stays inside the browser.",
- "fix": "patches/personal/0108 (guard) + 0109; source/host tests only; Android re-measurement NOT RUN until the next build",
+ "finding": "Native address-bar copy/cut falls through to the platform TextView and reaches the system clipboard on BOTH ABIs. Web-page copy/paste stays inside the browser. The native Find-in-page field leaks the same way (x64 K04 FAIL).",
+ "fix": "patches/personal/0108 (guard) + 0109 (UrlBar + FindToolbar copy/cut -> browser-contained clipboard); source/host tests only; Android re-measurement NOT RUN until the next build",
  "not_covered": [
   "find-in-page, dialogs, settings and other native text fields",
   "IME suggestions/keyboard clipboard history",
