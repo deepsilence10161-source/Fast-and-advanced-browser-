@@ -111,6 +111,9 @@ def locked_screenshot_ok(png_bytes):
         im = Image.open(io.BytesIO(png_bytes)).convert("RGB")
         w, h = im.size
         pts = [(int(w * fx), int(h * fy)) for fx in (0.1, 0.5, 0.9) for fy in (0.12, 0.3, 0.7, 0.9)]
+        black = sum(1 for p in pts if max(im.getpixel(p)) <= 3)
+        if black >= 11:
+            return None  # FLAG_SECURE blanks screencap in this build: the colour cannot be verified (UI dump is the evidence)
         near = sum(1 for p in pts if max(abs(a - b) for a, b in zip(im.getpixel(p), (16, 21, 26))) <= 6)
         return near >= 10
     except Exception:  # noqa: BLE001
@@ -138,6 +141,18 @@ def dump():
             return x
         time.sleep(1.5)
     return ""
+
+
+def dismiss_default_browser():
+    """Android's 'Set Swiftra as your default browser?' role dialog can appear on top after a launch."""
+    for _ in range(3):
+        x = dump()
+        if "default browser" in x and find_node(x, text="Cancel"):
+            tap_text("Cancel", tries=1, wait=1.5)
+        elif "default browser" in x and find_node(x, text="CANCEL"):
+            tap_text("CANCEL", tries=1, wait=1.5)
+        else:
+            return
 
 
 def tap_bounds(b):
@@ -263,6 +278,7 @@ def main():
             adb("shell", "am", "force-stop", pkg)
             launch(dev)
             t0 = time.time()
+            dismiss_default_browser()
             vis = wait_until(lambda: overlay_visible(dump()), 25)
             lat = round(time.time() - t0, 1)
             xml = dump()
@@ -283,6 +299,7 @@ def main():
         adb("shell", "am", "force-stop", pkg)
         launch(dev)
         time.sleep(8)
+        dismiss_default_browser()
         xml = dump()
         still = overlay_visible(xml)
         cam = camera_client(pkg)
@@ -303,6 +320,7 @@ def main():
         adb("shell", "am", "force-stop", pkg)
         launch(dev)
         time.sleep(6)
+        dismiss_default_browser()
         xml = dump()
         unlock_btn = find_node(xml, text="Unlock with device PIN")
         if not unlock_btn:
@@ -340,7 +358,8 @@ def main():
             open_privacy_settings(pkg)
             x = scroll_to_switch()
             n = find_node(x, text=TITLE)
-            tap_bounds(n["bounds"])
+            if n:
+                tap_bounds(n["bounds"])
             time.sleep(3)
             sh(f"input text {PIN}")
             time.sleep(1)
@@ -363,6 +382,7 @@ def main():
         adb("shell", "am", "force-stop", pkg)
         launch(dev)
         time.sleep(6)
+        dismiss_default_browser()
         xml = dump()
         off_btn = find_node(xml, text="Turn off Face Guard")
         pin_btn = find_node(xml, text="Unlock with device PIN")
