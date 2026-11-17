@@ -391,3 +391,5 @@ Observer = CI-only helper app (tools/clip_helper) reading Android's SYSTEM clipb
 
 Cause (source): `UrlBar.onTextContextMenuItem` falls through to the platform `TextView` copy/cut when the delegate returns no replacement text. Fix = patches 0108 (guard) + 0109 (copy/cut use the browser-contained clipboard), source/host tests PASS; **Android re-measurement NOT RUN** (needs the new build). Other native text fields (find-in-page, dialogs, settings) are NOT audited and may leak the same way. The published pre-release body now states this known leak. ARM64 not measured.
 Build for the fix: x64 run 44057451792, arm64 run 44057457297 (dispatched 09:38 UTC). Earlier builds 44051494682/44051498843 cancelled so one build carries Face Guard + sign-in message + omnibox fix.
+
+**Update (same day):** clipboard harness fixed. x64 run 44058491637 and ARM64 Redroid run 44058021096: K00 PASS, K01 PASS, K02 PASS, **K03 FAIL on both ABIs** (address-bar copy reaches the system clipboard). Evidence: `evidence/personal-clipboard-2026-11-17.json`. After the new build, K03 must flip to PASS (with `pasted_back_into_url_bar=True` as proof the copy happened) before the fix is claimed.

@@ -1,0 +1,27 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev, build WITHOUT patches 0105/0107/0109) - does text copied in the browser reach the Android SYSTEM clipboard? Observer = CI-only helper app. Synthetic canaries, loopback, no account. NOT privacy-certified.",
+ "harness": "scripts/ci/personal_clipboard_e2e.py (K00-K03)",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36 x86_64",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44058491637",
+  "K00_control": "PASS",
+  "K01_web_copy": "PASS",
+  "K02_web_paste": "PASS",
+  "K03_urlbar_copy": "FAIL (canary reached the SYSTEM clipboard)"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14 / API 34",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44058021096",
+  "K00_control": "PASS",
+  "K01_web_copy": "PASS",
+  "K02_web_paste": "PASS",
+  "K03_urlbar_copy": "FAIL (canary reached the SYSTEM clipboard)"
+ },
+ "finding": "Native address-bar copy/cut falls through to the platform TextView and reaches the system clipboard on BOTH ABIs. Web-page copy/paste stays inside the browser.",
+ "fix": "patches/personal/0108 (guard) + 0109; source/host tests only; Android re-measurement NOT RUN until the next build",
+ "not_covered": [
+  "find-in-page, dialogs, settings and other native text fields",
+  "IME suggestions/keyboard clipboard history",
+  "real OEM device"
+ ]
+}
