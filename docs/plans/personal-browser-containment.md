@@ -239,3 +239,17 @@ Internal-storage source/docs: <https://developer.android.com/training/data-stora
 ## "Can't sign in" संदेश — कारण और बदलाव (17 Nov 2026)
 
 उपयोगकर्ता को sign-in की कोशिश पर "Can't sign in" दिखा। Chromium 155 में यह `SigninAndHistorySyncCoordinator.canStartSigninAndHistorySyncOrShowError` का generic Toast है, जो तब दिखता है जब sign-in शुरू ही नहीं हो सकता। हमारी personal build में `SigninManagerImpl` का sign-in जानबूझकर बंद है (0101), इसलिए यह अपेक्षित व्यवहार है, bug नहीं। `0106` guard + `0107` patch सिर्फ़ इस Toast का शब्द बदलते हैं: "Browser sign-in is turned off in this private build. Sign in on the website instead." Sign-in चालू **नहीं** होता; website login (cookies) अलग रास्ता है। Source/host-test स्तर पर PASS; Android पर यह Toast देखा नहीं गया (NOT RUN)। अगला build चाहिए।
+
+## Clipboard / autofill / passkey मापन (17 Nov 2026)
+
+सभी नतीजे CI के Android runtime (x64 emulator Android 16, ARM64 Redroid Android 14) पर, synthetic canary text और loopback pages से; कोई account नहीं। Observer हमेशा एक CI-only helper app (`tools/clip_helper`) है, जो कभी ship नहीं होता।
+
+| जाँच | Published APK (0105/0107/0109 के बिना) | अगला build |
+|---|---|---|
+| Web page copy / paste (K01/K02) | PASS दोनों ABI | build के बाद फिर मापना है |
+| Address bar copy (K03) | **FAIL (leak)** दोनों ABI | 0109 में fix; Android पर अभी NOT RUN |
+| Find-in-page copy (K04) | **FAIL (leak)** x64 | 0109 में fix; Android पर अभी NOT RUN |
+| Autofill service को web login form दिखना (A01) | PASS (कोई request नहीं) x64+ARM64 | — |
+| Passkey / Credential Manager (C01) | PASS (कोई request नहीं); page को NotSupportedError → passkeys व्यावहारिक रूप से काम नहीं करेंगे | — |
+
+अभी भी unaudited: dialogs, Settings के text inputs, bookmark/password editors, keyboard (IME) की अपनी clipboard history, असली OEM device. `personal_gate.py` K01–K04 PASS (उसी APK sha256 के लिए) के बिना 0109 वाला build publish नहीं होने देता।
