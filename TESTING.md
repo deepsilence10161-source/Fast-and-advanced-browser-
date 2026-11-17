@@ -377,3 +377,17 @@ Not measured yet (see docs/plans/face-guard.md section 9): Settings/lock-overlay
 - **Sign-in message (0106 guard + 0107 patch):** host/source only — patch applies to pinned Chromium 155 `SigninAndHistorySyncCoordinator.java`, replaces only the generic "Can't sign in" Toast text; guard refuses drifted source. **Android: NOT RUN** (needs the new build). Browser sign-in/Sync stays intentionally OFF.
 - **`scripts/release/personal_gate.py`:** refuses a personal publish unless evidence JSON matches the APK sha256 with FAIL=0; a build containing Face Guard (0105) additionally needs Face Guard APK evidence (x64: nofaces/one/two all PASS; ARM64: nofaces PASS, camera scenarios may be NOT_RUN). Host unit tests only.
 - **Builds:** x64 run 44051494682 and arm64 run 44051498843 (dispatched 08:59 UTC, include 0105 + 0107). Earlier builds 44037651643/44037655253 were cancelled by me so that one build carries both layers instead of needing a second ~8 h cycle. Results: PENDING. Nothing on this page claims Android PASS for Face Guard or the new message yet.
+
+## Personal dev APK: clipboard leak measurement (17 Nov 2026, x64 Android 16, run 44055430146)
+
+Observer = CI-only helper app (tools/clip_helper) reading Android's SYSTEM clipboard in the foreground; synthetic canaries, loopback, no account.
+
+| id | result | meaning |
+|---|---|---|
+| K00 control | PASS | helper can set and read a canary on the system clipboard, so the other rows are measurable |
+| K01 web copy | NOT_RUN | harness bug (reports were read from the wrong list); the in-browser copy itself happened (K02 pasted it); system clipboard stayed unchanged. Re-run pending |
+| K02 web paste | PASS | the page did not receive the system clipboard text |
+| K03 native URL-bar copy | **FAIL** | the canary typed in the address bar and copied **reached the SYSTEM clipboard** |
+
+Cause (source): `UrlBar.onTextContextMenuItem` falls through to the platform `TextView` copy/cut when the delegate returns no replacement text. Fix = patches 0108 (guard) + 0109 (copy/cut use the browser-contained clipboard), source/host tests PASS; **Android re-measurement NOT RUN** (needs the new build). Other native text fields (find-in-page, dialogs, settings) are NOT audited and may leak the same way. The published pre-release body now states this known leak. ARM64 not measured.
+Build for the fix: x64 run 44057451792, arm64 run 44057457297 (dispatched 09:38 UTC). Earlier builds 44051494682/44051498843 cancelled so one build carries Face Guard + sign-in message + omnibox fix.
