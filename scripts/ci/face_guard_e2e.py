@@ -69,10 +69,10 @@ def parse_bounds(b):
     return n if len(n) == 4 else None
 
 
-def find_node(xml, text=None, rid=None):
+def find_node(xml, text=None, rid=None, ci=False):
     for m in re.finditer(r"<node [^>]*>", xml):
         s = m.group(0)
-        if text is not None and not re.search(r'text="' + re.escape(text) + r'"', s):
+        if text is not None and not re.search(r'text="' + re.escape(text) + r'"', s, re.I if ci else 0):
             continue
         if rid is not None and not re.search(r'resource-id="[^"]*' + re.escape(rid) + r'"', s):
             continue
@@ -159,9 +159,9 @@ def tap_bounds(b):
     sh(f"input tap {(b[0] + b[2]) // 2} {(b[1] + b[3]) // 2}")
 
 
-def tap_text(text, tries=4, wait=2.0):
+def tap_text(text, tries=4, wait=2.0, ci=False):
     for _ in range(tries):
-        n = find_node(dump(), text=text)
+        n = find_node(dump(), text=text, ci=ci)
         if n:
             tap_bounds(n["bounds"])
             time.sleep(wait)
@@ -294,9 +294,10 @@ def main():
             time.sleep(3)
             dlg = dump()
             denied = False
+            # Android 14 (Redroid) shows the buttons in capitals ("DON’T ALLOW"), Android 16 in sentence case.
             for label in ("Don't allow", "Don’t allow", "Deny"):
-                if find_node(dlg, text=label):
-                    tap_text(label)
+                if find_node(dlg, text=label, ci=True):
+                    tap_text(label, ci=True)
                     denied = True
                     break
             time.sleep(2)
