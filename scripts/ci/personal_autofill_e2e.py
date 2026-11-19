@@ -142,9 +142,21 @@ def main():
         if m:
             w, h = int(m.group(1)), int(m.group(2))
         P.adb("logcat", "-c")
-        since = len(REPORTS)
-        P.open_url(pkg, url)
-        wait_for("ready", since, 40)
+        # The page can be hidden by the Android 'default browser?' dialog or a slow start: look at the screen, dismiss
+        # that dialog, and retry (max 3 times). A UI dump of each failed attempt is kept as evidence.
+        for attempt in range(3):
+            since = len(REPORTS)
+            P.open_url(pkg, url)
+            if wait_for("ready", since, 40):
+                break
+            ui = P.sh("uiautomator dump /sdcard/af_ui.xml >/dev/null 2>&1; cat /sdcard/af_ui.xml")
+            open(os.path.join(a.out, f"af_attempt{attempt}.xml"), "w").write(ui)
+            print(f"PERSONAL_AF page not ready on attempt {attempt}; default_browser_dialog={'default browser' in ui}", flush=True)
+            m2 = re.search(r'text="(?:Cancel|CANCEL)"[^>]*bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', ui)
+            if m2 and "default browser" in ui:
+                x1, y1, x2, y2 = map(int, m2.groups())
+                P.sh(f"input tap {(x1 + x2) // 2} {(y1 + y2) // 2}")
+                time.sleep(2)
         time.sleep(3)
         P.sh(f"input tap {w // 2} {int(h * 0.17)}")
         time.sleep(2)
