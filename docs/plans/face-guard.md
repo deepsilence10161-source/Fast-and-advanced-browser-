@@ -114,3 +114,15 @@ Measured with `face-guard-device-e2e.yml` suite `camdiag` (helper app `CamDiag`,
 
 Face Guard's camera path sees only that a face is present (no identity, no liveness). Adding our own SFace/embedding recognizer would need a model runtime inside the Chromium build, would still have no liveness (a photo would pass), and is the biggest build risk. The Android framework already has the right primitive: `BiometricPrompt` accepts the owner's enrolled fingerprint/face (vendor liveness) or the device PIN. `FaceGuardAuth` now asks for `BIOMETRIC_WEAK | DEVICE_CREDENTIAL` (Android 11+), so "Unlock with device PIN" and "turn Face Guard off" can be confirmed by the owner's own biometric. A device without an enrolled biometric behaves as before.
 Status: source + host tests only; **not in the published APKs and not measured on Android** (the emulators have no enrolled biometric, so G04/G05 will only re-prove the PIN path). Possible follow-up: an "owner-only" mode where a visible face never unlocks and only BiometricPrompt does.
+
+## 12.1 Owner-only mode (implemented in source 2026-11-19; not yet measured on Android)
+- Settings > Privacy > "Face Guard: owner unlock only" (needs Face Guard on and a device PIN/pattern/password).
+- The camera is never opened and camera permission is not required. A visible face never unlocks. The browser
+  locks like normal Face Guard, shows "Owner only. Unlock with your fingerprint, face unlock or device PIN", and
+  opens the framework BiometricPrompt once by itself (700 ms after the lock) and again from the "Unlock as owner" button.
+- Identity = the phone's own owner check (enrolled biometric or the device credential). Swiftra stores no face data.
+- Safety: refused when the device has no credential (toast, switch stays off); `isOwnerOnly()` is also false then,
+  so a removed lock screen can never lock the owner out. Turning it off needs the owner prompt.
+- Tests: host tests in tests/test_face_guard_patch.py (source properties), real `javac` compile against Android 13 +
+  androidx (`tools/face_guard/compile_check.sh`), device scenario `G08_owner_only` in face_guard_e2e.py (device PIN
+  stands in for the owner check; emulators have no enrolled biometric, so a real fingerprint/face is NOT measured).

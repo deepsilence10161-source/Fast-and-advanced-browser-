@@ -426,3 +426,12 @@ The earlier face failures were the startup crash (Hub RecyclerView activePositio
 
 ## Incremental rebuilds (19 Nov 2026)
 `scripts/ci/patches.py` now records a per-file content hash + mtime ("stamps") in progress.json. When the patch set changes, a patched file whose final content is identical to the previous build keeps its previous mtime, so ninja recompiles only what really changed (before: every patched file was re-stamped, 6948 edges / ~3 h for the Face Guard crash fix). Host-tested only (`tests/test_patches_incremental.py`); **the first build after this change still re-stamps everything once** (the existing state has no stamps), the speed-up shows from the build after that.
+
+
+## 2026-11-19 batch (queued for the next build, not yet measured)
+- Face Guard owner-only mode: scenario `G08_owner_only` (face_guard_e2e.py); source compile check `tools/face_guard/compile_check.sh`
+  (real javac against Android 13 + androidx: OK).
+- Clipboard probe `X01_settings_field` (personal_clipboard_e2e.py): a native Settings text field that no patch covers.
+  Result is LEAK / CONTAINED / NOT_RUN in the `probes` list of personal_clip.json. It never fails the run and never gates;
+  it measures how big the unaudited native-field gap is. Dialogs and IME history stay unaudited.
+- Whole-profile encryption: NOT built (docs/plans/profile-encryption.md). Speed pack (0016/0017) was already in the series.
