@@ -83,9 +83,21 @@ final class FaceGuardOverlay extends FrameLayout {
     }
 
     /** Messages never include page, tab, account or face data. */
-    void show(FaceGuardPolicy.Reason reason, boolean hasDeviceCredential) {
+    void show(FaceGuardPolicy.Reason reason, boolean hasDeviceCredential, boolean ownerOnly) {
         String msg;
         boolean grant = false;
+        if (ownerOnly) {
+            // Owner-only mode: the camera is not used at all; only the phone's own owner check opens the browser.
+            mMessage.setText("Owner only. Unlock with your fingerprint, face unlock or device PIN. "
+                    + "The tab switcher is open behind this screen.");
+            mCredential.setText("Unlock as owner");
+            mCredential.setVisibility(hasDeviceCredential ? View.VISIBLE : View.GONE);
+            mGrant.setVisibility(View.GONE);
+            mAppSettings.setVisibility(View.GONE);
+            mTurnOff.setVisibility(hasDeviceCredential ? View.GONE : View.VISIBLE);
+            return;
+        }
+        mCredential.setText("Unlock with device PIN");
         switch (reason) {
             case PERMISSION_DENIED:
                 msg = "Camera permission is needed. Face Guard stays locked until a face is visible to the front camera.";

@@ -23,6 +23,8 @@ import org.chromium.chrome.browser.tab_ui.FaceGuardLockState;
 public final class FaceGuardController implements FaceCameraSource.Listener, FaceGuardOverlay.Actions {
     private static final String PREFS = "swiftra_face_guard";
     private static final String KEY_ENABLED = "enabled";
+    private static final String KEY_OWNER_ONLY = "owner_only";
+    private static final long AUTO_PROMPT_DELAY_MS = 700;
     static final int REQUEST_CAMERA = 0x4647;
     private static final long CAMERA_RETRY_MS = 3000;
 
@@ -38,6 +40,8 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
     private boolean mForeground;
     private boolean mCameraFailed;
     private boolean mCredentialPromptBroken;
+    private boolean mOwnerOnly;          // no camera: only BiometricPrompt (owner fingerprint/face or device PIN) unlocks
+    private boolean mAutoPrompted;       // the owner prompt is opened by itself once per foreground session
 
     private FaceGuardController() {}
 
@@ -48,6 +52,16 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
 
     public static void setEnabled(Context context, boolean enabled) {
         prefs(context).edit().putBoolean(KEY_ENABLED, enabled).apply();
+        if (sInstance != null) sInstance.mMain.post(sInstance::refreshFromSettings);
+    }
+
+    /** Owner-only mode counts only on a device that has a credential, so the owner can always get back in. */
+    public static boolean isOwnerOnly(Context context) {
+        return prefs(context).getBoolean(KEY_OWNER_ONLY, false) && FaceGuardAuth.hasDeviceCredential(context);
+    }
+
+    public static void setOwnerOnly(Context context, boolean ownerOnly) {
+        prefs(context).edit().putBoolean(KEY_OWNER_ONLY, ownerOnly).apply();
         if (sInstance != null) sInstance.mMain.post(sInstance::refreshFromSettings);
     }
 
@@ -78,6 +92,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
         mForeground = true;
         mCameraFailed = false;
         mCredentialPromptBroken = false;
+        mAutoPrompted = false;
         applySettingsAndState();
         if (mPolicy.evaluate(SystemClock.elapsedRealtime()).locked) {
             // Warm resume does not produce a lock "edge", so always (re)open the switcher while locked.
@@ -118,9 +133,11 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
         boolean enabled = isEnabled(a);
         mPolicy.setEnabled(enabled);
         mPolicy.setTemplate(FaceGuardPolicy.Template.OK);   // presence mode has no enrolled template
-        mPolicy.setPermissionGranted(hasCameraPermission(a));
+        mOwnerOnly = enabled && isOwnerOnly(a);
+        // Owner-only mode never opens the camera, so it needs no camera permission either.
+        mPolicy.setPermissionGranted(mOwnerOnly || hasCameraPermission(a));
         if (mForeground) mPolicy.onForeground();
-        if (enabled && mForeground && hasCameraPermission(a)) startCamera(); else stopCamera();
+        if (enabled && mForeground && !mOwnerOnly && hasCameraPermission(a)) startCamera(); else stopCamera();
         render();
     }
 
@@ -151,7 +168,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
                 mPolicy.onCameraRecovered();
             }
             // PRESENCE: one visible face counts as "present"; any additional face is an "other face".
-            mPolicy.onObservation(new FaceGuardPolicy.Observation(atMs, valid, faces >= 1, Math.max(0, faces - 1)));
+            mPolicy.onObservation(new FaceGuardPolicy.Observation(atMs, valid, !mOwnerOnly && faces >= 1, Math.max(0, faces - 1)));
             render();
         });
     }
@@ -177,6 +194,12 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
         FaceGuardLockState.setLocked(d.locked);
         if (d.locked) {
             showOverlay(d.reason);
+            if (mOwnerOnly && mForeground && !mAutoPrompted && !mCredentialPromptBroken) {
+                mAutoPrompted = true;   // once per foreground session; afterwards the "Unlock as owner" button
+                mMain.postDelayed(() -> {
+                    if (mForeground && mOwnerOnly && FaceGuardLockState.isLocked()) onUnlockWithDeviceCredential();
+                }, AUTO_PROMPT_DELAY_MS);
+            }
             if (action == FaceGuardPolicy.Action.LOCK && mForeground) {
                 FaceGuardChromeBridge.showTabSwitcher(mActivity);
             }
@@ -198,7 +221,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         mOverlay.bringToFront();
-        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken);
+        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken, mOwnerOnly);
     }
 
     private void removeOverlay() {

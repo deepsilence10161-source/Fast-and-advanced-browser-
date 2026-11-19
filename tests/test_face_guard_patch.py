@@ -141,3 +141,22 @@ def test_turning_off_needs_device_credential_when_one_exists():
     assert "hasDeviceCredential" in settings and "return false;" in settings
     auth = (FG / "FaceGuardAuth.java").read_text()
     assert "DEVICE_CREDENTIAL" in auth and "onFailure.run()" in auth
+
+
+def test_owner_only_mode_never_uses_camera_and_cannot_lock_the_owner_out():
+    src = ROOT / "tools/face_guard/src/org/chromium/chrome/browser/swiftra/faceguard"
+    ctl = (src / "FaceGuardController.java").read_text()
+    st = (src / "FaceGuardSettings.java").read_text()
+    ov = (src / "FaceGuardOverlay.java").read_text()
+    # owner-only counts only when the device has a credential (so the owner can always get back in)
+    assert "getBoolean(KEY_OWNER_ONLY, false) && FaceGuardAuth.hasDeviceCredential(context)" in ctl
+    # no camera and no camera permission requirement in that mode; a visible face never counts as the owner
+    assert "enabled && mForeground && !mOwnerOnly && hasCameraPermission(a)" in ctl
+    assert "mPolicy.setPermissionGranted(mOwnerOnly || hasCameraPermission(a))" in ctl
+    assert "!mOwnerOnly && faces >= 1" in ctl
+    # the owner prompt opens once per foreground session, never in a loop
+    assert "!mAutoPrompted" in ctl and ctl.count("mAutoPrompted = true") == 1
+    # switching it on is refused without a device credential; switching it off needs the owner check
+    assert "Set a device PIN, pattern or password first." in st and "return false;   // never switch on" in st
+    assert "FaceGuardAuth.authenticate(activity, () -> {\n                FaceGuardController.setOwnerOnly(activity, false);" in st
+    assert "Owner only. Unlock with" in ov

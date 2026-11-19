@@ -14,6 +14,7 @@ It does NOT measure that a real face unlocks the browser, face-loss latency, or 
   G03 grant_no_face     : granting the camera with no face in view keeps it locked; front camera opened by the app
   G04 pin_unlock        : with a device PIN set, "Unlock with device PIN" really unlocks (override), not before
   G05 off_needs_pin     : with a PIN set, switching the toggle off is refused until the PIN is confirmed
+  G08 owner_only        : owner-only switch (runs after G05): no camera, lock text 'Owner only', the owner prompt (PIN here) unlocks
   G06 no_pin_turn_off   : without a device credential the lock screen offers "Turn off" (never a lockout) and it works
   G07 off_is_inert      : after turning off: no overlay, camera released, browser usable
 """
@@ -52,11 +53,11 @@ def device_up():
 # ---------------------------------------------------------------- pure helpers (host-tested)
 def overlay_visible(xml):
     return "Looking for your face" in xml or "Camera permission is needed" in xml or "front camera is not available" in xml \
-        or "More than one face is visible" in xml
+        or "More than one face is visible" in xml or "Owner only. Unlock with" in xml
 
 
 def overlay_text(xml):
-    m = re.search(r'text="((?:Looking for your face|Camera permission|The front camera|More than one face)[^"]*)"', xml)
+    m = re.search(r'text="((?:Looking for your face|Camera permission|The front camera|More than one face|Owner only)[^"]*)"', xml)
     return m.group(1)[:80] if m else ""
 
 
@@ -227,10 +228,23 @@ def camera_client(pkg):
     return camera_client_from_dump(out, pkg)
 
 
-def pref_enabled(pkg):
+def pref_enabled(pkg, key="enabled"):
     x = sh(f"cat /data/data/{pkg}/shared_prefs/swiftra_face_guard.xml 2>/dev/null")
-    m = re.search(r'name="enabled" value="(true|false)"', x)
+    m = re.search(r'name="' + re.escape(key) + r'" value="(true|false)"', x)
     return m.group(1) if m else "absent"
+
+
+OWNER_TITLE = "Face Guard: owner unlock only"
+
+
+def scroll_to(title, max_swipes=10):
+    for _ in range(max_swipes):
+        x = dump()
+        if find_node(x, text=title):
+            return x
+        sh("input swipe 540 1700 540 700 300")
+        time.sleep(1.2)
+    return dump()
 
 
 def main():
@@ -396,6 +410,63 @@ def main():
             detail = f"credential_prompt_shown={prompt_shown} still_on_after_cancel={still_on} off_after_pin={off}"
             shot("g05_after")
             res("G05_off_needs_pin", "PASS" if (still_on and off) else "FAIL", detail)
+
+        # ---- G08 owner-only mode (needs the device PIN set by G04): no camera, only the owner prompt unlocks
+        try:
+            open_privacy_settings(pkg)
+            x = scroll_to(TITLE)
+            n = find_node(x, text=TITLE)
+            if n:
+                tap_bounds(n["bounds"])           # Face Guard ON (camera permission was granted in G03)
+                time.sleep(3)
+            x = scroll_to(OWNER_TITLE)
+            n = find_node(x, text=OWNER_TITLE)
+            if not n:
+                res("G08_owner_only", "FAIL", f"owner-only switch row '{OWNER_TITLE}' not found; main_pref={pref_enabled(pkg)}")
+            else:
+                tap_bounds(n["bounds"])
+                time.sleep(3)
+                owner_pref = pref_enabled(pkg, "owner_only")
+                adb("shell", "am", "force-stop", pkg)
+                launch(dev)
+                time.sleep(5)
+                dismiss_default_browser()
+                locked_xml = dump()
+                owner_text = "Owner only. Unlock with" in locked_xml
+                # the owner prompt opens by itself (~0.7 s after the lock); fall back to the button
+                prompt_xml = locked_xml
+                if "Face Guard" not in prompt_xml or "PIN" not in prompt_xml:
+                    btn = find_node(locked_xml, text="Unlock as owner")
+                    if btn:
+                        tap_bounds(btn["bounds"])
+                        time.sleep(3)
+                        prompt_xml = dump()
+                shot("g08_prompt")
+                sh(f"input text {PIN}")
+                time.sleep(1)
+                sh("input keyevent KEYCODE_ENTER")
+                time.sleep(4)
+                after = dump()
+                unlocked = not overlay_visible(after)
+                cam = camera_client(pkg)
+                shot("g08_after")
+                ok = owner_pref == "true" and owner_text and unlocked and not cam
+                res("G08_owner_only", "PASS" if ok else "FAIL",
+                    f"owner_pref={owner_pref} owner_lock_text_seen={owner_text} unlocked_after_owner_prompt={unlocked} app_holds_camera={cam}")
+                # back to the weaker mode: turning owner-only OFF and then Face Guard OFF both need the PIN
+                for title in (OWNER_TITLE, TITLE):
+                    open_privacy_settings(pkg)
+                    x = scroll_to(title)
+                    n = find_node(x, text=title)
+                    if n:
+                        tap_bounds(n["bounds"])
+                        time.sleep(3)
+                        sh(f"input text {PIN}")
+                        time.sleep(1)
+                        sh("input keyevent KEYCODE_ENTER")
+                        time.sleep(4)
+        except Exception as e:  # noqa: BLE001
+            res("G08_owner_only", "FAIL", f"harness exception {repr(e)[:160]}")
 
         # ---- G06 no device credential -> Turn off offered, works (enable again first)
         sh(f"locksettings clear --old {PIN}")
