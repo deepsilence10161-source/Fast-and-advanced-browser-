@@ -8,7 +8,11 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.CancellationSignal;
 
-/** Device credential (PIN/pattern/password) check via the framework BiometricPrompt: no extra dependency. */
+/**
+ * Owner check via the framework BiometricPrompt: no extra dependency. Since Android 11 the prompt accepts the OWNER'S
+ * enrolled biometric (the phone's own fingerprint / face unlock, with the vendor's liveness) OR the device PIN, pattern
+ * or password. That is the identity step Face Guard itself cannot do: the camera path only sees that a face is present.
+ */
 final class FaceGuardAuth {
     private FaceGuardAuth() {}
 
@@ -28,9 +32,12 @@ final class FaceGuardAuth {
         try {
             BiometricPrompt.Builder builder = new BiometricPrompt.Builder(activity)
                     .setTitle("Face Guard")
-                    .setDescription("Confirm your device PIN, pattern or password");
+                    .setDescription("Confirm with your fingerprint, face or device PIN");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                builder.setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL);
+                // Weak-class biometrics (what most phones' face unlock is) or the device credential; the credential is always there,
+                // so a device without an enrolled biometric behaves exactly as before.
+                builder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK
+                        | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
             } else {
                 builder.setDeviceCredentialAllowed(true);   // Android 10: the only way to ask for the device credential
             }

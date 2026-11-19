@@ -113,7 +113,7 @@ def apply(src, pdir, prev_json, out_json, now=None):
             # progress.json (out state के साथ परमाणु रूप से) में "patches" key; पुरानी state में नहीं = "none"
             if "patches" in d or "out_prefix" in d:
                 d = d.get("patches") or {}
-            prev.update({k: d[k] for k in ("hash", "epoch", "files") if k in d})
+            prev.update({k: d[k] for k in ("hash", "epoch", "files", "stamps") if k in d})
         except ValueError:
             pass
     files = []
@@ -152,19 +152,44 @@ def apply(src, pdir, prev_json, out_json, now=None):
             return 1
         files += patched_files(p)
     files = sorted(set(files))
-    if h == prev["hash"] and (prev.get("epoch") or h == "none"):
-        epoch, touch = prev["epoch"], files
-        changed = False
+    # Per-file stamps (2026-11-19, incremental builds): {rel: {"sha": content sha256, "epoch": mtime given to it}}.
+    # A patched file whose final CONTENT is the same as in the previous build keeps its previous mtime, so ninja does not
+    # recompile its dependents; only files whose content really changed (or that stopped being patched, which makes them
+    # pristine again) get epoch = now. Before this, one changed patch re-stamped EVERY patched file (6948 dirty edges, ~3 h
+    # for a change in one Java file). Old state without "stamps" falls back to the previous all-files behaviour once.
+    prev_stamps = prev.get("stamps") if isinstance(prev.get("stamps"), dict) else None
+
+    def sha(rel):
+        fp = os.path.join(src, rel)
+        return hashlib.sha256(open(fp, "rb").read()).hexdigest() if os.path.isfile(fp) else None
+
+    same_hash = h == prev["hash"] and (prev.get("epoch") or h == "none")
+    now_epoch = int(now if now is not None else time.time())
+    stamps, kept, retouched = {}, 0, 0
+    if same_hash:
+        epoch, changed = prev["epoch"], False
     else:
-        epoch = int(now if now is not None else time.time())
-        touch = sorted(set(files) | set(prev.get("files", [])))
-        changed = True
-    for f in touch:
+        epoch, changed = now_epoch, True
+    for f in sorted(set(files) | set(prev.get("files", []))):
         fp = os.path.join(src, f)
-        if os.path.exists(fp):
-            os.utime(fp, (epoch, epoch))
-    json.dump({"hash": h, "epoch": epoch, "files": files, "series": series, "overlay": ov, "changed": changed},
+        if not os.path.exists(fp):
+            continue
+        cur = sha(f)
+        old = (prev_stamps or {}).get(f)
+        if same_hash and not prev_stamps:
+            use = prev["epoch"]                      # legacy state, unchanged patch set
+        elif prev_stamps is not None and isinstance(old, dict) and old.get("sha") == cur and old.get("epoch"):
+            use = old["epoch"]                       # same content as the previous build: keep its mtime
+            kept += 1
+        else:
+            use = now_epoch                          # content changed, newly patched, or no longer patched (pristine again)
+            retouched += 1
+        os.utime(fp, (use, use))
+        if f in files:
+            stamps[f] = {"sha": cur, "epoch": use}
+    json.dump({"hash": h, "epoch": epoch, "files": files, "stamps": stamps, "series": series, "overlay": ov, "changed": changed},
               open(out_json, "w"), indent=1)
+    print(f"[patches] stamps: {kept} files kept their previous mtime (content unchanged), {retouched} re-stamped")
     print(f"[patches] {len(series)} patches, {len(ov)} overlay, {len(files)} files, hash={h[:12]}, changed={changed}")
     return 0
 

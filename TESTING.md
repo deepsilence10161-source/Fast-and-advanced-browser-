@@ -423,3 +423,6 @@ APKs: x64 `4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7`, ar
 
 What this does NOT show: the "two" fixture is the same detectable face twice (the detector found only one of the two real people); Face Guard has no identity or liveness; the lock colour is not pixel-verified (FLAG_SECURE); no real device camera; whole-profile encryption, IME and other native text fields are not covered.
 The earlier face failures were the startup crash (Hub RecyclerView activePosition -1 before tab state existed); fixed in 81606ea and confirmed gone on both ABIs.
+
+## Incremental rebuilds (19 Nov 2026)
+`scripts/ci/patches.py` now records a per-file content hash + mtime ("stamps") in progress.json. When the patch set changes, a patched file whose final content is identical to the previous build keeps its previous mtime, so ninja recompiles only what really changed (before: every patched file was re-stamped, 6948 edges / ~3 h for the Face Guard crash fix). Host-tested only (`tests/test_patches_incremental.py`); **the first build after this change still re-stamps everything once** (the existing state has no stamps), the speed-up shows from the build after that.

@@ -280,13 +280,13 @@ class TestPatches(unittest.TestCase):
         self.assertIn("f3.txt", pj["files"])
         rc, rem, prog, outs, pj = self._stage(prog)                    # वही: शून्य rebuild
         self.assertEqual((rc, rem), (0, 0)); self.assertFalse(pj["changed"]); self.assertEqual(outs[3], "OVERLAY3")
-        self._overlay("f3.txt", b"OVERLAY3-v2\n")   # hash बदला -> सभी patched/overlay फ़ाइलें नए epoch पर (o1,o3), o2 नहीं
+        self._overlay("f3.txt", b"OVERLAY3-v2\n")   # hash बदला -> (2026-11-19 incremental) केवल वह फ़ाइल जिसकी सामग्री बदली (o3); o1 की सामग्री वही = पुरानी mtime, o2 नहीं
         rc, rem, prog, outs, pj = self._stage(prog)
-        self.assertEqual((rc, rem), (0, 2)); self.assertEqual(outs[3], "OVERLAY3-v2")
+        self.assertEqual((rc, rem), (0, 1)); self.assertEqual(outs[3], "OVERLAY3-v2")
         shutil.rmtree(os.path.join(self.pd, "overlay"))                # overlay हटाया -> मूल लौटे
         self.assertEqual(self.P.series_hash(self.pd, ["p1.patch"]), h_patch_only)   # पुराना सूत्र अपरिवर्तित
-        rc, rem, prog, outs, pj = self._stage(prog)                    # हटाई overlay फ़ाइल भी touch -> मूल लौटा
-        self.assertEqual((rc, rem), (0, 2)); self.assertEqual(outs, {1: "PATCHED1", 2: "orig2", 3: "orig3"})
+        rc, rem, prog, outs, pj = self._stage(prog)                    # हटाई overlay फ़ाइल भी touch -> मूल लौटा (केवल वही rebuild)
+        self.assertEqual((rc, rem), (0, 1)); self.assertEqual(outs, {1: "PATCHED1", 2: "orig2", 3: "orig3"})
         rc, rem, prog, outs, pj = self._stage(prog)                    # फिर स्थिर
         self.assertEqual((rc, rem), (0, 0))
 
