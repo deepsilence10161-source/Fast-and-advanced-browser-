@@ -380,3 +380,14 @@ class TestPatches(unittest.TestCase):
         self.assertIn("steps.sign.outputs.done", wf["jobs"]["stage"]["outputs"]["done"])
         caller = yaml.safe_load(open(os.path.join(self.CI, "..", "..", ".github", "workflows", "chromium-source-build.yml")))
         self.assertTrue(all(j.get("secrets") == "inherit" for j in caller["jobs"].values()))
+
+
+def test_clipboard_probe_edit_text_finder():
+    import importlib.util
+    sp = importlib.util.spec_from_file_location("pce", "scripts/ci/personal_clipboard_e2e.py")
+    m = importlib.util.module_from_spec(sp)
+    sp.loader.exec_module(m)
+    xml = ('<node class="android.widget.TextView" bounds="[0,0][5,5]"/>'
+           '<node index="1" class="android.widget.EditText" text="" bounds="[10,20][110,220]"/>')
+    assert m.find_edit_text(xml) == [10, 20, 110, 220]
+    assert m.find_edit_text('<node class="android.widget.TextView" bounds="[0,0][5,5]"/>') is None

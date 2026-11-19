@@ -11,6 +11,8 @@ Exit 1 on any FAIL, 2 on harness error.
   K02 web_paste    : the page must NOT receive the system clipboard text on Ctrl+V
   K03 urlbar_copy  : copying text typed in the NATIVE URL bar must NOT reach the system clipboard
   K04 find_in_page : same for the native Find-in-page text field (a leak here = FAIL; unproven = NOT_RUN)
+  X01 settings_field: PROBE (never gates, never FAIL): the Settings > Homepage custom-address EditText, i.e. a native
+                      field that 0109 does NOT patch. Reported as LEAK / CONTAINED / NOT_RUN to MEASURE the audit gap.
 """
 import argparse
 import http.server
@@ -107,6 +109,17 @@ def classify_paste(page_values, ctl, paste_event_seen):
     return "PASS", f"paste event reached the page without the system clipboard text: {page_values}"
 
 
+def find_edit_text(xml):
+    """Bounds of the first android.widget.EditText node in a uiautomator dump, or None."""
+    for m in re.finditer(r"<node [^>]*>", xml):
+        n = m.group(0)
+        if 'class="android.widget.EditText"' in n:
+            b = re.search(r'bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"', n)
+            if b:
+                return list(map(int, b.groups()))
+    return None
+
+
 def summarize(results):
     c = {"PASS": 0, "FAIL": 0, "NOT_RUN": 0}
     for r in results:
@@ -159,6 +172,11 @@ def main():
     tok = TOKEN["v"]
     ctl = "ctl_" + tok
     results = []
+    probes = []
+
+    def res_probe(cid, status, detail=""):
+        probes.append({"id": cid, "status": status, "detail": detail})
+        print(f"PERSONAL_CLIP_PROBE {cid} {status} {detail}", flush=True)
 
     def res(cid, status, detail=""):
         results.append({"id": cid, "status": status, "detail": detail})
@@ -299,6 +317,48 @@ def main():
                     res("K04_find_in_page_copy", s, d + f" pasted_back_into_find_field={pasted_back}")
         except Exception as e:  # noqa: BLE001
             res("K04_find_in_page_copy", "NOT_RUN", "harness: " + repr(e)[:160])
+
+        # X01 probe: a native Settings text field that no patch touches (measures the unaudited gap, never gates)
+        try:
+            helper("set", ctl)
+            P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity",
+                  "--es", "show_fragment", "org.chromium.chrome.browser.homepage.settings.HomepageSettings", timeout=60)
+            time.sleep(4)
+            edit = None
+            for _ in range(3):
+                x = dev.dump() or ""
+                edit = find_edit_text(x)
+                if edit:
+                    break
+                dev.tap(r"(?i)custom|enter custom web address", wait=2.0, tries=1)   # select the custom-address radio
+                time.sleep(2)
+            if not edit:
+                res_probe("X01_settings_field", "NOT_RUN", "no EditText found on the Homepage settings page")
+            else:
+                P.sh(f"input tap {(edit[0]+edit[2])//2} {(edit[1]+edit[3])//2}")
+                time.sleep(1)
+                combo(CTRL, KA)
+                P.sh("input keyevent 67")
+                P.sh(f"input text set_{tok}")
+                time.sleep(1)
+                combo(CTRL, KA)
+                combo(CTRL, KC)
+                time.sleep(1)
+                P.sh("input keyevent 67")
+                combo(CTRL, KV)
+                time.sleep(2)
+                typed_back = ("set_" + tok) in (dev.dump() or "")
+                sk, st = helper("get")
+                if not control_ok or sk != "text":
+                    res_probe("X01_settings_field", "NOT_RUN", f"control or helper unavailable ({sk})")
+                elif ("set_" + tok) in st:
+                    res_probe("X01_settings_field", "LEAK", f"the canary reached the SYSTEM clipboard: [{st}]")
+                elif typed_back and st == ctl:
+                    res_probe("X01_settings_field", "CONTAINED", "copy worked in the field; system clipboard unchanged")
+                else:
+                    res_probe("X01_settings_field", "NOT_RUN", f"copy not demonstrated (typed_back={typed_back}) system=[{st}]")
+        except Exception as e:  # noqa: BLE001
+            res_probe("X01_settings_field", "NOT_RUN", "harness: " + repr(e)[:160])
     except Exception as e:  # noqa: BLE001
         print("PERSONAL_CLIP harness_error", repr(e)[:300], flush=True)
         return 2
@@ -308,7 +368,7 @@ def main():
         except Exception:  # noqa: BLE001
             pass
     c = summarize(results)
-    json.dump({"package": pkg, "results": results, "summary": c}, open(os.path.join(a.out, "personal_clip.json"), "w"), indent=1)
+    json.dump({"package": pkg, "results": results, "probes": probes, "summary": c}, open(os.path.join(a.out, "personal_clip.json"), "w"), indent=1)
     print(f"PERSONAL_CLIP_SUMMARY pass={c['PASS']} fail={c['FAIL']} not_run={c['NOT_RUN']}", flush=True)
     return 1 if c["FAIL"] else 0
 
