@@ -1,0 +1,52 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 6589062 (runs 44512393853 x64 / 44523977272 arm64, patch_hash c44a39ee...); synthetic loopback canaries, no account, no real site. NOT privacy-certified. Face Guard incl. owner-only mode and the Hub-crash mitigation.",
+ "face_guard_apk": {
+  "x64": {
+   "apk_sha256": "fcd51f70d969b128aef18d4b7b13406f937a0fac73808ca7ec98678a5395e0a0",
+   "runtime": "Android 16 emulator, front camera = committed still image, acceptance orientation rot0",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "PASS",
+    "two": "PASS"
+   },
+   "owner_only_G08": "PASS",
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521424930",
+    "one": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521434622",
+    "two": [
+     "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521444083",
+     "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521453647",
+     "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521462625",
+     "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521471159"
+    ]
+   },
+   "history": "the previous build (c6f156a, sha 35cb59c8...) crashed in 3 of 4 'two' runs (44508094386, 44508930336, 44511176555 failed; 44511188003 passed): AssertionError activePosition -1 in the Hub tab list. This build: 4 of 4 'two' runs PASS (small sample; cause of the crash was not proven, the mitigation is at most one Hub open per 5 s and no per-frame overlay relayout).",
+   "limits": [
+    "'two' uses a fixture showing the SAME detectable face twice; it proves the 'two detected faces -> stay locked' path, not that a real second person is detected.",
+    "G02 opaque lock colour is unverifiable (FLAG_SECURE blanks screencap); the UI dump is the evidence.",
+    "Presence only: no identity, no liveness. A photo of a face unlocks it.",
+    "G08 owner-only used the device PIN as the owner check; a real enrolled fingerprint/face was NOT measured."
+   ]
+  },
+  "arm64": {
+   "apk_sha256": "2fc04657baa1651e8ab467d55956259da24e4917e38b2c8c631f0080e8a4c1be",
+   "runtime": "native ARM64 Redroid Android 14 (no camera HAL)",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "NOT_RUN",
+    "two": "NOT_RUN"
+   },
+   "owner_only_G08": "PASS",
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44527268455"
+   },
+   "note": "G03 NOT_RUN (no camera HAL: fail-closed is the expected result); one/two NOT_RUN (no camera)."
+  }
+ }
+}

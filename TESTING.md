@@ -435,3 +435,12 @@ The earlier face failures were the startup crash (Hub RecyclerView activePositio
   Result is LEAK / CONTAINED / NOT_RUN in the `probes` list of personal_clip.json. It never fails the run and never gates;
   it measures how big the unaudited native-field gap is. Dialogs and IME history stay unaudited.
 - Whole-profile encryption: NOT built (docs/plans/profile-encryption.md). Speed pack (0016/0017) was already in the series.
+
+## 2026-11-19 batch results (build 6589062, published as swiftra-personal-dev)
+- Builds: x64 run 44512393853 sha256 `fcd51f70d969b128aef18d4b7b13406f937a0fac73808ca7ec98678a5395e0a0`; arm64 run 44523977272 sha256 `2fc04657baa1651e8ab467d55956259da24e4917e38b2c8c631f0080e8a4c1be`. Same patch_hash c44a39ee.
+- Incremental rebuild MEASURED on CI: stamps kept 739 files, re-stamped 2, remaining edges 89 (before 6948); x64 build about 1 h of which the state restore was 48 min (arm64: restore 8.6 min, whole run about 20 min). First build after the stamps change still re-stamped everything (about 3 h).
+- Face Guard x64: nofaces 8/8 including G08 owner-only, one PASS, two PASS x4. Previous build c6f156a: two failed 3 of 4 (Hub activePosition -1 crash); mitigation = one Hub open per 5 s + no per-frame overlay relayout. Cause not proven; 4/4 is a small sample. arm64: nofaces 7 PASS, G03 NOT_RUN (no camera), G08 PASS.
+- Owner-only mode was measured with the device PIN as the owner check (emulator/Redroid have no enrolled biometric). A real fingerprint/face is NOT measured.
+- Base E2E: x64 10/10; arm64 9 PASS, C09 NOT_RUN (no dialer). Clipboard K01-K04 PASS on both; autofill and passkey PASS on both.
+- **X01 probe: LEAK on both ABIs.** Text copied in the Settings > Homepage address field reaches the system clipboard. Unfixed. A viewInflaterClass theme approach was investigated and not shipped (the base theme could not be located in the 155 sources, so it could not be built safely).
+- Whole-profile encryption: not implemented (docs/plans/profile-encryption.md).

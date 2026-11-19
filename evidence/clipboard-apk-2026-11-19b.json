@@ -1,0 +1,57 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 6589062 (runs 44512393853 x64 / 44523977272 arm64, patch_hash c44a39ee...); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "clipboard_apk": {
+  "x64": {
+   "apk_sha256": "fcd51f70d969b128aef18d4b7b13406f937a0fac73808ca7ec98678a5395e0a0",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "X01_settings_field_probe": "LEAK",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521396216"
+  },
+  "arm64": {
+   "apk_sha256": "2fc04657baa1651e8ab467d55956259da24e4917e38b2c8c631f0080e8a4c1be",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "X01_settings_field_probe": "LEAK",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44527241408"
+  }
+ },
+ "autofill_apk": {
+  "x64": {
+   "apk_sha256": "fcd51f70d969b128aef18d4b7b13406f937a0fac73808ca7ec98678a5395e0a0",
+   "A00_control": "PASS",
+   "A01_browser_form": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521406152"
+  },
+  "arm64": {
+   "apk_sha256": "2fc04657baa1651e8ab467d55956259da24e4917e38b2c8c631f0080e8a4c1be",
+   "A00_control": "PASS",
+   "A01_browser_form": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44527249908"
+  }
+ },
+ "passkey_apk": {
+  "x64": {
+   "apk_sha256": "fcd51f70d969b128aef18d4b7b13406f937a0fac73808ca7ec98678a5395e0a0",
+   "C00_control": "PASS",
+   "C01_browser": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44521416325"
+  },
+  "arm64": {
+   "apk_sha256": "2fc04657baa1651e8ab467d55956259da24e4917e38b2c8c631f0080e8a4c1be",
+   "C00_control": "PASS",
+   "C01_browser": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44527259167",
+   "note": "webauthn_result=NotSupportedError"
+  }
+ },
+ "probes": {
+  "X01_settings_field": "LEAK on both ABIs: text copied from the Settings > Homepage address field reached the SYSTEM clipboard. Not covered by 0109; unfixed in this build."
+ }
+}
