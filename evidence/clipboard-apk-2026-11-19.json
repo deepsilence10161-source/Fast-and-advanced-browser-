@@ -1,0 +1,52 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 81606ea (runs 44096424574 x64 / 44096428154 arm64); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "clipboard_apk": {
+  "x64": {
+   "apk_sha256": "4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471854293"
+  },
+  "arm64": {
+   "apk_sha256": "151b762f14525ef4a8f2ca9b5d2a78ebf8c8882693d98891fc009dd52aa0ce2a",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471883017"
+  }
+ },
+ "autofill_apk": {
+  "x64": {
+   "apk_sha256": "4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7",
+   "A00_control": "PASS",
+   "A01_browser_form": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44473469764",
+   "note": "two earlier runs (44471862088, 44472627719) reported A01 NOT_RUN (form focus not observed: tap timing); never FAIL; harness now retries page load"
+  },
+  "arm64": {
+   "apk_sha256": "151b762f14525ef4a8f2ca9b5d2a78ebf8c8882693d98891fc009dd52aa0ce2a",
+   "A00_control": "PASS",
+   "A01_browser_form": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471889888"
+  }
+ },
+ "passkey_apk": {
+  "x64": {
+   "apk_sha256": "4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7",
+   "C00_control": "PASS",
+   "C01_browser": "PASS (no provider request)",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471869129"
+  },
+  "arm64": {
+   "apk_sha256": "151b762f14525ef4a8f2ca9b5d2a78ebf8c8882693d98891fc009dd52aa0ce2a",
+   "C00_control": "PASS",
+   "C01_browser": "PASS (no provider request; WebAuthn NotSupportedError)",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471896189"
+  }
+ }
+}

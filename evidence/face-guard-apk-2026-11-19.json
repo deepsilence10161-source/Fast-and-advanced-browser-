@@ -1,0 +1,44 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 81606ea (runs 44096424574 x64 / 44096428154 arm64); synthetic loopback canaries, no account, no real site. NOT privacy-certified. Face Guard on the fixed build (Hub-crash fix).",
+ "face_guard_apk": {
+  "x64": {
+   "apk_sha256": "4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7",
+   "runtime": "Android 16 emulator, front camera = committed still image (imagefile:), acceptance orientation rot0 (measured by the camdiag suite)",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "PASS",
+    "two": "PASS"
+   },
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471818664",
+    "one": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471825734",
+    "two": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471832644"
+   },
+   "limits": [
+    "'two' uses a fixture showing the SAME detectable face twice: android.media.FaceDetector found only one of the two real people in the group photo through the emulator camera. It proves the 'two detected faces -> stay locked' path, not that a real second person is detected.",
+    "G02 opaque lock colour is unverifiable (FLAG_SECURE blanks screencap); the UI dump is the evidence.",
+    "Presence only: no identity, no liveness. A photo of a face unlocks it."
+   ]
+  },
+  "arm64": {
+   "apk_sha256": "151b762f14525ef4a8f2ca9b5d2a78ebf8c8882693d98891fc009dd52aa0ce2a",
+   "runtime": "native ARM64 Redroid Android 14 (no camera HAL)",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "NOT_RUN",
+    "two": "NOT_RUN"
+   },
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44472576402"
+   },
+   "G03": "NOT_RUN (Redroid has no camera)",
+   "note": "first attempt 44471840534 FAILED G02 because the harness matched the Android 14 camera dialog button case-sensitively ('DON\u2019T ALLOW'); harness fixed, repeated: G01,G02,G04-G07 PASS, G03 NOT_RUN"
+  }
+ }
+}

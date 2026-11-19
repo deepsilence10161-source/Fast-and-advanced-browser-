@@ -406,3 +406,20 @@ Observer = CI-only helper registered as the system credential provider. x64 run 
 
 ## Face Guard camera diagnostics (17 Nov 2026)
 `face-guard-device-e2e.yml` suite `camdiag` (x64) runs a CI-only helper that opens the emulated front camera and runs FaceDetector at 4 rotations. Findings are in `docs/plans/face-guard.md` §11.1: sensor orientation 90, rot0 is the acceptance fixture, only the left 360 file columns are visible, and the two-face fixture is one face repeated. Face-unlock / second-face scenarios on the fixed build are **not yet measured on Android** until the rebuilt APKs are tested.
+
+## Personal dev APK on the FIXED build (main 81606ea; 19 Nov 2026) - Android measurements
+
+APKs: x64 `4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7`, arm64 `151b762f14525ef4a8f2ca9b5d2a78ebf8c8882693d98891fc009dd52aa0ce2a` (builds 44096424574 / 44096428154). Evidence: `evidence/personal-e2e-both-abi-2026-11-19.json`, `evidence/face-guard-apk-2026-11-19.json`, `evidence/clipboard-apk-2026-11-19.json` (also holds autofill + passkey). `personal_gate.py` accepts both.
+
+| area | x64 (Android 16 emulator) | arm64 (Redroid Android 14) |
+|---|---|---|
+| base C00-C09 | 10/10 PASS (44472963994; first attempt lost to an emulator disappearing, infrastructure) | 9 PASS, C09 NOT_RUN (no dialer) (44471876020) |
+| clipboard K00-K04 (web, address bar, find-in-page) | all PASS (44471854293) | all PASS (44471883017) |
+| autofill A00/A01 | PASS (44473469764; two earlier runs NOT_RUN = tap timing, never FAIL) | PASS (44471889888) |
+| passkey C00/C01 | PASS, no provider request (44471869129) | PASS (44471896189) |
+| Face Guard nofaces G01-G07 | PASS (44471818664) | G01,G02,G04-G07 PASS, G03 NOT_RUN (44472576402; first try 44471840534 failed on a harness bug: camera dialog button capitals) |
+| Face Guard one face unlocks (H01) | **PASS** (44471825734): locked at start, unlocked after 12.8 s, stayed unlocked 10 s, app held the camera | NOT_RUN (no camera) |
+| Face Guard second face keeps lock (H02) | **PASS** (44471832644): stayed locked, "More than one face is visible" shown | NOT_RUN (no camera) |
+
+What this does NOT show: the "two" fixture is the same detectable face twice (the detector found only one of the two real people); Face Guard has no identity or liveness; the lock colour is not pixel-verified (FLAG_SECURE); no real device camera; whole-profile encryption, IME and other native text fields are not covered.
+The earlier face failures were the startup crash (Hub RecyclerView activePosition -1 before tab state existed); fixed in 81606ea and confirmed gone on both ABIs.

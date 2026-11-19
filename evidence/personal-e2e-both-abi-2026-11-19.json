@@ -1,0 +1,26 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 81606ea (runs 44096424574 x64 / 44096428154 arm64); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36 x86_64",
+  "apk_sha256": "4305b0f4018cafae5bcd4e59a0636e3203f9dcd9006e05a95762ae922750a8c7",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44472963994",
+  "summary": {
+   "PASS": 10,
+   "FAIL": 0,
+   "NOT_RUN": 0
+  },
+  "c09": "OBSERVED(com.google.android.dialer)",
+  "note": "first attempt 44471847414 was lost to an emulator disappearing mid-run (adb: device not found, infrastructure); repeated, 10/10 PASS"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14 / API 34 arm64-v8a",
+  "apk_sha256": "151b762f14525ef4a8f2ca9b5d2a78ebf8c8882693d98891fc009dd52aa0ce2a",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44471876020",
+  "summary": {
+   "PASS": 9,
+   "FAIL": 0,
+   "NOT_RUN": 1
+  },
+  "c09": "NOT_RUN (no dialer on Redroid)"
+ }
+}
