@@ -41,6 +41,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
     private boolean mCameraFailed;
     private boolean mCredentialPromptBroken;
     private boolean mOwnerOnly;          // no camera: only BiometricPrompt (owner fingerprint/face or device PIN) unlocks
+    private String mShownKey;            // what the overlay currently shows; null = must be (re)drawn
     private boolean mAutoPrompted;       // the owner prompt is opened by itself once per foreground session
 
     private FaceGuardController() {}
@@ -220,8 +221,15 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
             content.addView(mOverlay, new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
-        mOverlay.bringToFront();
-        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken, mOwnerOnly);
+        // render() runs for every camera frame (~30/s). Only touch the view tree when something changed: bringToFront() and
+        // setText() both request a layout of the whole content view, which redraws the tab switcher under the overlay.
+        if (content.indexOfChild(mOverlay) != content.getChildCount() - 1) mOverlay.bringToFront();
+        boolean credential = FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken;
+        String key = reason + ":" + credential + ":" + mOwnerOnly;
+        if (!key.equals(mShownKey)) {
+            mShownKey = key;
+            mOverlay.show(reason, credential, mOwnerOnly);
+        }
     }
 
     private void removeOverlay() {
@@ -229,6 +237,7 @@ public final class FaceGuardController implements FaceCameraSource.Listener, Fac
             ((ViewGroup) mOverlay.getParent()).removeView(mOverlay);
         }
         mOverlay = null;
+        mShownKey = null;
     }
 
     // ------------------------------------------------------------------ overlay actions

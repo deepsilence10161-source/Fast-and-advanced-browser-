@@ -126,3 +126,12 @@ Status: source + host tests only; **not in the published APKs and not measured o
 - Tests: host tests in tests/test_face_guard_patch.py (source properties), real `javac` compile against Android 13 +
   androidx (`tools/face_guard/compile_check.sh`), device scenario `G08_owner_only` in face_guard_e2e.py (device PIN
   stands in for the owner check; emulators have no enrolled biometric, so a real fingerprint/face is NOT measured).
+
+## 12.2 Hub crash seen again in the 19 Nov two-face runs (x64, build c6f156a)
+- `two` scenario: 3 of 4 runs crashed (`AssertionError: activePosition of the RecyclerView is -1`, thrown from an item
+  decoration while `TabContentManager` drew the Hub on `onCompositorLayout`); `one` 2/2 and `nofaces` G01-G05 passed. So the
+  81606ea fix (wait for tab state) is not complete: the crash is reachable once the camera frames start.
+- Cause NOT proven. Mitigation in this source: at most one `showLayout(HUB)` per 5 s, and the overlay no longer calls
+  `bringToFront()`/`setText()` on every camera frame (it did, ~30 per second, each one relaying out the content view that
+  contains the Hub). Acceptance: `two` must pass 4 of 4 consecutive x64 runs; otherwise the Face Guard claim in the release stays
+  "may crash while locked".

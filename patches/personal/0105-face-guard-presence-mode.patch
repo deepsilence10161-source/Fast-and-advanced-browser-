@@ -523,13 +523,14 @@ index 0000000..44ba782
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
 new file mode 100644
-index 0000000..d8c332f
+index 0000000..bee97c8
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
-@@ -0,0 +1,34 @@
+@@ -0,0 +1,43 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.app.Activity;
++import android.os.SystemClock;
 +
 +import org.chromium.chrome.browser.ChromeTabbedActivity;
 +import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
@@ -539,6 +540,11 @@ index 0000000..d8c332f
 +
 +/** The ONLY Face Guard class that touches Chromium browser internals (keeps the patch surface small). */
 +final class FaceGuardChromeBridge {
++    /** A Hub that is still starting must not be asked to start again (a second showLayout mid-transition was the
++     *  suspected trigger of the activePosition -1 draw crash, x64 two-face runs 19 Nov: 3 of 4 crashed). */
++    private static final long MIN_REOPEN_MS = 5000;
++    private static long sLastShowUptimeMs = -1;
++
 +    private FaceGuardChromeBridge() {}
 +
 +    /** Opens the tab switcher (Hub layout in Chromium 155). Safe to call repeatedly or before layouts exist. */
@@ -553,7 +559,10 @@ index 0000000..d8c332f
 +            TabModel model = selector.getCurrentModel();
 +            if (model == null || model.getCount() == 0 || model.index() < 0) return;
 +            LayoutManagerChrome layoutManager = tabbed.getLayoutManager();
-+            if (layoutManager.getActiveLayoutType() != LayoutType.HUB) {
++            long now = SystemClock.uptimeMillis();
++            boolean recentlyAsked = sLastShowUptimeMs >= 0 && now - sLastShowUptimeMs < MIN_REOPEN_MS;
++            if (layoutManager.getActiveLayoutType() != LayoutType.HUB && !recentlyAsked) {
++                sLastShowUptimeMs = now;
 +                layoutManager.showLayout(LayoutType.HUB, /* animate= */ false);
 +            }
 +        } catch (RuntimeException e) {
@@ -563,10 +572,10 @@ index 0000000..d8c332f
 +}
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
 new file mode 100644
-index 0000000..11a615f
+index 0000000..42960af
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
-@@ -0,0 +1,268 @@
+@@ -0,0 +1,277 @@
 +package org.chromium.chrome.browser.swiftra.faceguard;
 +
 +import android.Manifest;
@@ -610,6 +619,7 @@ index 0000000..11a615f
 +    private boolean mCameraFailed;
 +    private boolean mCredentialPromptBroken;
 +    private boolean mOwnerOnly;          // no camera: only BiometricPrompt (owner fingerprint/face or device PIN) unlocks
++    private String mShownKey;            // what the overlay currently shows; null = must be (re)drawn
 +    private boolean mAutoPrompted;       // the owner prompt is opened by itself once per foreground session
 +
 +    private FaceGuardController() {}
@@ -789,8 +799,15 @@ index 0000000..11a615f
 +            content.addView(mOverlay, new ViewGroup.LayoutParams(
 +                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 +        }
-+        mOverlay.bringToFront();
-+        mOverlay.show(reason, FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken, mOwnerOnly);
++        // render() runs for every camera frame (~30/s). Only touch the view tree when something changed: bringToFront() and
++        // setText() both request a layout of the whole content view, which redraws the tab switcher under the overlay.
++        if (content.indexOfChild(mOverlay) != content.getChildCount() - 1) mOverlay.bringToFront();
++        boolean credential = FaceGuardAuth.hasDeviceCredential(mActivity) && !mCredentialPromptBroken;
++        String key = reason + ":" + credential + ":" + mOwnerOnly;
++        if (!key.equals(mShownKey)) {
++            mShownKey = key;
++            mOverlay.show(reason, credential, mOwnerOnly);
++        }
 +    }
 +
 +    private void removeOverlay() {
@@ -798,6 +815,7 @@ index 0000000..11a615f
 +            ((ViewGroup) mOverlay.getParent()).removeView(mOverlay);
 +        }
 +        mOverlay = null;
++        mShownKey = null;
 +    }
 +
 +    // ------------------------------------------------------------------ overlay actions

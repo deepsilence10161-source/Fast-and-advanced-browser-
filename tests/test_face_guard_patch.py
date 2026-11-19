@@ -160,3 +160,13 @@ def test_owner_only_mode_never_uses_camera_and_cannot_lock_the_owner_out():
     assert "Set a device PIN, pattern or password first." in st and "return false;   // never switch on" in st
     assert "FaceGuardAuth.authenticate(activity, () -> {\n                FaceGuardController.setOwnerOnly(activity, false);" in st
     assert "Owner only. Unlock with" in ov
+
+
+def test_hub_is_not_reopened_mid_transition_and_overlay_is_not_relaid_out_per_frame():
+    src = ROOT / "tools/face_guard/src/org/chromium/chrome/browser/swiftra/faceguard"
+    br = (src / "FaceGuardChromeBridge.java").read_text()
+    ctl = (src / "FaceGuardController.java").read_text()
+    # one showLayout(HUB) per 5 s at most
+    assert "MIN_REOPEN_MS = 5000" in br and "!recentlyAsked" in br and br.count("showLayout(LayoutType.HUB") == 1
+    # render() runs per camera frame: the view tree is touched only when the shown state changed
+    assert "key.equals(mShownKey)" in ctl and "indexOfChild(mOverlay) != content.getChildCount() - 1" in ctl

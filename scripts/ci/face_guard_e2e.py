@@ -432,6 +432,12 @@ def main():
                 time.sleep(5)
                 dismiss_default_browser()
                 locked_xml = dump()
+                # the lock can take 10+ s to appear on a cold start; wait for the overlay text or the prompt
+                for _ in range(12):
+                    if "Owner only. Unlock with" in locked_xml or "Confirm with your fingerprint, face or device PIN" in locked_xml:
+                        break
+                    time.sleep(2)
+                    locked_xml = dump()
                 # the owner prompt opens by itself (~0.7 s after the lock) and then covers the lock overlay, so either
                 # the overlay text or the already-open prompt proves the owner-only lock (the 19 Nov run saw the prompt)
                 prompt_open = "Confirm with your fingerprint, face or device PIN" in locked_xml
