@@ -432,10 +432,12 @@ def main():
                 time.sleep(5)
                 dismiss_default_browser()
                 locked_xml = dump()
-                owner_text = "Owner only. Unlock with" in locked_xml
-                # the owner prompt opens by itself (~0.7 s after the lock); fall back to the button
+                # the owner prompt opens by itself (~0.7 s after the lock) and then covers the lock overlay, so either
+                # the overlay text or the already-open prompt proves the owner-only lock (the 19 Nov run saw the prompt)
+                prompt_open = "Confirm with your fingerprint, face or device PIN" in locked_xml
+                owner_text = ("Owner only. Unlock with" in locked_xml) or prompt_open
                 prompt_xml = locked_xml
-                if "Face Guard" not in prompt_xml or "PIN" not in prompt_xml:
+                if not prompt_open:
                     btn = find_node(locked_xml, text="Unlock as owner")
                     if btn:
                         tap_bounds(btn["bounds"])
@@ -452,7 +454,7 @@ def main():
                 shot("g08_after")
                 ok = owner_pref == "true" and owner_text and unlocked and not cam
                 res("G08_owner_only", "PASS" if ok else "FAIL",
-                    f"owner_pref={owner_pref} owner_lock_text_seen={owner_text} unlocked_after_owner_prompt={unlocked} app_holds_camera={cam}")
+                    f"owner_pref={owner_pref} owner_lock_seen={owner_text} prompt_auto_opened={prompt_open} unlocked_after_owner_prompt={unlocked} app_holds_camera={cam}")
                 # back to the weaker mode: turning owner-only OFF and then Face Guard OFF both need the PIN
                 for title in (OWNER_TITLE, TITLE):
                     open_privacy_settings(pkg)
