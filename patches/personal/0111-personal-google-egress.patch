@@ -31,3 +31,86 @@ diff --git a/components/network_time/network_time_tracker.cc b/components/networ
  
  namespace {
  
+diff --git a/components/ntp_tiles/popular_sites_impl.cc b/components/ntp_tiles/popular_sites_impl.cc
+--- a/components/ntp_tiles/popular_sites_impl.cc
++++ b/components/ntp_tiles/popular_sites_impl.cc
+@@ -375,8 +375,11 @@
+   // Download forced, or we need to download a new file.
+   if (force_download || download_time_is_future ||
+       (time_since_last_download > redownload_interval) || url_changed) {
+-    FetchPopularSites();
+-    return true;
++    // Swiftra personal build: the popular-sites list is never downloaded. The
++    // fetch is an unprompted GET to www.gstatic.com/chrome/ntp/ on every new
++    // tab page and it is what makes the browser contact the listed sites to
++    // fetch their icons.
++    return false;
+   }
+   return false;
+ }
+diff --git a/components/ntp_tiles/features.cc b/components/ntp_tiles/features.cc
+--- a/components/ntp_tiles/features.cc
++++ b/components/ntp_tiles/features.cc
+@@ -13,9 +13,12 @@
+ 
+ const char kPopularSitesFieldTrialName[] = "NTPPopularSites";
+ 
++// Swiftra personal build: no built-in tiles (ESPN, Wikipedia, eBay, Instagram,
++// Amazon, Facebook, Yahoo, YouTube). With them on, opening the New Tab page
++// made the browser fetch each site's icon with no user action.
+ BASE_FEATURE(kPopularSitesBakedInContentFeature,
+              "NTPPopularSitesBakedInContent",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kNtpMostLikelyFaviconsFromServerFeature,
+              "NTPMostLikelyFaviconsFromServer",
+diff --git a/components/search_provider_logos/logo_service_impl.cc b/components/search_provider_logos/logo_service_impl.cc
+--- a/components/search_provider_logos/logo_service_impl.cc
++++ b/components/search_provider_logos/logo_service_impl.cc
+@@ -222,7 +222,11 @@
+ void LogoServiceImpl::GetLogo(LogoCallbacks callbacks,
+                               bool for_webui_ntp,
+                               bool enable_animated_logo) {
+-  if (!template_url_service_) {
++  // Swiftra personal build: no doodle. Fetching it is a request to
++  // www.google.com/async/ddljson on every New Tab page that sends the browser's
++  // Google cookies.
++  constexpr bool kSwiftraNoDoodle = true;
++  if (!template_url_service_ || kSwiftraNoDoodle) {
+     RunCallbacksWithDisabled(std::move(callbacks));
+     return;
+   }
+diff --git a/chrome/browser/offline_pages/recent_tab_helper.cc b/chrome/browser/offline_pages/recent_tab_helper.cc
+--- a/chrome/browser/offline_pages/recent_tab_helper.cc
++++ b/chrome/browser/offline_pages/recent_tab_helper.cc
+@@ -261,8 +261,10 @@
+   // - Running on low end devices.
+   // - Viewing POST content for privacy considerations.
+   // - Disabled by flag.
+-  last_n_listen_to_tab_hidden_ =
+-      can_save && !delegate_->IsLowEndDevice() && !navigation_handle->IsPost();
++  // Swiftra personal build: never. last_n silently saved a full MHTML copy of
++  // every visited page into the cache when its tab was hidden, which kept the
++  // page content on disk until the user cleared it.
++  last_n_listen_to_tab_hidden_ = false;
+   DVLOG_IF(1, can_save && !last_n_listen_to_tab_hidden_)
+       << " - Page can not be saved by last_n";
+ }
+diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
+--- a/chrome/browser/profiles/profile.cc
++++ b/chrome/browser/profiles/profile.cc
+@@ -330,9 +330,12 @@
+ 
+ // static
+ void Profile::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
++  // Swiftra personal build: search suggestions are off by default. With them
++  // on, the characters typed in the address bar were sent to the search engine
++  // (www.google.com/complete/search) before the user submitted anything.
+   registry->RegisterBooleanPref(
+       prefs::kSearchSuggestEnabled,
+-      true,
++      false,
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+ #if BUILDFLAG(IS_ANDROID)
+   registry->RegisterStringPref(

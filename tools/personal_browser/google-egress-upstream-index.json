@@ -17,16 +17,66 @@
       "sha256": "216a2fc23756e4a4010144720c5c9d2cc728cd5d43f3b2c4bfee246ed189cb33",
       "bytes": 24852,
       "lines": 661
+    },
+    {
+      "path": "components/ntp_tiles/popular_sites_impl.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/ntp_tiles/popular_sites_impl.cc",
+      "status": "FETCHED",
+      "sha256": "240bc08a2871e0a73565679b3b1357ad06a13aa5322c9e8b54c0f0955a537f42",
+      "bytes": 22084,
+      "lines": 615
+    },
+    {
+      "path": "components/ntp_tiles/features.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/ntp_tiles/features.cc",
+      "status": "FETCHED",
+      "sha256": "4bbf8e076b721b568568eabfc686a6474c3d813bcb8b3db4d55b25c1bdf3d971",
+      "bytes": 965,
+      "lines": 29
+    },
+    {
+      "path": "components/search_provider_logos/logo_service_impl.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/search_provider_logos/logo_service_impl.cc",
+      "status": "FETCHED",
+      "sha256": "3963796c759086b1a605d8171055816ce80e7b2cd644c121b0f8af8f0ef23cae",
+      "bytes": 29229,
+      "lines": 765
+    },
+    {
+      "path": "chrome/browser/offline_pages/recent_tab_helper.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/offline_pages/recent_tab_helper.cc",
+      "status": "FETCHED",
+      "sha256": "419da292c4ff999281044dc1c523923eda9545bfd4e60c5206e402763da2e239",
+      "bytes": 22735,
+      "lines": 553
+    },
+    {
+      "path": "chrome/browser/profiles/profile.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/browser/profiles/profile.cc",
+      "status": "FETCHED",
+      "sha256": "f8999e49c117b11bbf720397f284434f87fd8f431f9dae6353c501d2a699ad31",
+      "bytes": 22308,
+      "lines": 661
     }
   ],
   "fixture_paths": [
     "components/omnibox/browser/aim_eligibility_service_features.cc",
-    "components/network_time/network_time_tracker.cc"
+    "components/network_time/network_time_tracker.cc",
+    "components/ntp_tiles/popular_sites_impl.cc",
+    "components/ntp_tiles/features.cc",
+    "components/search_provider_logos/logo_service_impl.cc",
+    "chrome/browser/offline_pages/recent_tab_helper.cc",
+    "chrome/browser/profiles/profile.cc"
   ],
-  "fixture_gzip_sha256": "02e419a667c519cbc9c75f8774af8680ae7f56ab15d88768c87b165c720a68b8",
+  "fixture_gzip_sha256": "cd2e0d623893dd27b1b707638b468a9b8db33f10e3759607a5773efcdc144746",
   "native_source_outputs": [
     "components/omnibox/browser/aim_eligibility_service_features.cc",
-    "components/network_time/network_time_tracker.cc"
+    "components/network_time/network_time_tracker.cc",
+    "components/ntp_tiles/popular_sites_impl.cc",
+    "components/ntp_tiles/features.cc",
+    "components/search_provider_logos/logo_service_impl.cc",
+    "chrome/browser/offline_pages/recent_tab_helper.cc",
+    "chrome/browser/profiles/profile.cc"
   ],
   "not_android_acceptance": true
 }

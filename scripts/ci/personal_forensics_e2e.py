@@ -127,27 +127,19 @@ def pull_remnants(pkg, files, outdir, tag):
             print(f"PERSONAL_FORENSIC pull_failed {rel}: {r.strip()[:100]}", flush=True)
 
 
-def ensure_websocket():
-    try:
-        import websocket  # noqa: F401
-        return True
-    except ImportError:
-        import subprocess
-        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "websocket-client"], capture_output=True, timeout=120)
-        try:
-            import websocket  # noqa: F401
-            return True
-        except ImportError:
-            return False
-
-
 def close_tabs_via_cdp(pkg):
-    """Close every tab through DevTools (the tab files must stop referencing the page)."""
+    """Close every tab through the DevTools HTTP endpoint (no websocket needed): /json lists tabs, /json/close/<id> closes."""
+    import urllib.request
     try:
-        ensure_websocket()
-        import startup_netlog as sn
         P.adb("forward", "tcp:9222", "localabstract:chrome_devtools_remote")
-        return sn.close_all_tabs("http://127.0.0.1:9222")
+        time.sleep(1)
+        tabs = json.loads(urllib.request.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
+        closed = 0
+        for t in tabs:
+            if t.get("type") == "page":
+                urllib.request.urlopen("http://127.0.0.1:9222/json/close/" + t["id"], timeout=10).read()
+                closed += 1
+        return {"pages_closed": closed, "listed": len(tabs)}
     except Exception as e:  # noqa: BLE001
         return {"error": repr(e)[:160]}
 

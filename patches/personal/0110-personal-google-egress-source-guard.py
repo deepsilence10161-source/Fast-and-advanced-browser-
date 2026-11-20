@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refuse source drift before the opt-in Google-egress patch (AI Mode kill switch + network-time query off) writes anything.
+"""Refuse source drift before the opt-in Google-egress patch (AI Mode kill switch, network-time query off, no popular-sites/doodle/last_n archive/search-suggest defaults) writes anything.
 
 Runs AFTER the ordinary series and personal 0100-0109 on a restored Chromium 155.0.8059.80 tree.
 The pinned files are not modified by any earlier patch. New outputs must be absent.
@@ -13,6 +13,11 @@ import sys
 EXPECTED = {
     "components/omnibox/browser/aim_eligibility_service_features.cc": "9f4d3dc7848870c2665802d1f42023ac11a6696333d76a332b66a17c6b945278",
     "components/network_time/network_time_tracker.cc": "216a2fc23756e4a4010144720c5c9d2cc728cd5d43f3b2c4bfee246ed189cb33",
+    "components/ntp_tiles/popular_sites_impl.cc": "240bc08a2871e0a73565679b3b1357ad06a13aa5322c9e8b54c0f0955a537f42",
+    "components/ntp_tiles/features.cc": "4bbf8e076b721b568568eabfc686a6474c3d813bcb8b3db4d55b25c1bdf3d971",
+    "components/search_provider_logos/logo_service_impl.cc": "3963796c759086b1a605d8171055816ce80e7b2cd644c121b0f8af8f0ef23cae",
+    "chrome/browser/offline_pages/recent_tab_helper.cc": "419da292c4ff999281044dc1c523923eda9545bfd4e60c5206e402763da2e239",
+    "chrome/browser/profiles/profile.cc": "f8999e49c117b11bbf720397f284434f87fd8f431f9dae6353c501d2a699ad31",
 }
 NEW_PATHS = ()
 
