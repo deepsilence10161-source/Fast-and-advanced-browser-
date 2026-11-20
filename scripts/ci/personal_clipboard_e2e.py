@@ -87,7 +87,24 @@ def parse_helper_get(logcat):
     return "missing", ""
 
 
+# CLIP_EXPECT=system (builds with patch 0112): copying inside the browser is SUPPOSED to reach the system clipboard
+# and paste is SUPPOSED to deliver the system clipboard text to the page; the verdicts are inverted accordingly.
+EXPECT_SYSTEM = os.environ.get("CLIP_EXPECT") == "system"
+
+
 def classify_copy(sys_kind, sys_text, ctl, copied_marker, copy_observed):
+    if EXPECT_SYSTEM:
+        if sys_kind != "text":
+            return "NOT_RUN", f"helper could not read the system clipboard ({sys_kind})"
+        if copied_marker in sys_text:
+            return "PASS", f"the copied text reached the SYSTEM clipboard as intended: [{sys_text}]"
+        if not copy_observed:
+            return "NOT_RUN", f"no in-browser evidence that the copy happened; system clipboard=[{sys_text}]"
+        return "FAIL", f"the copy did not reach the system clipboard; it holds [{sys_text}]"
+    return _classify_copy_contained(sys_kind, sys_text, ctl, copied_marker, copy_observed)
+
+
+def _classify_copy_contained(sys_kind, sys_text, ctl, copied_marker, copy_observed):
     """K01/K03: PASS only if the copy demonstrably happened and the system clipboard still holds the control text."""
     if sys_kind != "text":
         return "NOT_RUN", f"helper could not read the system clipboard ({sys_kind})"
@@ -102,6 +119,12 @@ def classify_copy(sys_kind, sys_text, ctl, copied_marker, copy_observed):
 
 def classify_paste(page_values, ctl, paste_event_seen):
     joined = " ".join(page_values)
+    if EXPECT_SYSTEM:
+        if ctl in joined:
+            return "PASS", f"page received the system clipboard text as intended: {page_values}"
+        if not paste_event_seen:
+            return "NOT_RUN", "no paste event reached the page"
+        return "FAIL", f"paste did not deliver the system clipboard text: {page_values}"
     if ctl in joined:
         return "FAIL", f"page received the system clipboard text: {page_values}"
     if not paste_event_seen:
@@ -405,7 +428,7 @@ def main():
         except Exception:  # noqa: BLE001
             pass
     c = summarize(results)
-    json.dump({"package": pkg, "results": results, "probes": probes, "summary": c}, open(os.path.join(a.out, "personal_clip.json"), "w"), indent=1)
+    json.dump({"package": pkg, "expect": "system" if EXPECT_SYSTEM else "contained", "results": results, "probes": probes, "summary": c}, open(os.path.join(a.out, "personal_clip.json"), "w"), indent=1)
     print(f"PERSONAL_CLIP_SUMMARY pass={c['PASS']} fail={c['FAIL']} not_run={c['NOT_RUN']}", flush=True)
     return 1 if c["FAIL"] else 0
 

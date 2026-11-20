@@ -15,6 +15,13 @@ on:
         default: personal_clipboard_e2e.py
       variant: { description: "state variant", default: personal-dev }
       tag: { default: "155.0.8059.80" }
+      expect:
+        description: "clipboard expectation: system (0112+ builds, copy must work) or contained (older builds)"
+        type: choice
+        options: [system, contained]
+        default: system
+env:
+  CLIP_EXPECT: ${{ inputs.expect }}
 permissions:
   contents: write   # draft state release is only visible with write access; nothing is uploaded
 jobs:

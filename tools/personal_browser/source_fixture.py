@@ -14,6 +14,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 DIRECTORY = Path(__file__).resolve().parent
+RELAX_NAME = "0112-personal-relax-clipboard-files-signin-scrub.patch"
 FIXTURES = (
     ("upstream-index.json", "upstream-155.0.8059.80.json.gz"),
     ("egress-upstream-index.json", "egress-upstream-155.0.8059.80.json.gz"),
@@ -21,6 +22,7 @@ FIXTURES = (
     ("signin-message-upstream-index.json", "signin-message-upstream-155.0.8059.80.json.gz"),
     ("omnibox-clipboard-upstream-index.json", "omnibox-clipboard-upstream-155.0.8059.80.json.gz"),
     ("google-egress-upstream-index.json", "google-egress-upstream-155.0.8059.80.json.gz"),
+    ("relax-upstream-index.json", "relax-upstream-155.0.8059.80.json.gz"),
 )
 
 
@@ -53,15 +55,16 @@ def load_sources() -> dict[str, str]:
     return out
 
 
-def series() -> list[str]:
-    return [line for raw in (ROOT / "patches/personal/series").read_text().splitlines()
-            if (line := raw.strip()) and not line.startswith("#")]
+def series(include_relax: bool = False) -> list[str]:
+    names = [line for raw in (ROOT / "patches/personal/series").read_text().splitlines()
+             if (line := raw.strip()) and not line.startswith("#")]
+    return names if include_relax else [n for n in names if n != RELAX_NAME]
 
 
-def apply_strict(src: Path) -> list[dict]:
+def apply_strict(src: Path, include_relax: bool = False) -> list[dict]:
     """Apply ONLY to caller-owned synthetic source tree; fail on drift/offset/fuzz."""
     results = []
-    for name in series():
+    for name in series(include_relax):
         file = ROOT / "patches/personal" / name
         if file.suffix == ".py":
             run = subprocess.run([sys.executable, str(file), str(src)],

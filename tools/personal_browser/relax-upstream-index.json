@@ -1,0 +1,32 @@
+{
+ "pinned_tag": "155.0.8059.80",
+ "status_semantics": "FETCHED and hashed; not all lines audited or executed",
+ "files": [
+  {
+   "path": "chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java",
+   "status": "FETCHED",
+   "sha256": "d8613798a85c49cd7e973df0827f0ff3e460fc53ed95bff9dd54895e44f4621e",
+   "bytes": 48631,
+   "lines": 1139
+  },
+  {
+   "path": "chrome/android/java/res_template/xml/file_paths.xml",
+   "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/chrome/android/java/res_template/xml/file_paths.xml",
+   "status": "FETCHED",
+   "sha256": "de4855a912ebce89a2157ffb1e602e658704a6268856c56875723d40636894b1",
+   "bytes": 1061,
+   "lines": 25
+  }
+ ],
+ "fixture_paths": [
+  "chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java",
+  "chrome/android/java/res_template/xml/file_paths.xml"
+ ],
+ "fixture_gzip_sha256": "d6aca0ba6ddbbf0a61708ae961d37814233cfed13068d28bc4795d8b62fcdc5e",
+ "native_source_outputs": [
+  "chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java",
+  "chrome/android/java/res_template/xml/file_paths.xml"
+ ],
+ "not_android_acceptance": true
+}

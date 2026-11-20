@@ -336,6 +336,21 @@ def main():
         else:
             res("C03_download", "FAIL", detail)
 
+        # ---- C10 "Open file" path (0112): the app's FileProvider must map the private download to a content:// URI,
+        # which is what DownloadUtils.openFile hands to the other app. Read as root, so this proves the provider
+        # roots (file_paths.xml) and says nothing about which app opens it.
+        if not found or not found.startswith("/data/"):
+            res("C10_open_file_uri", "NOT_RUN", f"no private download to map (found={found or 'none'})")
+        else:
+            canon = (sh(f"readlink -f '{found}'") or found).strip()
+            uri = f"content://{pkg}.FileProvider/private_downloads/{canon[len('/data/'):]}"
+            via = sh(f"content read --uri '{uri}' 2>/dev/null | sha256sum", 60).split()
+            got = via[0] if via else ""
+            if got and got == (sha or ""):
+                res("C10_open_file_uri", "PASS", f"provider served the private download via {uri.split('/', 3)[-1][:60]}... sha matches")
+            else:
+                res("C10_open_file_uri", "FAIL", f"provider did not return the file (sha={got[:12]} want={(sha or '')[:12]}) uri={uri}")
+
         # ---- C04 external intent handoff (real taps; negative-only, no positive control on this APK)
         outcomes = {}
         for name, href in (("tel", "tel:5551234"), ("market", "market://details?id=com.android.vending")):
@@ -391,6 +406,30 @@ def main():
             if not sh(f"find {prof} -maxdepth 4 -name '{name}' 2>/dev/null | head -1", 60):
                 missing.append(label)
         res("C08_preserved", "PASS" if not missing else "FAIL", f"missing={missing}")
+
+        # ---- C11 Google WEB sign-in page loads in this browser (no credentials are typed; this only shows the
+        # sign-in form is served and not a "browser not secure" refusal). Needs real internet on the runner.
+        try:
+            import urllib.request
+            adb("shell", "am", "force-stop", pkg)
+            open_url(pkg, "https://accounts.google.com/ServiceLogin")
+            time.sleep(15)
+            adb("forward", "tcp:9222", "localabstract:chrome_devtools_remote")
+            time.sleep(1)
+            tabs = json.loads(urllib.request.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
+            pages = [(t.get("url", ""), t.get("title", "")) for t in tabs if t.get("type") == "page"]
+            g = [t for t in pages if "accounts.google.com" in t[0] or "google" in t[1].lower()]
+            titles = " | ".join(t[1] for t in g)[:200]
+            if not g:
+                res("C11_google_web_signin", "NOT_RUN", f"no Google page loaded (offline runner?) pages={pages[:3]}")
+            elif re.search(r"(?i)couldn.t sign you in|not secure|blocked|unsupported", titles):
+                res("C11_google_web_signin", "FAIL", f"Google refused or errored: {titles}")
+            elif re.search(r"(?i)sign.?in|google account", titles):
+                res("C11_google_web_signin", "PASS", f"sign-in page served, title={titles!r} (no credentials entered)")
+            else:
+                res("C11_google_web_signin", "NOT_RUN", f"unrecognised title {titles!r}")
+        except Exception as e:  # noqa: BLE001
+            res("C11_google_web_signin", "NOT_RUN", "harness: " + repr(e)[:160])
 
         # ---- C09 measurement control, deliberately LAST so it cannot disturb any acceptance check above.
         # An adb-issued DIAL intent must make ANOTHER package top-resumed; says nothing about the browser.

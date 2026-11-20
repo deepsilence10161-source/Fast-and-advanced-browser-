@@ -290,7 +290,7 @@ def test_bundle_is_explicit_separate_and_reproducible(tmp_path):
     assert {p: (ROOT / "patches" / p).read_bytes() for p in before} == before
     series = patch_tools.read_series(str(tmp_path / "one/patches"))
     native_series = patch_tools.read_series(str(PERSONAL))
-    assert len(native_series) == 12
+    assert len(native_series) == 13
     assert series[:-len(native_series)] == patch_tools.read_series(str(ROOT / "patches"))
     assert series[-len(native_series):] == native_series
     assert first["base_patch_hash"] != first["composed_patch_hash"]
@@ -347,7 +347,10 @@ def test_existing_patch_engine_tracks_the_opt_in_native_layer(tmp_path, upstream
                                    | set(face_guard.EXPECTED) | set(face_guard.NEW_PATHS)
                                        | set(signin_guard.EXPECTED) | set(signin_guard.NEW_PATHS)
                                        | set(omni_guard.EXPECTED) | set(omni_guard.NEW_PATHS)
-                                           | set(gegress_guard.EXPECTED) | set(gegress_guard.NEW_PATHS))
+                                           | set(gegress_guard.EXPECTED) | set(gegress_guard.NEW_PATHS)
+                                           | {"chrome/android/java/src/org/chromium/chrome/browser/browsing_data/SwiftraDeleteScrub.java",
+                                              "chrome/android/java/res_template/xml/file_paths.xml",
+                                              "chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java"})
     assert state["epoch"] == 1234567890 and state["changed"]
     for path in state["files"]:
         assert (source / path).stat().st_mtime == 1234567890

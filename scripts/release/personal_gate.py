@@ -24,6 +24,7 @@ def _flags(info):
         "personal": any(v.strip() == "1" for v in re.findall(r"^personal_source_only[ \t]*=[ \t]*(.*)$", info, re.M)),
         "face_guard": bool(re.search(r"^0105-face-guard-presence-mode\.patch\s*$", info, re.M)),
         "omnibox_clipboard": bool(re.search(r"^0109-personal-omnibox-clipboard\.patch\s*$", info, re.M)),
+        "relax": bool(re.search(r"^0112-personal-relax-clipboard-files-signin-scrub\.patch\s*$", info, re.M)),
     }
 
 
@@ -66,7 +67,9 @@ def gate(cpu, info, apk_sha, evidences):
         cl = False
         for ev in evidences:
             row = (ev.get("clipboard_apk") or {}).get(cpu)
-            if isinstance(row, dict) and row.get("apk_sha256") == apk_sha and row.get("K03_urlbar_copy") == "PASS" \
+            want = "system" if f["relax"] else "contained"
+            if isinstance(row, dict) and row.get("apk_sha256") == apk_sha and row.get("expect", "contained") == want \
+                    and row.get("K03_urlbar_copy") == "PASS" \
                     and row.get("K01_web_copy") == "PASS" and row.get("K02_web_paste") == "PASS" \
                     and row.get("K04_find_in_page_copy") == "PASS":
                 cl = True
