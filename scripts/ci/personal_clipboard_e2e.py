@@ -132,7 +132,7 @@ def combo(*codes):
     P.sh("input keycombination " + " ".join(str(c) for c in codes))
 
 
-CTRL, KA, KC, KV = 113, 29, 31, 50
+CTRL, KA, KC, KV, KX = 113, 29, 31, 50, 52
 
 
 def helper(mode, text=None):
@@ -344,19 +344,23 @@ def main():
                 combo(CTRL, KA)
                 combo(CTRL, KC)
                 time.sleep(1)
-                P.sh("input keyevent 67")
-                combo(CTRL, KV)
-                time.sleep(2)
-                typed_back = ("set_" + tok) in (dev.dump() or "")
+                _, st_copy = helper("get")   # the copy step alone: this is the exact path that LEAKED on 6589062
+                # native paste reads the SYSTEM clipboard, so pasting cannot show a contained copy. Use CUT instead:
+                # it provably ran when the typed canary disappears from the field; the system clipboard must stay
+                # the control text. (An unpatched field would put the canary on the system clipboard = LEAK.)
+                combo(CTRL, KA)
+                combo(CTRL, KX)
+                time.sleep(1.5)
+                typed_back = ("set_" + tok) not in (dev.dump() or "")   # name kept: True = the cut was performed
                 sk, st = helper("get")
                 if not control_ok or sk != "text":
                     res_probe("X01_settings_field", "NOT_RUN", f"control or helper unavailable ({sk})")
-                elif ("set_" + tok) in st:
+                elif ("set_" + tok) in st or ("set_" + tok) in (st_copy or ""):
                     res_probe("X01_settings_field", "LEAK", f"the canary reached the SYSTEM clipboard: [{st}]")
                 elif typed_back and st == ctl:
-                    res_probe("X01_settings_field", "CONTAINED", "copy worked in the field; system clipboard unchanged")
+                    res_probe("X01_settings_field", "CONTAINED", "cut ran in the field (canary gone from it); system clipboard unchanged")
                 else:
-                    res_probe("X01_settings_field", "NOT_RUN", f"copy not demonstrated (typed_back={typed_back}) system=[{st}]")
+                    res_probe("X01_settings_field", "NOT_RUN", f"cut not demonstrated (cut_done={typed_back}) system=[{st}]")
         except Exception as e:  # noqa: BLE001
             res_probe("X01_settings_field", "NOT_RUN", "harness: " + repr(e)[:160])
     except Exception as e:  # noqa: BLE001
