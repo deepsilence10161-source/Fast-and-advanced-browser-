@@ -122,6 +122,74 @@ def clear_all_time(dev, pkg):
     return True, f"Clear data pressed via {how} (time range All time requested)"
 
 
+def pull_remnants(pkg, files, outdir, tag):
+    """Copy small remnant files into the artifact (synthetic canary only) so the exact location can be inspected."""
+    os.makedirs(outdir, exist_ok=True)
+    for rel in files[:12]:
+        src = rel if rel.startswith("/") else f"/data/data/{pkg}/{rel}"
+        dst = os.path.join(outdir, f"{tag}__" + rel.strip("/").replace("/", "__").replace(" ", "_"))
+        r = P.adb("pull", src, dst, timeout=60)
+        if not os.path.exists(dst):
+            print(f"PERSONAL_FORENSIC pull_failed {rel}: {r.strip()[:100]}", flush=True)
+
+
+def close_tabs_via_cdp(pkg):
+    """Close every tab through DevTools (the tab files must stop referencing the page)."""
+    try:
+        import startup_netlog as sn
+        P.adb("forward", "tcp:9222", "localabstract:chrome_devtools_remote")
+        return sn.close_all_tabs("http://127.0.0.1:9222")
+    except Exception as e:  # noqa: BLE001
+        return {"error": repr(e)[:160]}
+
+
+def run_scenario(dev, pkg, out, a, name, close_tabs):
+    tok = secrets.token_hex(8)
+    TOKEN["v"] = tok
+    pats = {"url_path": f"visited_{tok}", "url_query": f"secret_{tok}", "title": f"ftitle_{tok}"}
+    res = {"scenario": name, "close_tabs_before_clear": close_tabs}
+
+    def line(cid, status, detail=""):
+        print(f"PERSONAL_FORENSIC {name}/{cid} {status} {detail}", flush=True)
+
+    P.adb("shell", "am", "force-stop", pkg)
+    launch(dev)
+    wait_ready(dev, seconds=180)
+    url = f"http://127.0.0.1:{PORT}/visited_{tok}/page?q=secret_{tok}"
+    for _ in range(2):
+        P.open_url(pkg, url)
+        time.sleep(10)
+    live = summarize_hits(scan(pkg, pats))
+    res["live"] = live
+    line("F01_live", "INFO", f"{len(live['files'])} files hold the visit while running: {live['files'][:40]}")
+    P.adb("shell", "am", "force-stop", pkg)
+    time.sleep(3)
+    stopped = summarize_hits(scan(pkg, pats))
+    res["stopped"] = stopped
+    line("F02_stopped", "INFO", f"after force-stop by_pattern={stopped['by_pattern']} files={stopped['files'][:40]}")
+    launch(dev)
+    wait_ready(dev, seconds=120)
+    if close_tabs:
+        res["tabs_closed"] = close_tabs_via_cdp(pkg)
+        line("F02b_tabs", "INFO", f"close all tabs via DevTools: {res['tabs_closed']}")
+        time.sleep(5)
+    ok, why = clear_all_time(dev, pkg)
+    res["clear_ui"] = {"ok": ok, "detail": why}
+    P.adb("shell", "am", "force-stop", pkg)
+    time.sleep(3)
+    if not ok:
+        line("F03_cleared", "NOT_RUN", why)
+        return res
+    cleared = summarize_hits(scan(pkg, pats))
+    res["cleared"] = cleared
+    n = len(cleared["files"])
+    line("F03_cleared", "CLEAN" if n == 0 else "REMNANTS",
+         f"{why}; files still holding the canary after Delete: {n} by_pattern={cleared['by_pattern']} files={cleared['files']}")
+    if n:
+        pull_remnants(pkg, cleared["files"], os.path.join(a.out, "remnants"), name)
+    return res
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--package", required=True)
@@ -129,62 +197,30 @@ def main():
     a = ap.parse_args()
     pkg = a.package
     os.makedirs(a.out, exist_ok=True)
-    TOKEN["v"] = secrets.token_hex(8)
-    tok = TOKEN["v"]
-    pats = {"url_path": f"visited_{tok}", "url_query": f"secret_{tok}", "title": f"ftitle_{tok}"}
-    out = {"package": pkg, "phases": {}}
-
-    def line(cid, status, detail=""):
-        print(f"PERSONAL_FORENSIC {cid} {status} {detail}", flush=True)
-
+    out = {"package": pkg, "scenarios": []}
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), H)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     P.go_root()
     P.reverse()
     uid0 = P.sh("id -u")
-    line("F00_env", "INFO", f"package={pkg} abi={P.sh('getprop ro.product.cpu.abi')} sdk={P.sh('getprop ro.build.version.sdk')} root_uid={uid0}")
+    print(f"PERSONAL_FORENSIC F00_env INFO package={pkg} abi={P.sh('getprop ro.product.cpu.abi')} sdk={P.sh('getprop ro.build.version.sdk')} root_uid={uid0}", flush=True)
     if uid0 != "0":
-        line("F01_live", "NOT_RUN", "no root shell: cannot read the app's private files")
+        print("PERSONAL_FORENSIC F01_live NOT_RUN no root shell: cannot read the app's private files", flush=True)
         return 0
     try:
+        global launch, wait_ready
         from ui_capture import Device, launch, wait_ready  # noqa: E402
         dev = Device(pkg, a.out, lambda l: print("PERSONAL_FORENSIC_UI", l, flush=True))
-        P.adb("shell", "am", "force-stop", pkg)
-        launch(dev)
-        wait_ready(dev, seconds=180)
-        url = f"http://127.0.0.1:{PORT}/visited_{tok}/page?q=secret_{tok}"
-        for _ in range(2):
-            P.open_url(pkg, url)
-            time.sleep(10)
-        live = scan(pkg, pats)
-        out["phases"]["live"] = summarize_hits(live)
-        line("F01_live", "INFO", f"visit canary found in {len(out['phases']['live']['files'])} files while running: {out['phases']['live']['files'][:40]}")
-        P.adb("shell", "am", "force-stop", pkg)
-        time.sleep(3)
-        stopped = scan(pkg, pats)
-        out["phases"]["stopped"] = summarize_hits(stopped)
-        sizes = {f: size_of(pkg, f) for f in out["phases"]["stopped"]["files"][:40]}
-        line("F02_stopped", "INFO", f"after force-stop: by_pattern={out['phases']['stopped']['by_pattern']} files={sizes}")
-        # clear
-        launch(dev)
-        wait_ready(dev, seconds=120)
-        ok, why = clear_all_time(dev, pkg)
-        out["clear_ui"] = {"ok": ok, "detail": why}
-        P.adb("shell", "am", "force-stop", pkg)
-        time.sleep(3)
-        if not ok:
-            line("F03_cleared", "NOT_RUN", why)
-        else:
-            cleared = scan(pkg, pats)
-            out["phases"]["cleared"] = summarize_hits(cleared)
-            n = len(out["phases"]["cleared"]["files"])
-            sizes = {f: size_of(pkg, f) for f in out["phases"]["cleared"]["files"][:40]}
-            line("F03_cleared", "CLEAN" if n == 0 else "REMNANTS",
-                 f"{why}; files still holding the canary after Clear: {n} by_pattern={out['phases']['cleared']['by_pattern']} files={sizes}")
+        for name, close in (("tabs_open", False), ("tabs_closed", True)):
+            out["scenarios"].append(run_scenario(dev, pkg, out, a, name, close))
         lc = P.adb("logcat", "-d", timeout=60)
-        hits = sum(lc.count(p) for p in pats.values())
-        line("F04_logcat", "INFO", f"canary occurrences in logcat: {hits} (a URL in the log would be a leak outside the app dir)")
-        out["logcat_hits"] = hits
+        tags = {}
+        for ln in lc.splitlines():
+            if "visited_" in ln:
+                m = re.match(r"\S+\s+\S+\s+\d+\s+\d+\s+\w\s+(\S+?)\s*:", ln)
+                tags[m.group(1) if m else "?"] = tags.get(m.group(1) if m else "?", 0) + 1
+        print(f"PERSONAL_FORENSIC F04_logcat INFO lines with a visited_ canary by log tag: {tags}", flush=True)
+        out["logcat_tags"] = tags
     except Exception as e:  # noqa: BLE001
         print("PERSONAL_FORENSIC harness_error", repr(e)[:300], flush=True)
         json.dump(out, open(os.path.join(a.out, "personal_forensics.json"), "w"), indent=1)
