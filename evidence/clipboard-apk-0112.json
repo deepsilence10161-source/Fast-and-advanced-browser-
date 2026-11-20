@@ -1,0 +1,27 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main (patch 0112 with the tab-scrub fix); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "clipboard_apk": {
+  "x64": {
+   "expect": "system",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "X01_settings_field_probe": "LEAK (reaches system clipboard, same as Chrome; not a gate)",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44737647519",
+   "apk_sha256": "270e5b18831d01854c33319645b9c0fb960f553b592818391f0f675d196e54fc"
+  },
+  "arm64": {
+   "expect": "system",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "X01_settings_field_probe": "LEAK (same as Chrome; not a gate)",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44745827058",
+   "apk_sha256": "9692703e66e2e97363fa0d68992e1f3d7e03f6f90caa341b57637dd34a30c3b1"
+  }
+ }
+}

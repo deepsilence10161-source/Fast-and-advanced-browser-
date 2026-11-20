@@ -1,0 +1,40 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main (patch 0112 with the tab-scrub fix); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "face_guard_apk": {
+  "x64": {
+   "runtime": "Android 16 emulator, rot0",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "PASS",
+    "two": "PASS"
+   },
+   "owner_only_G08": "PASS",
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44739398656",
+    "one": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44739421024",
+    "two": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44739442377"
+   },
+   "apk_sha256": "270e5b18831d01854c33319645b9c0fb960f553b592818391f0f675d196e54fc"
+  },
+  "arm64": {
+   "runtime": "native ARM64 Redroid Android 14 (no camera device)",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "NOT_RUN",
+    "two": "NOT_RUN"
+   },
+   "owner_only_G08": "PASS",
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44748477002"
+   },
+   "note": "G03 NOT_RUN (no camera: locked = fail-closed). Two earlier runs 44745809108/44747142583 FAILED G03 because the harness read the launcher before the app had started (screenshot evidence); harness fixed and rerun passed.",
+   "apk_sha256": "9692703e66e2e97363fa0d68992e1f3d7e03f6f90caa341b57637dd34a30c3b1"
+  }
+ }
+}
