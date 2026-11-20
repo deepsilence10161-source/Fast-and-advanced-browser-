@@ -1,0 +1,32 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main (patch 0112 with the tab-scrub fix); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "x64": {
+  "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44737664584",
+  "after_delete_tabs_closed": "CLEAN (0 files hold the canary)",
+  "after_delete_tabs_open": [
+   "app_tabs/0/flatbufferv1_tab2",
+   "app_tabs/0/tab_state0"
+  ],
+  "note": "tabs_open remnants are the state of the still-open tab itself (by design).",
+  "cleaned_by_delete": [
+   "History",
+   "ukm_db",
+   "HTTP cache",
+   "Top Sites",
+   "multi_instance_data.pb",
+   "Sessions/*",
+   "closed-tab state",
+   "tab_statearchived"
+  ],
+  "apk_sha256": "270e5b18831d01854c33319645b9c0fb960f553b592818391f0f675d196e54fc"
+ },
+ "never_gates": true,
+ "arm64": {
+  "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44745845086",
+  "after_delete_tabs_closed": "CLEAN",
+  "after_delete_tabs_open": [
+   "app_tabs/0/flatbufferv1_tab2"
+  ],
+  "apk_sha256": "9692703e66e2e97363fa0d68992e1f3d7e03f6f90caa341b57637dd34a30c3b1"
+ }
+}

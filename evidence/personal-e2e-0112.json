@@ -1,0 +1,33 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main (patch 0112 with the tab-scrub fix); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36 x86_64",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44737630356",
+  "summary": {
+   "PASS": 12,
+   "FAIL": 0,
+   "NOT_RUN": 0
+  },
+  "c09": "OBSERVED(com.google.android.dialer)",
+  "new_checks": {
+   "C10_open_file_uri": "PASS",
+   "C11_google_web_signin": "PASS"
+  },
+  "apk_sha256": "270e5b18831d01854c33319645b9c0fb960f553b592818391f0f675d196e54fc"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44745790371",
+  "summary": {
+   "PASS": 11,
+   "FAIL": 0,
+   "NOT_RUN": 1
+  },
+  "c09": "UNAVAILABLE (Redroid has no dialer)",
+  "new_checks": {
+   "C10_open_file_uri": "PASS",
+   "C11_google_web_signin": "PASS"
+  },
+  "apk_sha256": "9692703e66e2e97363fa0d68992e1f3d7e03f6f90caa341b57637dd34a30c3b1"
+ }
+}

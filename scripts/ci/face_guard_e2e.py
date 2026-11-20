@@ -342,6 +342,13 @@ def main():
         time.sleep(8)
         dismiss_default_browser()
         xml = dump()
+        for _ in range(4):  # slow cold start on Redroid: wait for the app instead of reading the launcher
+            if overlay_visible(xml) or pkg in xml:
+                break
+            launch(dev)
+            time.sleep(10)
+            dismiss_default_browser()
+            xml = dump()
         still = overlay_visible(xml)
         cam = camera_client(pkg)
         shot("g03_granted")

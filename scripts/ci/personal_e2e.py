@@ -410,13 +410,13 @@ def main():
         # ---- C11 Google WEB sign-in page loads in this browser (no credentials are typed; this only shows the
         # sign-in form is served and not a "browser not secure" refusal). Needs real internet on the runner.
         try:
-            import urllib.request
+            import urllib.request as _ur
             adb("shell", "am", "force-stop", pkg)
             open_url(pkg, "https://accounts.google.com/ServiceLogin")
             time.sleep(15)
             adb("forward", "tcp:9222", "localabstract:chrome_devtools_remote")
             time.sleep(1)
-            tabs = json.loads(urllib.request.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
+            tabs = json.loads(_ur.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
             pages = [(t.get("url", ""), t.get("title", "")) for t in tabs if t.get("type") == "page"]
             g = [t for t in pages if "accounts.google.com" in t[0] or "google" in t[1].lower()]
             titles = " | ".join(t[1] for t in g)[:200]
@@ -430,6 +430,61 @@ def main():
                 res("C11_google_web_signin", "NOT_RUN", f"unrecognised title {titles!r}")
         except Exception as e:  # noqa: BLE001
             res("C11_google_web_signin", "NOT_RUN", "harness: " + repr(e)[:160])
+
+        # ---- C12 Google WEB sign-in works end-to-end up to the credential step, plus the web-platform features a
+        # Google login relies on. A syntactically valid but NON-EXISTENT address is typed (no real account/password):
+        # Google must answer "couldn't find your Google Account", which proves form, JS, XHR, cookies and the
+        # account-lookup round trip work in this browser. Not a login: password/2FA/passkey are not exercised.
+        try:
+            import websocket  # websocket-client (installed by the workflow)
+            tabs = json.loads(_ur.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
+            page = next((t for t in tabs if t.get("type") == "page" and "accounts.google.com" in t.get("url", "")), None)
+            if page is None:
+                res("C12_google_signin_flow", "NOT_RUN", "no accounts.google.com page")
+            else:
+                ws = websocket.create_connection(page["webSocketDebuggerUrl"], timeout=30, suppress_origin=True)
+                mid = [0]
+
+                def cdp_eval(expr, await_promise=False):
+                    mid[0] += 1
+                    ws.send(json.dumps({"id": mid[0], "method": "Runtime.evaluate",
+                                        "params": {"expression": expr, "returnByValue": True,
+                                                   "awaitPromise": await_promise}}))
+                    while True:
+                        m = json.loads(ws.recv())
+                        if m.get("id") == mid[0]:
+                            return (m.get("result", {}).get("result", {}) or {}).get("value")
+                for _ in range(15):
+                    if cdp_eval("!!document.querySelector('input[name=identifier], input#identifierId, input[type=email]')"):
+                        break
+                    time.sleep(2)
+                feats = cdp_eval("""(async()=>{const o={};
+                  o.ua=navigator.userAgent; o.brands=(navigator.userAgentData&&navigator.userAgentData.brands||[]).map(b=>b.brand).join(',');
+                  o.cookies=navigator.cookieEnabled; o.webauthn=typeof PublicKeyCredential!=='undefined';
+                  o.fedcm=typeof IdentityCredential!=='undefined'; o.credmgmt=!!navigator.credentials;
+                  o.popup=typeof window.open==='function'; o.webdriver=navigator.webdriver===true;
+                  try{o.uvpaa=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()}catch(e){o.uvpaa='err:'+e.name}
+                  o.email_input=!!document.querySelector('input[name=identifier], input#identifierId, input[type=email]'); return JSON.stringify(o)})()""", True)
+                info = json.loads(feats) if feats else {}
+                typed = cdp_eval("""(()=>{const i=document.querySelector('input[name=identifier], input#identifierId, input[type=email]'); if(!i) return 'no_input';
+                  i.focus(); const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;
+                  set.call(i,'swiftra.e2e.nonexistent.%s@gmail.com'); i.dispatchEvent(new Event('input',{bubbles:true}));
+                  const b=document.querySelector('#identifierNext button, #identifierNext'); if(!b) return 'no_next'; b.click(); return 'clicked'})()""" % secrets.token_hex(6))
+                time.sleep(10)
+                body = cdp_eval("document.body ? document.body.innerText.slice(0,400) : ''") or ""
+                ws.close()
+                detail = f"features={json.dumps(info)} typed={typed} page_text={body[:160]!r}"
+                if typed != "clicked" or not info.get("email_input"):
+                    res("C12_google_signin_flow", "NOT_RUN", "email field not found; " + detail)
+                elif re.search(r"(?i)couldn.t find (your google|this) account|enter a valid email", body):
+                    ok = info.get("cookies") and info.get("credmgmt") and not info.get("webdriver")
+                    res("C12_google_signin_flow", "PASS" if ok else "FAIL", detail)
+                elif re.search(r"(?i)not secure|try using a different browser|unsupported|couldn.t sign you in", body):
+                    res("C12_google_signin_flow", "FAIL", "Google refused this browser; " + detail)
+                else:
+                    res("C12_google_signin_flow", "NOT_RUN", "unrecognised Google response; " + detail)
+        except Exception as e:  # noqa: BLE001
+            res("C12_google_signin_flow", "NOT_RUN", "harness: " + repr(e)[:200])
 
         # ---- C09 measurement control, deliberately LAST so it cannot disturb any acceptance check above.
         # An adb-issued DIAL intent must make ANOTHER package top-resumed; says nothing about the browser.
