@@ -1,8 +1,6 @@
-diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
-index e320419..771c269 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java
-@@ -943,7 +943,19 @@ public class UrlBar extends AutocompleteEditText {
+@@ -1056,7 +1056,19 @@
              return true;
          }
  
@@ -23,7 +21,7 @@ index e320419..771c269 100644
  
          boolean isCutOption = false;
          int selStart = isFocused() ? getSelectionStart() : 0;
-@@ -992,8 +1004,14 @@ public class UrlBar extends AutocompleteEditText {
+@@ -1105,8 +1117,14 @@
                          mTextContextMenuDelegate.getReplacementCutCopyText(
                                  getText().toString(), selection);
  
@@ -40,11 +38,9 @@ index e320419..771c269 100644
  
                  Clipboard.getInstance().setText(replacementCutCopyText);
                  if (isCutOption) getText().replace(selection.getLower(), selection.getUpper(), "");
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java b/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
-index 69eeabe..cbadb25 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java
-@@ -197,6 +197,19 @@ public class FindToolbar extends LinearLayout implements BackPressHandler {
+@@ -198,6 +198,19 @@
                  text.replace(min, max, textToPaste);
                  return true;
              }
@@ -64,7 +60,6 @@ index 69eeabe..cbadb25 100644
              return super.onTextContextMenuItem(id);
          }
  
-diff --git a/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java b/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
 --- a/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
 +++ b/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
 @@ -6,13 +6,16 @@
@@ -111,7 +106,6 @@ diff --git a/components/browser_ui/widget/android/java/src/org/chromium/componen
      @SuppressLint("NewApi")
      public void onProvideAutofillStructure(ViewStructure structure, int flags) {
          if (mUrl != null && !mUrl.isEmpty()) {
-diff --git a/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml b/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml
 --- a/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml
 +++ b/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml
 @@ -20,7 +20,7 @@

@@ -1,6 +1,6 @@
 --- a/components/safe_browsing/core/browser/BUILD.gn
 +++ b/components/safe_browsing/core/browser/BUILD.gn
-@@ -43,6 +43,7 @@ source_set("browser") {
+@@ -41,6 +41,7 @@
    deps = [
      ":verdict_cache_manager",
      "//base",
@@ -16,12 +16,13 @@
  #include "base/task/sequenced_task_runner.h"
 +#include "build/branding_buildflags.h"
  #include "components/safe_browsing/core/browser/db/database_manager.h"
+ #include "components/safe_browsing/core/browser/db/sb_protocol_manager_util.h"
  #include "components/safe_browsing/core/browser/db/util.h"
- #include "components/safe_browsing/core/browser/db/v4_protocol_manager_util.h"
-@@ -18,6 +19,18 @@
+@@ -17,6 +18,18 @@
+ 
  namespace safe_browsing {
  namespace {
- 
++
 +// Swiftra: the local hash database is Swiftra Shield, a list Google's
 +// real-time service does not know about. Upstream trusts a fresh SAFE
 +// real-time verdict and skips the database, which would let a Shield-listed
@@ -33,11 +34,10 @@
 +#else
 +constexpr bool kAlwaysCheckLocalListOnSafe = true;
 +#endif
-+
+ 
  constexpr char kMatchResultHistogramName[] =
      "SafeBrowsing.RT.LocalMatch.Result";
- 
-@@ -260,10 +273,13 @@ void UrlRealTimeMechanism::OnLookupResponse(
+@@ -260,10 +273,13 @@
  
    MaybePerformSuspiciousSiteDetection(rt_verdict_type);
  
@@ -56,7 +56,7 @@
      // return.
 --- a/components/security_interstitials/core/BUILD.gn
 +++ b/components/security_interstitials/core/BUILD.gn
-@@ -56,6 +56,7 @@ static_library("core") {
+@@ -56,6 +56,7 @@
    deps = [
      "//base",
      "//base:i18n",
@@ -74,10 +74,11 @@
  #include "components/feature_engagement/public/feature_list.h"
  #include "components/google/core/common/google_util.h"
  #include "components/grit/components_resources.h"
-@@ -33,6 +34,20 @@ const char kSbDiagnosticUrl[] =
+@@ -32,6 +33,20 @@
+ // Constants for the V4 phishing string upgrades.
  const char kReportPhishingErrorUrl[] =
      "https://safebrowsing.google.com/safebrowsing/report_error/?url=%s";
- 
++
 +// Swiftra: the upstream explanation paragraphs state that "Google Safe
 +// Browsing recently found" the threat and link to Google's transparency report
 +// and Safe Browsing error-report form. In a non-Google-branded build the
@@ -91,11 +92,10 @@
 +  return std::u16string();
 +#endif
 +}
-+
+ 
  void RecordExtendedReportingPrefChanged(bool report) {
    UMA_HISTOGRAM_BOOLEAN("SafeBrowsing.Pref.Extended.SecurityInterstitial",
-                         report);
-@@ -257,9 +272,8 @@ void SafeBrowsingLoudErrorUI::PopulateMalwareLoadTimeData(
+@@ -257,9 +272,8 @@
                       l10n_util::GetStringUTF16(IDS_SAFEBROWSING_HEADING));
    load_time_data.Set("primaryParagraph", l10n_util::GetStringUTF16(
                                               IDS_MALWARE_V3_PRIMARY_PARAGRAPH));
@@ -107,7 +107,7 @@
    load_time_data.Set("finalParagraph", l10n_util::GetStringUTF16(
                                             IDS_MALWARE_V3_PROCEED_PARAGRAPH));
  }
-@@ -271,9 +285,8 @@ void SafeBrowsingLoudErrorUI::PopulateHarmfulLoadTimeData(
+@@ -271,9 +285,8 @@
                       l10n_util::GetStringUTF16(IDS_SAFEBROWSING_HEADING));
    load_time_data.Set("primaryParagraph", l10n_util::GetStringUTF16(
                                               IDS_HARMFUL_V3_PRIMARY_PARAGRAPH));
@@ -119,7 +119,7 @@
    load_time_data.Set("finalParagraph", l10n_util::GetStringUTF16(
                                             IDS_HARMFUL_V3_PROCEED_PARAGRAPH));
  }
-@@ -286,9 +299,8 @@ void SafeBrowsingLoudErrorUI::PopulatePhishingLoadTimeData(
+@@ -286,9 +299,8 @@
    load_time_data.Set(
        "primaryParagraph",
        l10n_util::GetStringUTF16(IDS_PHISHING_V4_PRIMARY_PARAGRAPH));

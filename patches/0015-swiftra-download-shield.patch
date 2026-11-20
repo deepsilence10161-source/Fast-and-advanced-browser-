@@ -1,7 +1,6 @@
-diff -ruN a/chrome/browser/download/chrome_download_manager_delegate.cc b/chrome/browser/download/chrome_download_manager_delegate.cc
 --- a/chrome/browser/download/chrome_download_manager_delegate.cc
 +++ b/chrome/browser/download/chrome_download_manager_delegate.cc
-@@ -1937,6 +1937,15 @@
+@@ -2020,6 +2020,15 @@
    if (service) {
      bool is_content_check_supported =
          service->IsSupportedDownload(*download, suggested_path);
@@ -17,7 +16,6 @@ diff -ruN a/chrome/browser/download/chrome_download_manager_delegate.cc b/chrome
      DVLOG(2) << __func__ << "() Start SB URL check for download = "
               << download->DebugString(false);
      if (service->ShouldCheckDownloadUrl(download)) {
-diff -ruN a/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc b/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc
 --- a/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc
 +++ b/chrome/browser/safe_browsing/download_protection/download_protection_delegate_android.cc
 @@ -154,7 +154,18 @@
@@ -40,10 +38,9 @@ diff -ruN a/chrome/browser/safe_browsing/download_protection/download_protection
  }
  
  bool DownloadProtectionDelegateAndroid::MayCheckClientDownload(
-diff -ruN a/components/safe_browsing/android/remote_database_manager.cc b/components/safe_browsing/android/remote_database_manager.cc
 --- a/components/safe_browsing/android/remote_database_manager.cc
 +++ b/components/safe_browsing/android/remote_database_manager.cc
-@@ -62,10 +62,24 @@
+@@ -62,9 +62,23 @@
                  RemoteSafeBrowsingDatabaseManager* db_manager,
                  const GURL& url,
                  bool is_subresource_filter);
@@ -55,7 +52,7 @@ diff -ruN a/components/safe_browsing/android/remote_database_manager.cc b/compon
  
    void OnRequestDone(SBThreatType matched_threat_type,
                       const ThreatMetadata& metadata);
- 
++
 +  // Download mode: starts the check of the next checkable URL of the chain.
 +  // Returns false if no URL is left. The result always arrives as a posted
 +  // task, never synchronously.
@@ -64,10 +61,9 @@ diff -ruN a/components/safe_browsing/android/remote_database_manager.cc b/compon
 +  // Reports SAFE to the client without starting further checks. Used when the
 +  // manager stops.
 +  void ReportSafeOnStop();
-+
+ 
    // Accessors
    Client* client() const { return client_; }
-   const GURL& url() const { return url_; }
 @@ -78,6 +92,9 @@
    raw_ptr<RemoteSafeBrowsingDatabaseManager, DanglingUntriaged> db_manager_;
    GURL url_;

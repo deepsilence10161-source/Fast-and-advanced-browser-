@@ -11,12 +11,12 @@ import os
 import sys
 
 EXPECTED = {
-    "chrome/android/chrome_java_sources.gni": "0a377b23450f37279d289220a50d1cbfa5ccd6872e54743ca52ff0fa90ab5720",
+    "chrome/android/chrome_java_sources.gni": "81db6b1c904d657e439870b7c00cbebf75801748305f75ecf88f0d91e68af27d",
     "chrome/android/java/res/xml/privacy_preferences.xml": "d926df40914535cd4dd2dc6de0e4f3be82211f5162c7f408825131988660ae3f",
-    "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java": "90b33b6cdfc4d44f4d126d5fe97ca01646ddbe08243525045ad65b75672ba28a",
-    "chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java": "0f830e87ad3ebfb2d927c15f40b47bcdcae34e50144b3ad7e62d36a5d0c83bff",
-    "chrome/browser/tab_ui/android/BUILD.gn": "f955bd6860c08c8b5b9e9e61be680edc4c9885675b04a91d021776522ad90ba7",
-    "chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java": "db7cec3783bd94f633af3be7262d3fb69dc4c5fee3972e4d32f2c3401616d649"
+    "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java": "c13888336f01167eb33eb439a77f0c24be2a1672e3bbc2b7aa41af941c520157",
+    "chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java": "3db9614c8341324b88ab169891981f559eeb48cba7c1235394e106ddf072795e",
+    "chrome/browser/tab_ui/android/BUILD.gn": "6b504f23df5dd9f5e18635c95aa48984c4bc0da4e567131d30e2d7e64bb90bba",
+    "chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java": "c33e5985a3671d1ef892cf259f54ce404523d72ad7ed3e622da3b44906cc8a73"
 }
 NEW_PATHS = ('chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java', 'chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java', 'chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java')
 

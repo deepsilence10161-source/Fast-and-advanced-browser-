@@ -1,9 +1,8 @@
-diff -ruN a/android_webview/variables.gni b/android_webview/variables.gni
---- a/android_webview/variables.gni	2026-10-18 17:17:50.812201221 +0000
-+++ b/android_webview/variables.gni	2026-10-18 17:17:50.824201221 +0000
-@@ -19,9 +19,13 @@
- 
- webview_product_config_java_package = "org.chromium.android_webview"
+--- a/android_webview/variables.gni
++++ b/android_webview/variables.gni
+@@ -24,9 +24,13 @@
+   "//android_webview/nonembedded:icon_resources",
+ ]
  
 -use_webview_pgo_profile = current_cpu == "arm64" && chrome_pgo_phase == 2
 -use_webview_pgo_profile_default_toolchain =

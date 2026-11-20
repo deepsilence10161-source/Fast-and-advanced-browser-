@@ -11,8 +11,8 @@ import os
 import sys
 
 EXPECTED = {
-    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java": "0c824ac5b6eb2f4170fef6fc789f0c79e1673e922610fb20c4851ba550c5d155",
-    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java": "1dc8d6efb287d3b6e2b0f07c6117c0636497d51118bfef6695da74dd1a6b4f53",
+    "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java": "a3c720cd21ccce6735675176a59dd17573ad29e0cc7337c1d3843666c2081766",
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java": "ca61610baae354ac63bb64670f7a9dc9562703cb2ae78020fce3690db152fd57",
     "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java": "a473469c8ffd3531ca7902b85f2d45a2831853e33488160c69c07fce62710688",
     "components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml": "dff5a093c484fef4fdd40fba7716e7409951477b999b9a0ccbceedfde84b8667",
 }

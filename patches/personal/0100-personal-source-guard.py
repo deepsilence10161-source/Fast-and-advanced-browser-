@@ -12,12 +12,12 @@ import os
 import sys
 
 EXPECTED = {
-    "chrome/android/BUILD.gn": "5b4fe0217f8f67fce9190eb002cb90dbc85cc77465b1bc80f9d553e159c77b54",
-    "chrome/android/java/AndroidManifest.xml": "06c7dac54cdc5fc67e7ee6ae542ddf5cad7e1b598263563a205eccf2e217d68a",
-    "chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java": "ed9fe948e2be17b6f9a0d7dd6515503cd397520517c4e1227dc5714c7b75f73a",
-    "components/signin/public/android/BUILD.gn": "318035a3ef18d6cc802433bd69cae45a22a5ca6056699dee274c2a9aeb2c3a5d",
+    "chrome/android/BUILD.gn": "f2721b2322b00da091676a5f08e9a0536a123bc7c80023f2b895a9d48478d578",
+    "chrome/android/java/AndroidManifest.xml": "1f0738d12bbe01f6d131a352e6716899fde3aa7e76944a1c37d74ca5b6ba9c91",
+    "chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java": "31ef03b781e20f8e1127a3cacf42f9f5a3450644244d9bf32893f7ac620e628c",
+    "components/signin/public/android/BUILD.gn": "d842cd65f91a033a55432c32328c06e0446fbe8083269125bd7ed135eecc44cb",
     "components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java": "d55d8a8e7760c69f8a74e96d7cc501d8cbfc7cfc76e4ffb35b4e011030bd8690",
-    "content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java": "7d81c27d19922b828a7dce07bde0abc0192b651fceeffb7f35f061308212cc39",
+    "content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java": "87e6d87f5eb728e42596c744382bbe38ebcd39719a2d13705b372648265e80a5",
 }
 NEW_PATHS = (
     "components/signin/public/android/java/src/org/chromium/components/signin/BrowserContainedAccountManagerFacade.java",

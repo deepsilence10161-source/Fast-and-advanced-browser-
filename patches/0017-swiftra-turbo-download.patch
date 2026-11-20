@@ -1,6 +1,5 @@
-diff -ruN a/components/download/internal/common/download_utils.cc b/components/download/internal/common/download_utils.cc
---- a/components/download/internal/common/download_utils.cc	2026-10-18 16:16:56.316201221 +0000
-+++ b/components/download/internal/common/download_utils.cc	2026-10-18 16:17:26.192201221 +0000
+--- a/components/download/internal/common/download_utils.cc
++++ b/components/download/internal/common/download_utils.cc
 @@ -484,6 +484,7 @@
    request->do_not_prompt_for_login = params->do_not_prompt_for_login();
    request->referrer = params->referrer();
@@ -9,9 +8,8 @@ diff -ruN a/components/download/internal/common/download_utils.cc b/components/d
    request->is_outermost_main_frame = true;
    request->update_first_party_url_on_redirect =
        params->update_first_party_url_on_redirect();
-diff -ruN a/components/download/internal/common/parallel_download_job.cc b/components/download/internal/common/parallel_download_job.cc
---- a/components/download/internal/common/parallel_download_job.cc	2026-10-18 16:16:59.632201221 +0000
-+++ b/components/download/internal/common/parallel_download_job.cc	2026-10-18 16:17:26.192201221 +0000
+--- a/components/download/internal/common/parallel_download_job.cc
++++ b/components/download/internal/common/parallel_download_job.cc
 @@ -6,12 +6,16 @@
  
  #include <algorithm>
@@ -51,9 +49,8 @@ diff -ruN a/components/download/internal/common/parallel_download_job.cc b/compo
    // Send the request.
    mojo::PendingRemote<device::mojom::WakeLockProvider> wake_lock_provider;
    wake_lock_provider_binder_.Run(
-diff -ruN a/components/download/public/common/download_features.cc b/components/download/public/common/download_features.cc
---- a/components/download/public/common/download_features.cc	2026-10-18 16:16:49.712201221 +0000
-+++ b/components/download/public/common/download_features.cc	2026-10-18 16:17:26.192201221 +0000
+--- a/components/download/public/common/download_features.cc
++++ b/components/download/public/common/download_features.cc
 @@ -66,6 +66,8 @@
  
  BASE_FEATURE(kUseParallelRequestsForQUIC, base::FEATURE_ENABLED_BY_DEFAULT);
@@ -63,9 +60,8 @@ diff -ruN a/components/download/public/common/download_features.cc b/components/
  BASE_FEATURE(kDeleteOverwrittenDownloads, base::FEATURE_ENABLED_BY_DEFAULT);
  
  BASE_FEATURE(kAllowFileBufferSizeControl, base::FEATURE_ENABLED_BY_DEFAULT);
-diff -ruN a/components/download/public/common/download_features.h b/components/download/public/common/download_features.h
---- a/components/download/public/common/download_features.h	2026-10-18 16:16:46.496201221 +0000
-+++ b/components/download/public/common/download_features.h	2026-10-18 16:17:26.192201221 +0000
+--- a/components/download/public/common/download_features.h
++++ b/components/download/public/common/download_features.h
 @@ -61,6 +61,11 @@
  // Whether parallel download is used for QUIC connections.
  COMPONENTS_DOWNLOAD_EXPORT BASE_DECLARE_FEATURE(kUseParallelRequestsForQUIC);
@@ -78,9 +74,8 @@ diff -ruN a/components/download/public/common/download_features.h b/components/d
  // Whether to delete downloads that are overwritten by others.
  COMPONENTS_DOWNLOAD_EXPORT BASE_DECLARE_FEATURE(kDeleteOverwrittenDownloads);
  
-diff -ruN a/components/download/public/common/download_url_parameters.h b/components/download/public/common/download_url_parameters.h
---- a/components/download/public/common/download_url_parameters.h	2026-10-18 16:16:53.024201221 +0000
-+++ b/components/download/public/common/download_url_parameters.h	2026-10-18 16:17:26.192201221 +0000
+--- a/components/download/public/common/download_url_parameters.h
++++ b/components/download/public/common/download_url_parameters.h
 @@ -20,6 +20,7 @@
  #include "components/download/public/common/download_save_info.h"
  #include "components/download/public/common/download_source.h"
@@ -101,7 +96,7 @@ diff -ruN a/components/download/public/common/download_url_parameters.h b/compon
    // HTTP method to use.
    void set_method(const std::string& method) { method_ = method; }
  
-@@ -322,6 +328,7 @@
+@@ -328,6 +334,7 @@
    const std::string& last_modified() const { return last_modified_; }
    const std::string& etag() const { return etag_; }
    bool use_if_range() const { return use_if_range_; }
@@ -109,7 +104,7 @@ diff -ruN a/components/download/public/common/download_url_parameters.h b/compon
    const std::string& method() const { return method_; }
    ::network::mojom::CredentialsMode credentials_mode() const {
      return credentials_mode_;
-@@ -442,6 +449,7 @@
+@@ -452,6 +459,7 @@
    bool update_first_party_url_on_redirect_;
    std::optional<network::PermissionsPolicy> permissions_policy_;
    bool skip_service_worker_interception_;

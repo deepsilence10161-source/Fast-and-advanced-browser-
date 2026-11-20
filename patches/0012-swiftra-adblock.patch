@@ -1,6 +1,6 @@
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -916,6 +916,7 @@
+@@ -1085,6 +1085,7 @@
      ":process_singleton_internal",
      ":renderer_preferences_util",
      ":resources_util",
@@ -10,15 +10,15 @@
      ":unexpire_flags",
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
-@@ -100,6 +100,7 @@
+@@ -101,6 +101,7 @@
  #include "chrome/common/pref_names.h"
  #include "chrome/common/url_constants.h"
  #include "chrome/grit/branded_strings.h"
 +#include "chrome/grit/browser_resources.h"
  #include "chrome/installer/util/google_update_settings.h"
- #include "components/activity_reporter/activity_reporter.h"
  #include "components/application_locale_storage/application_locale_storage.h"
-@@ -1855,6 +1856,19 @@
+ #include "components/breadcrumbs/core/application_breadcrumbs_logger.h"
+@@ -1897,6 +1898,19 @@
            subresource_filter::kSafeBrowsingRulesetConfig, local_state(),
            user_data_dir,
            subresource_filter::SafeBrowsingRulesetPublisher::Factory());
@@ -40,7 +40,7 @@
  #if !BUILDFLAG(IS_ANDROID)
 --- a/chrome/browser/browser_resources.grd
 +++ b/chrome/browser/browser_resources.grd
-@@ -105,6 +105,7 @@
+@@ -107,6 +107,7 @@
        </if>
  
        <include name="IDR_AD_NETWORK_HASHES" file="resources\ad_networks.dat" type="BINDATA" />
@@ -50,7 +50,7 @@
          <include name="IDR_URL_MOJOM_LITE_JS" file="${root_gen_dir}\url\mojom\url.mojom-lite.js" use_base_dir="false" type="BINDATA" />
 --- a/chrome/browser/component_updater/subresource_filter_component_installer.cc
 +++ b/chrome/browser/component_updater/subresource_filter_component_installer.cc
-@@ -158,6 +158,11 @@
+@@ -151,6 +151,11 @@
            subresource_filter::kSafeBrowsingSubresourceFilter)) {
      return;
    }
@@ -106,7 +106,7 @@
    base::FilePath indexed_ruleset_base_dir =
 --- a/components/subresource_filter/core/browser/subresource_filter_features.cc
 +++ b/components/subresource_filter/core/browser/subresource_filter_features.cc
-@@ -132,7 +132,10 @@
+@@ -129,7 +129,10 @@
        {kPresetPerformanceTestingDryRunOnAllSites, ad_tagging_enabled,
         &Configuration::MakePresetForPerformanceTestingDryRunOnAllSites},
        {kPresetLiveRunForBetterAds, true,
@@ -118,7 +118,7 @@
  
    CommaSeparatedStrings enabled_presets(
        TakeVariationParamOrReturnEmpty(params, kEnablePresetsParameterName));
-@@ -248,6 +251,10 @@
+@@ -245,6 +248,10 @@
  
  BASE_FEATURE(kAdsInterventionsEnforced, base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -129,7 +129,7 @@
  const base::FeatureParam<base::TimeDelta> kAdsInterventionDuration = {
      &kAdsInterventionsEnforced, "kAdsInterventionDuration", base::Days(3)};
  
-@@ -281,6 +288,7 @@
+@@ -276,6 +283,7 @@
      "performance_testing_dryrun_on_all_sites";
  const char kPresetLiveRunForBetterAds[] =
      "liverun_on_better_ads_violating_sites";
@@ -137,10 +137,13 @@
  
  // Configuration --------------------------------------------------------------
  
-@@ -311,6 +319,16 @@
-   return config;
- }
- 
+@@ -303,6 +311,16 @@
+                        ActivationScope::ACTIVATION_LIST,
+                        ActivationList::BETTER_ADS);
+   config.activation_conditions.priority = 800;
++  return config;
++}
++
 +// static
 +Configuration Configuration::MakePresetForSwiftraAdBlockOnAllSites() {
 +  // Below the phishing preset (1000), so phishing activation keeps its
@@ -148,12 +151,9 @@
 +  Configuration config(mojom::ActivationLevel::kEnabled,
 +                       ActivationScope::ALL_SITES);
 +  config.activation_conditions.priority = 900;
-+  return config;
-+}
-+
- Configuration::Configuration() = default;
- Configuration::Configuration(mojom::ActivationLevel activation_level,
-                              ActivationScope activation_scope,
+   return config;
+ }
+ 
 --- a/components/subresource_filter/core/browser/subresource_filter_features.h
 +++ b/components/subresource_filter/core/browser/subresource_filter_features.h
 @@ -125,6 +125,9 @@
@@ -166,10 +166,11 @@
  
    ActivationConditions activation_conditions;
    ActivationOptions activation_options;
-@@ -191,6 +194,15 @@
+@@ -190,6 +193,15 @@
+ 
  // Enables the blocking of ads on sites that have ads violations.
  BASE_DECLARE_FEATURE(kAdsInterventionsEnforced);
- 
++
 +// Swiftra: blocks ads and trackers on all sites with the bundled ruleset,
 +// instead of only on sites that are on a Google activation list. When
 +// enabled, the Google component ruleset is not downloaded and the bundled
@@ -178,11 +179,10 @@
 +
 +// Content version of the bundled Swiftra ruleset (changes with the ruleset).
 +extern const char kSwiftraAdBlockRulesetVersion[];
-+
+ 
  // The maximum duration that an ads intervention is active for.
  // TODO(crbug.com/40721691): This currently is the default delay.
- // We should move to an approach where each intervention has a duration that is
-@@ -230,6 +242,7 @@
+@@ -229,6 +241,7 @@
  extern const char kPresetLiveRunOnPhishingSites[];
  extern const char kPresetPerformanceTestingDryRunOnAllSites[];
  extern const char kPresetLiveRunForBetterAds[];

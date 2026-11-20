@@ -1,8 +1,6 @@
-diff --git a/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java b/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java
-index f1e245d..f24532b 100644
 --- a/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java
 +++ b/chrome/browser/ui/android/signin/java/src/org/chromium/chrome/browser/ui/signin/SigninAndHistorySyncCoordinator.java
-@@ -271,10 +271,12 @@ public abstract class SigninAndHistorySyncCoordinator {
+@@ -271,10 +271,12 @@
                      SigninAccessPoint.MAX_VALUE + 1);
              ManagedPreferencesUtils.showManagedByAdministratorToast(context);
          } else {

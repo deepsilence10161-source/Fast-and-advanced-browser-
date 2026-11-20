@@ -141,20 +141,24 @@ SWIFTRA = {
 }
 
 
+SKIPPED = []
+
+
 def build(upstream):
     out, seen = {}, {}
     for study, (exp_name, enable, disable) in ALLOW.items():
+        # Tag-rebase mode: a study that is gone or whose definition changed since the audit is SKIPPED (never
+        # shipped un-audited); the list of skipped studies is printed so it can be re-audited.
         if study not in upstream:
-            raise SystemExit(f"[speedpack] study missing upstream: {study}")
+            SKIPPED.append(f"{study}: missing upstream"); continue
         cfgs = [c for c in upstream[study] if "android" in c.get("platforms", [])]
         if not cfgs:
-            raise SystemExit(f"[speedpack] study has no android config: {study}")
+            SKIPPED.append(f"{study}: no android config"); continue
         exp = cfgs[0]["experiments"][0]
         up_enable = exp.get("enable_features", [])
         if exp.get("name") != exp_name or exp.get("disable_features", []) != disable or (
                 up_enable != enable and not (study in NARROWED and set(enable) <= set(up_enable))):
-            raise SystemExit(f"[speedpack] upstream changed {study}: {exp.get('name')} {up_enable} "
-                             f"{exp.get('disable_features', [])}")
+            SKIPPED.append(f"{study}: upstream changed ({exp.get('name')})"); continue
         new_exp = {"name": exp_name}
         if exp.get("params"):
             new_exp["params"] = dict(exp["params"])
@@ -192,6 +196,8 @@ def main(src):
         json.dump(pack, f, indent=4, sort_keys=False)
         f.write("\n")
     print(f"[speedpack] {len(pack)} studies kept of {len(upstream)}", file=sys.stderr)
+    for line in SKIPPED:
+        print(f"[speedpack] SKIPPED (not re-audited for this tag) {line}", file=sys.stderr)
     print(f"TOUCHED {CONFIG}")
 
 

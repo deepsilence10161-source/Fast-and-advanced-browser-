@@ -1,6 +1,6 @@
 --- a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
 +++ b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc
-@@ -558,7 +558,10 @@
+@@ -572,7 +572,10 @@
  bool ChromeAutocompleteProviderClient::IsAuthenticated() const {
    const auto* identity_manager =
        IdentityManagerFactory::GetForProfile(profile_);
@@ -14,10 +14,10 @@
  }
 --- a/chrome/browser/ui/android/logo/logo_bridge.cc
 +++ b/chrome/browser/ui/android/logo/logo_bridge.cc
-@@ -186,54 +186,8 @@
+@@ -127,54 +127,8 @@
  }
  
- void LogoBridge::RecordImpression(JNIEnv* env, std::string_view log_url) {
+ void LogoBridge::RecordImpression(std::string_view log_url) {
 -  GURL url(log_url);
 -  if (!url.is_valid()) {
 -    return;
@@ -73,7 +73,7 @@
  DEFINE_JNI(LogoBridge)
 --- a/components/autofill/core/browser/crowdsourcing/autofill_crowdsourcing_manager.cc
 +++ b/components/autofill/core/browser/crowdsourcing/autofill_crowdsourcing_manager.cc
-@@ -718,7 +718,17 @@
+@@ -717,7 +717,17 @@
  AutofillCrowdsourcingManager::~AutofillCrowdsourcingManager() = default;
  
  bool AutofillCrowdsourcingManager::IsEnabled() const {
@@ -144,7 +144,7 @@
      DoPeriodicReport(
 --- a/components/sync/service/sync_session_durations_metrics_recorder.cc
 +++ b/components/sync/service/sync_session_durations_metrics_recorder.cc
-@@ -69,10 +69,14 @@
+@@ -68,10 +68,14 @@
    signin_status_ = DetermineBrowserSigninStatus();
    sync_status_ = DetermineSyncStatus();
  

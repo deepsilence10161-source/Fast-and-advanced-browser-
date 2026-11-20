@@ -1,6 +1,9 @@
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -87 +87,23 @@
+@@ -84,9 +84,30 @@
+     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SHORT_SERVICE" tools:ignore="SystemPermissionTypo" />
+     <uses-permission android:name="android.permission.RUN_USER_INITIATED_JOBS" />
+ 
 -    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 +
 +    <!-- Personal source variant: do not merge account/credential/shared-storage bridges. -->
@@ -25,77 +28,179 @@
 +    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" tools:node="remove" />
 +    <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" tools:node="remove" />
 +
-@@ -89 +110,0 @@
+     <uses-permission android:name="android.permission.INTERNET"/>
 -    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-@@ -99 +119,0 @@
+     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+     <uses-permission android:name="android.permission.NFC"/>
+     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+@@ -96,7 +117,6 @@
+     <!-- Needed to determine whether an app installed on the device should handle a web navigation.  -->
+     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+ 
 -    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -109 +128,0 @@
+ 
+     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+@@ -106,17 +126,12 @@
+       resizeTo, moveBy}|).
+     -->
+     <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
 -    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
-@@ -114 +132,0 @@
+     <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
+     <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
+     <uses-permission android:name="android.permission.VIBRATE"/>
+     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 -    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-@@ -117,3 +134,0 @@
+ 
+     <!-- Permission for using Android 14's credential management framework. -->
 -    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
 -    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ALLOWED_PROVIDERS"/>
 -    <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_SET_ORIGIN"/>
-@@ -176 +190,0 @@
+ 
+     <!-- Permission for reading the Advanced Protection Mode status. -->
+     <uses-permission android:name="android.permission.QUERY_ADVANCED_PROTECTION_MODE"/>
+@@ -173,7 +188,6 @@
+     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+ 
 -    <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
-@@ -230,6 +243,0 @@
+ 
+     <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
+     <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
+@@ -227,14 +241,11 @@
+         android:manageSpaceActivity="@string/manage_space_activity"
+         android:supportsRtl="true"
+         android:zygotePreloadName="org.chromium.content_public.app.ZygotePreload"
 -        {% if backup_key is defined %}
 -        android:allowBackup="true"
 -        android:backupAgent="org.chromium.chrome.browser.backup.ChromeBackupAgent"
 -        android:fullBackupOnly="false"
 -        android:restoreAnyVersion="true"
 -        {% else %}
-@@ -237 +245,4 @@
+         android:allowBackup="false"
 -        {% endif %}
 +        android:fullBackupContent="false"
 +        android:dataExtractionRules="@xml/personal_no_data_transfer"
 +        android:restoreAnyVersion="false"
 +        tools:remove="android:backupAgent"
-@@ -245 +256 @@
+         android:networkSecurityConfig="@xml/network_security_config"
+         android:appComponentFactory="org.chromium.chrome.browser.base.SplitCompatAppComponentFactory"
+         android:enableOnBackInvokedCallback="true"
+@@ -242,7 +253,7 @@
+         {% block extra_application_attributes %}{% endblock %}>
+ 
+         {% if channel in ['canary', 'dev', 'default'] %}
 -        <profileable android:shell="true"/>
 +        <profileable android:shell="false"/>
-@@ -1427,5 +1438 @@
+         {% endif %}
+ 
+       {% macro application_definitions() %}
+@@ -1406,11 +1417,7 @@
+       <meta-data android:name="com.samsung.android.sdk.multiwindow.penwindow.enable"
+           android:value="true"/>
+ 
 -      {% if backup_key is defined %}
 -      <!-- Backup keys are channel dependent -->
 -      <meta-data android:name="com.google.android.backup.api_key"
 -          android:value="{{ backup_key }}" />
 -      {% endif %}
 +
-@@ -1487 +1494 @@
+ 
+       {% if channel in ['dev', 'canary', 'default'] %}
+       <meta-data android:name="com.sec.android.support.multiwindow" android:value="true" />
+@@ -1466,21 +1473,21 @@
+       <provider android:name="org.chromium.ui.dragdrop.DropDataContentProvider"
+           android:authorities="{{ manifest_package }}.DropDataProvider"
+           android:exported="false"
 -          android:grantUriPermissions="true">
 +          android:grantUriPermissions="false">
-@@ -1494 +1501 @@
+       </provider>
+ 
+       <!-- Provider for oversized clipboard payloads, e.g. large HTML or text. -->
+       <provider android:name="org.chromium.ui.base.ClipboardTextDataProvider"
+           android:authorities="{{ manifest_package }}.ClipboardTextDataProvider"
+           android:exported="false"
 -          android:grantUriPermissions="true">
 +          android:grantUriPermissions="false">
-@@ -1501 +1508 @@
+       </provider>
+ 
+        <!-- Provider for incognito pdf page. -->
+       <provider android:name="org.chromium.chrome.browser.pdf.PdfContentProvider"
+           android:authorities="{{ manifest_package }}.PdfContentProvider"
+           android:exported="false"
 -          android:grantUriPermissions="true">
 +          android:grantUriPermissions="false">
-@@ -1529 +1536 @@
+       </provider>
+ 
+       <!-- Disables at startup init of Emoji2. See http://crbug.com/40764422 -->
+@@ -1508,7 +1515,7 @@
+       <!-- Provider for chrome data. -->
+       <provider android:name="org.chromium.chrome.browser.provider.ChromeBrowserProvider"
+           android:authorities="{{ manifest_package }}.ChromeBrowserProvider;{{ manifest_package }}.browser;{{ manifest_package }}"
 -          android:exported="true">
 +          android:exported="false">
-@@ -1538 +1545 @@
+           <path-permission android:path="/bookmarks/search_suggest_query"
+                   android:readPermission="android.permission.GLOBAL_SEARCH" />
+       </provider>
+@@ -1517,7 +1524,7 @@
+             android:name="org.chromium.chrome.browser.provider.PageContentProvider"
+             android:authorities="{{ manifest_package }}.PageContentProvider"
+             android:exported="false"
 -            android:grantUriPermissions="true">
 +            android:grantUriPermissions="false">
-@@ -1546 +1553 @@
+       </provider>
+ 
+       <!-- Provider for screenshot content. -->
+@@ -1525,13 +1532,13 @@
+             android:name="org.chromium.chrome.browser.screenshotprovider.ScreenshotContentProvider"
+             android:authorities="{{ manifest_package }}.ScreenshotContentProvider"
+             android:exported="false"
 -            android:grantUriPermissions="true">
 +            android:grantUriPermissions="false">
-@@ -1552 +1559 @@
+       </provider>
+ 
+       <!-- Provider for querying the Autofill third party mode state. -->
+       <provider android:name="org.chromium.chrome.browser.autofill.AutofillThirdPartyModeContentProvider"
+           android:authorities="{{ manifest_package }}.AutofillThirdPartyModeContentProvider"
 -          android:exported="true"
 +          android:exported="false"
+           tools:ignore="ExportedContentProvider">
+       </provider>
+ 
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -144,0 +145 @@
+@@ -142,6 +142,7 @@
+       "java/res_base/font/chrome_google_sans_text.xml",
+       "java/res_base/font/chrome_google_sans_text_medium.xml",
+       "java/res_base/values/values.xml",
 +      "java/res_base/xml/personal_no_data_transfer.xml",
+       "java/res_base/xml/network_security_config.xml",
+       "java/res_chromium_base/drawable/themed_app_icon.xml",
+       "java/res_chromium_base/mipmap-hdpi/app_icon.png",
 --- a/components/signin/public/android/BUILD.gn
 +++ b/components/signin/public/android/BUILD.gn
-@@ -41,0 +42 @@
+@@ -39,6 +39,7 @@
+     "java/src/org/chromium/components/signin/AccountManagerFacadeImpl.java",
+     "java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java",
+     "java/src/org/chromium/components/signin/AccountReauthenticationUtils.java",
 +    "java/src/org/chromium/components/signin/BrowserContainedAccountManagerFacade.java",
+     "java/src/org/chromium/components/signin/AccountRestrictionPatternReceiver.java",
+     "java/src/org/chromium/components/signin/AccountUtils.java",
+     "java/src/org/chromium/components/signin/AccountsChangeObserver.java",
 --- a/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java
 +++ b/components/signin/public/android/java/src/org/chromium/components/signin/AccountManagerFacadeProvider.java
-@@ -12 +11,0 @@
+@@ -9,7 +9,6 @@
+ import org.jni_zero.CalledByNative;
+ 
+ import org.chromium.base.ResettersForTesting;
 -import org.chromium.base.ServiceLoaderUtil;
-@@ -27,6 +26,2 @@
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ 
+@@ -24,12 +23,8 @@
+         private static final AccountManagerFacade INSTANCE;
+ 
+         static {
 -            AccountManagerDelegate delegate =
 -                    ServiceLoaderUtil.maybeCreate(AccountManagerDelegate.class);
 -            if (delegate == null) {
@@ -104,38 +209,75 @@
 -            INSTANCE = new AccountManagerFacadeImpl(delegate);
 +            // Personal source variant: never initialize a platform account delegate.
 +            INSTANCE = new BrowserContainedAccountManagerFacade();
+         }
+     }
+ 
 --- a/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java
 +++ b/chrome/browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/SigninManagerImpl.java
-@@ -17,2 +16,0 @@
+@@ -14,8 +14,6 @@
+ import org.jni_zero.NativeMethods;
+ 
+ import org.chromium.base.Callback;
 -import org.chromium.base.CallbackUtils;
 -import org.chromium.base.ContextUtils;
-@@ -30 +27,0 @@
+ import org.chromium.base.Log;
+ import org.chromium.base.ObserverList;
+ import org.chromium.base.ThreadUtils;
+@@ -27,7 +25,6 @@
+ import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
+ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+ import org.chromium.chrome.browser.preferences.Pref;
 -import org.chromium.components.externalauth.ExternalAuthUtils;
-@@ -223,4 +220,2 @@
+ import org.chromium.components.prefs.PrefChangeRegistrar;
+ import org.chromium.components.prefs.PrefService;
+ import org.chromium.components.signin.AccountManagerFacade;
+@@ -230,10 +227,8 @@
+ 
+     @Override
+     public boolean isSigninAllowed() {
 -        return mSignInState == null
 -                && mPrefService.getBoolean(Pref.SIGNIN_ALLOWED)
 -                && mIdentityManager.getPrimaryAccountInfo() == null
 -                && isSigninSupported(/* requireUpdatedPlayServices= */ false);
 +        // This build retains website cookies, not a Chrome/Android signed-in profile.
 +        return false;
-@@ -239,5 +234 @@
+     }
+ 
+     @Override
+@@ -246,19 +241,12 @@
+ 
+     @Override
+     public boolean isSigninSupported(boolean requireUpdatedPlayServices) {
 -        if (requireUpdatedPlayServices) {
 -            return ExternalAuthUtils.getInstance().canUseGooglePlayServices();
 -        }
 -        return !ExternalAuthUtils.getInstance()
 -                .isGooglePlayServicesMissing(ContextUtils.getApplicationContext());
 +        return false;
-@@ -248,4 +239 @@
+     }
+ 
+     @Override
+     public boolean isSwitchAccountAllowed() {
 -        return mSignInState == null
 -                && mPrefService.getBoolean(Pref.SIGNIN_ALLOWED)
 -                && isSigninSupported(/* requireUpdatedPlayServices= */ false)
 -                && isSignOutAllowed();
 +        return false;
-@@ -289 +277,2 @@
+     }
+ 
+     @Override
+@@ -296,21 +284,14 @@
+             CoreAccountInfo coreAccountInfo,
+             @SigninAccessPoint int accessPoint,
+             SignInCallback callback) {
 -        signinInternal(SignInState.createForSignin(accessPoint, coreAccountInfo, callback));
 +        // Reject without account lookup, native sign-in, sign-out or profile deletion.
 +        PostTask.postTask(TaskTraits.UI_DEFAULT, callback::onSignInAborted);
-@@ -295,9 +284 @@
+     }
+ 
+     @Override
+     public void turnOnSyncForTesting(
+             CoreAccountInfo coreAccountInfo, @SigninAccessPoint int accessPoint) {
 -        AccountInfo primaryAccountInfo = mIdentityManager.getPrimaryAccountInfo();
 -        assert primaryAccountInfo != null && primaryAccountInfo.equals(coreAccountInfo)
 -                : "Must be signed-in to turn on sync ";
@@ -146,20 +288,35 @@
 -        assert primaryAccountError == PrimaryAccountError.NO_ERROR
 -                : "Encountered error: " + primaryAccountError;
 +        throw new UnsupportedOperationException("Browser-contained build has no platform Sync");
+     }
+ 
+     private void signinInternal(SignInState signInState) {
 --- a/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java
 +++ b/content/public/android/java/src/org/chromium/content/browser/input/ImeAdapterImpl.java
-@@ -367,2 +367,2 @@
+@@ -375,8 +375,8 @@
+ 
+     @Override
+     public @Nullable InputConnection onCreateInputConnection(EditorInfo outAttrs) {
 -        boolean allowKeyboardLearning = mWebContents != null && !mWebContents.isIncognito();
 -        InputConnection inputConnection = onCreateInputConnection(outAttrs, allowKeyboardLearning);
 +        // Keep a normal persistent profile; do not use incognito to request IME privacy.
 +        InputConnection inputConnection = onCreateInputConnection(outAttrs, false);
-@@ -536,3 +536,3 @@
+ 
+         if (mWebContents.getStylusWritingHandler() != null) {
+             mWebContents.getStylusWritingHandler().updateEditorInfo(outAttrs);
+@@ -544,9 +544,9 @@
+             outAttrs.contentMimeTypes = mSupportedMimeTypes;
+         }
+ 
 -        if (!allowKeyboardLearning) {
 -            outAttrs.imeOptions |= EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING;
 -        }
 +        // Enforce the hint even for callers of this overload that pass true.
 +        // This is a request to the IME, not an offline-keyboard guarantee.
 +        outAttrs.imeOptions |= EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING;
+ 
+         // Without this line, some third-party IMEs will try to compose text even when
+         // not on an editable node. Even when we return null here, key events can still go
 --- /dev/null
 +++ b/components/signin/public/android/java/src/org/chromium/components/signin/BrowserContainedAccountManagerFacade.java
 @@ -0,0 +1,123 @@

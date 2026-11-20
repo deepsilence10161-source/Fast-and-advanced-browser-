@@ -1,8 +1,6 @@
-diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index 30ba7c4..594621f 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1192,6 +1192,15 @@ chrome_java_sources = [
+@@ -1185,6 +1185,15 @@
    "java/src/org/chromium/chrome/browser/suggestions/tile/tile_edit_dialog/CustomTileEditMediator.java",
    "java/src/org/chromium/chrome/browser/suggestions/tile/tile_edit_dialog/CustomTileEditView.java",
    "java/src/org/chromium/chrome/browser/supervised_user/ChildAccountService.java",
@@ -18,35 +16,31 @@ index 30ba7c4..594621f 100644
    "java/src/org/chromium/chrome/browser/survey/ChromeSurveyController.java",
    "java/src/org/chromium/chrome/browser/sync/SyncErrorNotifier.java",
    "java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java",
-diff --git a/chrome/android/java/res/xml/privacy_preferences.xml b/chrome/android/java/res/xml/privacy_preferences.xml
-index 5c4464c..be42e02 100644
 --- a/chrome/android/java/res/xml/privacy_preferences.xml
 +++ b/chrome/android/java/res/xml/privacy_preferences.xml
-@@ -42,6 +42,11 @@ found in the LICENSE file.
+@@ -41,6 +41,11 @@
+         android:key="incognito_lock"
          android:title="@string/settings_incognito_tab_lock_title"
          android:summary="@string/settings_incognito_tab_lock_summary_android_setting_off"
-         android:persistent="false" />
++        android:persistent="false" />
 +    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
 +        android:key="swiftra_face_guard"
 +        android:title="Face Guard (experimental)"
 +        android:summary="Locks the browser and opens the tab switcher when the front camera no longer sees a face. Detects that a face is present, not whose face it is. Convenience lock, not strong security."
-+        android:persistent="false" />
+         android:persistent="false" />
  
      <org.chromium.components.browser_ui.settings.ChromeBasePreferenceCategory
-         android:key="security_section"
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 6a9d0fa..ec881c2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -266,6 +266,7 @@ import org.chromium.chrome.browser.single_tab.SingleTabModuleBuilder;
+@@ -268,6 +268,7 @@
+ import org.chromium.chrome.browser.single_tab.SingleTabModuleBuilder;
  import org.chromium.chrome.browser.survey.ChromeSurveyController;
- import org.chromium.chrome.browser.sync.SyncServiceFactory;
  import org.chromium.chrome.browser.sync.ui.SyncErrorMessage;
 +import org.chromium.chrome.browser.swiftra.faceguard.FaceGuardController;
  import org.chromium.chrome.browser.tab.RedirectHandlerTabHelper;
  import org.chromium.chrome.browser.tab.Tab;
- import org.chromium.chrome.browser.tab.TabAssociatedApp;
-@@ -1722,6 +1723,9 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+ import org.chromium.chrome.browser.tab.TabArchiveSettings;
+@@ -1748,6 +1749,9 @@
  
      @Override
      public void onResumeWithNative() {
@@ -56,7 +50,7 @@ index 6a9d0fa..ec881c2 100644
          // While the super#onResumeWithNative call below also invokes #startUmaSession, we call
          // it here (early) as well to setup the UMA activity state for any metrics emitted prior
          // to call to super#onResumeWithNative below. It's safe to call #startUmaSession in both
-@@ -1788,6 +1792,8 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -1822,6 +1826,8 @@
  
      @Override
      public void onPauseWithNative() {
@@ -65,19 +59,17 @@ index 6a9d0fa..ec881c2 100644
          mTabModelSelector.commitAllTabClosures();
  
          if (!ChromeFeatureList.isEnabled(ChromeFeatureList.UMA_SESSION_CORRECTNESS_FIXES)
-@@ -5331,6 +5337,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
- 
+@@ -5545,6 +5551,7 @@
      @Override
+     @SuppressWarnings("NullAway")
      public void onDestroyInternal() {
 +        FaceGuardController.onActivityDestroyed(this);
  
          if (mPrefChangeRegistrar != null) {
              mPrefChangeRegistrar.destroy();
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 1b5d10d..013a694 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-@@ -55,6 +55,7 @@ import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+@@ -55,6 +55,7 @@
  import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
  import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
  import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
@@ -85,7 +77,7 @@ index 1b5d10d..013a694 100644
  import org.chromium.chrome.browser.signin.services.IdentityServicesProvider;
  import org.chromium.chrome.browser.ssl.HttpsFirstModeSettingsFragment;
  import org.chromium.chrome.browser.sync.settings.GoogleServicesSettings;
-@@ -142,6 +143,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
+@@ -142,6 +143,7 @@
          mPageTitle.set(getString(R.string.prefs_privacy_security));
  
          SettingsUtils.addPreferencesFromResource(this, R.xml.privacy_preferences);
@@ -93,9 +85,6 @@ index 1b5d10d..013a694 100644
  
          Preference privacyGuidePreference = findPreference(PREF_PRIVACY_GUIDE);
          // Record the launch of PG from the S&P link-row entry point
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java
-new file mode 100644
-index 0000000..df1167b
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceCameraSource.java
 @@ -0,0 +1,271 @@
@@ -370,9 +359,6 @@ index 0000000..df1167b
 +        mReader = null;
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java
-new file mode 100644
-index 0000000..f149d35
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGrayConverter.java
 @@ -0,0 +1,78 @@
@@ -454,9 +440,6 @@ index 0000000..f149d35
 +        return (r / 90) * 90;
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java
-new file mode 100644
-index 0000000..44ba782
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardAuth.java
 @@ -0,0 +1,61 @@
@@ -521,9 +504,6 @@ index 0000000..44ba782
 +        }
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
-new file mode 100644
-index 0000000..bee97c8
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardChromeBridge.java
 @@ -0,0 +1,43 @@
@@ -570,9 +550,6 @@ index 0000000..bee97c8
 +        }
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
-new file mode 100644
-index 0000000..42960af
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardController.java
 @@ -0,0 +1,277 @@
@@ -853,9 +830,6 @@ index 0000000..42960af
 +        setEnabled(mActivity, false);
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java
-new file mode 100644
-index 0000000..d076a02
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardOverlay.java
 @@ -0,0 +1,127 @@
@@ -986,9 +960,6 @@ index 0000000..d076a02
 +        mTurnOff.setVisibility(hasDeviceCredential ? View.GONE : View.VISIBLE);
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java
-new file mode 100644
-index 0000000..20113f7
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java
 @@ -0,0 +1,318 @@
@@ -1310,9 +1281,6 @@ index 0000000..20113f7
 +        return out;
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java
-new file mode 100644
-index 0000000..bfe292e
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java
 @@ -0,0 +1,93 @@
@@ -1409,9 +1377,6 @@ index 0000000..bfe292e
 +        parent.addPreference(owner);
 +    }
 +}
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java
-new file mode 100644
-index 0000000..034e773
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java
 @@ -0,0 +1,51 @@
@@ -1466,11 +1431,9 @@ index 0000000..034e773
 +        mDetector = null;
 +    }
 +}
-diff --git a/chrome/browser/tab_ui/android/BUILD.gn b/chrome/browser/tab_ui/android/BUILD.gn
-index 085df44..6a7820b 100644
 --- a/chrome/browser/tab_ui/android/BUILD.gn
 +++ b/chrome/browser/tab_ui/android/BUILD.gn
-@@ -22,6 +22,7 @@ android_library("java") {
+@@ -22,6 +22,7 @@
      "java/src/org/chromium/chrome/browser/tab_ui/ActionConfirmationManager.java",
      "java/src/org/chromium/chrome/browser/tab_ui/InvalidationAwareThumbnailProvider.java",
      "java/src/org/chromium/chrome/browser/tab_ui/MultiThumbnailCardProvider.java",
@@ -1478,9 +1441,6 @@ index 085df44..6a7820b 100644
      "java/src/org/chromium/chrome/browser/tab_ui/OnTabSelectingListener.java",
      "java/src/org/chromium/chrome/browser/tab_ui/RecyclerViewPosition.java",
      "java/src/org/chromium/chrome/browser/tab_ui/SuggestionLifecycleObserverHandler.java",
-diff --git a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java
-new file mode 100644
-index 0000000..add323b
 --- /dev/null
 +++ b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/FaceGuardLockState.java
 @@ -0,0 +1,21 @@
@@ -1505,11 +1465,9 @@ index 0000000..add323b
 +        sLocked = locked;
 +    }
 +}
-diff --git a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java
-index f91d7f1..3d416e3 100644
 --- a/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java
 +++ b/chrome/browser/tab_ui/android/java/src/org/chromium/chrome/browser/tab_ui/TabContentManager.java
-@@ -333,7 +333,8 @@ public class TabContentManager {
+@@ -334,7 +334,8 @@
       * @param callback The callback to send the {@link Bitmap} with.
       */
      public void getEtc1TabThumbnailWithCallback(int tabId, Callback<@Nullable Bitmap> callback) {
@@ -1519,7 +1477,7 @@ index f91d7f1..3d416e3 100644
              callback.onResult(null);
              return;
          }
-@@ -353,7 +354,8 @@ public class TabContentManager {
+@@ -354,7 +355,8 @@
       */
      public void getTabThumbnailWithCallback(
              int tabId, Size thumbnailSize, Callback<@Nullable Bitmap> callback) {
