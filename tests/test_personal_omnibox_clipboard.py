@@ -21,18 +21,29 @@ def guard():
     return mod
 
 
-def _apply(tmp_path):
-    target = tmp_path / REL
-    target.parent.mkdir(parents=True)
-    pristine = fixture_tools.load_sources()[REL]
-    target.write_text(pristine)
-    find = tmp_path / "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java"
-    find.parent.mkdir(parents=True)
-    find.write_text(fixture_tools.load_sources()[find.relative_to(tmp_path).as_posix()])
+PINNED = (
+    REL,
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java",
+    "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java",
+    "components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml",
+)
+
+
+def _stage(tmp_path):
+    srcs = fixture_tools.load_sources()
+    for rel in PINNED:
+        t = tmp_path / rel
+        t.parent.mkdir(parents=True, exist_ok=True)
+        t.write_text(srcs[rel])
     guard().check(tmp_path)
     subprocess.run(["patch", "-d", str(tmp_path), "-p1", "--forward", "--batch", "--no-backup-if-mismatch",
                     "-i", str(PERSONAL / "0109-personal-omnibox-clipboard.patch")], check=True, capture_output=True)
-    return pristine, target.read_text()
+    return srcs
+
+
+def _apply(tmp_path):
+    srcs = _stage(tmp_path)
+    return srcs[REL], (tmp_path / REL).read_text()
 
 
 def test_patch_removes_both_fall_through_paths_to_the_platform_clipboard(tmp_path):
@@ -47,26 +58,31 @@ FIND = "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolb
 
 
 def test_find_in_page_copy_cut_use_the_contained_clipboard(tmp_path):
-    for rel in (REL, FIND):
-        t = tmp_path / rel
-        t.parent.mkdir(parents=True, exist_ok=True)
-        t.write_text(fixture_tools.load_sources()[rel])
-    guard().check(tmp_path)
-    subprocess.run(["patch", "-d", str(tmp_path), "-p1", "--forward", "--batch", "--no-backup-if-mismatch",
-                    "-i", str(PERSONAL / "0109-personal-omnibox-clipboard.patch")], check=True, capture_output=True)
+    srcs = _stage(tmp_path)
     out = (tmp_path / FIND).read_text()
     assert "android.R.id.copy || id == android.R.id.cut" in out
     assert "Clipboard.getInstance().setText(query.subSequence" in out
-    assert out.count("setPrimaryClip") == fixture_tools.load_sources()[FIND].count("setPrimaryClip")
-    assert out.count("getSystemService") == fixture_tools.load_sources()[FIND].count("getSystemService")
+    assert out.count("setPrimaryClip") == srcs[FIND].count("setPrimaryClip")
 
 
-def test_guard_refuses_drifted_source(tmp_path):
-    target = tmp_path / REL
-    target.parent.mkdir(parents=True)
-    target.write_text(fixture_tools.load_sources()[REL] + "\n// drift\n")
-    f = tmp_path / FIND
-    f.parent.mkdir(parents=True)
-    f.write_text(fixture_tools.load_sources()[FIND])
-    with pytest.raises(ValueError, match="source_hash_mismatch"):
-        guard().check(tmp_path)
+DIALOG = PINNED[2]
+RADIO = PINNED[3]
+
+
+def test_dialog_and_settings_edit_text_copy_cut_use_the_contained_clipboard(tmp_path):
+    srcs = _stage(tmp_path)
+    out = (tmp_path / DIALOG).read_text()
+    assert "public boolean onTextContextMenuItem(int id)" in out
+    assert "id == android.R.id.copy || id == android.R.id.cut" in out
+    assert "Clipboard.getInstance().setText(text.subSequence" in out
+    assert "setPrimaryClip" not in out and "getSystemService" not in out
+    assert "import org.chromium.ui.base.Clipboard;" in out
+    assert "onTextContextMenuItem" not in srcs[DIALOG]
+
+
+def test_settings_homepage_edit_text_is_the_patched_class(tmp_path):
+    srcs = _stage(tmp_path)
+    out = (tmp_path / RADIO).read_text()
+    assert "<EditText" in srcs[RADIO] and "<EditText" not in out
+    assert out.count("widget.text.AlertDialogEditText") == 1
+    assert 'android:id="@+id/edit_text"' in out

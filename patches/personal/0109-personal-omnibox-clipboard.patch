@@ -64,3 +64,59 @@ index 69eeabe..cbadb25 100644
              return super.onTextContextMenuItem(id);
          }
  
+diff --git a/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java b/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
+--- a/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
++++ b/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
+@@ -6,6 +6,7 @@
+ 
+ import android.annotation.SuppressLint;
+ import android.content.Context;
++import android.text.Editable;
+ import android.util.AttributeSet;
+ import android.view.ViewStructure;
+ 
+@@ -13,6 +14,7 @@
+ 
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
++import org.chromium.ui.base.Clipboard;
+ import org.chromium.url.GURL;
+ 
+ /**
+@@ -38,6 +40,24 @@
+     }
+ 
+     @Override
++    public boolean onTextContextMenuItem(int id) {
++        // Swiftra personal build: copy/cut from dialog and settings text fields never reaches
++        // Android's system ClipboardManager; it uses the browser-contained clipboard.
++        if (id == android.R.id.copy || id == android.R.id.cut) {
++            Editable text = getText();
++            if (text == null) return true;
++            int lower = Math.max(0, Math.min(getSelectionStart(), getSelectionEnd()));
++            int upper = Math.max(0, Math.max(getSelectionStart(), getSelectionEnd()));
++            if (upper > lower) {
++                Clipboard.getInstance().setText(text.subSequence(lower, upper).toString());
++                if (id == android.R.id.cut) text.delete(lower, upper);
++            }
++            return true;
++        }
++        return super.onTextContextMenuItem(id);
++    }
++
++    @Override
+     @SuppressLint("NewApi")
+     public void onProvideAutofillStructure(ViewStructure structure, int flags) {
+         if (mUrl != null && !mUrl.isEmpty()) {
+diff --git a/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml b/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml
+--- a/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml
++++ b/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml
+@@ -20,7 +20,7 @@
+         android:background="@null" />
+ 
+     <!-- Hint will be added programmatically so we're ignoring the lint warning. -->
+-    <EditText
++    <org.chromium.components.browser_ui.widget.text.AlertDialogEditText
+         tools:ignore="Autofill,LabelFor"
+         android:id="@+id/edit_text"
+         android:layout_width="match_parent"

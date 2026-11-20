@@ -17,16 +17,36 @@
       "sha256": "1dc8d6efb287d3b6e2b0f07c6117c0636497d51118bfef6695da74dd1a6b4f53",
       "bytes": 35529,
       "lines": 871
+    },
+    {
+      "path": "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java",
+      "status": "FETCHED",
+      "sha256": "a473469c8ffd3531ca7902b85f2d45a2831853e33488160c69c07fce62710688",
+      "bytes": 1353,
+      "lines": 48
+    },
+    {
+      "path": "components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml",
+      "status": "FETCHED",
+      "sha256": "dff5a093c484fef4fdd40fba7716e7409951477b999b9a0ccbceedfde84b8667",
+      "bytes": 1616,
+      "lines": 42
     }
   ],
   "fixture_paths": [
     "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java",
-    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java"
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java",
+    "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java",
+    "components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml"
   ],
-  "fixture_gzip_sha256": "c444e98d8d657690620c02277f0bfcc19e7e0e1530269953bfd239560ee9e68a",
+  "fixture_gzip_sha256": "8eb72818a5ed30aee1c53aecb24f4dcda48dff24d34f07452a73c20841f19df3",
   "native_source_outputs": [
     "chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/UrlBar.java",
-    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java"
+    "chrome/android/java/src/org/chromium/chrome/browser/findinpage/FindToolbar.java",
+    "components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java",
+    "components/browser_ui/widget/android/java/res/layout/radio_button_with_edit_text.xml"
   ],
   "not_android_acceptance": true
 }
