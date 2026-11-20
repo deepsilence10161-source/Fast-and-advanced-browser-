@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Chrome vs Swiftra PERSONAL (private) build, 20-11-2026. Run: python3 tools/comparison/personal_edition.py
+"""Chrome vs Swiftra PERSONAL (private) build, 21-11-2026. Run: python3 tools/comparison/personal_edition.py
 Writes docs/comparison-chrome-vs-swiftra-personal.{md,xlsx}"""
 import os
 M, S, D = "MEASURED", "SOURCE", "DESIGN+MEASURED"
@@ -17,14 +17,14 @@ r(A, "Home page par popular-site tiles / doodle / favicon fetch", "Chrome source
 r(A, "Usage stats / crash report Google ko", "Default ON, Settings mein band kar sakte ho; crash report mein page content/URL aa sakta hai (Google Help)", "Swiftra Personal mein koi Google sign-in/Sync nahi; NetLog mein 0 Google request", S + " (Chrome) + " + M + " (Swiftra)", "Swiftra", "Crash upload ka alag device test nahi kiya; NetLog 0 hai.")
 A = "2 Local nishaan (history delete ke baad)"
 r(A, "Browse karte waqt kitni files mein URL likha milta hai", "10 files (tabs open) / 13 files (tabs band), jisme page ki poori .mhtml copy + OfflinePages.db", "8 files; .mhtml copy aur OfflinePages.db nahi (patch 0111)", M, "Swiftra", "Synthetic loopback canary URL se test; asli sites nahi.")
-r(A, "Delete browsing data (All time) ke baad - tabs khule", "5 files mein URL bacha: ukm_db-wal, tab12, tab13, tab_state0, shared_prefs xml", "5 files mein bacha: multi_instance_data.pb, flatbufferv1_tab1, tab2, tab_state0, tab_statearchived", M, "Barabar", "Dono mein tab/session files URL rakhti hain. Swiftra mein ye abhi FIXED NAHI hai (patch 0112 baaki).")
-r(A, "Delete ke baad - saare tabs band", "Is image par measure NAHI ho paya: harness ko Chrome 133 mein 'Delete data' button nahi mila (time-range list dikhi, button nahi)", "Sessions/Tabs_*, flatbufferv1_tab3, tab_statearchived mein URL bacha", M + " (sirf Swiftra)", "Tay nahi (Chrome number nahi)", "Chrome ke liye number nahi hai, isliye winner nahi de raha. Harness fix karke dobara chalane se aa jayega.")
+r(A, "Delete browsing data (All time) ke baad - tabs khule", "5 files mein URL bacha: ukm_db-wal, tab12, tab13, tab_state0, shared_prefs xml", "Sirf khule tab ki apni state file (flatbufferv1_tab2; x64 par tab_state0 bhi). multi_instance_data.pb, Sessions, tab_statearchived, band tab files saaf (patch 0112, build 0112)", M, "Swiftra", "Khula tab khula hai, isliye uski state rehti hai (Chrome mein bhi). Synthetic canary, 2 baar (x64 + arm64) measure.")
+r(A, "Delete ke baad - saare tabs band", "Is image par measure NAHI ho paya: harness ko Chrome 133 mein Delete data button nahi mila", "0 files mein URL (CLEAN) - x64 aur arm64 dono par", M + " (sirf Swiftra)", "Tay nahi (Chrome number nahi)", "Pehle 3 files mein bacha tha (Sessions/Tabs_*, flatbufferv1_tab3, tab_statearchived); patch 0112 ke baad device par saaf. Chrome ka number nahi hai, isliye winner nahi.")
 r(A, "Delete ke baad History, cache, Top Sites, Offline copy", "History, OfflinePages, Top Sites, cache saaf; ukm_db-wal bacha", "History, ukm_db, cache, Top Sites saaf; Offline copy bani hi nahi", M, "Swiftra", "Chhota fark: ukm_db Swiftra mein bhi saaf, Chrome mein WAL bacha.")
 r(A, "Flash/SSD level recovery (coder deleted blocks nikale)", "Browser ke control mein nahi", "Browser ke control mein nahi (SQLite secure_delete ON hai: Chromium 155 source)", S, "Barabar", "Kisi bhi browser ke haath mein nahi. Phone encryption (FBE) hi asli dhaal hai.")
 A = "3 Android/doosre apps mein leak"
-r(A, "Web page se copy -> system clipboard", "Canary system clipboard tak pahuncha (K01 FAIL)", "Browser ke andar hi rahta hai (K01 PASS)", M, "Swiftra", "Trade-off: Swiftra se copy karke doosre app mein paste nahi hota.")
-r(A, "Address bar copy / Find-in-page copy", "Dono system clipboard mein leak (K03, K04 FAIL)", "Dono contained (K03, K04 PASS)", M, "Swiftra", "Settings ka text field: Chrome LEAK, Swiftra CONTAINED. Dialog/keyboard fields audit nahi hue.")
-r(A, "Web page ko system clipboard se paste milna", "Page ko system clipboard ka text mila (K02 FAIL)", "Nahi mila (K02 PASS)", M, "Swiftra", "Kisi doosre app ka copy kiya text page tak nahi jaata.")
+r(A, "Web page se copy -> system clipboard", "Canary system clipboard tak pahuncha (K01 FAIL)", "Ab Chrome jaisa: copy system clipboard tak jaata hai (K01 PASS expect=system)", M, "Barabar", "User ne block hatwaya (patch 0112): doosre app mein paste ab chalta hai. Pehle ka containment wapas nahi hai.")
+r(A, "Address bar copy / Find-in-page copy", "Dono system clipboard mein jaate hain (K03, K04)", "Dono system clipboard mein jaate hain (K03, K04 PASS expect=system)", M, "Barabar", "Settings ka dialog text field (X01) bhi system clipboard tak jaata hai, Chrome jaisa.")
+r(A, "Web page ko system clipboard se paste milna", "Page ko system clipboard ka text mila (K02)", "Page ko system clipboard ka text milta hai (K02 PASS expect=system)", M, "Barabar", "Doosre app ka copy kiya text page tak pahunchta hai, Chrome jaisa.")
 r(A, "Download kahan jaata hai", "Shared /Download folder mein (gallery/file manager/doosre apps dekh sakte)", "App ke private folder mein", M, "Swiftra", "Chrome ka shared folder aasani deta hai; privacy mein Swiftra jeeta.")
 r(A, "Screenshot / recents mein page dikhna", "Normal tab mein FLAG_SECURE nahi (C05 FAIL)", "FLAG_SECURE laga hai (C05 PASS)", M, "Swiftra", "Sirf flag check hua; asli screenshot try nahi kiya.")
 r(A, "Android backup / cloud transfer", "ALLOW_BACKUP flag ON (dumpsys flags)", "Opt-out (C06 PASS)", M, "Swiftra", "Chrome ka C06 'NOT_RUN' tha kyunki backup allowed mila; flag se confirmed, restore test nahi.")
@@ -32,7 +32,7 @@ r(A, "Passkey request system credential provider tak jaana", "Pahunchi (C01 FAIL
 r(A, "System autofill service ko form dikhna", "Is test mein request nahi gayi (A01 PASS)", "Request nahi gayi (A01 PASS)", M, "Barabar", "Chrome 133 ke is ek form par; sab situations nahi.")
 r(A, "Tel:/market: link se doosra app khulna", "Is harness mein hand-off nahi dikha (C04 PASS)", "Hand-off nahi (C04 PASS)", M, "Barabar", "Test negative-only hai; control (C09) se dialer dikhta hai, yani test andha nahi. Swiftra mein code se band hai (0103), Chrome ka koi code-level block nahi.")
 A = "4 Account aur sign-in"
-r(A, "Google/Android account browser mein", "Sign-in, Sync, Android accounts import - sab ON", "Sign-in/Sync band, accounts import nahi, Add Account block (C07 PASS)", D, "Swiftra", "Chrome jeetne wala feature (Sync) Swiftra Personal mein hai hi nahi. Gmail login karoge to Swiftra uska isolate nahi karta (container baaki).")
+r(A, "Google/Android account browser mein", "Sign-in, Sync, Android accounts import - sab ON", "Browser-level sign-in/Sync nahi; Google website login chalta hai (C11, C12 PASS: form load, account lookup jawab deta hai). Android accounts import nahi (C07 PASS)", D, "Chrome", "Sync Chrome ki Google keys par chalta hai (2021 se), open-source Chromium mein account delegate nahi hai (SOURCE). Password/2-step/passkey ka asli login device par abhi test nahi hua.")
 r(A, "Sync (bookmarks/passwords/tabs ek phone se doosre)", "Hai", "Nahi hai", S, "Chrome", "Apne throwaway Gmail ke liye Sync chahiye ho to Swiftra Personal abhi nahi dega.")
 r(A, "Password manager", "Google Password Manager", "Local vault bhi nahi bana (0022 unimplemented)", S, "Chrome", "Swiftra mein password save nahi hota.")
 A = "5 Speed aur memory (x64 emulator)"
@@ -60,8 +60,8 @@ def tally():
 
 def md():
     t = tally()
-    o = ["# Chrome vs Swiftra Personal - poori comparison (20-11-2026)", "",
-         "**Kya kya compare hua:** Chrome **133.0.6943.137** (emulator image ka pehle se installed Chrome) vs Swiftra Personal **155.0.8059.80**, build 4f18a60, APK sha `d9a89bb5...`. "
+    o = ["# Chrome vs Swiftra Personal - poori comparison (21-11-2026)", "",
+         "**Kya kya compare hua:** Chrome **133.0.6943.137** (emulator image ka pehle se installed Chrome) vs Swiftra Personal **155.0.8059.80**, build 0112 (x64 APK sha `270e5b18...`, arm64 `9692703e...`). "
          "Chrome ab Android par **158** stable hai; emulator mein Chrome update nahi ho sakta, isliye Chrome ke numbers purane version ke hain.", "",
          "**Proof ka matlab:** MEASURED = device par maapa (CI runs 44712836868 aur 44713040218, evidence/chrome-vs-personal-2026-11-20.json). SOURCE = Chromium source ya Google docs se confirm. "
          "Jo cell measure nahi ho paya wahan 'winner' nahi diya, kyunki andaza lagana galat hota.", "",
