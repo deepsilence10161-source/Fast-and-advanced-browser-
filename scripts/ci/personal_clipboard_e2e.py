@@ -352,9 +352,20 @@ def main():
                 P.sh(f"input text set_{tok}")
                 time.sleep(1)
                 combo(CTRL, KA)
+                P.adb("logcat", "-c")
                 combo(CTRL, KC)
                 time.sleep(1)
+                # the helper launch below clears logcat and steals focus, so read the handler log BEFORE it
+                log_copy = P.adb("logcat", "-d", "-s", "SwiftraClip:I", timeout=30)
+                if "contained edit-text copy/cut" not in log_copy:
+                    P.adb("logcat", "-c")
+                    P.sh("input keyevent 278")   # KEYCODE_COPY as a second path to the same handler
+                    time.sleep(1)
+                    log_copy = P.adb("logcat", "-d", "-s", "SwiftraClip:I", timeout=30)
                 _, st_copy = helper("get")   # the copy step alone: this is the exact path that LEAKED on 6589062
+                time.sleep(1)
+                P.sh(f"input tap {(edit[0]+edit[2])//2} {(edit[1]+edit[3])//2}")   # the helper took the focus away
+                time.sleep(1)
                 # native paste reads the SYSTEM clipboard, so pasting cannot show a contained copy. Use CUT instead:
                 # it provably ran when the typed canary disappears from the field; the system clipboard must stay
                 # the control text. (An unpatched field would put the canary on the system clipboard = LEAK.)
@@ -367,7 +378,12 @@ def main():
                 # The Settings field rewrites its text (http://.../), so the field content is no proof. The patched
                 # handler logs the LENGTH only (tag SwiftraClip) when it handled copy/cut: that proves the action ran.
                 log = P.adb("logcat", "-d", "-s", "SwiftraClip:I", timeout=30)
-                typed_back = "contained edit-text copy/cut" in log   # name kept: True = the patched handler ran
+                if "contained edit-text copy/cut" not in log:
+                    P.adb("logcat", "-c")
+                    P.sh("input keyevent 277")   # KEYCODE_CUT
+                    time.sleep(1.5)
+                    log = P.adb("logcat", "-d", "-s", "SwiftraClip:I", timeout=30)
+                typed_back = ("contained edit-text copy/cut" in log) or ("contained edit-text copy/cut" in log_copy)   # True = the patched handler ran
                 print(f"PERSONAL_CLIP_PROBE X01 diag field_before={before!r} field_after={after!r} handler_log={typed_back}", flush=True)
                 sk, st = helper("get")
                 if not control_ok or sk != "text":
