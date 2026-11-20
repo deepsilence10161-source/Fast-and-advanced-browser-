@@ -70,23 +70,22 @@
  #include "third_party/blink/renderer/modules/webaudio/audio_listener.h"
  #include "third_party/blink/renderer/modules/webaudio/deferred_task_handler.h"
  #include "third_party/blink/renderer/modules/webaudio/offline_audio_completion_event.h"
-@@ -440,6 +441,16 @@
-   if (frame < CurrentSampleFrame()) {
-     size_t current_frame_clamped = CurrentSampleFrame();
-     double current_time_clamped = currentTime();
-+    // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
-+    if (const uint64_t key = SwiftraFingerprintKey(GetExecutionContext())) {
-+      for (unsigned channel = 0; channel < rendered_buffer->numberOfChannels();
-+           ++channel) {
-+        base::span<float> samples =
-+            rendered_buffer->getChannelData(channel)->AsSpan();
-+        SwiftraNoiseAudio(key, samples.data(), samples.size(), channel);
-+      }
+@@ -578,6 +579,15 @@
+   Member<AudioBuffer> rendered_buffer = pending_render_targets_.front();
+ 
+   CHECK(rendered_buffer);
++  // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).
++  if (const uint64_t key = SwiftraFingerprintKey(GetExecutionContext())) {
++    for (unsigned channel = 0; channel < rendered_buffer->numberOfChannels();
++         ++channel) {
++      base::span<float> samples =
++          rendered_buffer->getChannelData(channel)->AsSpan();
++      SwiftraNoiseAudio(key, samples.data(), samples.size(), channel);
 +    }
-+
-     if (total_render_frames_.has_value()) {
-       current_frame_clamped =
-           std::min(current_frame_clamped,
++  }
+   // Keep the target queued across `Resolve()` so synchronous thenable getters
+   // can enqueue more chunks without starting a duplicate render.
+   resolver->Resolve(rendered_buffer.Get());
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -77,6 +77,7 @@
