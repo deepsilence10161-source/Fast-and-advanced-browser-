@@ -90,13 +90,7 @@ def visible_texts(dev, limit=25):
 
 
 def open_clear_screen(dev, pkg):
-    """Direct fragment launch first, then the visible menu path (Settings > Privacy and security > Clear browsing data)."""
-    P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity",
-          "--es", "show_fragment", "org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragment", timeout=60)
-    for _ in range(6):
-        time.sleep(2.5)
-        if dev.find(r"(?i)^(clear|delete) data$|time range", ("text", "desc")):
-            return True, "direct fragment"
+    """The visible menu path (Settings > Privacy and security > Delete browsing data). A direct show_fragment launch crashed SettingsActivity.onStart (no arguments), which also left a crash dump in the app, so it is not used."""
     P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity", timeout=60)
     time.sleep(4)
     if dev.tap(r"(?i)^privacy and security$|^privacy$", wait=3.0, tries=3) and dev.tap(r"(?i)^(clear|delete) browsing data$", wait=3.0, tries=3):
@@ -133,9 +127,24 @@ def pull_remnants(pkg, files, outdir, tag):
             print(f"PERSONAL_FORENSIC pull_failed {rel}: {r.strip()[:100]}", flush=True)
 
 
+def ensure_websocket():
+    try:
+        import websocket  # noqa: F401
+        return True
+    except ImportError:
+        import subprocess
+        subprocess.run([sys.executable, "-m", "pip", "install", "-q", "websocket-client"], capture_output=True, timeout=120)
+        try:
+            import websocket  # noqa: F401
+            return True
+        except ImportError:
+            return False
+
+
 def close_tabs_via_cdp(pkg):
     """Close every tab through DevTools (the tab files must stop referencing the page)."""
     try:
+        ensure_websocket()
         import startup_netlog as sn
         P.adb("forward", "tcp:9222", "localabstract:chrome_devtools_remote")
         return sn.close_all_tabs("http://127.0.0.1:9222")
