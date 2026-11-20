@@ -90,6 +90,11 @@ def u0_sections(text):
 # sections that must never go through fuzzy `patch` (it silently lands them in the wrong function): the FIX is the source of truth
 ALWAYS_FIX = {"0011-swiftra-fingerprint-shield.patch": ["third_party/blink/renderer/modules/webaudio/offline_audio_context.cc"]}
 
+UNFIXED = []
+# files whose rejected hunks are placed by an explicit FIX (fuzzy retry mislocates them: seen in download_target_determiner.cc)
+NO_FUZZ = {"chrome/browser/download/download_target_determiner.cc",
+           "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java",
+           "chrome/android/java/AndroidManifest.xml"}
 FIXES = {}
 def fix(name):
     def deco(fn):
@@ -131,6 +136,81 @@ def _(root):  # 158 renders OfflineAudioContext in chunks: noise the target righ
            "      SwiftraNoiseAudio(key, samples.data(), samples.size(), channel);\n"
            "    }\n  }\n  // Keep the target queued across `Resolve()`")
     p.write_text(t.replace(anchor, add))
+
+
+def _ins_after(t, anchor, add, n=1):
+    assert t.count(anchor) == n, (anchor, t.count(anchor))
+    return t.replace(anchor, anchor + add)
+
+@fix("0101-persistent-account-boundary.patch")
+def _(root):  # 158 hard-codes zygotePreloadName; the backup attributes are unchanged
+    p = root / "chrome/android/java/AndroidManifest.xml"
+    t = p.read_text()
+    old = ('        {% if backup_key is defined %}\n        android:allowBackup="true"\n'
+           '        android:backupAgent="org.chromium.chrome.browser.backup.ChromeBackupAgent"\n'
+           '        android:fullBackupOnly="false"\n        android:restoreAnyVersion="true"\n'
+           '        {% else %}\n        android:allowBackup="false"\n        {% endif %}\n')
+    new = ('        android:allowBackup="false"\n        android:fullBackupContent="false"\n'
+           '        android:dataExtractionRules="@xml/personal_no_data_transfer"\n'
+           '        android:restoreAnyVersion="false"\n        tools:remove="android:backupAgent"\n')
+    assert t.count(old) == 1
+    p.write_text(t.replace(old, new))
+
+_DTD_GEN = ("#if BUILDFLAG(IS_ANDROID)\n  if (DownloadPrefs::GetDefaultDownloadDirectory().empty()) {\n"
+            "    ScheduleCallbackAndDeleteSelf(\n        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);\n"
+            "    return QUIT_DOLOOP;\n  }\n#endif\n")
+_DTD_CHK = ("#if BUILDFLAG(IS_ANDROID)\n  if (!download::IsBrowserContainedDownloadPath(\n"
+            "          DownloadPrefs::GetDefaultDownloadDirectory().value(), %s)) {\n"
+            "    ScheduleCallbackAndDeleteSelf(\n        download::DOWNLOAD_INTERRUPT_REASON_FILE_ACCESS_DENIED);\n"
+            "    %s;\n  }\n#endif\n")
+
+@fix("0103-personal-egress-and-storage.patch")
+def _(root):
+    # (a) download_target_determiner.cc: 158 turned DCHECKs into CHECK(..., NotFatalUntil::M161); fuzzy patch put two of the
+    # hunks INSIDE a CHECK(...) call, so all five hunks are placed here by exact anchors (counted == 1)
+    p = root / "chrome/browser/download/download_target_determiner.cc"
+    t = p.read_text()
+    def put(t, anchor, add, where):
+        assert t.count(anchor) == 1, anchor
+        return t.replace(anchor, add + anchor if where == "before" else anchor + add)
+    t = put(t, "  CHECK(!should_notify_extensions_, base::NotFatalUntil::M161);\n", _DTD_GEN, "after")
+    t = put(t, "  CHECK(!virtual_path_.empty(), base::NotFatalUntil::M161);\n\n  next_state_ = STATE_PROMPT_USER_FOR_DOWNLOAD_PATH;\n",
+            (_DTD_CHK % ("virtual_path_.value()", "return QUIT_DOLOOP")) + "\n"
+            "#if BUILDFLAG(IS_ANDROID)\n  create_target_directory_ = true;  // The checked private root is created by reservation IO.\n#endif\n",
+            "before") if False else t
+    # DoReserveVirtualPath: check after the CHECKs, then create_target_directory_, then next_state_
+    a2 = "  CHECK(!virtual_path_.empty(), base::NotFatalUntil::M161);\n\n  next_state_ = STATE_PROMPT_USER_FOR_DOWNLOAD_PATH;\n"
+    assert t.count(a2) == 1
+    blk2 = ((_DTD_CHK % ("virtual_path_.value()", "return QUIT_DOLOOP")) + "\n"
+            "#if BUILDFLAG(IS_ANDROID)\n  create_target_directory_ = true;  // The checked private root is created by reservation IO.\n#endif\n")
+    t = t.replace(a2, "  CHECK(!virtual_path_.empty(), base::NotFatalUntil::M161);\n\n" + blk2 + "  next_state_ = STATE_PROMPT_USER_FOR_DOWNLOAD_PATH;\n")
+    # ReserveVirtualPathDone
+    a3 = ("  CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI),\n        base::NotFatalUntil::M161);\n"
+          '  DVLOG(20) << "Reserved path: " << path.AsUTF8Unsafe()\n')
+    assert t.count(a3) == 1
+    t = t.replace(a3, a3.split("  DVLOG")[0] + (_DTD_CHK % ("path.value()", "return")) + "\n  DVLOG" + a3.split("  DVLOG")[1])
+    # DoDetermineLocalPath
+    a4 = "  CHECK(local_path_.empty(), base::NotFatalUntil::M161);\n\n  next_state_ = STATE_DETERMINE_MIME_TYPE;\n"
+    assert t.count(a4) == 1
+    t = t.replace(a4, "  CHECK(local_path_.empty(), base::NotFatalUntil::M161);\n\n" + (_DTD_CHK % ("virtual_path_.value()", "return QUIT_DOLOOP")) + "\n  next_state_ = STATE_DETERMINE_MIME_TYPE;\n")
+    # DetermineLocalPathDone
+    b = "  CHECK_EQ(STATE_DETERMINE_MIME_TYPE, next_state_, base::NotFatalUntil::M161);\n"
+    assert t.count(b) == 1
+    t = t.replace(b, b + "\n" + (_DTD_CHK % ("local_path.value()", "return")))
+    p.write_text(t)
+    # (b) ExternalNavigationHandler.java: startActivity() lost the @Nullable on intentTargetUrl in 158
+    f = "components/external_intents/android/java/src/org/chromium/components/external_intents/ExternalNavigationHandler.java"
+    rej = (root.parent / "rejs" / "0103_ExternalNavigationHandler.java.rej").read_text()
+    hunk = rej[rej.index("@@"):]                 # both hunks (startActivity/doStartActivity bodies; startActivityWithChooser)
+    old_ctx = "            @Nullable GURL intentTargetUrl) {\n"
+    assert hunk.count(old_ctx) == 1
+    hunk = hunk.replace(old_ctx, "            GURL intentTargetUrl) {\n")
+    hdr = f"--- {f}\n+++ {f}\n"
+    tmp = root.parent / "_enh.patch"; tmp.write_text(hdr + hunk + "\n")
+    r = subprocess.run(["patch", "-p0", "--fuzz=1", "--batch", "--forward", "--no-backup-if-mismatch", f, "-i", str(tmp)],
+                       cwd=root, capture_output=True, text=True)
+    print("      FIX ENH:", r.returncode, r.stdout.strip().replace("\n", " | ")[:300])
+    assert r.returncode == 0
 
 def main():
     order = [(d, n) for d in ("patches", "patches/personal") for n in P.read_series(str(ROOT / d))]
@@ -200,9 +280,25 @@ def main():
                            cwd=WORK0, capture_output=True, text=True)
         pre = {h: ((WORK / h).read_text() if (WORK / h).exists() else None) for h in affected}
         tmp = WORK.parent / "_one.patch"; tmp.write_text("".join(s for h, s in secs if h not in always))
-        r = subprocess.run(["patch", "-p1", "--fuzz=3", "--batch", "--forward", "--no-backup-if-mismatch", "-i", str(tmp)],
+        r = subprocess.run(["patch", "-p1", "--fuzz=0", "--batch", "--forward", "--no-backup-if-mismatch", "-i", str(tmp)],
                            cwd=WORK, capture_output=True, text=True)
         rej = list(WORK.rglob("*.rej"))
+        had_rej = bool(rej)
+        if rej:
+            print("   rejects in", name, [str(x.relative_to(WORK)) for x in rej])
+            RD = WORK.parent / "rejs"; RD.mkdir(exist_ok=True)
+            for x in rej: shutil.copy(x, RD / (name[:4] + "_" + x.name))
+            # retry ONLY the rejected hunks with fuzz=2 (context trimmed to the nearest line); reviewed by hand in the log
+            for x in list(rej):
+                tgt = str(x.relative_to(WORK))[:-4]
+                if tgt in NO_FUZZ:
+                    continue
+                rr = subprocess.run(["patch", "-p0", "--fuzz=2", "--batch", "--forward", "--no-backup-if-mismatch", tgt, "-i", str(x)],
+                                    cwd=WORK, capture_output=True, text=True)
+                print(f"      FUZZ2 retry {tgt}: rc={rr.returncode} " + " | ".join(l for l in rr.stdout.splitlines() if "Hunk" in l or "FAILED" in l))
+                if rr.returncode == 0:
+                    x.unlink()
+            rej = list(WORK.rglob("*.rej"))
         if always:
             for x in rej: x.unlink()
             FIXES[name](WORK)
@@ -211,8 +307,9 @@ def main():
                 for x in rej: x.unlink()
                 FIXES[name](WORK)
             else:
-                print("UNFIXED REJECTS in", name, [str(x.relative_to(WORK)) for x in rej]); sys.exit(1)
-        elif r.returncode:
+                print("UNFIXED REJECTS in", name, [str(x.relative_to(WORK)) for x in rej]); UNFIXED.append(name)
+                for x in rej: x.unlink()
+        elif r.returncode and not had_rej:
             print("patch failed", name, r.stdout[-400:], r.stderr[-300:]); sys.exit(1)
         new_text = ""
         for h in affected:
@@ -222,5 +319,7 @@ def main():
         pf.write_text(new_text); report.append((name, "regenerated", True))
         print(f"{name:60} ok files={len(affected)} fuzz_or_offset={'yes' if re.search('fuzz|offset', r.stdout) else 'no'}")
     json.dump(report, open(WORK / "REGEN_REPORT.json", "w"), indent=1)
+    if UNFIXED:
+        print("UNFIXED:", UNFIXED); sys.exit(1)
 
 main()

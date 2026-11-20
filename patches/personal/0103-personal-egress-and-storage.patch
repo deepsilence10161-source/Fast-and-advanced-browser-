@@ -733,10 +733,10 @@
  
  #include <optional>
  #include <string>
-@@ -276,6 +278,13 @@
-   if (result == COMPLETE)
-     ScheduleCallbackAndDeleteSelf(download::DOWNLOAD_INTERRUPT_REASON_NONE);
- }
+@@ -334,6 +336,13 @@
+   CHECK_EQ(confirmation_reason_, DownloadConfirmationReason::NONE,
+            base::NotFatalUntil::M161);
+   CHECK(!should_notify_extensions_, base::NotFatalUntil::M161);
 +#if BUILDFLAG(IS_ANDROID)
 +  if (DownloadPrefs::GetDefaultDownloadDirectory().empty()) {
 +    ScheduleCallbackAndDeleteSelf(
@@ -744,9 +744,9 @@
 +    return QUIT_DOLOOP;
 +  }
 +#endif
+   bool is_forced_path = !download_->GetForcedFilePath().empty();
  
- DownloadTargetDeterminer::Result
- DownloadTargetDeterminer::DoCheckSupervisedUserUrlFilter() {
+   next_state_ = STATE_SET_INSECURE_DOWNLOAD_STATUS;
 @@ -578,6 +587,18 @@
    CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M161);
    CHECK(!virtual_path_.empty(), base::NotFatalUntil::M161);
@@ -766,10 +766,10 @@
    next_state_ = STATE_PROMPT_USER_FOR_DOWNLOAD_PATH;
    if (download_->GetState() != DownloadItem::IN_PROGRESS)
      return CONTINUE;
-@@ -594,6 +615,15 @@
-     download::PathValidationResult result,
+@@ -595,6 +616,15 @@
      const base::FilePath& path) {
    CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI),
+         base::NotFatalUntil::M161);
 +#if BUILDFLAG(IS_ANDROID)
 +  if (!download::IsBrowserContainedDownloadPath(
 +          DownloadPrefs::GetDefaultDownloadDirectory().value(), path.value())) {
@@ -779,9 +779,9 @@
 +  }
 +#endif
 +
-         base::NotFatalUntil::M161);
    DVLOG(20) << "Reserved path: " << path.AsUTF8Unsafe()
              << " Result:" << static_cast<int>(result);
+   CHECK_EQ(STATE_PROMPT_USER_FOR_DOWNLOAD_PATH, next_state_,
 @@ -835,6 +865,15 @@
    DCHECK(!virtual_path_.empty());
    CHECK(local_path_.empty(), base::NotFatalUntil::M161);
