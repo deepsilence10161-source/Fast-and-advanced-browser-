@@ -32,7 +32,7 @@
          // is enabled, and it has never been shown before, show it. Note that opening a new
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/SwiftraDeleteScrub.java
-@@ -0,0 +1,95 @@
+@@ -0,0 +1,115 @@
 +// Copyright 2026 The Chromium Authors
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -46,6 +46,7 @@
 +import org.chromium.base.task.TaskTraits;
 +import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 +import org.chromium.chrome.browser.tabpersistence.TabStateDirectory;
++import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 +import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 +
 +import java.io.File;
@@ -75,14 +76,33 @@
 +            final List<File> victims = new ArrayList<>();
 +
 +            File tabsDir = TabStateDirectory.getOrCreateTabbedModeStateDirectory();
-+            String[] names = tabsDir.list();
 +            TabWindowManager manager = TabWindowManagerSingleton.getInstance();
-+            if (names != null && manager.isAllTabStateInitialized()) {
-+                for (String name : names) {
-+                    Matcher m = TAB_FILE.matcher(name);
-+                    if (!m.matches()) continue;
-+                    int id = Integer.parseInt(m.group(1));
-+                    if (manager.canTabStateBeDeleted(id)) victims.add(new File(tabsDir, name));
++            if (manager.isAllTabStateInitialized()) {
++                // A tab closed a moment ago may still be in its undo window; make the closure final
++                // so its saved state is no longer treated as live.
++                for (TabModelSelector selector : manager.getAllTabModelSelectors()) {
++                    selector.commitAllTabClosures();
++                }
++                String[] names = tabsDir.list();
++                if (names != null) {
++                    for (String name : names) {
++                        // Saved state of the archived (inactive) tab list is a copy of visited URLs too.
++                        if (name.equals("tab_statearchived")) {
++                            victims.add(new File(tabsDir, name));
++                            continue;
++                        }
++                        Matcher m = TAB_FILE.matcher(name);
++                        if (!m.matches()) continue;
++                        int id = Integer.parseInt(m.group(1));
++                        boolean open = false;
++                        for (TabModelSelector selector : manager.getAllTabModelSelectors()) {
++                            if (selector.getTabById(id) != null) {
++                                open = true;
++                                break;
++                            }
++                        }
++                        if (!open) victims.add(new File(tabsDir, name));
++                    }
 +                }
 +            }
 +
