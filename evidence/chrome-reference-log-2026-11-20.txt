@@ -1,0 +1,65 @@
+CHROME_REF package=com.android.chrome present=package:com.android.chrome
+CHROME_REF version=versionName=133.0.6943.137 sdk=36 image=google/sdk_gphone64_x86_64/emu64xa:16/BE2A.250530.026.F3/13894323:userdebug/dev-keys
+CHROME_REF     flags=0x0
+CHROME_REF     flags=0x0
+PERSONAL_E2E env package=com.android.chrome abi=x86_64 android=16 sdk=36 root=True
+PERSONAL_E2E_UI FRE/promo button: Use without an account
+PERSONAL_E2E_UI FRE/promo button: Got it
+PERSONAL_E2E C00_first_run PASS browser_ready=True (no account, sign-in declined by UI handler)
+PERSONAL_E2E C01_launch PASS pid=3796 page_js_wrote_cookie_ls_idb crash_lines=0
+PERSONAL_E2E C02_retention PASS {"background": {"cookie": true, "indexedDB": true, "localStorage": true}, "crash": {"cookie": true, "indexedDB": true, "localStorage": true}, "force_stop": {"cookie": true, "indexedDB": true, "localStorage": true}}
+PERSONAL_E2E C03_download FAIL served=True private_path=none sha_ok=False shared_storage=HIT:/storage/emulated/0/Download/personal_e2e_287a910cfedbd7434d734399.bin
+PERSONAL_E2E C04_external PASS top_package_after_tap={'tel': 'com.android.chrome', 'market': 'com.android.chrome'} (negative-only; C09 reports whether this measurement can observe a hand-off)
+PERSONAL_E2E C05_secure FAIL SECURE not in app window flags
+PERSONAL_E2E C06_backup NOT_RUN allowBackup enabled or flags unreadable; rules not measurable here: [SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA UPDATED_SYSTEM_APP ALLOW_BACKUP KILL_AFTER_RESTORE RESTORE_ANY_VERSION]
+PERSONAL_E2E C07_no_account PASS accounts_on_device=0
+PERSONAL_E2E C08_preserved PASS missing=[]
+PERSONAL_E2E C09_measurement_control PASS OBSERVED(com.google.android.dialer)
+PERSONAL_E2E_SUMMARY pass=7 fail=2 not_run=1 abi=x86_64
+PERSONAL_EGRESS phase=idle captured=True events=4004 google_requests=3 google_resolves=['accounts.google.com', 'optimizationguide-pa.googleapis.com', 'update.googleapis.com', 'www.google.com'] sb=[]
+PERSONAL_EGRESS phase=browse captured=True events=2465 google_requests=2 google_resolves=['accounts.google.com', 'optimizationguide-pa.googleapis.com', 'www.google.com'] sb=[]
+PERSONAL_EGRESS phase=search captured=True events=1634 google_requests=3 google_resolves=['accounts.google.com', 'optimizationguide-pa.googleapis.com', 'www.google.com'] sb=[]
+PERSONAL_EGRESS summary {"idle_google_requests": 3, "idle_google_hosts": ["accounts.google.com", "optimizationguide-pa.googleapis.com", "update.googleapis.com", "www.google.com"], "browse_other_hosts": ["accounts.google.com", "optimizationguide-pa.googleapis.com"], "browse_google_requests": 2, "search_hosts": ["accounts.google.com", "optimizationguide-pa.googleapis.com", "www.google.com"], "note": "NetLog sees only Chromium's network stack: not Java HttpURLConnection, Android services or the keyboard."}
+PERSONAL_EGRESS MEASURED
+PERSONAL_FORENSIC F00_env INFO package=com.android.chrome abi=x86_64 sdk=36 root_uid=0
+PERSONAL_FORENSIC_UI FRE/promo button: No thanks
+PERSONAL_FORENSIC tabs_open/F01_live INFO 10 files hold the visit while running: ['app_chrome/Default/History', 'app_chrome/Default/Offline Pages/metadata/OfflinePages.db', 'app_chrome/segmentation_platform/ukm_db-wal', 'app_tabs/0/tab12', 'app_tabs/0/tab13', 'app_tabs/0/tab_state0', 'cache/Cache/Cache_Data/4cd388c57986bab5_0', 'cache/Cache/Cache_Data/5d6020a60893a804_0', 'cache/Offline Pages/archives/ef41309d-e885-4f43-8a60-506653df80b3.mhtml', 'shared_prefs/com.android.chrome_preferences.xml']
+PERSONAL_FORENSIC tabs_open/F02_stopped INFO after force-stop by_pattern={'url_path': 9, 'url_query': 9, 'title': 6} files=['app_chrome/Default/History', 'app_chrome/Default/Offline Pages/metadata/OfflinePages.db', 'app_chrome/segmentation_platform/ukm_db-wal', 'app_tabs/0/tab12', 'app_tabs/0/tab13', 'app_tabs/0/tab_state0', 'cache/Cache/Cache_Data/4cd388c57986bab5_0', 'cache/Cache/Cache_Data/5d6020a60893a804_0', 'cache/Offline Pages/archives/ef41309d-e885-4f43-8a60-506653df80b3.mhtml', 'shared_prefs/com.android.chrome_preferences.xml']
+PERSONAL_FORENSIC_UI tap OK  /(?i)^privacy and security$|^privacy$/ -> android:id/title
+PERSONAL_FORENSIC_UI tap OK  /(?i)^(clear|delete) browsing data$/ -> android:id/title
+PERSONAL_FORENSIC_UI tap OK  /(?i)last hour|last 24 hours|last 7 days|last 4 weeks|time range/ -> android:id/text1
+PERSONAL_FORENSIC_UI tap OK  /(?i)^all time$/ -> android:id/text1
+PERSONAL_FORENSIC_UI tap OK  /(?i)^(clear|delete) data$/ -> com.android.chrome:id/clear_button
+PERSONAL_FORENSIC_UI tap MISS /(?i)^(clear|delete)$/
+PERSONAL_FORENSIC tabs_open/F03_cleared REMNANTS Clear data pressed via settings menu path (time range All time requested); files still holding the canary after Delete: 5 by_pattern={'url_path': 5, 'url_query': 5, 'title': 1} files=['app_chrome/segmentation_platform/ukm_db-wal', 'app_tabs/0/tab12', 'app_tabs/0/tab13', 'app_tabs/0/tab_state0', 'shared_prefs/com.android.chrome_preferences.xml']
+PERSONAL_FORENSIC tabs_closed/F01_live INFO 13 files hold the visit while running: ['app_chrome/Default/History', 'app_chrome/Default/Offline Pages/metadata/OfflinePages.db', 'app_chrome/Default/Top Sites', 'app_chrome/segmentation_platform/ukm_db-wal', 'app_tabs/0/tab14', 'app_tabs/0/tab15', 'app_tabs/0/tab_state0', 'cache/Cache/Cache_Data/4cd388c57986bab5_0', 'cache/Cache/Cache_Data/5d6020a60893a804_0', 'cache/Cache/Cache_Data/a60875c387e4461c_0', 'cache/Offline Pages/archives/82cc5103-8487-4a12-bc7c-77fe5740400b.mhtml', 'cache/Offline Pages/archives/c1d5dec2-90e3-4d07-8e85-0cba0b2951ab.mhtml', 'shared_prefs/com.android.chrome_preferences.xml']
+PERSONAL_FORENSIC tabs_closed/F02_stopped INFO after force-stop by_pattern={'url_path': 9, 'url_query': 9, 'title': 9} files=['app_chrome/Default/History', 'app_chrome/Default/Offline Pages/metadata/OfflinePages.db', 'app_chrome/Default/Top Sites', 'app_chrome/segmentation_platform/ukm_db-wal', 'app_tabs/0/tab14', 'app_tabs/0/tab15', 'app_tabs/0/tab_state0', 'cache/Cache/Cache_Data/4cd388c57986bab5_0', 'cache/Cache/Cache_Data/5d6020a60893a804_0', 'cache/Cache/Cache_Data/a60875c387e4461c_0', 'cache/Offline Pages/archives/82cc5103-8487-4a12-bc7c-77fe5740400b.mhtml', 'cache/Offline Pages/archives/c1d5dec2-90e3-4d07-8e85-0cba0b2951ab.mhtml', 'shared_prefs/com.android.chrome_preferences.xml']
+PERSONAL_FORENSIC tabs_closed/F02b_tabs INFO close all tabs via DevTools: {'pages_closed': 13, 'listed': 13}
+PERSONAL_FORENSIC_UI tap OK  /(?i)^privacy and security$|^privacy$/ -> android:id/title
+PERSONAL_FORENSIC_UI tap OK  /(?i)^(clear|delete) browsing data$/ -> android:id/title
+PERSONAL_FORENSIC_UI tap OK  /(?i)last hour|last 24 hours|last 7 days|last 4 weeks|time range/ -> com.android.chrome:id/title
+PERSONAL_FORENSIC_UI tap OK  /(?i)^all time$/ -> android:id/text1
+PERSONAL_FORENSIC_UI tap MISS /(?i)^(clear|delete) data$/
+PERSONAL_FORENSIC tabs_closed/F03_cleared NOT_RUN Clear/Delete data button not found; visible=['Last 15 minutes', 'Last hour', 'Last 24 hours', 'Last 7 days', 'Last 4 weeks', 'All time']
+PERSONAL_FORENSIC F04_logcat INFO lines with a visited_ canary by log tag: {'WindowManagerShell': 4, 'WindowManager': 4}
+PERSONAL_CLIP env package=com.android.chrome abi=x86_64 sdk=36
+PERSONAL_CLIP K00_control PASS set=missing get=text[ctl_0c016916549311c2]
+PERSONAL_CLIP K01_web_copy FAIL the copied canary reached the SYSTEM clipboard: [web_0c016916549311c2] attempts=1 page_ready=True copy_event={'step': 'copy', 'v': 'web_0c016916549311c2'}
+PERSONAL_CLIP K02_web_paste FAIL page received the system clipboard text: ['ctl_0c016916549311c2', 'ctl_0c016916549311c2'] attempts=1
+PERSONAL_CLIP K03_urlbar_copy FAIL the copied canary reached the SYSTEM clipboard: [omni_0c016916549311c2] pasted_back_into_url_bar=True
+PERSONAL_CLIP_UI tap OK  /(?i)^more options$|menu_button/ -> com.android.chrome:id/menu_button
+PERSONAL_CLIP_UI tap OK  /(?i)find in page/ -> com.android.chrome:id/menu_item_text
+PERSONAL_CLIP K04_find_in_page_copy FAIL the copied canary reached the SYSTEM clipboard: [find_0c016916549311c2] pasted_back_into_find_field=True
+PERSONAL_CLIP_PROBE X01 diag field_before='http://set_0c016916549311c2/' field_after='Enter custom web address' handler_log=False
+PERSONAL_CLIP_PROBE X01_settings_field LEAK the canary reached the SYSTEM clipboard: [http://set_0c016916549311c2/]
+PERSONAL_CLIP_SUMMARY pass=1 fail=4 not_run=0
+PERSONAL_AF env package=com.android.chrome abi=x86_64 sdk=36
+PERSONAL_AF autofill_service=com.swiftra.cliphelper/.FillSvc
+PERSONAL_AF A00_control PASS requests=['com.swiftra.cliphelper'] lines=['11-20 09:57:06.693  9272  9272 I CLIPHELPER: AUTOFILL_CONTROL enabled=true', '11-20 09:57:06.750  9272  9272 I CLIPHELPER: AUTOFILL_CONNECTED', '11-20 09:57:06.752  9272  9272 I CLIPHELPER: AUTOFILL_REQUEST pkg=com.swiftra.cliphelper', '11-20 09:57:06.770  9272  9272 I CLIPHELPER: AUTOFILL_CONNECTED']
+PERSONAL_AF A01_browser_form PASS form fields focused, no autofill request from com.android.chrome; requests=[] focus_seen=True
+PERSONAL_AF_SUMMARY pass=2 fail=0 not_run=0
+PERSONAL_CRED env package=com.android.chrome abi=x86_64 sdk=36
+PERSONAL_CRED credential_service=com.swiftra.cliphelper/.CredSvc primary=com.swiftra.cliphelper/.CredSvc
+PERSONAL_CRED C00_control PASS requests=['com.swiftra.cliphelper'] lines=['11-20 09:57:44.306  9272  9272 I CLIPHELPER: CRED_CONTROL_SENT', '11-20 09:57:44.476  9272  9272 I CLIPHELPER: CRED_GET pkg=com.swiftra.cliphelper', 'IPHELPER: CRED_CONTROL_ERROR android.credentials.GetCredentialException.TYPE_NO_CREDENTIAL']
+PERSONAL_CRED C01_browser FAIL the browser's passkey request reached the system credential provider (['com.android.chrome']) page_ready={'step': 'ready', 'v': 'true'} webauthn_result=NotAllowedError:The operation either timed out or was not allowed. See: https://www.w3.org/TR/we
+PERSONAL_CRED_SUMMARY pass=1 fail=1 not_run=0

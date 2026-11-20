@@ -1,0 +1,110 @@
+{
+ "scope": "Chrome 133.0.6943.137 (system image preinstalled, x64 emulator API36 google_apis) vs Swiftra personal-dev 155.0.8059.80 (4f18a60, apk d9a89bb5...). Chrome is NOT current stable (158) \u2013 the image cannot be updated.",
+ "runs": {
+  "chrome_reference": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44712836868",
+  "perf": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44713040218"
+ },
+ "perf": {
+  "chrome_cold_start_ms_rounds": [
+   [
+    2647,
+    1718,
+    2566,
+    1689,
+    1145,
+    1337,
+    1037
+   ],
+   [
+    1368,
+    1091,
+    1084,
+    1052,
+    1126,
+    1187,
+    1153
+   ],
+   [
+    1169,
+    954,
+    1013,
+    1087,
+    954,
+    1077,
+    1061
+   ],
+   [
+    960,
+    979,
+    1235,
+    1061,
+    1115,
+    1069,
+    989
+   ]
+  ],
+  "personal_cold_start_ms_rounds": [
+   [
+    973,
+    1001,
+    922,
+    836,
+    1040,
+    1000,
+    932
+   ],
+   [
+    1091,
+    1079,
+    900,
+    981,
+    935,
+    1153,
+    915
+   ],
+   [
+    919,
+    1016,
+    924,
+    957,
+    944,
+    799,
+    867
+   ],
+   [
+    875,
+    953,
+    909,
+    846,
+    926,
+    1095,
+    898
+   ]
+  ],
+  "chrome_pss_kb_sum": [
+   202876,
+   202530,
+   201543,
+   202072
+  ],
+  "personal_pss_kb_sum": [
+   312952,
+   312909,
+   314811,
+   312253
+  ],
+  "chrome_processes": 4,
+  "personal_processes": 5,
+  "summary": {
+   "chrome_all28_median": 1089.0,
+   "personal_all28_median": 933.5,
+   "chrome_excl_first_run_median": 1077,
+   "chrome_min": 954,
+   "personal_min": 799,
+   "chrome_max": 2647,
+   "personal_max": 1153,
+   "chrome_pss_mb": 197.5,
+   "personal_pss_mb": 305.9
+  }
+ }
+}

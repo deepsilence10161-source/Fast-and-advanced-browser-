@@ -1,0 +1,8 @@
+PERF_COMPARE {"package": "com.android.chrome", "version": "133.0.6943.137", "cold_start_ms": [2647, 1718, 2566, 1689, 1145, 1337, 1037], "median_ms": 1689, "pss_kb_sum": 202876, "processes": 4}
+PERF_COMPARE {"package": "com.swiftra.personaldev", "version": "155.0.8059.80", "cold_start_ms": [973, 1001, 922, 836, 1040, 1000, 932], "median_ms": 973, "pss_kb_sum": 312952, "processes": 5}
+PERF_COMPARE {"package": "com.swiftra.personaldev", "version": "155.0.8059.80", "cold_start_ms": [1091, 1079, 900, 981, 935, 1153, 915], "median_ms": 981, "pss_kb_sum": 312909, "processes": 5}
+PERF_COMPARE {"package": "com.android.chrome", "version": "133.0.6943.137", "cold_start_ms": [1368, 1091, 1084, 1052, 1126, 1187, 1153], "median_ms": 1126, "pss_kb_sum": 202530, "processes": 4}
+PERF_COMPARE {"package": "com.android.chrome", "version": "133.0.6943.137", "cold_start_ms": [1169, 954, 1013, 1087, 954, 1077, 1061], "median_ms": 1061, "pss_kb_sum": 201543, "processes": 4}
+PERF_COMPARE {"package": "com.swiftra.personaldev", "version": "155.0.8059.80", "cold_start_ms": [919, 1016, 924, 957, 944, 799, 867], "median_ms": 924, "pss_kb_sum": 314811, "processes": 5}
+PERF_COMPARE {"package": "com.swiftra.personaldev", "version": "155.0.8059.80", "cold_start_ms": [875, 953, 909, 846, 926, 1095, 898], "median_ms": 909, "pss_kb_sum": 312253, "processes": 5}
+PERF_COMPARE {"package": "com.android.chrome", "version": "133.0.6943.137", "cold_start_ms": [960, 979, 1235, 1061, 1115, 1069, 989], "median_ms": 1061, "pss_kb_sum": 202072, "processes": 4}
