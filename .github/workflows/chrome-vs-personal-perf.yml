@@ -1,4 +1,4 @@
-name: Chrome vs personal build: start time and memory (x64 emulator; measures only)
+name: "Chrome vs personal build - start time and memory (x64 emulator; measures only)"
 on:
   workflow_dispatch:
     inputs:
