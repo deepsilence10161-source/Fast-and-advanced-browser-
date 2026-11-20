@@ -8,8 +8,10 @@ timeout 180 adb wait-for-device
 adb root >/dev/null 2>&1; sleep 3; adb wait-for-device
 echo "CHROME_REF package=$PKG present=$(adb shell pm list packages "$PKG" | tr -d '\r')" | tee -a "$L"
 echo "CHROME_REF version=$(adb shell dumpsys package "$PKG" | grep -m1 versionName | tr -d '\r ') sdk=$(adb shell getprop ro.build.version.sdk | tr -d '\r') image=$(adb shell getprop ro.build.fingerprint | tr -d '\r')" | tee -a "$L"
+adb shell dumpsys package "$PKG" | grep -m2 -E "^ +(flags|pkgFlags)=" | sed "s/^/CHROME_REF /" | tee -a "$L"
 IN=$(timeout 300 adb install -r "$HELP" 2>&1 | tr -d '\r' | tail -1); echo "install helper: $IN" | tee -a "$L"
-mkdir -p "$OUT/egress" "$OUT/forensics" "$OUT/clip" "$OUT/af" "$OUT/cred"
+mkdir -p "$OUT/base" "$OUT/egress" "$OUT/forensics" "$OUT/clip" "$OUT/af" "$OUT/cred"
+timeout 1200 python3 -u scripts/ci/personal_e2e.py --package "$PKG" --out "$OUT/base" 2>&1 | tee -a "$L"
 timeout 900 python3 -u scripts/ci/personal_egress_audit.py --package "$PKG" --out "$OUT/egress" 2>&1 | tee -a "$L"
 timeout 1200 python3 -u scripts/ci/personal_forensics_e2e.py --package "$PKG" --out "$OUT/forensics" 2>&1 | tee -a "$L"
 timeout 1200 python3 -u scripts/ci/personal_clipboard_e2e.py --package "$PKG" --out "$OUT/clip" 2>&1 | tee -a "$L"
