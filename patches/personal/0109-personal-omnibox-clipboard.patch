@@ -67,15 +67,16 @@ index 69eeabe..cbadb25 100644
 diff --git a/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java b/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
 --- a/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
 +++ b/components/browser_ui/widget/android/java/src/org/chromium/components/browser_ui/widget/text/AlertDialogEditText.java
-@@ -6,6 +6,7 @@
+@@ -6,13 +6,16 @@
  
  import android.annotation.SuppressLint;
  import android.content.Context;
 +import android.text.Editable;
  import android.util.AttributeSet;
++import android.util.Log;
  import android.view.ViewStructure;
  
-@@ -13,6 +14,7 @@
+ import androidx.appcompat.widget.AppCompatEditText;
  
  import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
@@ -83,7 +84,7 @@ diff --git a/components/browser_ui/widget/android/java/src/org/chromium/componen
  import org.chromium.url.GURL;
  
  /**
-@@ -38,6 +40,24 @@
+@@ -38,6 +41,26 @@
      }
  
      @Override
@@ -97,6 +98,8 @@ diff --git a/components/browser_ui/widget/android/java/src/org/chromium/componen
 +            int upper = Math.max(0, Math.max(getSelectionStart(), getSelectionEnd()));
 +            if (upper > lower) {
 +                Clipboard.getInstance().setText(text.subSequence(lower, upper).toString());
++                // Length only, never the text: lets the device test prove this path ran.
++                Log.i("SwiftraClip", "contained edit-text copy/cut len=" + (upper - lower));
 +                if (id == android.R.id.cut) text.delete(lower, upper);
 +            }
 +            return true;

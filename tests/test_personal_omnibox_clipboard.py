@@ -76,6 +76,7 @@ def test_dialog_and_settings_edit_text_copy_cut_use_the_contained_clipboard(tmp_
     assert "id == android.R.id.copy || id == android.R.id.cut" in out
     assert "Clipboard.getInstance().setText(text.subSequence" in out
     assert "setPrimaryClip" not in out and "getSystemService" not in out
+    assert "Log.i(\"SwiftraClip\"" in out and "upper - lower" in out
     assert "import org.chromium.ui.base.Clipboard;" in out
     assert "onTextContextMenuItem" not in srcs[DIALOG]
 

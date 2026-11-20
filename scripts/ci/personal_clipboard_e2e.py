@@ -359,22 +359,25 @@ def main():
                 # it provably ran when the typed canary disappears from the field; the system clipboard must stay
                 # the control text. (An unpatched field would put the canary on the system clipboard = LEAK.)
                 before = edit_text_value(dev.dump() or "")
+                P.adb("logcat", "-c")
                 combo(CTRL, KA)
                 combo(CTRL, KX)
                 time.sleep(1.5)
-                after_dump = dev.dump() or ""
-                after = edit_text_value(after_dump)
-                print(f"PERSONAL_CLIP_PROBE X01 diag field_before={before!r} field_after_cut={after!r}", flush=True)
-                typed_back = ("set_" + tok) not in after_dump   # name kept: True = the cut was performed
+                after = edit_text_value(dev.dump() or "")
+                # The Settings field rewrites its text (http://.../), so the field content is no proof. The patched
+                # handler logs the LENGTH only (tag SwiftraClip) when it handled copy/cut: that proves the action ran.
+                log = P.adb("logcat", "-d", "-s", "SwiftraClip:I", timeout=30)
+                typed_back = "contained edit-text copy/cut" in log   # name kept: True = the patched handler ran
+                print(f"PERSONAL_CLIP_PROBE X01 diag field_before={before!r} field_after={after!r} handler_log={typed_back}", flush=True)
                 sk, st = helper("get")
                 if not control_ok or sk != "text":
                     res_probe("X01_settings_field", "NOT_RUN", f"control or helper unavailable ({sk})")
                 elif ("set_" + tok) in st or ("set_" + tok) in (st_copy or ""):
                     res_probe("X01_settings_field", "LEAK", f"the canary reached the SYSTEM clipboard: [{st}]")
                 elif typed_back and st == ctl:
-                    res_probe("X01_settings_field", "CONTAINED", "cut ran in the field (canary gone from it); system clipboard unchanged")
+                    res_probe("X01_settings_field", "CONTAINED", "the contained handler ran (SwiftraClip log) and the system clipboard is unchanged")
                 else:
-                    res_probe("X01_settings_field", "NOT_RUN", f"cut not demonstrated (cut_done={typed_back}) system=[{st}]")
+                    res_probe("X01_settings_field", "NOT_RUN", f"handler not demonstrated (handler_log={typed_back}) system=[{st}]")
         except Exception as e:  # noqa: BLE001
             res_probe("X01_settings_field", "NOT_RUN", "harness: " + repr(e)[:160])
     except Exception as e:  # noqa: BLE001
