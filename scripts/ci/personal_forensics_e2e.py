@@ -95,13 +95,13 @@ def open_clear_screen(dev, pkg):
           "--es", "show_fragment", "org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragment", timeout=60)
     for _ in range(6):
         time.sleep(2.5)
-        if dev.find(r"(?i)^clear data$|time range", ("text", "desc")):
+        if dev.find(r"(?i)^(clear|delete) data$|time range", ("text", "desc")):
             return True, "direct fragment"
     P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity", timeout=60)
     time.sleep(4)
-    if dev.tap(r"(?i)^privacy and security$|^privacy$", wait=3.0, tries=3) and dev.tap(r"(?i)^clear browsing data$", wait=3.0, tries=3):
+    if dev.tap(r"(?i)^privacy and security$|^privacy$", wait=3.0, tries=3) and dev.tap(r"(?i)^(clear|delete) browsing data$", wait=3.0, tries=3):
         for _ in range(4):
-            if dev.find(r"(?i)^clear data$|time range", ("text", "desc")):
+            if dev.find(r"(?i)^(clear|delete) data$|time range", ("text", "desc")):
                 return True, "settings menu path"
             time.sleep(2)
     return False, "screen not found; visible=" + repr(visible_texts(dev))
@@ -114,10 +114,10 @@ def clear_all_time(dev, pkg):
         return False, "clear-browsing-data " + how
     if dev.tap(r"(?i)last hour|last 24 hours|last 7 days|last 4 weeks|time range", wait=1.5, tries=1):
         dev.tap(r"(?i)^all time$", wait=1.5, tries=2)
-    pressed = dev.tap(r"(?i)^clear data$", wait=3.0, tries=3)
+    pressed = dev.tap(r"(?i)^(clear|delete) data$", wait=3.0, tries=3)
     if not pressed:
-        return False, "Clear data button not found; visible=" + repr(visible_texts(dev))
-    dev.tap(r"(?i)^clear$", wait=3.0, tries=1)   # confirmation dialog, when shown
+        return False, "Clear/Delete data button not found; visible=" + repr(visible_texts(dev))
+    dev.tap(r"(?i)^(clear|delete)$", wait=3.0, tries=1)   # confirmation dialog, when shown
     time.sleep(8)
     return True, f"Clear data pressed via {how} (time range All time requested)"
 
