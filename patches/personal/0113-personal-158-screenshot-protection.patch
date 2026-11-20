@@ -1,0 +1,33 @@
+--- a/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
++++ b/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
+@@ -274,24 +274,14 @@
+         updateScreenshotProtectionState();
+     }
+ 
+-    /** Sets the attributes flags to secure if screenshots should be blocked */
++    /**
++     * Swiftra personal (0113): the window is ALWAYS FLAG_SECURE and the recents thumbnail is always off. 158 moved the
++     * screenshot logic from IncognitoSnapshotController (0103) into this class, which clears the flag for normal tabs.
++     */
+     private void updateScreenshotProtectionState() {
+-        WindowManager.LayoutParams attributes = mWindow.getAttributes();
+-        boolean currentSecureState =
+-                (attributes.flags & WindowManager.LayoutParams.FLAG_SECURE)
+-                        == WindowManager.LayoutParams.FLAG_SECURE;
+-
+-        boolean expectedSecureState = isScreenshotBlocked();
+-
+-        if (currentSecureState == expectedSecureState) return;
+-
++        mWindow.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+-            mActivity.setRecentsScreenshotEnabled(!expectedSecureState);
+-        }
+-        if (expectedSecureState) {
+-            mWindow.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+-        } else {
+-            mWindow.clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
++            mActivity.setRecentsScreenshotEnabled(false);
+         }
+     }
+ 
