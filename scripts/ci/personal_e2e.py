@@ -454,15 +454,19 @@ def main():
                         m = json.loads(ws.recv())
                         if m.get("id") == mid[0]:
                             return (m.get("result", {}).get("result", {}) or {}).get("value")
+                for _ in range(15):
+                    if cdp_eval("!!document.querySelector('input[name=identifier], input#identifierId, input[type=email]')"):
+                        break
+                    time.sleep(2)
                 feats = cdp_eval("""(async()=>{const o={};
                   o.ua=navigator.userAgent; o.brands=(navigator.userAgentData&&navigator.userAgentData.brands||[]).map(b=>b.brand).join(',');
                   o.cookies=navigator.cookieEnabled; o.webauthn=typeof PublicKeyCredential!=='undefined';
                   o.fedcm=typeof IdentityCredential!=='undefined'; o.credmgmt=!!navigator.credentials;
                   o.popup=typeof window.open==='function'; o.webdriver=navigator.webdriver===true;
                   try{o.uvpaa=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()}catch(e){o.uvpaa='err:'+e.name}
-                  o.email_input=!!document.querySelector('input[type=email]'); return JSON.stringify(o)})()""", True)
+                  o.email_input=!!document.querySelector('input[name=identifier], input#identifierId, input[type=email]'); return JSON.stringify(o)})()""", True)
                 info = json.loads(feats) if feats else {}
-                typed = cdp_eval("""(()=>{const i=document.querySelector('input[type=email]'); if(!i) return 'no_input';
+                typed = cdp_eval("""(()=>{const i=document.querySelector('input[name=identifier], input#identifierId, input[type=email]'); if(!i) return 'no_input';
                   i.focus(); const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;
                   set.call(i,'swiftra.e2e.nonexistent.%s@gmail.com'); i.dispatchEvent(new Event('input',{bubbles:true}));
                   const b=document.querySelector('#identifierNext button, #identifierNext'); if(!b) return 'no_next'; b.click(); return 'clicked'})()""" % secrets.token_hex(6))
