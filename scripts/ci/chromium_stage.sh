@@ -73,7 +73,7 @@ fi
 # Size/speed experiment variant (personal-lean): official-style optimisation (ThinLTO is on by default with
 # is_official_build on Android) and no XR/ARCore code. Separate state, never replaces personal-dev.
 if [[ "$STATE" == *-personal-lean ]]; then
-  ARGS=$(printf '%s\n' "$ARGS" | grep -v '^is_official_build *=')
+  ARGS=$(printf '%s\n' "$ARGS" | grep -v -E '^(is_official_build|chrome_pgo_phase|chrome_orderfile_path|use_mold) *=')
   ARGS=$(printf '%s\n%s' "$ARGS" "$(grep -v '^#' "$CI_DIR/args.lean.gn")")
 fi
 PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")

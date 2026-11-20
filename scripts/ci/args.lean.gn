@@ -4,3 +4,6 @@ is_official_build = true
 enable_arcore = false
 enable_cardboard = false
 build_apk_secondary_abi = false
+# official arm64 instantiates the 32-bit toolchain, whose PGO profile (android32) is not fetched here: no PGO/orderfile
+# in this experiment, so it measures ThinLTO + no-XR size only (startup is NOT comparable to personal-dev, which has PGO).
+chrome_pgo_phase = 0
