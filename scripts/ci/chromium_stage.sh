@@ -70,6 +70,12 @@ if [ "$CPU" = arm64 ] && [[ "$STATE" != *-a1 ]]; then
   ARGS=$(printf '%s\n%s\n%s\n%s' "$ARGS" 'chrome_pgo_phase = 2' \
     'chrome_orderfile_path = "//chrome/android/orderfiles/arm64/orderfile.arm64.out"' 'use_mold = false')
 fi
+# Size/speed experiment variant (personal-lean): official-style optimisation (ThinLTO is on by default with
+# is_official_build on Android) and no XR/ARCore code. Separate state, never replaces personal-dev.
+if [[ "$STATE" == *-personal-lean ]]; then
+  ARGS=$(printf '%s\n' "$ARGS" | grep -v '^is_official_build *=')
+  ARGS=$(printf '%s\n%s' "$ARGS" "$(grep -v '^#' "$CI_DIR/args.lean.gn")")
+fi
 PATCH_HASH=$(python3 "$CI_DIR/patches.py" hash "$PDIR")
 # release signing: patches/signing_cert_sha256.txt (public, अपेक्षित cert SHA-256) हो तो ज़रूरी (finalize_apk.sh)
 EXP_CERT=""

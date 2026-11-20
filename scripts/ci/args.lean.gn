@@ -1,0 +1,5 @@
+# personal-lean experiment (arm64): measured against the personal-dev build of the same sources.
+# Without these, libchrome.so is 226 MB and the APK 367 MB (docs/apk-size-and-158-rebase.md).
+is_official_build = true
+enable_arcore = false
+enable_cardboard = false
