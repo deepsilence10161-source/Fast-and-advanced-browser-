@@ -22,12 +22,13 @@ DROP = {"0103-personal-egress-and-storage.patch": _DROP3 + ["ui/android/BUILD.gn
 CACHE = pathlib.Path("/home/user/w/cache158")
 
 
-def fetch(f):
-    cp = CACHE / TAG / f
+def fetch(f, tag=None):
+    tag = tag or TAG
+    cp = CACHE / tag / f
     if cp.exists():
         d = cp.read_bytes()
         return None if d == b"\x00404" else d
-    u = f"https://raw.githubusercontent.com/chromium/chromium/{TAG}/{f}"
+    u = f"https://raw.githubusercontent.com/chromium/chromium/{tag}/{f}"
     for n in range(8):
         try:
             d = urllib.request.urlopen(u, timeout=60).read()
@@ -66,6 +67,29 @@ def make_diff(path, pre, post):
 def sha(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
+BASE_TAG = "155.0.8059.80"   # the tag the series was written against (zero-context hunks are line-addressed to it)
+
+def u0_sections(text):
+    """Files whose hunks carry no context line (diff -U0 style). Applying those by line number to another tag silently
+    lands in the wrong place (seen: 0103 download_prefs.cc inside DefaultDownloadDirectory), so they are re-derived
+    semantically: apply to the BASE tag tree, take a context diff, apply THAT to the target tag."""
+    out = set()
+    for h, sec in split_sections(text):
+        if sec.startswith("--- /dev/null"):
+            continue
+        hunks, cur = [], None
+        for l in sec.splitlines():
+            if l.startswith("@@"):
+                cur = {"ctx": False}; hunks.append(cur)
+            elif cur is not None and l.startswith(" "):
+                cur["ctx"] = True
+        if hunks and any(not x["ctx"] for x in hunks):
+            out.add(h)
+    return out
+
+# sections that must never go through fuzzy `patch` (it silently lands them in the wrong function): the FIX is the source of truth
+ALWAYS_FIX = {"0011-swiftra-fingerprint-shield.patch": ["third_party/blink/renderer/modules/webaudio/offline_audio_context.cc"]}
+
 FIXES = {}
 def fix(name):
     def deco(fn):
@@ -89,20 +113,24 @@ def _(root):  # the tag already enables kHttpsFirstBalancedModeAutoEnable upstre
     assert re.search(r"kHttpsFirstBalancedModeAutoEnable,\s*base::FEATURE_ENABLED_BY_DEFAULT", t)
 
 @fix("0011-swiftra-fingerprint-shield.patch")
-def _(root):
+def _(root):  # 158 renders OfflineAudioContext in chunks: noise the target right before its promise is resolved
     p = root / "third_party/blink/renderer/modules/webaudio/offline_audio_context.cc"
     t = p.read_text()
-    anchor = "    // Call the offline rendering completion event listener.\n"
+    inc = '#include "third_party/blink/renderer/core/frame/local_dom_window.h"\n'
+    assert t.count(inc) == 1
+    t = t.replace(inc, inc + '#include "third_party/blink/renderer/core/frame/swiftra_fingerprint_shield.h"\n')
+    anchor = "  CHECK(rendered_buffer);\n  // Keep the target queued across `Resolve()`"
     assert t.count(anchor) == 1
-    add = ("    // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).\n"
-           "    if (const uint64_t key = SwiftraFingerprintKey(GetExecutionContext())) {\n"
-           "      for (unsigned channel = 0; channel < rendered_buffer->numberOfChannels();\n"
-           "           ++channel) {\n"
-           "        base::span<float> samples =\n"
-           "            rendered_buffer->getChannelData(channel)->AsSpan();\n"
-           "        SwiftraNoiseAudio(key, samples.data(), samples.size(), channel);\n"
-           "      }\n    }\n\n")
-    p.write_text(t.replace(anchor, add + anchor))
+    add = ("  CHECK(rendered_buffer);\n"
+           "  // Swiftra fingerprint shield (core/frame/swiftra_fingerprint_shield.h).\n"
+           "  if (const uint64_t key = SwiftraFingerprintKey(GetExecutionContext())) {\n"
+           "    for (unsigned channel = 0; channel < rendered_buffer->numberOfChannels();\n"
+           "         ++channel) {\n"
+           "      base::span<float> samples =\n"
+           "          rendered_buffer->getChannelData(channel)->AsSpan();\n"
+           "      SwiftraNoiseAudio(key, samples.data(), samples.size(), channel);\n"
+           "    }\n  }\n  // Keep the target queued across `Resolve()`")
+    p.write_text(t.replace(anchor, add))
 
 def main():
     order = [(d, n) for d in ("patches", "patches/personal") for n in P.read_series(str(ROOT / d))]
@@ -122,6 +150,14 @@ def main():
             elif b is not None:
                 p = WORK / f; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(b)
     print("tag", TAG, "files", len(files), "fetch_errors", errs)
+    WORK0 = WORK.parent / (WORK.name + "_base")
+    shutil.rmtree(WORK0, ignore_errors=True)
+    with cf.ThreadPoolExecutor(8) as ex:
+        for f, b in zip(files, ex.map(lambda f: fetch(f, BASE_TAG), files)):
+            if b == b"ERR": errs.append("BASE:" + f)
+            elif b is not None:
+                p = WORK0 / f; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(b)
+    print("base tag", BASE_TAG, "fetch_errors", errs)
     report = []
     for d, name in order:
         pf = ROOT / d / name
@@ -142,12 +178,35 @@ def main():
         drop = set(DROP.get(name, []))
         secs = [(h, s) for h, s in split_sections(text) if h not in drop]
         affected = [h for h, _ in secs]
+        # zero-context sections: derive a context diff on the BASE tag, then use that on the target tag
+        u0 = u0_sections(text) - drop
+        if u0:
+            sec0 = "".join(sx for h, sx in secs if h in u0)
+            t0 = WORK.parent / "_u0.patch"; t0.write_text(sec0)
+            pre0 = {h: ((WORK0 / h).read_text() if (WORK0 / h).exists() else None) for h in u0}
+            r0 = subprocess.run(["patch", "-p1", "--fuzz=0", "--batch", "--forward", "--no-backup-if-mismatch", "-i", str(t0)],
+                                cwd=WORK0, capture_output=True, text=True)
+            if r0.returncode or list(WORK0.rglob("*.rej")):
+                print("BASE-TAG apply failed", name, r0.stdout[-500:]); sys.exit(1)
+            conv = {h: make_diff(h, pre0[h], (WORK0 / h).read_text()) for h in u0}
+            secs = [(h, conv.get(h, sx)) for h, sx in secs]
+            print(f"   {name}: {len(u0)} zero-context file(s) re-derived semantically")
+        always = set(ALWAYS_FIX.get(name, []))
+        # keep non-U0 sections of this patch applied to the BASE tree too (later patches build on them)
+        nonu0 = "".join(sx for h, sx in split_sections(text) if h not in drop and h not in u0)
+        if nonu0:
+            t1 = WORK.parent / "_n0.patch"; t1.write_text(nonu0)
+            subprocess.run(["patch", "-p1", "--fuzz=0", "--batch", "--forward", "--no-backup-if-mismatch", "-i", str(t1)],
+                           cwd=WORK0, capture_output=True, text=True)
         pre = {h: ((WORK / h).read_text() if (WORK / h).exists() else None) for h in affected}
-        tmp = WORK.parent / "_one.patch"; tmp.write_text("".join(s for _, s in secs))
+        tmp = WORK.parent / "_one.patch"; tmp.write_text("".join(s for h, s in secs if h not in always))
         r = subprocess.run(["patch", "-p1", "--fuzz=3", "--batch", "--forward", "--no-backup-if-mismatch", "-i", str(tmp)],
                            cwd=WORK, capture_output=True, text=True)
         rej = list(WORK.rglob("*.rej"))
-        if rej:
+        if always:
+            for x in rej: x.unlink()
+            FIXES[name](WORK)
+        elif rej:
             if name in FIXES:
                 for x in rej: x.unlink()
                 FIXES[name](WORK)
