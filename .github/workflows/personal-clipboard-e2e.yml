@@ -14,7 +14,7 @@ on:
         options: [personal_clipboard_e2e.py, personal_autofill_e2e.py, personal_cred_e2e.py, personal_forensics_e2e.py]
         default: personal_clipboard_e2e.py
       variant: { description: "state variant", default: personal-dev }
-      tag: { default: "155.0.8059.80" }
+      tag: { default: "158.0.8127.42" }
       expect:
         description: "clipboard expectation: system (0112+ builds, copy must work) or contained (older builds)"
         type: choice

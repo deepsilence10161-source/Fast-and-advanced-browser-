@@ -27,7 +27,7 @@ on:
       variant:
         default: personal-dev
       tag:
-        default: "155.0.8059.80"
+        default: "158.0.8127.42"
       redroid_image:
         default: "redroid/redroid:14.0.0_64only-latest"
 permissions:

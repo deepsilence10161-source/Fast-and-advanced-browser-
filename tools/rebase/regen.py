@@ -5,7 +5,7 @@ For every .patch in series order: apply onto the tag's pristine files (fuzz allo
 explicit FIXES below, then write a fresh offset-free diff (pre -> post). Guards: their EXPECTED hashes are refreshed
 from the tree state at that point. Transform scripts that need the full tree (0002 needs grit) are NOT run here.
 Source preparation only: no compile, no device."""
-import sys, os, re, json, difflib, hashlib, subprocess, shutil, pathlib, urllib.request, urllib.error, concurrent.futures as cf
+import pathlib, time, sys, os, re, json, difflib, hashlib, subprocess, shutil, pathlib, urllib.request, urllib.error, concurrent.futures as cf
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts/ci"))
 import patches as P
@@ -19,16 +19,29 @@ _DROP3 = ["ui/android/java/src/org/chromium/ui/base/Clipboard.java",
 DROP = {"0103-personal-egress-and-storage.patch": _DROP3 + ["ui/android/BUILD.gn", "ui/android/java/src/org/chromium/ui/base/BrowserContainedClipboard.java"],
         "0112-personal-relax-clipboard-files-signin-scrub.patch": _DROP3}
 
+CACHE = pathlib.Path("/home/user/w/cache158")
+
+
 def fetch(f):
+    cp = CACHE / TAG / f
+    if cp.exists():
+        d = cp.read_bytes()
+        return None if d == b"\x00404" else d
     u = f"https://raw.githubusercontent.com/chromium/chromium/{TAG}/{f}"
-    for _ in range(4):
+    for n in range(8):
         try:
-            return urllib.request.urlopen(u, timeout=60).read()
+            d = urllib.request.urlopen(u, timeout=60).read()
+            cp.parent.mkdir(parents=True, exist_ok=True)
+            cp.write_bytes(d)
+            return d
         except urllib.error.HTTPError as e:
             if e.code == 404:
+                cp.parent.mkdir(parents=True, exist_ok=True)
+                cp.write_bytes(b"\x00404")
                 return None
+            time.sleep(20 * (n + 1) if e.code == 429 else 3)
         except Exception:
-            pass
+            time.sleep(3)
     return b"ERR"
 
 def split_sections(text):

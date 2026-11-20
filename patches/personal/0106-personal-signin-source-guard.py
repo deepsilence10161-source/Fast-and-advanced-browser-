@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Refuse source drift before the opt-in sign-in message patch writes anything.
 
-Runs AFTER the ordinary series and personal 0100-0105 on a restored Chromium 155.0.8059.80 tree.
+Runs AFTER the ordinary series and personal 0100-0105 on a restored Chromium 158.0.8127.42 tree.
 The pinned files are not modified by any earlier patch. New outputs must be absent.
 Source integrity only; it says nothing about Face Guard behaviour on a device. No file is written.
 """

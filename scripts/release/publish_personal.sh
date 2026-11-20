@@ -20,12 +20,12 @@ P
 fi
 rid=$(python3 -c "import sys,json;print(json.loads(sys.argv[1])['id'])" "$rel")
 for cpu in "$@"; do
-  st=crstate-155.0.8059.80-$cpu-personal-dev
+  st=crstate-158.0.8127.42-$cpu-personal-dev
   src=$(api "https://api.github.com/repos/$R/releases?per_page=50" | python3 -c "
 import sys,json
 for r in json.load(sys.stdin):
   if r['tag_name']=='$st': print(json.dumps({a['name']:a['id'] for a in r['assets']}))")
-  aid=$(python3 -c "import sys,json;print(json.loads(sys.argv[1]).get('ChromePublic-155.0.8059.80-$cpu.apk',''))" "$src")
+  aid=$(python3 -c "import sys,json;print(json.loads(sys.argv[1]).get('ChromePublic-158.0.8127.42-$cpu.apk',''))" "$src")
   bid=$(python3 -c "import sys,json;print(json.loads(sys.argv[1]).get('BUILD_INFO.txt',''))" "$src")
   [ -n "$aid" ] && [ -n "$bid" ] || { echo "NO APK for $cpu yet"; exit 3; }
   curl -fsSL -H "$H" -H "Accept: application/octet-stream" "https://api.github.com/repos/$R/releases/assets/$bid" -o BUILD_INFO-$cpu.txt

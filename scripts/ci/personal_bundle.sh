@@ -13,7 +13,7 @@ configure_personal_bundle() {
     fi
     return 0
   fi
-  if [ "$tag" != 155.0.8059.80 ] || { [ "$cpu" != x64 ] && [ "$cpu" != arm64 ]; }; then
+  if [ "$tag" != 158.0.8127.42 ] || { [ "$cpu" != x64 ] && [ "$cpu" != arm64 ]; }; then
     echo "REFUSED: personal source layer requires its reviewed tag and ABI" >&2
     return 1
   fi

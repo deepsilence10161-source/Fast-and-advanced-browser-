@@ -128,7 +128,7 @@ def prepare(repo: Path, output: Path, package: str, variant: str) -> dict:
         receipt = {
             "schema_version": 2,
             "scope": "SOURCE-ONLY OPT-IN DEVELOPMENT BUNDLE; NOT A BUILT OR TESTED BROWSER",
-            "pinned_tag": "155.0.8059.80",
+            "pinned_tag": "158.0.8127.42",
             "package": package,
             "variant": variant,
             "base_patch_hash": helper.series_hash(str(base), base_series),
