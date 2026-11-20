@@ -476,7 +476,7 @@ def main():
                 detail = f"features={json.dumps(info)} typed={typed} page_text={body[:160]!r}"
                 if typed != "clicked" or not info.get("email_input"):
                     res("C12_google_signin_flow", "NOT_RUN", "email field not found; " + detail)
-                elif re.search(r"(?i)couldn.t find your google account|find your google account", body):
+                elif re.search(r"(?i)couldn.t find (your google|this) account|enter a valid email", body):
                     ok = info.get("cookies") and info.get("credmgmt") and not info.get("webdriver")
                     res("C12_google_signin_flow", "PASS" if ok else "FAIL", detail)
                 elif re.search(r"(?i)not secure|try using a different browser|unsupported|couldn.t sign you in", body):
