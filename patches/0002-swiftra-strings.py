@@ -112,7 +112,7 @@ FACT_FIXES = [
          old="Protects against sites, downloads, and extensions that are known to be dangerous. If a page "
              "does something suspicious, URLs and bits of page content are sent to Google Safe Browsing.",
          new="Protects you from sites, downloads, and extensions that are known to be dangerous",
-         tr_from=("chrome/app/generated_resources.grd", "IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_SUBTITLE")),
+         tr_from=("chrome/app/generated_resources.grd", "IDS_SETTINGS_SECURITY_SAFE_BROWSING_STANDARD_SUBTITLE"), english_only_ok=True),
     # Enhanced: Swiftra runs no AI model (no CSD/on-device model without an API key); what it does is
     # real-time URL checks with Google + Shield. -> Chrome's own desktop Enhanced subtitle (no AI claim,
     # same data disclosure).
@@ -121,7 +121,7 @@ FACT_FIXES = [
          old="Real-time, AI-powered protection against dangerous sites, downloads, and extensions that's "
              "based on your browsing data getting sent to Google",
          new="Real-time, proactive protection by sending more information to Google Safe Browsing",
-         tr_from=("chrome/app/generated_resources.grd", "IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_SUBTITLE")),
+         tr_from=("chrome/app/generated_resources.grd", "IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_SUBTITLE"), english_only_ok=True),
 ]
 
 
@@ -258,6 +258,11 @@ def fact_fix(src, fx, log):
     sgrd, sname = fx["tr_from"]
     src_ids = [i for i, txt, nm in message_ids(src, os.path.join(src, sgrd), names=True) if nm == sname and txt == new_txt]
     if len(src_ids) != 1:
+        if fx.get("english_only_ok") and not src_ids:
+            # 158: upstream ने desktop subtitle message हटा दिए -> अनुवाद-स्रोत नहीं। अंग्रेज़ी सही रहेगी; दूसरी भाषाएँ
+            # नई ID पर अनुवाद-रहित = अंग्रेज़ी fallback (झूठे दावे वाला पुराना अनुवाद नहीं दिखेगा)।
+            log(f"[fact] {fx['name']}: स्रोत-अनुवाद नहीं ({sgrd}:{sname}); केवल अंग्रेज़ी बदली, ID {old_id} -> {new_id}")
+            return [f]
         raise SystemExit(f"[fact] {fx['name']}: स्रोत {sgrd}:{sname} में '{new_txt}' {len(src_ids)} बार")
     sid = src_ids[0]
     # भाषा का मेल xtb file-suffix से (lang attribute grd-दर-grd अलग हो सकता है: "iw" बनाम "he")
