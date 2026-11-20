@@ -42,7 +42,7 @@ def capture(pkg, name, actions, duration, out):
     if adb("shell", "settings", "get", "global", "adb_enabled").strip() != "1":
         adb("shell", "settings", "put", "global", "adb_enabled", "1")
     adb("shell", "am", "set-debug-app", "--persistent", pkg)
-    flags = f"_ --log-net-log={netlog} --net-log-file-format=ndjson --net-log-duration={duration}"
+    flags = f"_ --disable-fre --log-net-log={netlog} --net-log-file-format=ndjson --net-log-duration={duration}"
     adb("shell", f"echo '{flags}' > {sn.CMDLINE_FILE} && chmod 644 {sn.CMDLINE_FILE}")
     t0 = time.time()
     try:

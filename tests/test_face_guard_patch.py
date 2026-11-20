@@ -32,7 +32,8 @@ def test_series_is_personal_only_and_ordered():
     names = [n for n in (PERSONAL / "series").read_text().splitlines() if n and not n.startswith("#")]
     assert names[4:6] == ["0104-face-guard-source-guard.py", "0105-face-guard-presence-mode.patch"]
     assert names[6:8] == ["0106-personal-signin-source-guard.py", "0107-personal-signin-message.patch"]
-    assert names[8:] == ["0108-personal-omnibox-source-guard.py", "0109-personal-omnibox-clipboard.patch"]
+    assert names[8:10] == ["0108-personal-omnibox-source-guard.py", "0109-personal-omnibox-clipboard.patch"]
+    assert names[10:] == ["0110-personal-google-egress-source-guard.py", "0111-personal-google-egress.patch"]
     assert names.index("0103-personal-egress-and-storage.patch") < names.index(names[4])
     ordinary = (ROOT / "patches/series").read_text()
     assert "face-guard" not in ordinary and "0104" not in ordinary and "0105" not in ordinary

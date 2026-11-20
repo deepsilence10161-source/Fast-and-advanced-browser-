@@ -42,6 +42,7 @@ egress_guard = load("personal_egress_guard", PERSONAL / "0102-personal-egress-so
 face_guard = load("personal_face_guard", PERSONAL / "0104-face-guard-source-guard.py")
 signin_guard = load("personal_signin_guard", PERSONAL / "0106-personal-signin-source-guard.py")
 omni_guard = load("personal_omni_guard", PERSONAL / "0108-personal-omnibox-source-guard.py")
+gegress_guard = load("personal_gegress_guard", PERSONAL / "0110-personal-google-egress-source-guard.py")
 
 
 @pytest.fixture(scope="module")
@@ -63,7 +64,7 @@ def patched(tmp_path_factory, upstream):
     write_inputs(folder, upstream)
     receipts = fixture_tools.apply_strict(folder)
     assert [row["entry"] for row in receipts] == fixture_tools.series()
-    assert len(receipts) == 10
+    assert len(receipts) == 12
     return folder
 
 
@@ -289,7 +290,7 @@ def test_bundle_is_explicit_separate_and_reproducible(tmp_path):
     assert {p: (ROOT / "patches" / p).read_bytes() for p in before} == before
     series = patch_tools.read_series(str(tmp_path / "one/patches"))
     native_series = patch_tools.read_series(str(PERSONAL))
-    assert len(native_series) == 10
+    assert len(native_series) == 12
     assert series[:-len(native_series)] == patch_tools.read_series(str(ROOT / "patches"))
     assert series[-len(native_series):] == native_series
     assert first["base_patch_hash"] != first["composed_patch_hash"]
@@ -345,7 +346,8 @@ def test_existing_patch_engine_tracks_the_opt_in_native_layer(tmp_path, upstream
                                    | set(egress_guard.EXPECTED) | set(egress_guard.NEW_PATHS)
                                    | set(face_guard.EXPECTED) | set(face_guard.NEW_PATHS)
                                        | set(signin_guard.EXPECTED) | set(signin_guard.NEW_PATHS)
-                                       | set(omni_guard.EXPECTED) | set(omni_guard.NEW_PATHS))
+                                       | set(omni_guard.EXPECTED) | set(omni_guard.NEW_PATHS)
+                                           | set(gegress_guard.EXPECTED) | set(gegress_guard.NEW_PATHS))
     assert state["epoch"] == 1234567890 and state["changed"]
     for path in state["files"]:
         assert (source / path).stat().st_mtime == 1234567890

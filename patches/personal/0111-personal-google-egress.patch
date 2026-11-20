@@ -1,0 +1,33 @@
+diff --git a/components/omnibox/browser/aim_eligibility_service_features.cc b/components/omnibox/browser/aim_eligibility_service_features.cc
+--- a/components/omnibox/browser/aim_eligibility_service_features.cc
++++ b/components/omnibox/browser/aim_eligibility_service_features.cc
+@@ -8,7 +8,11 @@
+ 
+ namespace omnibox {
+ 
+-BASE_FEATURE(kAimEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
++// Swiftra personal build: AI Mode is off. With this kill switch the eligibility
++// service never starts, so no request to www.google.com/async/folae and no
++// accounts.google.com/ListAccounts is made on startup (both would carry the
++// browser's Google cookies once the user is logged in to a Google site).
++BASE_FEATURE(kAimEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kAimServerEligibilityEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+diff --git a/components/network_time/network_time_tracker.cc b/components/network_time/network_time_tracker.cc
+--- a/components/network_time/network_time_tracker.cc
++++ b/components/network_time/network_time_tracker.cc
+@@ -59,11 +59,9 @@
+ 
+ // Network time queries are enabled on Android and all desktop platforms except
+ // Chrome OS, which uses tlsdated to set the system time.
+-#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_IOS)
++// Swiftra personal build: off everywhere. The query is an unauthenticated GET to
++// clients2.google.com/time/1/current; without it the system clock is trusted.
+ BASE_FEATURE(kNetworkTimeServiceQuerying, base::FEATURE_DISABLED_BY_DEFAULT);
+-#else
+-BASE_FEATURE(kNetworkTimeServiceQuerying, base::FEATURE_ENABLED_BY_DEFAULT);
+-#endif
+ 
+ namespace {
+ 

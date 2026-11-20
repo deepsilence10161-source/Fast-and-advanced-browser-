@@ -1,0 +1,32 @@
+{
+  "pinned_tag": "155.0.8059.80",
+  "status_semantics": "FETCHED and hashed; not all lines audited or executed",
+  "files": [
+    {
+      "path": "components/omnibox/browser/aim_eligibility_service_features.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/omnibox/browser/aim_eligibility_service_features.cc",
+      "status": "FETCHED",
+      "sha256": "9f4d3dc7848870c2665802d1f42023ac11a6696333d76a332b66a17c6b945278",
+      "bytes": 4065,
+      "lines": 100
+    },
+    {
+      "path": "components/network_time/network_time_tracker.cc",
+      "url": "https://chromium.googlesource.com/chromium/src/+/refs/tags/155.0.8059.80/components/network_time/network_time_tracker.cc",
+      "status": "FETCHED",
+      "sha256": "216a2fc23756e4a4010144720c5c9d2cc728cd5d43f3b2c4bfee246ed189cb33",
+      "bytes": 24852,
+      "lines": 661
+    }
+  ],
+  "fixture_paths": [
+    "components/omnibox/browser/aim_eligibility_service_features.cc",
+    "components/network_time/network_time_tracker.cc"
+  ],
+  "fixture_gzip_sha256": "02e419a667c519cbc9c75f8774af8680ae7f56ab15d88768c87b165c720a68b8",
+  "native_source_outputs": [
+    "components/omnibox/browser/aim_eligibility_service_features.cc",
+    "components/network_time/network_time_tracker.cc"
+  ],
+  "not_android_acceptance": true
+}

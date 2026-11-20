@@ -120,6 +120,16 @@ def find_edit_text(xml):
     return None
 
 
+def edit_text_value(xml):
+    """text attribute of the first android.widget.EditText node (diagnostics for the X01 probe)."""
+    for m in re.finditer(r"<node [^>]*>", xml):
+        n = m.group(0)
+        if 'class="android.widget.EditText"' in n:
+            t = re.search(r'\btext="([^"]*)"', n)
+            return t.group(1) if t else None
+    return None
+
+
 def summarize(results):
     c = {"PASS": 0, "FAIL": 0, "NOT_RUN": 0}
     for r in results:
@@ -348,10 +358,14 @@ def main():
                 # native paste reads the SYSTEM clipboard, so pasting cannot show a contained copy. Use CUT instead:
                 # it provably ran when the typed canary disappears from the field; the system clipboard must stay
                 # the control text. (An unpatched field would put the canary on the system clipboard = LEAK.)
+                before = edit_text_value(dev.dump() or "")
                 combo(CTRL, KA)
                 combo(CTRL, KX)
                 time.sleep(1.5)
-                typed_back = ("set_" + tok) not in (dev.dump() or "")   # name kept: True = the cut was performed
+                after_dump = dev.dump() or ""
+                after = edit_text_value(after_dump)
+                print(f"PERSONAL_CLIP_PROBE X01 diag field_before={before!r} field_after_cut={after!r}", flush=True)
+                typed_back = ("set_" + tok) not in after_dump   # name kept: True = the cut was performed
                 sk, st = helper("get")
                 if not control_ok or sk != "text":
                     res_probe("X01_settings_field", "NOT_RUN", f"control or helper unavailable ({sk})")

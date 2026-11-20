@@ -9,3 +9,5 @@
 0107-personal-signin-message.patch
 0108-personal-omnibox-source-guard.py
 0109-personal-omnibox-clipboard.patch
+0110-personal-google-egress-source-guard.py
+0111-personal-google-egress.patch
