@@ -1,0 +1,47 @@
+name: Personal egress audit (x64 emulator; measures only, never publishes)
+# What does the personal development APK contact on its own / while browsing a neutral site? NetLog based
+# (scripts/ci/personal_egress_audit.py). Report only; no account is used.
+on:
+  workflow_dispatch:
+    inputs:
+      variant:
+        default: personal-dev
+      tag:
+        default: "155.0.8059.80"
+permissions:
+  contents: write
+jobs:
+  x64-egress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - name: Fetch personal development APK + BUILD_INFO (SHA-256 must match)
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          ST=crstate-${{ inputs.tag }}-x64-${{ inputs.variant }}; T=personal_x64; mkdir -p dl out/$T
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p "ChromePublic-${{ inputs.tag }}-x64.apk" -O dl/ChromePublic.apk
+          gh release download "$ST" -R "$GITHUB_REPOSITORY" -p BUILD_INFO.txt -O out/$T/BUILD_INFO.txt
+          test "$(sha256sum dl/ChromePublic.apk | cut -d' ' -f1)" = "$(grep -A1 -- '--- sha256' out/$T/BUILD_INFO.txt | tail -1)"
+          grep -E "^(package|application-label|native-code)" out/$T/BUILD_INFO.txt
+      - run: pip install -q websocket-client
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Personal egress audit on x64 emulator (API 36, google_apis)
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          ram-size: 4096M
+          disk-size: 8G
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-snapshot
+          disable-animations: true
+          script: bash scripts/ci/personal_egress_run.sh personal_x64 dl/ChromePublic.apk
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: personal-egress-x64, path: out/ }
