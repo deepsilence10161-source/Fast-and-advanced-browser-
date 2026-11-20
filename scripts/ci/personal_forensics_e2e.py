@@ -82,25 +82,44 @@ def summarize_hits(found):
     return {"files": allfiles, "by_pattern": {k: len(v) for k, v in found.items()}}
 
 
+def visible_texts(dev, limit=25):
+    try:
+        return [n["text"] or n["desc"] for n in dev.nodes(dev.dump()) if (n["text"] or n["desc"])][:limit]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def open_clear_screen(dev, pkg):
+    """Direct fragment launch first, then the visible menu path (Settings > Privacy and security > Clear browsing data)."""
+    P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity",
+          "--es", "show_fragment", "org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragment", timeout=60)
+    for _ in range(6):
+        time.sleep(2.5)
+        if dev.find(r"(?i)^clear data$|time range", ("text", "desc")):
+            return True, "direct fragment"
+    P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity", timeout=60)
+    time.sleep(4)
+    if dev.tap(r"(?i)^privacy and security$|^privacy$", wait=3.0, tries=3) and dev.tap(r"(?i)^clear browsing data$", wait=3.0, tries=3):
+        for _ in range(4):
+            if dev.find(r"(?i)^clear data$|time range", ("text", "desc")):
+                return True, "settings menu path"
+            time.sleep(2)
+    return False, "screen not found; visible=" + repr(visible_texts(dev))
+
+
 def clear_all_time(dev, pkg):
     """Drive Settings > Clear browsing data. Returns (ok, detail). ok only if the Clear button was really pressed."""
-    for frag in ("org.chromium.chrome.browser.browsing_data.ClearBrowsingDataTabsFragment",
-                 "org.chromium.chrome.browser.browsing_data.ClearBrowsingDataFragment"):
-        P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity",
-              "--es", "show_fragment", frag, timeout=60)
-        time.sleep(4)
-        if dev.find(r"(?i)clear data|time range", ("text", "desc", "id")):
-            break
-    else:
-        return False, "clear-browsing-data screen not found"
+    opened, how = open_clear_screen(dev, pkg)
+    if not opened:
+        return False, "clear-browsing-data " + how
     if dev.tap(r"(?i)last hour|last 24 hours|last 7 days|last 4 weeks|time range", wait=1.5, tries=1):
         dev.tap(r"(?i)^all time$", wait=1.5, tries=2)
     pressed = dev.tap(r"(?i)^clear data$", wait=3.0, tries=3)
     if not pressed:
-        return False, "Clear data button not found"
+        return False, "Clear data button not found; visible=" + repr(visible_texts(dev))
     dev.tap(r"(?i)^clear$", wait=3.0, tries=1)   # confirmation dialog, when shown
     time.sleep(8)
-    return True, "Clear data pressed (time range All time requested)"
+    return True, f"Clear data pressed via {how} (time range All time requested)"
 
 
 def main():
