@@ -3,3 +3,4 @@
 is_official_build = true
 enable_arcore = false
 enable_cardboard = false
+build_apk_secondary_abi = false
