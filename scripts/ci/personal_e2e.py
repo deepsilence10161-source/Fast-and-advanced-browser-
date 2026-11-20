@@ -410,13 +410,13 @@ def main():
         # ---- C11 Google WEB sign-in page loads in this browser (no credentials are typed; this only shows the
         # sign-in form is served and not a "browser not secure" refusal). Needs real internet on the runner.
         try:
-            import urllib.request
+            import urllib.request as _ur
             adb("shell", "am", "force-stop", pkg)
             open_url(pkg, "https://accounts.google.com/ServiceLogin")
             time.sleep(15)
             adb("forward", "tcp:9222", "localabstract:chrome_devtools_remote")
             time.sleep(1)
-            tabs = json.loads(urllib.request.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
+            tabs = json.loads(_ur.urlopen("http://127.0.0.1:9222/json", timeout=10).read())
             pages = [(t.get("url", ""), t.get("title", "")) for t in tabs if t.get("type") == "page"]
             g = [t for t in pages if "accounts.google.com" in t[0] or "google" in t[1].lower()]
             titles = " | ".join(t[1] for t in g)[:200]
