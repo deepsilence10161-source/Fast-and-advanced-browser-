@@ -1,0 +1,24 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 4f18a60 (runs 44700704864 x64 / 44700708471 arm64, patch_hash 1a57e6b0...); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "tool": "scripts/ci/personal_egress_audit.py (Chromium NetLog; x64 emulator only)",
+ "before": {
+  "apk_sha256": "23a23700159733a54276ba67e887a1585b1cb06a099950d12c112c823a2f5121",
+  "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44698774914",
+  "build": "e4ebd48 (0110/0111 AI Mode + network-time only)",
+  "idle": "4 Google requests: ddljson (doodle), complete/search (suggestions), gstatic suggested_sites json, plus GETs to the default tiles' sites (espncdn, wikipedia, ebay, instagram cdn, amazon, facebook, yahoo, youtube)"
+ },
+ "after": {
+  "apk_sha256": "d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0",
+  "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702702326",
+  "idle_google_requests": 0,
+  "idle_google_resolves": [],
+  "browse_google_requests": 0,
+  "search_phase_google_requests": 0,
+  "browse_other_hosts": [],
+  "limits": [
+   "NetLog sees only Chromium's own network stack, not Android services, the keyboard or Google Play services.",
+   "The search phase types into the omnibox; it does not submit a query, so what a submitted query sends to the default search engine (Google) is not measured here.",
+   "x64 emulator only; arm64 not measured."
+  ]
+ }
+}

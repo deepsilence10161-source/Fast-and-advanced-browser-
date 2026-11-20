@@ -1,0 +1,57 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 4f18a60 (runs 44700704864 x64 / 44700708471 arm64, patch_hash 1a57e6b0...); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "clipboard_apk": {
+  "x64": {
+   "apk_sha256": "d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "X01_settings_field_probe": "CONTAINED",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702708852"
+  },
+  "arm64": {
+   "apk_sha256": "80942c5f1f84f281c409c9811a0dda59b68e9482f208d7f60b7a54ea93e6e3f2",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "X01_settings_field_probe": "CONTAINED",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44704347348"
+  }
+ },
+ "autofill_apk": {
+  "x64": {
+   "apk_sha256": "d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0",
+   "A00_control": "PASS",
+   "A01_browser_form": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702712360"
+  },
+  "arm64": {
+   "apk_sha256": "80942c5f1f84f281c409c9811a0dda59b68e9482f208d7f60b7a54ea93e6e3f2",
+   "A00_control": "PASS",
+   "A01_browser_form": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44704350432"
+  }
+ },
+ "passkey_apk": {
+  "x64": {
+   "apk_sha256": "d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0",
+   "C00_control": "PASS",
+   "C01_browser": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702715700"
+  },
+  "arm64": {
+   "apk_sha256": "80942c5f1f84f281c409c9811a0dda59b68e9482f208d7f60b7a54ea93e6e3f2",
+   "C00_control": "PASS",
+   "C01_browser": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44704353198",
+   "note": "webauthn_result=NotSupportedError"
+  }
+ },
+ "probes": {
+  "X01_settings_field": "CONTAINED on both ABIs: cut/copy in the Settings > Homepage address field ran the contained handler (SwiftraClip log, length only) and the system clipboard kept the control text. Other native fields (dialogs/IME) remain unaudited."
+ }
+}

@@ -49,25 +49,28 @@ for a in json.load(sys.stdin):
   done
 done
 # Update the release body so it states exactly which layers the uploaded builds contain.
-fg=no; sg=no; cb=no
+fg=no; sg=no; cb=no; ge=no
 for cpu in "$@"; do
   grep -q '^0105-face-guard-presence-mode.patch' /tmp/pub/BUILD_INFO-$cpu.txt && fg=yes
   grep -q '^0107-personal-signin-message.patch' /tmp/pub/BUILD_INFO-$cpu.txt && sg=yes
   grep -q '^0109-personal-omnibox-clipboard.patch' /tmp/pub/BUILD_INFO-$cpu.txt && cb=yes
+  grep -q '^0111-personal-google-egress.patch' /tmp/pub/BUILD_INFO-$cpu.txt && ge=yes
 done
-body=$(FG=$fg SG=$sg CB=$cb python3 - <<'P'
+body=$(FG=$fg SG=$sg CB=$cb GE=$ge python3 - <<'P'
 import json,os
 t="DEVELOPMENT ONLY. Separate app (com.swiftra.personaldev); does not touch com.swiftra.app data. Not privacy-certified; not offered through the ordinary Swiftra update feed. See docs/plans/personal-browser-containment.md and TESTING.md for exactly what was and was not tested."
 if os.environ["FG"]=="yes":
-    t+=" Face Guard (experimental, OFF by default) is in the most recently uploaded build: it only checks that A face is visible to the front camera. It does NOT recognise whose face it is, has no liveness check (a photo may fool it) and is a convenience lock, not security. Measured only on the x64 Android emulator with a still-image camera: one visible face unlocks, a second face keeps it locked (the second-face test used one detectable face shown twice); not tested with a real phone camera, and ARM64 has no camera test. Owner-only mode (Settings > Privacy, needs a device PIN, pattern or password) skips the camera and unlocks only through the phone own fingerprint, face or PIN prompt; it was measured on the emulator with the device PIN, NOT with a real fingerprint or face. Earlier builds could crash while locked (tab-switcher Hub, 3 of 4 two-face runs); this build passed 4 of 4 two-face runs on x64, which is a small sample."
+    t+=" Face Guard (experimental, OFF by default) is in the most recently uploaded build: it only checks that A face is visible to the front camera. It does NOT recognise whose face it is, has no liveness check (a photo may fool it) and is a convenience lock, not security. Measured only on the x64 Android emulator with a still-image camera: one visible face unlocks, a second face keeps it locked (the second-face test used one detectable face shown twice); not tested with a real phone camera, and ARM64 has no camera test. Owner-only mode (Settings > Privacy, needs a device PIN, pattern or password) skips the camera and unlocks only through the phone own fingerprint, face or PIN prompt; it was measured on the emulator with the device PIN, NOT with a real fingerprint or face. Earlier builds could crash while locked (tab-switcher Hub, 3 of 4 two-face runs); this build passed its two-face runs on x64 (2 of 2), which is a small sample; the cause of the crash was never proven."
 else:
     t+=" Face Guard is NOT in this build."
 if os.environ["SG"]=="yes":
     t+=" Browser sign-in/Sync is intentionally off; the build says so instead of a generic 'Can't sign in'. Sign in on websites instead."
 if os.environ["CB"]=="yes":
-    t+=" Clipboard: copy/cut in the address bar and Find-in-page stay inside the browser (measured on Android emulator/Redroid, synthetic text; see TESTING.md). KNOWN LEAK (measured): text copied from a Settings text field (the Homepage address box) reaches the Android system clipboard. Dialogs and keyboard/IME clipboard history are NOT audited. Do not assume the system clipboard is never used. Whole-profile encryption is NOT implemented; stored data relies on Android file-based encryption plus the Keystore-backed cookie/card key."
+    t+=" Clipboard: copy/cut in the address bar and Find-in-page stay inside the browser (measured on Android emulator/Redroid, synthetic text; see TESTING.md). Settings > Homepage address box: copy/cut stays inside the browser too (measured on the same runs; earlier builds leaked it). Other dialogs and keyboard/IME clipboard history are NOT audited. Do not assume the system clipboard is never used. Whole-profile encryption is NOT implemented; stored data relies on Android file-based encryption plus the Keystore-backed cookie/card key."
 else:
     t+=" KNOWN LEAK: text copied from the address bar or Find-in-page reaches the Android system clipboard in this build."
+if os.environ["GE"]=="yes":
+    t+=" Network (x64 emulator, Chromium NetLog only): with no tabs open and while browsing a test page this build made 0 requests to Google (earlier build: doodle, search-suggestion and default-tile requests at every New Tab). Built-in tiles, the doodle, the AI Mode check, the network-time query and search suggestions are off. Not measured: what a submitted search sends to the default search engine (Google), Android/Play services, the keyboard, your IP address. Local traces (synthetic URL scan of the app files): Delete browsing data (All time) removed History, usage DB, cache and Top Sites entries, and the page archive copy is no longer created; the tab/session-restore files still held the URL afterwards, so this is NOT a guarantee that history is unrecoverable (flash-level recovery was not assessed)."
 t+=" Autofill: on the emulator/Redroid runs no autofill request was sent for web login fields. Passkeys/Credential Manager: no request is sent and passkeys are effectively unsupported in this build."
 print(json.dumps({"body":t}))
 P

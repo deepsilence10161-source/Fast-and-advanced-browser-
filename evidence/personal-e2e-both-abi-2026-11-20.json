@@ -1,0 +1,25 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 4f18a60 (runs 44700704864 x64 / 44700708471 arm64, patch_hash 1a57e6b0...); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "x64": {
+  "runtime": "Actions emulator Android 16 / API 36 x86_64",
+  "apk_sha256": "d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702705700",
+  "summary": {
+   "PASS": 10,
+   "FAIL": 0,
+   "NOT_RUN": 0
+  },
+  "c09": "OBSERVED(com.google.android.dialer)"
+ },
+ "arm64": {
+  "runtime": "native ARM64 Redroid Android 14 / API 34 arm64-v8a",
+  "apk_sha256": "80942c5f1f84f281c409c9811a0dda59b68e9482f208d7f60b7a54ea93e6e3f2",
+  "e2e_run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44704343816",
+  "summary": {
+   "PASS": 9,
+   "FAIL": 0,
+   "NOT_RUN": 1
+  },
+  "c09": "UNAVAILABLE (Redroid has no dialer, so the external-app hand-off measurement cannot observe a hand-off); C04 is negative-only there"
+ }
+}

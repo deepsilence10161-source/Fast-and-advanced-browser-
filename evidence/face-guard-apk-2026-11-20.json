@@ -1,0 +1,49 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), build from main 4f18a60 (runs 44700704864 x64 / 44700708471 arm64, patch_hash 1a57e6b0...); synthetic loopback canaries, no account, no real site. NOT privacy-certified. Face Guard incl. owner-only mode and the Hub-crash mitigation.",
+ "face_guard_apk": {
+  "x64": {
+   "apk_sha256": "d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0",
+   "runtime": "Android 16 emulator, front camera = committed still image, acceptance orientation rot0",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "PASS",
+    "two": "PASS"
+   },
+   "owner_only_G08": "PASS",
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702722436",
+    "one": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702726204",
+    "two": [
+     "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702729965",
+     "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44702739945"
+    ]
+   },
+   "limits": [
+    "'two' uses a fixture showing the SAME detectable face twice; it proves the 'two detected faces -> stay locked' path, not that a real second person is detected.",
+    "G02 opaque lock colour is unverifiable (FLAG_SECURE blanks screencap); the UI dump is the evidence.",
+    "Presence only: no identity, no liveness. A photo of a face unlocks it.",
+    "G08 owner-only used the device PIN as the owner check; a real enrolled fingerprint/face was NOT measured."
+   ]
+  },
+  "arm64": {
+   "apk_sha256": "80942c5f1f84f281c409c9811a0dda59b68e9482f208d7f60b7a54ea93e6e3f2",
+   "runtime": "native ARM64 Redroid Android 14 (no camera HAL)",
+   "summary": {
+    "FAIL": 0
+   },
+   "scenarios": {
+    "nofaces": "PASS",
+    "one": "NOT_RUN",
+    "two": "NOT_RUN"
+   },
+   "owner_only_G08": "PASS",
+   "runs": {
+    "nofaces": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44704358623"
+   },
+   "note": "G03 NOT_RUN (no camera HAL: fail-closed is the expected result); one/two NOT_RUN (no camera)."
+  }
+ }
+}

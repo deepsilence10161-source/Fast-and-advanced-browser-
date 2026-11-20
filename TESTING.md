@@ -444,3 +444,13 @@ The earlier face failures were the startup crash (Hub RecyclerView activePositio
 - Base E2E: x64 10/10; arm64 9 PASS, C09 NOT_RUN (no dialer). Clipboard K01-K04 PASS on both; autofill and passkey PASS on both.
 - **X01 probe: LEAK on both ABIs.** Text copied in the Settings > Homepage address field reaches the system clipboard. Unfixed. A viewInflaterClass theme approach was investigated and not shipped (the base theme could not be located in the 155 sources, so it could not be built safely).
 - Whole-profile encryption: not implemented (docs/plans/profile-encryption.md).
+
+## 2026-11-20 batch results (build 4f18a60; evidence/*-2026-11-20.json)
+- Builds: x64 run 44700704864 sha256 `d9a89bb500ddba0c083f6614accb8fa97cc1da0de172666ca08d74012c6419b0`; arm64 run 44700708471 sha256 `80942c5f1f84f281c409c9811a0dda59b68e9482f208d7f60b7a54ea93e6e3f2`; patch_hash 1a57e6b0...
+- **X01 (Settings > Homepage field): CONTAINED on both ABIs** (handler log `SwiftraClip` + system clipboard unchanged). Earlier builds: LEAK. Dialogs/IME still unaudited.
+- Base E2E x64 10/10, arm64 9 PASS + C09 NOT_RUN. Clipboard K00-K04, autofill A00/A01, passkey C00/C01 PASS on both. Face Guard x64: nofaces (G01-G08), one, two x2 PASS; arm64 nofaces PASS (G03 NOT_RUN: no camera HAL).
+- **Egress audit (x64, NetLog only), run 44702702326:** idle 0 Google requests/resolves, browse 0, typing in the omnibox 0.
+  Before (e4ebd48, run 44698774914): idle = doodle `async/ddljson`, `complete/search`, `gstatic ntp/suggested_sites_DEFAULT_7.json` and icon GETs to the 8 default tiles' sites. The 0111 layer now also turns off popular sites (fetch + baked-in tiles), the doodle, the last_n offline archive and search suggestions by default.
+  Not measured: a submitted query to the default engine (Google), Android/Play services, keyboard, IP.
+- **Forensics (never gates), runs 44702718944 x64 / 44704355616 arm64:** while running the visit is in History, ukm_db, tab files, multi_instance_data.pb and 2 cache entries; the Offline Pages DB and the full-page .mhtml copy are gone. After Settings > Delete browsing data (All time) History, ukm_db, cache and Top Sites are clean. REMNANTS: tab/session files (`app_tabs/0/*`, `Default/Sessions/Tabs_*`, `multi_instance_data.pb`) still held the URL, even after the tabs were closed. A first direct `show_fragment` launch of the Clear screen crashed Settings (and left a Crashpad dump holding the canary); the harness now uses the menu path only.
+- Honest limits: only app-private files were scanned; flash-level recovery is out of the browser's control and unmeasured; the tab/session remnant is not fixed.
