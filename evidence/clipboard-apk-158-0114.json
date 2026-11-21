@@ -1,0 +1,15 @@
+{
+ "scope": "Personal DEVELOPMENT APK (com.swiftra.personaldev), Chromium 158.0.8127.42 + personal patches 0101-0114 (rebase-158); synthetic loopback canaries, no account, no real site. NOT privacy-certified.",
+ "clipboard_apk": {
+  "arm64": {
+   "expect": "system",
+   "K00_control": "PASS",
+   "K01_web_copy": "PASS",
+   "K02_web_paste": "PASS",
+   "K03_urlbar_copy": "PASS",
+   "K04_find_in_page_copy": "PASS",
+   "run": "https://github.com/deepsilence10161-source/Fast-and-advanced-browser-/actions/runs/44916589360",
+   "apk_sha256": "3a60da240af7797ac776ac8f56c8eaa3a125b32e0c8fdb1a0afe908543837f78"
+  }
+ }
+}
