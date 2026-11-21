@@ -97,6 +97,26 @@ def open_settings(dev, pkg):
     time.sleep(4)
 
 
+def open_clear_screen_scrolling(dev, pkg):
+    """Same menu path as the forensics script, but with a scroll: the three Gemini rows at the top push 'Privacy and security' down."""
+    P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity", timeout=60)
+    time.sleep(4)
+    for _ in range(4):
+        if dev.find(r"(?i)^privacy and security$|^privacy$", ("text", "desc")):
+            break
+        P.sh("input swipe 540 1700 540 600 300")
+        time.sleep(1.5)
+    if dev.tap(r"(?i)^privacy and security$|^privacy$", wait=3.0, tries=3) and dev.tap(r"(?i)^(clear|delete) browsing data$", wait=3.0, tries=3):
+        for _ in range(4):
+            if dev.find(r"(?i)^(clear|delete) data$|time range", ("text", "desc")):
+                return True, "settings menu path (scrolled)"
+            time.sleep(2)
+    return False, "screen not found; visible=" + repr(F.visible_texts(dev))
+
+
+F.open_clear_screen = open_clear_screen_scrolling
+
+
 def prefs_value(pkg):
     txt = P.sh(f"grep -h 'swiftra_keep_google_signin' /data/data/{pkg}/shared_prefs/*.xml 2>/dev/null | head -1", 30)
     m = re.search(r'value="(true|false)"', txt or "")
