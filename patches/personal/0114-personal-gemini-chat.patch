@@ -1,0 +1,192 @@
+--- a/chrome/android/chrome_java_sources.gni
++++ b/chrome/android/chrome_java_sources.gni
+@@ -1195,6 +1195,7 @@ chrome_java_sources = [
+   "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardPolicy.java",
+   "java/src/org/chromium/chrome/browser/swiftra/faceguard/FaceGuardSettings.java",
+   "java/src/org/chromium/chrome/browser/swiftra/faceguard/PresenceFaceAnalyzer.java",
++  "java/src/org/chromium/chrome/browser/swiftra/gemini/SwiftraGemini.java",
+   "java/src/org/chromium/chrome/browser/survey/ChromeSurveyController.java",
+   "java/src/org/chromium/chrome/browser/sync/SyncErrorNotifier.java",
+   "java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java",
+--- a/chrome/android/java/res/xml/main_preferences.xml
++++ b/chrome/android/java/res/xml/main_preferences.xml
+@@ -11,6 +11,24 @@ found in the LICENSE file.
+     <org.chromium.chrome.browser.ui.settings_promo_card.SettingsPromoCardPreference
+         android:key="settings_promo_card"
+         android:order="0" />
++    <org.chromium.components.browser_ui.settings.ChromeBasePreference
++        android:key="swiftra_gemini"
++        android:order="-3"
++        android:title="Gemini chat"
++        android:summary="Chat with Gemini in a browser tab, signed in with one Google account. Your chats and what Gemini remembers are kept by Google in that account, not by Swiftra, and Delete browsing data never removes them."
++        android:persistent="false" />
++    <org.chromium.components.browser_ui.settings.ChromeBasePreference
++        android:key="swiftra_gemini_activity"
++        android:order="-2"
++        android:title="Gemini chat history"
++        android:summary="Review or delete your saved Gemini chats (Google account activity)."
++        android:persistent="false" />
++    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
++        android:key="swiftra_gemini_keep_signin"
++        android:order="-1"
++        android:title="Stay signed in to Google after deleting data"
++        android:summary="On: Delete browsing data keeps the cookies, site storage and cached pages of google.com so Gemini stays linked to your account. History and every other site are still deleted. Off: you are signed out of Google each time."
++        android:persistent="false" />
+     <org.chromium.components.browser_ui.settings.ChromeBasePreferenceCategory
+         android:key="account_and_google_services_section"
+         android:order="1"
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
+@@ -56,6 +56,7 @@ import org.chromium.chrome.browser.signin.SigninAndHistorySyncActivityLauncherIm
+ import org.chromium.chrome.browser.signin.services.IdentityServicesProvider;
+ import org.chromium.chrome.browser.signin.services.ProfileDataCache;
+ import org.chromium.chrome.browser.signin.services.SigninManager;
++import org.chromium.chrome.browser.swiftra.gemini.SwiftraGemini;
+ import org.chromium.chrome.browser.sync.SyncServiceFactory;
+ import org.chromium.chrome.browser.sync.settings.ManageSyncSettings;
+ import org.chromium.chrome.browser.sync.settings.SignInPreference;
+@@ -376,6 +377,7 @@ public class MainSettings extends ChromeBaseSettingsFragment
+         mManagedPreferenceDelegate = createManagedPreferenceDelegate();
+ 
+         SettingsUtils.addPreferencesFromResource(this, R.xml.main_preferences);
++        SwiftraGemini.setUp(this, getActivity());
+ 
+         IdentityManager identityManager =
+                 IdentityServicesProvider.get().getIdentityManager(getProfile());
+--- /dev/null
++++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/gemini/SwiftraGemini.java
+@@ -0,0 +1,65 @@
++package org.chromium.chrome.browser.swiftra.gemini;
++
++import android.app.Activity;
++
++import androidx.preference.Preference;
++import androidx.preference.PreferenceFragmentCompat;
++import androidx.preference.TwoStatePreference;
++
++import org.chromium.chrome.browser.browsing_data.SwiftraKeepSignin;
++import org.chromium.chrome.browser.tab.TabLaunchType;
++import org.chromium.chrome.browser.tabmodel.document.ChromeAsyncTabLauncher;
++
++/**
++ * Swiftra personal: "Gemini chat" entry in Settings.
++ *
++ * <p>Gemini runs on gemini.google.com in an ordinary Swiftra tab, signed in with ONE Google account through the normal
++ * web sign-in. The chats, their memory and their history are kept by Google in that account (Gemini Apps Activity),
++ * not by Swiftra, so nothing here stores or reads chat content. The switch below keeps the Google web sign-in when
++ * browsing data is deleted, so the account stays linked; the chats themselves are never touched by Delete browsing data.
++ */
++public final class SwiftraGemini {
++    public static final String KEY_OPEN = "swiftra_gemini";
++    public static final String KEY_ACTIVITY = "swiftra_gemini_activity";
++    public static final String KEY_KEEP = "swiftra_gemini_keep_signin";
++    public static final String GEMINI_URL = "https://gemini.google.com/app";
++    public static final String ACTIVITY_URL = "https://myactivity.google.com/product/gemini";
++
++    private SwiftraGemini() {}
++
++    public static void setUp(PreferenceFragmentCompat fragment, Activity activity) {
++        if (activity == null) return;
++        Preference open = fragment.findPreference(KEY_OPEN);
++        if (open != null) {
++            open.setOnPreferenceClickListener(
++                    p -> {
++                        openInTab(activity, GEMINI_URL);
++                        return true;
++                    });
++        }
++        Preference history = fragment.findPreference(KEY_ACTIVITY);
++        if (history != null) {
++            history.setOnPreferenceClickListener(
++                    p -> {
++                        openInTab(activity, ACTIVITY_URL);
++                        return true;
++                    });
++        }
++        Preference keep = fragment.findPreference(KEY_KEEP);
++        if (keep instanceof TwoStatePreference) {
++            TwoStatePreference toggle = (TwoStatePreference) keep;
++            toggle.setChecked(SwiftraKeepSignin.isEnabled());
++            toggle.setOnPreferenceChangeListener(
++                    (p, newValue) -> {
++                        SwiftraKeepSignin.setEnabled(Boolean.TRUE.equals(newValue));
++                        return true;
++                    });
++        }
++    }
++
++    /** Opens the page in a new, normal (not incognito) tab and leaves Settings so the tab is what the user sees. */
++    static void openInTab(Activity activity, String url) {
++        new ChromeAsyncTabLauncher(/* incognito= */ false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
++        activity.finish();
++    }
++}
+--- a/chrome/browser/browsing_data/android/BUILD.gn
++++ b/chrome/browser/browsing_data/android/BUILD.gn
+@@ -8,10 +8,12 @@ import("//third_party/jni_zero/jni_zero.gni")
+ android_library("java") {
+   sources = [
+     "java/src/org/chromium/chrome/browser/browsing_data/BrowsingDataBridge.java",
++    "java/src/org/chromium/chrome/browser/browsing_data/SwiftraKeepSignin.java",
+     "java/src/org/chromium/chrome/browser/browsing_data/TimePeriodUtils.java",
+   ]
+ 
+   deps = [
++    "//base:base_java",
+     "//base:callback_java",
+     "//base:tasks_java",
+     "//chrome/browser/profiles/android:java",
+--- a/chrome/browser/browsing_data/android/java/src/org/chromium/chrome/browser/browsing_data/BrowsingDataBridge.java
++++ b/chrome/browser/browsing_data/android/java/src/org/chromium/chrome/browser/browsing_data/BrowsingDataBridge.java
+@@ -118,6 +118,8 @@ public final class BrowsingDataBridge {
+             @TimePeriod int timePeriod,
+             String[] excludedDomains,
+             String @Nullable [] ignoredDomains) {
++        // Swiftra personal: keep the Google web sign-in (Gemini chats live in that account).
++        excludedDomains = SwiftraKeepSignin.withKeptDomains(excludedDomains);
+         BrowsingDataBridgeJni.get()
+                 .clearBrowsingData(
+                         mProfile, listener, dataTypes, timePeriod, excludedDomains, ignoredDomains);
+--- /dev/null
++++ b/chrome/browser/browsing_data/android/java/src/org/chromium/chrome/browser/browsing_data/SwiftraKeepSignin.java
+@@ -0,0 +1,40 @@
++package org.chromium.chrome.browser.browsing_data;
++
++import org.chromium.base.ContextUtils;
++
++import java.util.Arrays;
++
++/**
++ * Swiftra personal: keeps the Google web sign-in when browsing data is deleted.
++ *
++ * <p>Gemini chats are stored by Google in the signed-in account, so they are unaffected either way; this only decides
++ * whether the browser is signed out of Google after "Delete browsing data". When on, google.com is passed to the
++ * deletion as an excluded registrable domain: its cookies, site storage and cache entries are kept. History, other
++ * sites and every other data type are deleted as before (the history backend ignores the domain filter).
++ */
++public final class SwiftraKeepSignin {
++    public static final String PREF = "swiftra_keep_google_signin";
++    public static final String DOMAIN = "google.com";
++
++    private SwiftraKeepSignin() {}
++
++    public static boolean isEnabled() {
++        return ContextUtils.getAppSharedPreferences().getBoolean(PREF, true);
++    }
++
++    public static void setEnabled(boolean enabled) {
++        ContextUtils.getAppSharedPreferences().edit().putBoolean(PREF, enabled).apply();
++    }
++
++    /** The domains to exclude from a deletion: the caller's list plus google.com when the switch is on. */
++    public static String[] withKeptDomains(String[] excluded) {
++        if (!isEnabled()) return excluded;
++        if (excluded == null) return new String[] {DOMAIN};
++        for (String d : excluded) {
++            if (DOMAIN.equals(d)) return excluded;
++        }
++        String[] out = Arrays.copyOf(excluded, excluded.length + 1);
++        out[excluded.length] = DOMAIN;
++        return out;
++    }
++}

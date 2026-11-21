@@ -14,3 +14,6 @@
 0112-personal-relax-clipboard-files-signin-scrub.patch
 # 0113 (158 only): ScreenshotProtectionController replaced IncognitoSnapshotController as the FLAG_SECURE owner
 0113-personal-158-screenshot-protection.patch
+# 0114 (158 only): Gemini chat entry in Settings (gemini.google.com in a tab, one Google account) + keep the Google web sign-in across Delete browsing data
+0114-personal-gemini-source-guard.py
+0114-personal-gemini-chat.patch
