@@ -19,7 +19,10 @@ PREFS = "chrome/android/java/res/xml/main_preferences.xml"
 MAIN = "chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java"
 BRIDGE = "chrome/browser/browsing_data/android/java/src/org/chromium/chrome/browser/browsing_data/BrowsingDataBridge.java"
 BUILD = "chrome/browser/browsing_data/android/BUILD.gn"
-EDITED = [GNI, PREFS, MAIN, BRIDGE, BUILD]
+TAMPD = "chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java"
+CTA = "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java"
+IDS = "chrome/android/java/res/values/ids.xml"
+EDITED = [GNI, PREFS, MAIN, BRIDGE, BUILD, TAMPD, CTA, IDS]
 NEW = {
     "chrome/android/java/src/org/chromium/chrome/browser/swiftra/gemini/SwiftraGemini.java": "src/SwiftraGemini.java",
     "chrome/browser/browsing_data/android/java/src/org/chromium/chrome/browser/browsing_data/SwiftraKeepSignin.java": "src/SwiftraKeepSignin.java",
@@ -89,6 +92,36 @@ def edit(rel, text):
                    '    "java/src/org/chromium/chrome/browser/browsing_data/SwiftraKeepSignin.java",\n'
                    '    "java/src/org/chromium/chrome/browser/browsing_data/TimePeriodUtils.java",\n')
         return one(text, '    "//base:callback_java",\n', '    "//base:base_java",\n    "//base:callback_java",\n')
+    if rel == IDS:
+        return one(text, '    <item type="id" name="glic_unshare_menu_id" />\n',
+                   '    <item type="id" name="glic_unshare_menu_id" />\n    <item type="id" name="swiftra_gemini_menu_id" />\n')
+    if rel == TAMPD:
+        old = "        modelList.add(buildSettingsItem());\n"
+        assert text.count(old) == 4, text.count(old)
+        text = text.replace(old, "        modelList.add(buildSwiftraGeminiItem());\n" + old)
+        return one(text, "    private ListItem buildSettingsItem() {\n",
+                   "    /** Swiftra personal: \"Gemini chat\" row in the three-dot menu; opens gemini.google.com in a tab. */\n"
+                   "    private ListItem buildSwiftraGeminiItem() {\n"
+                   "        PropertyModel model =\n"
+                   "                AppMenuItemUtils.buildModelForStandardMenuItem(\n"
+                   "                        mContext,\n"
+                   "                        getAppMenuItemTheme(),\n"
+                   "                        R.id.swiftra_gemini_menu_id,\n"
+                   "                        R.string.menu_settings,\n"
+                   "                        shouldShowIconBeforeItem() ? R.drawable.ic_spark_24dp : Resources.ID_NULL,\n"
+                   "                        isMenuIconAtStart());\n"
+                   "        model.set(AppMenuItemProperties.TITLE, \"Gemini chat\");\n"
+                   "        return new ListItem(AppMenuHandler.AppMenuItemType.STANDARD, model);\n"
+                   "    }\n\n"
+                   "    private ListItem buildSettingsItem() {\n")
+    if rel == CTA:
+        text = one(text, "import org.chromium.chrome.browser.sync.ui.SyncErrorMessage;\n",
+                   "import org.chromium.chrome.browser.sync.ui.SyncErrorMessage;\n"
+                   "import org.chromium.chrome.browser.swiftra.gemini.SwiftraGemini;\n")
+        return one(text, "        } else if (id == R.id.open_file_id) {\n",
+                   "        } else if (id == R.id.swiftra_gemini_menu_id) {\n"
+                   "            SwiftraGemini.openGemini();\n"
+                   "        } else if (id == R.id.open_file_id) {\n")
     raise KeyError(rel)
 
 

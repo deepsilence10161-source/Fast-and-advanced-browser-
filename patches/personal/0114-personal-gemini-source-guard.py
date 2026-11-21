@@ -12,8 +12,11 @@ import sys
 
 EXPECTED = {
     "chrome/android/chrome_java_sources.gni": "7ec23ed82428d67be5f4e638de1c834c43b9db715296ece534acfc63c261f027",
+    "chrome/android/java/res/values/ids.xml": "cb294c57f521d1d5b831233d2f42610cdd2599d78f0b3212a924c07af284e517",
     "chrome/android/java/res/xml/main_preferences.xml": "c3e702fca7c33631d95a8e95fbb9c7ef5df5470099bbc49cc8b93e87bef12989",
+    "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java": "c3d6e86553d7ade4ab6ae4713f28b623a2fe121e4ce0d36e2d7a839b740c7d86",
     "chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java": "2f5579a222eced9a8323116aa9c7eb8be7911f4fdb54f93901ea14f2264f7595",
+    "chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java": "6afce7188638077529cd43067bdf5be7e31815cd4cc11fa6f984e6569098f4f3",
     "chrome/browser/browsing_data/android/BUILD.gn": "beca93ecfbe568ecb7d361e7550b3bb1b95c1c548ab6fedc8a1f250593608b66",
     "chrome/browser/browsing_data/android/java/src/org/chromium/chrome/browser/browsing_data/BrowsingDataBridge.java": "b49a1cbb2096d8ef7b01d24e8ad308ef26670d0f59553170c429204d0439b025"
 }

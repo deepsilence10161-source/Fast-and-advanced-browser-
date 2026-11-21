@@ -214,6 +214,28 @@ def main():
         else:
             results["M01_open"] = out("M01_open", "FAIL", "the 'Gemini chat' row could not be tapped; visible=" + repr(F.visible_texts(dev, 15)))
 
+        # M04 three-dot menu row
+        P.adb("shell", "am", "force-stop", pkg)
+        launch(dev)
+        wait_ready(dev, seconds=120)
+        try:
+            opened = dev.tap(r"menu_button", ("id",), wait=2.5, tries=3)
+            row = dev.find(r"(?i)^gemini chat$", ("text", "desc")) if opened else None
+            texts = F.visible_texts(dev, 30)
+            if not row:
+                results["M04_menu_row"] = out("M04_menu_row", "FAIL", f"menu opened={opened}; 'Gemini chat' not in the three-dot menu; visible={texts}")
+            else:
+                pos = [x for x in texts if x]
+                idx_g = pos.index("Gemini chat") if "Gemini chat" in pos else -1
+                idx_s = pos.index("Settings") if "Settings" in pos else -1
+                dev.tap_node(row)
+                time.sleep(12)
+                gp = [t for t in pages() if "gemini.google.com" in t.get("url", "")]
+                results["M04_menu_row"] = out("M04_menu_row", "PASS" if gp else "FAIL",
+                                              f"menu row order: Gemini chat at {idx_g}, Settings at {idx_s}; tapping it opened gemini tab={bool(gp)} urls={[t['url'][:60] for t in pages()][:4]}")
+        except Exception as e:  # noqa: BLE001
+            results["M04_menu_row"] = out("M04_menu_row", "NOT_RUN", "harness: " + repr(e)[:160])
+
         # M02 keep ON (default)
         P.adb("shell", "am", "force-stop", pkg)
         launch(dev)

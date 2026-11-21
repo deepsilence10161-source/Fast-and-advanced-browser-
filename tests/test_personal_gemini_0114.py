@@ -17,7 +17,10 @@ def test_patch_touches_only_expected_files():
     files = set(re.findall(r"(?m)^\+\+\+ b/(\S+)", PATCH))
     assert files == {
         "chrome/android/chrome_java_sources.gni",
+        "chrome/android/java/res/values/ids.xml",
         "chrome/android/java/res/xml/main_preferences.xml",
+        "chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java",
+        "chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java",
         "chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java",
         "chrome/android/java/src/org/chromium/chrome/browser/swiftra/gemini/SwiftraGemini.java",
         "chrome/browser/browsing_data/android/BUILD.gn",
@@ -41,9 +44,17 @@ def test_only_google_com_is_kept_and_default_is_on():
     assert '"//base:base_java"' in PATCH
 
 
-def test_guard_script_is_valid_python_and_pins_five_files():
+def test_guard_script_is_valid_python_and_pins_eight_files():
     spec = importlib.util.spec_from_file_location("g0114", GUARD)
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
-    assert len(m.EXPECTED) == 5 and len(m.NEW_PATHS) == 2
+    assert len(m.EXPECTED) == 8 and len(m.NEW_PATHS) == 2
     assert all(re.fullmatch(r"[0-9a-f]{64}", v) for v in m.EXPECTED.values())
+
+
+def test_three_dot_menu_has_gemini_row_before_settings_in_every_menu_mode():
+    assert PATCH.count("+        modelList.add(buildSwiftraGeminiItem());") == 4
+    assert 'model.set(AppMenuItemProperties.TITLE, "Gemini chat");' in PATCH
+    assert "R.id.swiftra_gemini_menu_id" in PATCH and 'name="swiftra_gemini_menu_id"' in PATCH
+    assert "+        } else if (id == R.id.swiftra_gemini_menu_id) {" in PATCH
+    assert "SwiftraGemini.openGemini();" in PATCH

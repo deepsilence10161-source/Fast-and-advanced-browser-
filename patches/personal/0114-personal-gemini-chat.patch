@@ -8,6 +8,16 @@
    "java/src/org/chromium/chrome/browser/survey/ChromeSurveyController.java",
    "java/src/org/chromium/chrome/browser/sync/SyncErrorNotifier.java",
    "java/src/org/chromium/chrome/browser/sync/settings/AccountManagementFragment.java",
+--- a/chrome/android/java/res/values/ids.xml
++++ b/chrome/android/java/res/values/ids.xml
+@@ -239,6 +239,7 @@ found in the LICENSE file.
+     <item type="id" name="glic_share_new_chat_sub_menu_id" />
+     <item type="id" name="glic_share_recent_sub_menu_id" />
+     <item type="id" name="glic_unshare_menu_id" />
++    <item type="id" name="swiftra_gemini_menu_id" />
+     <item type="id" name="google_password_manager_menu_id" />
+     <item type="id" name="help_id" />
+     <item type="id" name="help_parent_menu_id" />
 --- a/chrome/android/java/res/xml/main_preferences.xml
 +++ b/chrome/android/java/res/xml/main_preferences.xml
 @@ -11,6 +11,24 @@ found in the LICENSE file.
@@ -35,6 +45,25 @@
      <org.chromium.components.browser_ui.settings.ChromeBasePreferenceCategory
          android:key="account_and_google_services_section"
          android:order="1"
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -268,6 +268,7 @@ import org.chromium.chrome.browser.signin.SigninAndHistorySyncActivityLauncherIm
+ import org.chromium.chrome.browser.single_tab.SingleTabModuleBuilder;
+ import org.chromium.chrome.browser.survey.ChromeSurveyController;
+ import org.chromium.chrome.browser.sync.ui.SyncErrorMessage;
++import org.chromium.chrome.browser.swiftra.gemini.SwiftraGemini;
+ import org.chromium.chrome.browser.swiftra.faceguard.FaceGuardController;
+ import org.chromium.chrome.browser.tab.RedirectHandlerTabHelper;
+ import org.chromium.chrome.browser.tab.Tab;
+@@ -5006,6 +5007,8 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+                         this, LayoutSwitchEntryPoint.APP_MENU, isEnabling);
+             }
+             ((TabbedRootUiCoordinator) mRootUiCoordinator).toggleTabStrip();
++        } else if (id == R.id.swiftra_gemini_menu_id) {
++            SwiftraGemini.openGemini();
+         } else if (id == R.id.open_file_id) {
+             Tab tab = getActivityTab();
+             if (tab != null) {
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 @@ -56,6 +56,7 @@ import org.chromium.chrome.browser.signin.SigninAndHistorySyncActivityLauncherIm
@@ -55,7 +84,7 @@
                  IdentityServicesProvider.get().getIdentityManager(getProfile());
 --- /dev/null
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/swiftra/gemini/SwiftraGemini.java
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,70 @@
 +package org.chromium.chrome.browser.swiftra.gemini;
 +
 +import android.app.Activity;
@@ -115,12 +144,72 @@
 +        }
 +    }
 +
++    /** Three-dot menu entry: a new normal tab with Gemini, the menu closes by itself. */
++    public static void openGemini() {
++        new ChromeAsyncTabLauncher(/* incognito= */ false).launchUrl(GEMINI_URL, TabLaunchType.FROM_CHROME_UI);
++    }
++
 +    /** Opens the page in a new, normal (not incognito) tab and leaves Settings so the tab is what the user sees. */
 +    static void openInTab(Activity activity, String url) {
 +        new ChromeAsyncTabLauncher(/* incognito= */ false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
 +        activity.finish();
 +    }
 +}
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
+@@ -550,6 +550,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+         AppMenuItemUtils.maybeAddDividerLine(modelList, R.id.divider_line_id);
+ 
+         // Settings
++        modelList.add(buildSwiftraGeminiItem());
+         modelList.add(buildSettingsItem());
+ 
+         // NTP Customizations
+@@ -746,6 +747,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+         AppMenuItemUtils.maybeAddDividerLine(modelList, R.id.divider_line_id);
+ 
+         // Settings
++        modelList.add(buildSwiftraGeminiItem());
+         modelList.add(buildSettingsItem());
+ 
+         // Help
+@@ -807,6 +809,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+         modelList.add(buildCloseAllTabsItem());
+         if (shouldShowSelectTabsItem()) modelList.add(buildSelectTabsItem());
+         if (shouldShowQuickDeleteItem()) modelList.add(buildQuickDeleteItem());
++        modelList.add(buildSwiftraGeminiItem());
+         modelList.add(buildSettingsItem());
+     }
+ 
+@@ -822,6 +825,7 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+         } else {
+             modelList.add(buildNewIncognitoTabItem());
+         }
++        modelList.add(buildSwiftraGeminiItem());
+         modelList.add(buildSettingsItem());
+         if (shouldShowQuickDeleteItem()) modelList.add(buildQuickDeleteItem());
+     }
+@@ -1364,6 +1368,20 @@ public class TabbedAppMenuPropertiesDelegate extends AppMenuPropertiesDelegateIm
+         return new ListItem(AppMenuHandler.AppMenuItemType.STANDARD, model);
+     }
+ 
++    /** Swiftra personal: "Gemini chat" row in the three-dot menu; opens gemini.google.com in a tab. */
++    private ListItem buildSwiftraGeminiItem() {
++        PropertyModel model =
++                AppMenuItemUtils.buildModelForStandardMenuItem(
++                        mContext,
++                        getAppMenuItemTheme(),
++                        R.id.swiftra_gemini_menu_id,
++                        R.string.menu_settings,
++                        shouldShowIconBeforeItem() ? R.drawable.ic_spark_24dp : Resources.ID_NULL,
++                        isMenuIconAtStart());
++        model.set(AppMenuItemProperties.TITLE, "Gemini chat");
++        return new ListItem(AppMenuHandler.AppMenuItemType.STANDARD, model);
++    }
++
+     private ListItem buildSettingsItem() {
+         return new ListItem(
+                 AppMenuHandler.AppMenuItemType.STANDARD,
 --- a/chrome/browser/browsing_data/android/BUILD.gn
 +++ b/chrome/browser/browsing_data/android/BUILD.gn
 @@ -8,10 +8,12 @@ import("//third_party/jni_zero/jni_zero.gni")

@@ -57,6 +57,11 @@ public final class SwiftraGemini {
         }
     }
 
+    /** Three-dot menu entry: a new normal tab with Gemini, the menu closes by itself. */
+    public static void openGemini() {
+        new ChromeAsyncTabLauncher(/* incognito= */ false).launchUrl(GEMINI_URL, TabLaunchType.FROM_CHROME_UI);
+    }
+
     /** Opens the page in a new, normal (not incognito) tab and leaves Settings so the tab is what the user sees. */
     static void openInTab(Activity activity, String url) {
         new ChromeAsyncTabLauncher(/* incognito= */ false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
