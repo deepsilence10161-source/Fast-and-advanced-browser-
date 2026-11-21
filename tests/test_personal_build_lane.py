@@ -8,7 +8,7 @@ import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-TAG = "155.0.8059.80"
+TAG = "158.0.8127.42"
 PACKAGE = "org.example.containmentdev"
 HELPER = ROOT / "scripts/ci/personal_bundle.sh"
 
