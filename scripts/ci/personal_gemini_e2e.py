@@ -220,14 +220,26 @@ def main():
         wait_ready(dev, seconds=120)
         try:
             opened = dev.tap(r"menu_button", ("id",), wait=2.5, tries=3)
-            row = dev.find(r"(?i)^gemini chat$", ("text", "desc")) if opened else None
-            texts = F.visible_texts(dev, 30)
+            row = None
+            seen = []
+            for _ in range(7):   # the menu is long: Gemini chat sits right above Settings, below the fold
+                if not opened:
+                    break
+                xml = dev.dump()
+                for x in F.visible_texts(dev, 60):
+                    if x not in seen:
+                        seen.append(x)
+                row = dev.find(r"(?i)^gemini chat$", ("text", "desc"), xml=xml)
+                if row:
+                    break
+                P.sh("input swipe 540 1600 540 700 300")
+                time.sleep(1.2)
+            texts = seen
             if not row:
                 results["M04_menu_row"] = out("M04_menu_row", "FAIL", f"menu opened={opened}; 'Gemini chat' not in the three-dot menu; visible={texts}")
             else:
-                pos = [x for x in texts if x]
-                idx_g = pos.index("Gemini chat") if "Gemini chat" in pos else -1
-                idx_s = pos.index("Settings") if "Settings" in pos else -1
+                idx_g = texts.index("Gemini chat") if "Gemini chat" in texts else -1
+                idx_s = texts.index("Settings") if "Settings" in texts else -1
                 dev.tap_node(row)
                 time.sleep(12)
                 gp = [t for t in pages() if "gemini.google.com" in t.get("url", "")]
