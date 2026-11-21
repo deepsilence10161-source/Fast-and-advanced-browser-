@@ -93,6 +93,11 @@ def open_clear_screen(dev, pkg):
     """The visible menu path (Settings > Privacy and security > Delete browsing data). A direct show_fragment launch crashed SettingsActivity.onStart (no arguments), which also left a crash dump in the app, so it is not used."""
     P.adb("shell", "am", "start", "-W", "-n", f"{pkg}/org.chromium.chrome.browser.settings.SettingsActivity", timeout=60)
     time.sleep(4)
+    for _ in range(4):   # extra Swiftra rows at the top (Gemini chat, 0114) push the Privacy row below the fold
+        if dev.find(r"(?i)^privacy and security$|^privacy$", ("text", "desc")):
+            break
+        P.sh("input swipe 540 1700 540 600 300")
+        time.sleep(1.5)
     if dev.tap(r"(?i)^privacy and security$|^privacy$", wait=3.0, tries=3) and dev.tap(r"(?i)^(clear|delete) browsing data$", wait=3.0, tries=3):
         for _ in range(4):
             if dev.find(r"(?i)^(clear|delete) data$|time range", ("text", "desc")):
